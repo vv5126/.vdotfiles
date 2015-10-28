@@ -3,6 +3,8 @@
 origin_list="$PWD/config.list"
 test_dir="$HOME/hehe"
 
+[ ! -d "$HOME/.vdotfiles/.origin" ] && mkdir "$HOME/.vdotfiles/.origin"
+
 while read line; do
 	src_name=${line#*=}
 	dest_name=${line%%=*}
