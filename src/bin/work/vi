@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ $# -ne 0 ]; then
+	STR=$1
+	FILE=${STR%%:*}
+	LINE=${STR#*:}
+	LINE=${LINE%%:*}
+#	echo $LINE
+#	echo $FILE
+	expr $LINE + 0 &>/dev/null
+	[ $? -eq 0 ] && vim $FILE +$LINE || vim $FILE
+fi

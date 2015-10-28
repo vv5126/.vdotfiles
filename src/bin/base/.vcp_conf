@@ -1,0 +1,16 @@
+user@192.168.4.150:~/
+wgao@192.168.4.10:~/
+wgao@192.168.4.4:~/
+wgao@192.168.4.15:~/
+wgao@192.168.4.15:/data1/wgao/GBS-ROOT/local
+user@192.168.4.150:/home/user/rootfs/home
+fpga@192.168.4.13:/home/nfsroot/fpga/rootfs/root_ok/
+fpga@192.168.4.13:/home/nfsroot/fpga/user/wgao/
+fpga@192.168.4.13:/home/nfsroot/fpga/user/wgao/root_ok/
+user@192.168.4.150:~/mercury-tmp
+lgwang@192.168.4.4:/home/lgwang/build2/m200/InfoMark/mercury/kernel-mercury-git1
+lgwang@192.168.4.4:/home/lgwang/build2/m200/InfoMark/mercury/uboot-mercury
+scsong@192.168.2.3:~/android_mercury/uboot-new
+scsong@192.168.2.3:/home/scsong/work-android/android-mercury/kernel-new
+clwang@192.168.4.3:~
+user@192.168.4.42:~

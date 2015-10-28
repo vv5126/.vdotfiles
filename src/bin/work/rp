@@ -1,0 +1,22 @@
+#!/bin/bash
+
+function get_repo_status(){
+	> asdasd
+	repo status | {
+		while read line; do
+			str=${line:0:7}
+			[ "$str" = "project" ] && {
+				DIR="`echo $line | awk '{print $2}'`"
+				[ "/" = "${DIR: -1}" ] || DIR=${DIR%%branch*}
+			} || {
+				file="`echo $line | awk '{print $2}'`"
+				echo $DIR$file	>> asdasd
+			}
+		done
+	}
+}
+
+if [ $# -gt 0 ]; then
+	[ $1 == 'get_status' ] && get_repo_status
+fi
+

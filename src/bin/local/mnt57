@@ -1,0 +1,12 @@
+#!/bin/bash
+
+local_dir=/home/user/57
+
+[ -d $local_dir ] && {
+	echo 'user' | sudo umount $local_dir && rm -rf $local_dir
+} || {
+	mkdir $local_dir
+	echo 'user' | sudo mount -t cifs -o username=wgao_bj, //192.168.1.57/work/users/swdep/wgao $local_dir || rm -rf $local_dir
+}
+unset local_dir
+

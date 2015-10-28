@@ -1,0 +1,14 @@
+#!/bin/bash
+
+[ 'user-FMVD42P211' = $HOSTNAME ] && {
+	[ $# -eq 1 ] && {
+		while :
+		do
+			adb remount && break ; sleep 2;
+		done
+		adb install $1
+	}
+} || {
+	scp $1 user@192.168.4.150:~/
+	ssh user@192.168.4.150 "insapk $1"
+}

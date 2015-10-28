@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd ~
+cloner_file=$(ls ~/ -at1 | grep .cloner- | head -1 &2>/dev/null)
+#echo $cloner_file
+[ -n $cloner_file ] && cd $cloner_file && echo 'user' | sudo  ./cloner

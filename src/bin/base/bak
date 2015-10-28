@@ -1,0 +1,26 @@
+#!/bin/bash
+
+DIR=${PWD##*\/}
+DATE=$(date +%Y-%m-%d_%H-%M)
+
+if [ "$#" -gt 0 -a "$1" != "out" ]; then
+	STR=_\($1\)
+fi
+
+PACKAGE=${DIR}_${DATE}$STR.tar.gz
+
+cd ../
+if [ ! -d "./bak" ]; then
+	mkdir bak
+fi
+
+tar -zcf ./bak/$PACKAGE $DIR
+
+OUT=wgao@192.168.4.10:~/backup/bak/
+
+if [ "$#" -eq 2 -a "$2" = "out" ] || [ "$#" -eq 1 -a "$1" = "out" ]; then
+	scp ./bak/$PACKAGE $OUT
+#	rm ./bak/$PACKAGE
+fi
+
+echo bak done

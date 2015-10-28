@@ -1,0 +1,4 @@
+#!/bin/sh
+
+pid=$(adb shell ps | grep /system/bin/surfaceflinger | awk '{print $2}')
+[ -n "$pid" ] && adb shell kill -9 $pid

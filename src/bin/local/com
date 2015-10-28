@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo minicom ttyUSB0 -w -c on || sudo minicom ttyUSB1 -w -c on

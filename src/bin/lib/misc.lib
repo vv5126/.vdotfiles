@@ -1,0 +1,11 @@
+#!/bin/bash
+
+function mem(){
+	echo mem > /sys/power/state
+}
+
+############# will export ##############
+
+export -f mem
+
+########### will export end ############

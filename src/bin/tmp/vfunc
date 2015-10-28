@@ -1,0 +1,84 @@
+#!/bin/bash
+
+function is_local() {
+	para=$*
+
+	if [[ "$para" =~ "@" ]] && [[ "$para" =~ ":" ]]; then
+		return 1
+	else
+		return 0
+	fi
+}
+
+
+function anymkdir() {
+	dst=$1
+
+	is_local $dst
+	if [ $? = 0 ]; then
+		mkdir -p $dst
+	else
+		ssh ${dst%:*} "[ -d "${dst##*:}" ] || mkdir -p ${dst##*:}"
+	fi
+}
+
+
+function anyrm() {
+	src=$*
+
+	for i in "$src"; do
+		is_local $i
+		if [ $? = 0 ]; then
+			rm -rf $i
+		else
+			ssh ${i%:*} "rm ${i##*:}"
+		fi
+	done
+
+}
+
+
+function anymv() {
+	para=$*
+	src=${para% *}
+	dst=${para##* }
+
+	is_local $para
+	if [ $? = 0 ]; then
+		is_local $dst
+		if [ $? = 0 ]; then
+			ssh ${dst%:*} "[ -d "${dst##*:}" -o -f "${dst##*:}" ] || mkdir -p ${dst##*:}"
+		else
+			[ -d "$dst" -o -f "$dst" ] || mkdir -p $dst
+		fi
+		scp -r "$src" "$dst" && anyrm "$src"
+	else
+		cp -r "$src" "$dst" && anyrm "$src"
+	fi
+}
+
+
+function anycp() {
+	para=$*
+	src=${para% *}
+	dst=${para##* }
+
+	is_local $para
+	if [ $? = 0 ]; then
+		is_local $dst
+		if [ $? = 0 ]; then
+			ssh ${dst%:*} "[ -d "${dst##*:}" -o -f "${dst##*:}" ] || mkdir -p ${dst##*:}"
+		else
+			[ -d "$dst" -o -f "$dst" ] || mkdir -p $dst
+		fi
+		scp -r "$src" "$dst"
+	else
+		cp -r "$src" "$dst"
+	fi
+}
+
+
+FUNC=$1
+shift
+$FUNC $@
+

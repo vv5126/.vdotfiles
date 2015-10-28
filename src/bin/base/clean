@@ -1,0 +1,45 @@
+#!/bin/bash
+
+function dump_tree() {
+	local size="`echo $1 | awk '{print $1}'`"
+	local file="`echo $1 | awk '{print $2}'`"
+	echo $size
+	tree $file -L 1
+}
+
+
+[ $# -eq 1 ] && [ $1 = "big" ] && {
+	du -h -d 1 | {
+		while read line; do
+			tmp=${line:(-1)}
+			[ $tmp != "." ] && {
+				size=${line%M*}
+				expr $size + 0 &>/dev/null
+				[ $? -eq 0 ] && [ $size > 10 ] && dump_tree "$line"
+				size=${line%G*}
+				expr $size + 0 &>/dev/null
+				[ $? -eq 0 ] && dump_tree "$line"
+			}
+		done
+	}
+	exit
+}
+
+
+[ $# -eq 1 ] && [ $1 = "zero" ] && {
+	du -h -d 1 | {
+		while read line; do
+			tmp=${line:(-1)}
+			[ $tmp != "." ] && {
+				size="`echo $line | awk '{print $1}'`"
+				file="`echo $line | awk '{print $2}'`"
+				[ "$size" = '4.0K' ] && rm -rf $file
+			}
+		done
+	}
+	exit
+}
+
+[ $# -eq 1 ] && [ $1 = "." -o $1 = "*" ] && exit
+
+rm -rf $@

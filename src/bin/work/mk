@@ -1,0 +1,115 @@
+#!/bin/bash
+
+. ~/.bin/lib/lib_work
+
+PROJECT_DIR_NAME=`getdir_project | awk '{print $1}'`
+PROJECT_DIR=`getdir_git | awk '{print $2}'`
+
+#global operation start
+#global operation end
+
+function make_i() {
+	local name=${1%.*}
+	local line=
+	echo name $name
+	local cmd="."$name".o.cmd"
+	echo cmd $cmd
+	[ -f "$cmd" ] && read line < $cmd
+	local gcc=${line##*:= }
+	gcc="$gcc"' --save-temps'
+	echo $gcc
+	exit 0
+	cd $PROJECT_DIR
+	pwd
+	$gcc
+	[ $? = 0 ] && {
+		[ -f "$name.i" ] && {
+			cd -
+			mv "$PROJECT_DIR/$name.i" "$PROJECT_DIR/$name.s" .
+		}
+	}
+}
+
+case "$1" in
+'rdy')
+	make_rdy
+	exit 0
+	;;
+*)
+	;;
+esac
+
+case "$PROJECT_DIR_NAME" in
+'KERNEL_DIR')	echo "this's maybe a kernel project"
+	if [ $# -gt 0 ];then
+		if [ $1 == "m" ]; then
+			cd $PROJECT_DIR; make menuconfig
+		elif [ $1 == "c" ]; then
+			cd $PROJECT_DIR; make distclean
+		elif [ "${1:0-2}" == ".c" ]; then
+			make_i $1
+		elif [ $1 == "cfg" ]; then
+			if [ $# -eq 2 ]; then
+				cd $PROJECT_DIR; ls -1 arch/mips/configs | grep "$2"
+			else
+				cd $PROJECT_DIR; ls -1 arch/mips/configs
+			fi
+#			cd $PROJECT_DIR; ls -l arch/mips/configs | grep ^[^d] | awk '{print $9}'
+		fi
+	else
+		cd $PROJECT_DIR; ./k.sh $PROJECT_DIR
+	fi
+	;;
+'UBOOT_DIR')	echo "this's maybe a uboot project"
+	if [ $# -gt 0 ];then
+		echo
+	else
+		cd $PROJECT_DIR; ./u.sh $PROJECT_DIR
+	fi
+	;;
+'TIZEN_DIR')	echo "this's maybe a tizen project"
+	if [ $# -gt 0 ];then
+		if [ $1 == "all" ]; then
+			cd $PROJECT_DIR; ./t.sh $1
+		fi
+	else
+		echo $PROJECT_DIR
+		if [ ! -d '.repo' ]; then
+	#		if [ ! -d '.git' ]; then
+				tizen_base_dir=`getdir_project | awk '{print $2}'`
+				tizen_module_dir=`getdir_git | awk '{print $2}'`
+				cd $tizen_base_dir; ./t.sh $tizen_module_dir
+	#		fi
+		fi
+	fi
+	;;
+'ANDROID_DIR')	echo "this's maybe a android project"
+	if [ $# -gt 0 ];then
+		if [ $1 == "c" ]; then
+			cd $PROJECT_DIR; make clean
+		fi
+	else
+		cd $PROJECT_DIR; ./a.sh $PROJECT_DIR
+	fi
+	;;
+'MODULE_DIR')	echo "this's maybe a module project"
+	if [ $# -gt 0 ];then
+		if [ $1 == "c" ]; then
+			cd $PROJECT_DIR; make clean
+		fi
+	else
+		echo $PROJECT_DIR
+		cd $PROJECT_DIR; ./m.sh $PROJECT_DIR
+	fi
+	;;
+'NORMAL_DIR')	echo "this's maybe a normal project"
+	if [ $# -gt 0 ];then
+		echo
+	else
+		cd $PROJECT_DIR; ./app.sh $PROJECT_DIR
+	fi
+	;;
+*)	echo "NO PROJECT DIR"
+	exit -1
+	;;
+esac

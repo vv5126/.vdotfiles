@@ -1,0 +1,14 @@
+#!/bin/bash
+
+para=$*
+src=${para% *}
+dst=${para##* }
+
+if [[ "$para" =~ "@" ]] && [[ "$para" =~ ":" ]]; then
+	if [[ "$dst" =~ "@" ]] && [[ "$dst" =~ ":" ]]; then
+		dst
+	ssh ${dst%:*} "[ -d "${dst##*:}" ] || mkdir -p ${target_dir##*:}/$child_dir"
+	scp -r "$src" "$dst"
+else
+	cp -r "$src" "$dst"
+fi

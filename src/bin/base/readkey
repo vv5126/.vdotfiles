@@ -1,0 +1,17 @@
+#!/bin/bash
+
+function read_key() {
+	local key=$1
+	local table=$2
+
+	if [ -f "$table" ]; then
+		while read line; do
+			if [ "$key" = "${line%=*}" ]; then
+				echo "${line#*=}"
+				break
+			fi
+		done < "$table"
+	fi
+}
+
+read_key $1 $2

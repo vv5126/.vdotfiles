@@ -1,0 +1,69 @@
+#!/bin/bash
+
+. ~/.bin/lib/lib_work
+
+APP_DIR=$(which $0)
+APP_DIR=${APP_DIR%\/*}
+
+RDY_SH_DIR=$APP_DIR/mkrdy_sh
+
+function make_base_sh() {
+	[[ "$1" =~ 'kernel' ]] && {
+		[ -d "${VGL_BUILD_ROOT_DIR##/*}" ] || cp -r $VGL_BUILD_ROOT_DIR .
+		[ -f k.sh ] && return 0
+		cp $RDY_SH_DIR/k.sh .
+		chmod +x k.sh
+	}
+
+	[[ "$1" =~ 'uboot' ]] && {
+		[ -f u.sh ] && return 0
+		cp $RDY_SH_DIR/u.sh .
+		chmod +x u.sh
+	}
+}
+
+PROJECT_DIR=`getdir_git | awk '{print $2}'`
+
+[ -n PROJECT_DIR ] && cd $PROJECT_DIR
+
+echo "#!/bin/bash"> .project_info
+echo >> .project_info
+
+project_type=`git remote -v | head -2 | tail -1 | awk '{print $2}'`
+
+[[ "$project_type" =~ "kernel" ]] && {
+	echo "project_type=kernel" >> .project_info
+	while read line; do
+		[[ "$line" =~ "CONFIG_BOARD_NAME" ]] && echo "board_name=${line##*=}" >> .project_info
+		[[ "$line" =~ "CONFIG_PRODUCT_NAME" ]] && echo "product_name=${line##*=}" >> .project_info
+		if [[ "$line" =~ "CONFIG_LCD_" ]] && [ "${line:0-1}" = "y" ]; then
+			[[ "$line" =~ "CONFIG_LCD_CLASS_DEVICE" ]] || {
+				tmp=${line#*CONFIG_LCD_}
+				tmp=${tmp%=*}
+				echo "lcd_name=$tmp" >> .project_info
+				break
+			}
+		fi
+	done < ".config"
+}
+
+if [[ "$project_type" =~ "u-boot" ]] || [[ "$project_type" =~ "uboot" ]]; then
+	echo "project_type=uboot" >> .project_info
+fi
+
+echo >> .project_info
+source .project_info
+
+[ $project_type = "kernel" ] && {
+	echo "target_dir=$VGL_BOARDS" >> .project_info
+	echo "target_name=" >> .project_info
+	make_base_sh $project_type
+}
+
+[ $project_type = "uboot" ] && {
+	echo "board_config=" >> .project_info
+	echo "final_bin=u-boot-with-spl.bin" >> .project_info
+	echo "target_dir=$VGL_BOARDS" >> .project_info
+	echo "target_name="$project_type"-"\$board_config".bin" >> .project_info
+	make_base_sh $project_type
+}

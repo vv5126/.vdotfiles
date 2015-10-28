@@ -1,0 +1,76 @@
+#! /system/xbin/bash
+
+DIR=/storage/sdcard1
+SOFT_DIR=$DIR/常用手机软件
+APP_DIR=/data/app
+
+function deal_apk() {
+	new_apk=$1
+	new_apk_name=$2
+	new_apk_name_with_version=$2\_$3.apk
+	while read old_apk; do
+		old_apk_dir=${old_apk%/*}
+		old_apk_name_with_version=${old_apk##*/}
+		old_apk_name=${old_apk_name_with_version%%_*}
+		if [ "$new_apk_name_with_version" = "$old_apk_name_with_version" ]; then
+			return
+		elif [ "$new_apk_name" = "$old_apk_name" ]; then
+			rm "$old_apk"
+			cp "$new_apk" "$old_apk_dir/$new_apk_name_with_version"
+			return
+		fi
+	done < "old"
+	cp "$new_apk" "$SOFT_DIR/$new_apk_name_with_version"
+}
+
+function get_app() {
+	ls $APP_DIR | while read line
+	do
+		apk=$APP_DIR/$line
+		if [[ $apk =~ ".apk" ]]; then
+			aapt d badging "$apk" | { while read line
+				do
+					if [[ $line =~ 'package: ' ]]; then
+						apk_version=${line##*versionName=\'}
+						apk_version=${apk_version%\'*}
+					elif [[ $line =~ 'application-label:' ]]; then
+						apk_name=${line##*application-label:\'}
+						apk_name=${apk_name%\'*}
+					elif [[ $line =~ 'application-label-zh:' ]]; then
+						apk_name=${line##*application-label-zh:\'}
+						apk_name=${apk_name%\'*}
+					elif [[ $line =~ 'application-label-zh_CN:' ]]; then
+						apk_name=${line##*application-label-zh_CN:\'}
+						apk_name=${apk_name%\'*}
+					fi
+				done
+				deal_apk "$apk" "$apk_name" "$apk_version"
+			}
+		fi
+	done
+}
+
+function do_get() {
+	ls $1 | while read line
+	do
+		line=$1/$line
+		if [ -d "$line" ]; then
+			 do_get "$line"
+		else
+			if [[ $line =~ "apk" ]]; then
+				echo "$line" >> old
+			fi
+		fi
+	done
+}
+
+#main
+
+do_get "$SOFT_DIR/基本不升级"
+do_get "$SOFT_DIR/常用升级"
+
+get_app
+
+rm old
+
+exit

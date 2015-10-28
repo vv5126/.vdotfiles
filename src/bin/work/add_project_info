@@ -1,0 +1,20 @@
+#!/bin/bash
+
+. .project_info
+
+if [ -n "$board_config" ] && [ -z "$child_dir" ]; then
+	if [[ "$board_config" =~ "uImage" ]] || [[ "$board_config" =~ "andorid" ]] \
+	|| [[ "$board_config" =~ "linux" ]]; then
+		left=${board_config%_uImage*}
+		if [[ "$left" =~ "_" ]]; then
+			child_dir="${left%_*}"/$left
+		else
+			child_dir=$left
+
+		fi
+		unset left
+	fi
+	echo "child_dir=$child_dir" >> .project_info
+fi
+
+ssh ${target_dir%:*} "[ -d "${target_dir##*:}/$child_dir" ] || mkdir -p ${target_dir##*:}/$child_dir"

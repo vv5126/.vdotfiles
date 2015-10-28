@@ -1,0 +1,10 @@
+.bin=bin
+.profile=profile
+.bashrc=bashrc
+.bash_logout=bash_logout
+.vimrc=vimrc
+.vim=vim
+.gitconfig=gitconfig
+.emacs=emacs
+.emacs.d=emacs.d
+.tmux.conf=tmux.conf

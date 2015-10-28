@@ -1,0 +1,13 @@
+#!/bin/bash
+
+function is_num() {
+	local NUM=$1
+	expr $NUM + 0 &>/dev/null
+	[ $? -eq 0 ] && return 0 || return -1
+}
+
+############# will export ##############
+
+export -f is_num
+
+########### will export end ############

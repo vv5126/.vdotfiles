@@ -1,0 +1,66 @@
+#!/bin/bash
+
+function getdir_project(){
+
+local COMP_DIR=~/
+local BASE_DIR=$PWD
+local DIR=$BASE_DIR
+local PROJECT_DIR_NAME=
+local PROJECT_DIR=
+
+while [ "$COMP_DIR" != "$DIR/" ];do
+	if [ -f "$DIR/k.sh" ]; then
+		PROJECT_DIR_NAME='KERNEL_DIR'
+		PROJECT_DIR=$DIR
+		break
+	elif [ -f "$DIR/u.sh" ]; then
+		PROJECT_DIR_NAME='UBOOT_DIR'
+		PROJECT_DIR=$DIR
+		break
+	elif [ -f "$DIR/a.sh" ]; then
+		PROJECT_DIR_NAME='ANDROID_DIR'
+		PROJECT_DIR=$DIR
+		break
+	elif [ -f "$DIR/t.sh" ]; then
+		PROJECT_DIR_NAME='TIZEN_DIR'
+		PROJECT_DIR=$DIR
+		break
+	elif [ -f "$DIR/m.sh" ]; then
+		PROJECT_DIR_NAME='MODELE_DIR'
+		PROJECT_DIR=$DIR
+		break
+	elif [ -f "$DIR/app.sh" ]; then
+		PROJECT_DIR_NAME='NORMAL_DIR'
+		PROJECT_DIR=$DIR
+		break
+	else
+		PROJECT_DIR_NAME=
+		PROJECT_DIR=
+	fi
+	DIR=${DIR%\/*}
+done
+
+echo "$PROJECT_DIR_NAME $PROJECT_DIR"
+
+}
+
+
+function getdir_git(){
+
+local COMP_DIR=~/
+local DIR=$PWD
+local GIT_DIR_NAME=
+local GIT_DIR=
+
+while [ "$COMP_DIR" != "$DIR/" ];do
+	if [ -d "$DIR/.git" ]; then
+		GIT_DIR_NAME='GIT_DIR'
+		GIT_DIR=$DIR
+		break
+	fi
+	DIR=${DIR%\/*}
+done
+
+echo "$GIT_DIR_NAME $GIT_DIR"
+
+}

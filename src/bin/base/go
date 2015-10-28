@@ -1,0 +1,21 @@
+#!/bin/bash
+
+. ~/.bin/lib/lib_list
+
+DEST=0
+APP_DIR=$(which $0)
+APP_DIR=${APP_DIR%\/*}
+
+if [ $# -eq 1 ]; then
+	expr $1 + 0 &>/dev/null
+	[ $? -eq 0 ] && DEST=$(getline $APP_DIR/.go_conf $1)
+else
+	DEST=$(showlist $APP_DIR/.go_conf "go where ??")
+fi
+
+if [ "$DEST" != 0 ]; then
+	ssh -X $DEST
+else
+	echo "wrong number"
+	echo 
+fi
