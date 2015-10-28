@@ -127,4 +127,4 @@ clear
 	source ~/.bin/local/login
 }
 
-source ./.bin/base/batch-export ./.bin/base/lib-base.conf
+source ./.bin/base/batchExport ./.bin/base/base.conf

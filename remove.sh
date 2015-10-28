@@ -1,6 +1,6 @@
 #!/bin/bash
 
-origin_list="$PWD/ins.list"
+origin_list="$PWD/config.list"
 
 while read line; do
 	src_name=${line#*=}

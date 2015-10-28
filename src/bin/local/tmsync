@@ -1,0 +1,11 @@
+#!/bin/bash
+
+real_time=$(ssh wgao@192.168.4.15 date)
+
+if [ $? = 0 ]; then
+	real_time=$(echo $real_time | awk '{print $4}')
+	echo 'user' | sudo  -S date -s $real_time >/dev/null 2>&1
+	echo time sync $real_time OK!
+else
+	echo time sync FAIL!
+fi

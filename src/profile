@@ -10,6 +10,6 @@
 
 [ -n "$BASH_VERSION" -a -f "$HOME/.bashrc" ] && source "$HOME/.bashrc"
 
-#alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
-#alias cd='quickcd'
+alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
+alias cd='quickcd'
 

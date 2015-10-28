@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. ~/.bin/lib/lib_work
-
 PROJECT_DIR_NAME=`getdir_project | awk '{print $1}'`
 PROJECT_DIR=`getdir_git | awk '{print $2}'`
 

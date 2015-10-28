@@ -1,6 +1,6 @@
 #!/bin/bash
 
-origin_list="$PWD/ins.list"
+origin_list="$PWD/config.list"
 test_dir="$HOME/hehe"
 
 while read line; do
