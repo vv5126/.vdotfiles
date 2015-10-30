@@ -1,9 +1,9 @@
 #!/bin/bash
 
 origin_list="$PWD/config.list"
-test_dir="$HOME/hehe"
+origin_dir="$HOME/.origin"
 
-[ ! -d "$HOME/.vdotfiles/.origin" ] && mkdir "$HOME/.vdotfiles/.origin"
+[ ! -d "$origin_dir" ] && mkdir "$origin_dir"
 
 while read line; do
 	src_name=${line#*=}
@@ -12,7 +12,7 @@ while read line; do
 #	echo dest_name = $dest_name
 	if [ -n "$src_name" -a -n "$dest_name" ]; then
 		if [ -w "$HOME/$dest_name" ]; then
-			cp -rf "$HOME/$dest_name" "$HOME/.vdotfiles/.origin"
+			cp -rf "$HOME/$dest_name" "$origin_dir"
 		fi
 		if [ -w "$PWD/src/$src_name" ]; then
 			[ -w "$HOME/$dest_name" ] && rm -r "$HOME/$dest_name"

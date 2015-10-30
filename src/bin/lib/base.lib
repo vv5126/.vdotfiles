@@ -12,26 +12,8 @@ function quickcd() {
 }
 
 
-function quickcd_old() {
-	local NAME=''
-	local DIR=''
-	[ "$#" -eq 0 -o -d "$1" ] && cd $1 || {
-		[ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" >> ~/.cdlist; return; }
-		while read line; do
-			NAME=${line% *}
-			[ $1 = "$NAME" ] && {
-				DIR=${line#* }
-				cd $DIR
-				return
-			}
-		done < ~/.cdlist
-	}
-}
-
-
 function is_local() {
 	para=$*
-
 	if [[ "$para" =~ "@" ]] && [[ "$para" =~ ":" ]]; then
 		return 1
 	else
@@ -40,7 +22,7 @@ function is_local() {
 }
 
 
-function anymkdir() {
+function smkdir() {
 	dst=$1
 
 	is_local $dst
@@ -52,82 +34,39 @@ function anymkdir() {
 }
 
 
-function anyrm() {
+function srm() {
 	src=$*
-
-	for i in "$src"; do
+	for i in $src; do
 		is_local $i
 		if [ $? = 0 ]; then
-			rm -rf $i
+			rm $i
 		else
-			ssh ${i%:*} "rm ${i##*:}"
+			ssh ${i%:*} "rm -rf ${i##*:}"
 		fi
 	done
-
 }
 
 
-function anymv() {
-	para=$*
-	src=${para% *}
-	dst=${para##* }
-
-	is_local $para
+function smv() {
+	para="$*"
+	scp -r $para
 	if [ $? = 0 ]; then
-		is_local $dst
+		src="${para% *}"
+		is_local "$src"
 		if [ $? = 0 ]; then
-			ssh ${dst%:*} "[ -d "${dst##*:}" -o -f "${dst##*:}" ] || mkdir -p ${dst##*:}"
+			rm $src
 		else
-			[ -d "$dst" -o -f "$dst" ] || mkdir -p $dst
+			srm $src
 		fi
-		scp -r "$src" "$dst" && anyrm "$src"
-	else
-		cp -r "$src" "$dst" && anyrm "$src"
 	fi
 }
 
-
-function anycp() {
-	para=$*
-	src=${para% *}
-	dst=${para##* }
-
-	is_local $para
-	if [ $? = 0 ]; then
-		is_local $dst
-		if [ $? = 0 ]; then
-			ssh ${dst%:*} "[ -d "${dst##*:}" -o -f "${dst##*:}" ] || mkdir -p ${dst##*:}"
-		else
-			[ -d "$dst" -o -f "$dst" ] || mkdir -p $dst
-		fi
-		scp -r "$src" "$dst"
-	else
-		cp -r "$src" "$dst"
-	fi
-}
-
-
-function read_key() {
-	local key=$1
-	local table=$2
-
-	if [ -f "$table" ]; then
-		while read line; do
-			if [ "$key" = "${line%=*}" ]; then
-				echo "${line#*=}"
-				break
-			fi
-		done < "$table"
-	fi
-}
 
 ############# will export ##############
 
 export -f is_local
-export -f anymkdir
-export -f anyrm
-export -f anymv
-export -f anycp
-export -f read_key
+export -f smkdir
+export -f srm
+export -f smv
 
 ########### will export end ############

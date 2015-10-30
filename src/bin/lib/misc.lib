@@ -4,8 +4,24 @@ function mem(){
 	echo mem > /sys/power/state
 }
 
+
+function read_key() {
+	local key=$1
+	local table=$2
+
+	if [ -f "$table" ]; then
+		while read line; do
+			if [ "$key" = "${line%=*}" ]; then
+				echo "${line#*=}"
+				break
+			fi
+		done < "$table"
+	fi
+}
+
 ############# will export ##############
 
 export -f mem
+export -f read_key
 
 ########### will export end ############

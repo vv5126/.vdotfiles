@@ -14,18 +14,16 @@ function vpush() {
 		} || {
 			[ -d "$VGL_LOCALCLIPBOARD" ] && rm -rf "$VGL_LOCALCLIPBOARD"
 			mkdir "$VGL_LOCALCLIPBOARD"
-           	cp -rf $@ "$VGL_LOCALCLIPBOARD"
+           	cp -r $@ "$VGL_LOCALCLIPBOARD"
 		}
 	}
 }
 
 function vpull() {
-	[ "$#" -ge 1 ] && {
-		[ ${!#} == '-g' ] && {
-			scp -rq $VGL_CLIPBOARD/* .
-		} || {
-			[ -d "$VGL_LOCALCLIPBOARD" ] && cp -r $VGL_LOCALCLIPBOARD/* .
-		}
+	[ ${!#} == '-g' ] && {
+		scp -rq $VGL_CLIPBOARD/* .
+	} || {
+		[ -d "$VGL_LOCALCLIPBOARD" ] && cp -r $VGL_LOCALCLIPBOARD/* .
 	}
 }
 

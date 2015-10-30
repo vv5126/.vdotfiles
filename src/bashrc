@@ -90,6 +90,7 @@ fi
 alias ll='ls -AlFh --color'
 alias la='ls -A'
 alias l='ls -CF'
+alias cp='scp'
 alias ..='vcd'
 alias ...='cd_repo'
 alias sl='ls'
@@ -125,4 +126,4 @@ clear
 	source ~/.bin/local/login
 }
 
-source ./.bin/base/batchExport ./.bin/base/base.conf
+source $HOME/.bin/base/batchExport $HOME/.bin/base/base.conf
