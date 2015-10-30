@@ -7,8 +7,8 @@ if [ "$#" != 0 ]; then
 	while read line; do
 		if [ -f "$HOME/$line" ]; then
    			source "$HOME/$line"
-		else
-			echo skip "$HOME/$line"
+#		else
+#			echo skip "$HOME/$line"
 		fi
 	done < "$LIBCONF"
 fi
