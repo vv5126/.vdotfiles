@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ 'user-FMVD42P211' = $HOSTNAME ] && {
+[ "$VGL_LOCAL_USER" = $HOSTNAME ] && {
 	[ $# -eq 1 ] && {
 		while :
 		do

@@ -17,8 +17,15 @@ if [ $? -eq 0 ]; then
 	FILES=$@
 	FILES=${FILES% *}
 else
-	DEST=$(showlist $APP_DIR/.vcp_conf "cp to")
-	FILES=$@
+	if [[ "$NUM" =~ "@" ]]; then
+		echo $NUM >> $APP_DIR/.vcp_conf
+		DEST=$NUM
+		FILES=$@
+		FILES=${FILES% *}
+	else
+		DEST=$(showlist $APP_DIR/.vcp_conf "cp to")
+		FILES=$@
+	fi
 fi
 
 scp -r $FILES $DEST

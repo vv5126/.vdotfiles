@@ -6,7 +6,14 @@ APP_DIR=${APP_DIR%\/*}
 
 if [ $# -eq 1 ]; then
 	expr $1 + 0 &>/dev/null
-	[ $? -eq 0 ] && DEST=$(getline $APP_DIR/.go_conf $1)
+	if [ $? -eq 0 ]; then
+		DEST=$(getline $APP_DIR/.go_conf $1)
+	else
+		if [[ "$1" =~ "@" ]]; then
+			echo $1 >> $APP_DIR/.go_conf
+			DEST=$1
+		fi
+	fi
 else
 	DEST=$(showlist $APP_DIR/.go_conf "go where ??")
 fi
