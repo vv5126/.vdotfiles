@@ -1,9 +1,0 @@
-#!/bin/bash
-
-dst=$1
-
-if [[ "$dst" =~ "@" ]] && [[ "$dst" =~ ":" ]]; then
-	ssh ${dst%:*} "[ -d "${dst##*:}" ] || mkdir -p ${dst##*:}"
-else
-	mkdir -p $dst
-fi
