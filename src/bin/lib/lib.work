@@ -1,5 +1,48 @@
 #!/bin/bash
 
+function make_info_file(){
+	echo "#!/bin/bash"> .project_info
+	echo >> .project_info
+
+	echo "repositories_type=$repositories_type" >> .project_info
+	echo >> .project_info
+	echo "git_branch=$git_branch" >> .project_info
+	echo >> .project_info
+	echo "git_remote=$git_remote" >> .project_info
+	echo >> .project_info
+	echo "note=$note" >> .project_info
+	echo >> .project_info
+	echo "target_bin=$target_bin" >> .project_info
+	echo >> .project_info
+	echo "project_type=$project_type" >> .project_info
+	echo >> .project_info
+	echo "project_name=$project_name" >> .project_info
+	echo >> .project_info
+	echo "board_name=$board_name" >> .project_info
+	echo >> .project_info
+	echo "product_name=$product_name" >> .project_info
+	echo >> .project_info
+	echo "lcd_name=$lcd_name" >> .project_info
+	echo >> .project_info
+	echo "target_dir=$target_dir" >> .project_info
+	echo >> .project_info
+	echo "target_name=$target_name" >> .project_info
+	echo >> .project_info
+	echo "board_config=$board_config" >> .project_info
+	echo >> .project_info
+
+	case "$project_name" in
+		'kernel')
+			;;
+		'uboot')
+			;;
+		'*')
+			;;
+	esac
+}
+
+
+
 function svi(){
 	if [ $# -ne 0 ]; then
 		STR=$1
@@ -134,24 +177,28 @@ echo "$PROJECT_DIR_NAME $PROJECT_DIR"
 }
 
 
-function getdir_git(){
+function getdir_git_repo(){
 
 local COMP_DIR=~/
 local DIR=$PWD
-local GIT_DIR_NAME=
-local GIT_DIR=
+local DIR_NAME='NULL'
+local FINIAL_DIR='NULL'
 
 while [ "$COMP_DIR" != "$DIR/" ];do
 	if [ -d "$DIR/.git" ]; then
-		GIT_DIR_NAME='GIT_DIR'
-		GIT_DIR=$DIR
+		DIR_NAME='GIT_DIR'
+		FINIAL_DIR=$DIR
+		break
+	elif [ -d "$DIR/.repo" ]; then
+		DIR_NAME='REPO_DIR'
+		FINIAL_DIR=$DIR
 		break
 	fi
 	DIR=${DIR%\/*}
 done
 
-echo "$GIT_DIR_NAME $GIT_DIR"
-
+echo "$DIR_NAME $FINIAL_DIR"
+return 0
 }
 
 ############# will export ##############
@@ -170,6 +217,7 @@ alias ...='cd_repo'
 export -f mktag
 export -f mklist
 export -f getdir_project
-export -f getdir_git
+export -f getdir_git_repo
+export -f make_info_file
 
 ########### will export end ############

@@ -1,5 +1,36 @@
 #!/bin/bash
 
+function mk() {
+	forwhat=tizen
+	needclean=0
+
+
+	if [ $forwhat = "android" ]; then
+		ZIMAGE=arch/mips/boot/zcompressed/zImage
+		[ -f $ZIMAGE ] && rm $ZIMAGE
+		make zImage -j32
+		if [ -f $ZIMAGE ]; then
+		   cd build_bootimage
+		   bash m.sh
+		fi
+	else
+		[ $needclean = "1" ] && make clean
+		make  -j32 > .tmp && scp ./u-boot-with-spl-mbr-gpt.bin
+		user@192.168.4.150:~/boards/mercury/u-boot-mercury5.1.bin
+	fi
+
+
+	OUT_IMAGE=tizen23-aw808-kernel310-$(date +%Y-%m-%d_%H:%M).img
+	#OUT_IMAGE=tizen23-inwatch-kernel310-$(date +%Y-%m-%d_%H:%M).img
+
+	make uImage -j32
+
+	echo the out img: $OUT_IMAGE
+	scp arch/mips/boot/uImage user@192.168.4.150:/home/user/boards/tizen23-aw808-imgs/$OUT_IMAGE
+	#scp arch/mips/boot/uImage user@192.168.4.150:/home/user/boards/tizen23-inwatch-imgs/$OUT_IMAGE
+}
+
+
 function init(){
 	project_type='kernel'
 	git_remote=$(git remote -v | head -2 | tail -1 | awk '{print $2}')
@@ -27,7 +58,6 @@ function init(){
 }
 
 
-
 function make_i() {
 	local name=${1%.*}
 	local line=
@@ -50,16 +80,6 @@ function make_i() {
 	}
 }
 
-function mk() {
-	ZIMAGE=arch/mips/boot/zcompressed/zImage
-	[ -f $ZIMAGE ] && rm $ZIMAGE
-	make zImage -j32
-	if [ -f $ZIMAGE ]; then
-	   cd build_bootimage
-	   bash m.sh
-	fi
-}
-
 
 [ "$#" -ge 1 ] && {
 	case "$1" in
@@ -68,9 +88,6 @@ function mk() {
 		;;
 	'm')
 		make menuconfig
-		;;
-	'c')
-		make distclean
 		;;
 	'cfg')
 		if [ $# -eq 2 ]; then
@@ -85,12 +102,12 @@ function mk() {
 			make_i $1
 		fi
 		;;
-	'')
-		mk
-		;;
-	'')
+	'c')
+		make distclean
 		;;
 	*)
 		;;
 	esac
+} || {
+	mk
 }
