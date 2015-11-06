@@ -96,8 +96,8 @@ function git_bak() {
 	echo cp $NUM "files finished"
 }
 
-PROJECT_DIR_NAME=`getdir_git | awk '{print $1}'`
-PROJECT_DIR=`getdir_git | awk '{print $2}'`
+PROJECT_DIR_NAME=`getdir_git_repo | awk '{print $1}'`
+PROJECT_DIR=`getdir_git_repo | awk '{print $2}'`
 
 cd $PROJECT_DIR
 

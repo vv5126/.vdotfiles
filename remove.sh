@@ -13,6 +13,15 @@ while read line; do
 	fi
 done < "$origin_list"
 
+rm $HOME/.bash_history
+rm $HOME/.cdlist
+rm $HOME/.viminfo
+rm $HOME/.vim_mru_files
+rm -rf $HOME/.origin
+rm -rf $HOME/.clipboard
+#rm -rf $HOME/.rm
+#rm -rf $HOME/.vdotfiles
+
 #	echo $line
 #	if [ -w "$HOME/$line" ]; then
 #		cp -r "$PWD/.origin/$line"
