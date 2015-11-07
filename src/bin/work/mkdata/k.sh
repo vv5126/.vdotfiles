@@ -1,43 +1,54 @@
 #!/bin/bash
 
 function mk() {
-	forwhat=tizen
-	needclean=0
 
-
-	if [ $forwhat = "android" ]; then
-		ZIMAGE=arch/mips/boot/zcompressed/zImage
-		[ -f $ZIMAGE ] && rm $ZIMAGE
+	source .project_info
+	case "$forOS" in
+	'android')
+		[ $needclean = "1" ] && make clean
+		[ -f $the_image ] && rm $the_image
 		make zImage -j32
-		if [ -f $ZIMAGE ]; then
+		if [ -f $the_image ]; then
+			[ ! -d "build_bootimage" ] && cp -r $VGL_BUILD_ROOT_DIR ./build_bootimage
 		   cd build_bootimage
 		   bash m.sh
 		fi
-	else
-		[ $needclean = "1" ] && make clean
-		make  -j32 > .tmp && scp ./u-boot-with-spl-mbr-gpt.bin
-		user@192.168.4.150:~/boards/mercury/u-boot-mercury5.1.bin
-	fi
-
-
-	OUT_IMAGE=tizen23-aw808-kernel310-$(date +%Y-%m-%d_%H:%M).img
-	#OUT_IMAGE=tizen23-inwatch-kernel310-$(date +%Y-%m-%d_%H:%M).img
-
-	make uImage -j32
-
-	echo the out img: $OUT_IMAGE
-	scp arch/mips/boot/uImage user@192.168.4.150:/home/user/boards/tizen23-aw808-imgs/$OUT_IMAGE
-	#scp arch/mips/boot/uImage user@192.168.4.150:/home/user/boards/tizen23-inwatch-imgs/$OUT_IMAGE
+		;;
+	'tizen'*)
+		[ "$addtime" = "1" ] && target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
+		[ -n "$note" ] && target_name=$target_name-$note
+		target_name=$target_name.img
+		[ "$needclean" = "1" ] && make clean
+		[ -f $the_image ] && rm $the_image
+		make uImage -j32 && {
+			echo the out img: $target_name >&2
+			smkdir $target_dir
+			scp $the_image $target_dir/$target_name
+		}
+		;;
+	*)
+		;;
+	esac
 }
 
 
 function init(){
-	project_type='kernel'
+	local tmp=
+
+	if [ ! -f ".config" ]; then
+		ls arch/mips/configs
+		echo -en "\n  please select a config  >>> ">&2
+		read tmp
+		[ -f "arch/mips/configs/$tmp" ] && cp arch/mips/configs/$tmp .config || return 1
+	fi
+
+	tmp=$(user_select 'what Version' '3.10' '3.08')
+	[ $? = 0 ] && project_type='kernel'$tmp
 	git_remote=$(git remote -v | head -2 | tail -1 | awk '{print $2}')
-#	git_branch=$(git branch -v | head -2 | tail -1 | awk '{print $2}')
+	git_branch=$(git branch | grep '*' | awk '{print $2}')
 	while read line; do
-		[[ "$line" =~ "CONFIG_BOARD_NAME" ]] && board_name=${line##*=}
-		[[ "$line" =~ "CONFIG_PRODUCT_NAME" ]] && product_name=${line##*=}
+		[[ "$line" =~ "CONFIG_BOARD_NAME" ]] && forBOARD=${line##*=}
+		[[ "$line" =~ "CONFIG_PRODUCT_NAME" ]] && platfrom_name=${line##*=}
 		if [[ "$line" =~ "CONFIG_LCD_" ]] && [ "${line:0-1}" = "y" ]; then
 			[[ "$line" =~ "CONFIG_LCD_CLASS_DEVICE" ]] || {
 				tmp=${line#*CONFIG_LCD_}
@@ -46,13 +57,25 @@ function init(){
 			}
 		fi
 	done < ".config"
-	target_dir=$VGL_BOARDS
-	target_name=
+	target_dir='$VGL_BOARDS/$forBOARD-$forOS-imgs'
+	target_name='$project_type-$forBOARD-$forOS'
 
-	local haha
-	haha=$(user_select sjdif asdfi asaa sadf)
-	echo $haha >&2
+	tmp=$(user_select 'what OS' tizen23 tizen30 android51 android44)
+	[ $? = 0 ] && forOS=$tmp
 
+	case $forOS in
+	'android'*)
+		the_image=arch/mips/boot/zcompressed/zImage
+		;;
+	'tizen'*)
+		the_image=arch/mips/boot/uImage
+		;;
+	'buildroot'*)
+		the_image=
+		;;
+	esac
+
+	repositories_type='git'
 	make_info_file
 	return 0
 }
@@ -98,8 +121,8 @@ function make_i() {
 #			ls -l arch/mips/configs | grep ^[^d] | awk '{print $9}'
 		;;
 	'i')
-		if [ "${1:0-2}" == ".c" ]; then
-			make_i $1
+		if [ "${2:0-2}" == ".c" ]; then
+			make_i $2
 		fi
 		;;
 	'c')

@@ -3,9 +3,9 @@
 function mkinit()
 {
 	DEST=$(showlist_with_value "$VGLD_MKDATA/cfg" "what project do you want init")
-	cp "$VGLD_MKDATA/$DEST" .
+	[ $? = 0 ] && { [ ! -f "$DEST" ] && cp "$VGLD_MKDATA/$DEST" .; } || return 1
 	./$DEST init
-	return 0
+	[ $? = 0 ] && return 0 || return 1
 }
 
 function mkmain() {

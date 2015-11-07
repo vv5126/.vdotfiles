@@ -1,40 +1,52 @@
 #!/bin/bash
 
 function make_info_file(){
-	echo "#!/bin/bash"> .project_info
-	echo >> .project_info
-
+	echo "#!/bin/bash"				> .project_info
+	echo 							>> .project_info
+	echo '# [base]' 				>> .project_info
+	echo 							>> .project_info
+	echo "forOS=$forOS" 			>> .project_info
+	echo 							>> .project_info
+	echo "forBOARD=$forBOARD" 		>> .project_info
+	echo 							>> .project_info
+	echo "project_type=$project_type"	>> .project_info
+	echo 							>> .project_info
+	echo "the_image=$the_image"		>> .project_info
+	echo 							>> .project_info
+	echo "lcd_name=$lcd_name"		>> .project_info
+	echo 							>> .project_info
+	echo '# [opt]'					>> .project_info
+	echo 							>> .project_info
+	echo "needclean=$needclean"		>> .project_info
+	echo 							>> .project_info
+	echo "addtime=$addtime"			>> .project_info
+	echo 							>> .project_info
+	echo "note=$note"				>> .project_info
+	echo 							>> .project_info
+	echo '# [out]' 					>> .project_info
+	echo 							>> .project_info
+	echo "target_dir=$target_dir"	>> .project_info
+	echo 							>> .project_info
+	echo "target_name=$target_name"	>> .project_info
+	echo 							>> .project_info
+	echo "project_name=$project_name"	>> .project_info
+	echo 							>> .project_info
+	echo '# [unuse]'				>> .project_info
+	echo 							>> .project_info
+	echo "platfrom_name=$platfrom_name"	>> .project_info
+	echo 							>> .project_info
 	echo "repositories_type=$repositories_type" >> .project_info
-	echo >> .project_info
-	echo "git_branch=$git_branch" >> .project_info
-	echo >> .project_info
-	echo "git_remote=$git_remote" >> .project_info
-	echo >> .project_info
-	echo "note=$note" >> .project_info
-	echo >> .project_info
-	echo "target_bin=$target_bin" >> .project_info
-	echo >> .project_info
-	echo "project_type=$project_type" >> .project_info
-	echo >> .project_info
-	echo "project_name=$project_name" >> .project_info
-	echo >> .project_info
-	echo "board_name=$board_name" >> .project_info
-	echo >> .project_info
-	echo "product_name=$product_name" >> .project_info
-	echo >> .project_info
-	echo "lcd_name=$lcd_name" >> .project_info
-	echo >> .project_info
-	echo "target_dir=$target_dir" >> .project_info
-	echo >> .project_info
-	echo "target_name=$target_name" >> .project_info
-	echo >> .project_info
-	echo "board_config=$board_config" >> .project_info
-	echo >> .project_info
+	echo 							>> .project_info
+	echo "git_remote=$git_remote" 	>> .project_info
+	echo 							>> .project_info
+	echo "git_branch=$git_branch" 	>> .project_info
+	echo 							>> .project_info
+	echo "board_config=$board_config" 	>> .project_info
 
 	case "$project_name" in
-		'kernel')
+		'kernel'*)
 			;;
-		'uboot')
+		'uboot'*)
 			;;
 		'*')
 			;;

@@ -104,7 +104,10 @@ function showlist_with_value(){
 			fi
 		done < "$1"
 	fi
-	[ -n "$DEST" ] && echo $DEST || echo 0
+	[ -n "$DEST" ] && {
+		echo $DEST
+		return 0
+	} || return 1
 }
 
 function user_select() {
@@ -112,17 +115,17 @@ function user_select() {
 	local NO=0
 	local DEST=
 	local value=
+	local info=$1
 
+	shift
 	echo >&2
 	NO=1
 	for value in $@; do
 		echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$value\033[0m">&2
 		NO=$[$NO+1]
 	done
-	echo -en "\n  please select one  >>> ">&2
+	echo -en "\n  $info  >>> ">&2
 	read NUM
-
-	echo >&2
 
 	expr $NUM + 0 &>/dev/null
 	if [ $? -eq 0 ]; then
