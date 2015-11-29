@@ -1,5 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/home/wgao/project/working/tizen23-inwatch/kernel-tizen-2.3-inwatch-new/drivers/input/touchscreen'
-let g:netrw_dirhist_2='/home/wgao/.bin'
-let g:netrw_dirhist_3='/home/wgao/.bin/normal'

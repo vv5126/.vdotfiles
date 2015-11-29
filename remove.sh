@@ -1,6 +1,7 @@
 #!/bin/bash
 
 origin_list="$PWD/config.list"
+origin_dir="$HOME/.origin"
 
 while read line; do
 	src_name=${line#*=}
@@ -8,8 +9,8 @@ while read line; do
 	if [ -w "$HOME/$dest_name" ]; then
 		rm -rf "$HOME/$dest_name"
 	fi
-	if [ -w "$HOME/.vdotfiles/.origin/$dest_name" ]; then
-		cp -r "$HOME/.vdotfiles/.origin/$dest_name" "$HOME"
+	if [ -w "$origin_dir/$dest_name" ]; then
+		cp -r "$origin_dir/$dest_name" "$HOME"
 	fi
 done < "$origin_list"
 
@@ -17,7 +18,7 @@ rm $HOME/.bash_history
 rm $HOME/.cdlist
 rm $HOME/.viminfo
 rm $HOME/.vim_mru_files
-rm -rf $HOME/.origin
+#rm -rf $HOME/.origin
 rm -rf $HOME/.clipboard
 #rm -rf $HOME/.rm
 #rm -rf $HOME/.vdotfiles
