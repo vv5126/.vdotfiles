@@ -7,7 +7,7 @@ syntax enable
 set nocompatible "不要vim模仿vi模式，建议设置，否则会有很多不兼容的问题
 
 "使用color solarized
-set background=dark
+set background=dark "背景使用黑色
 "colorscheme solarized
 colorscheme mycolor
 "terminal下面的背景问题
@@ -35,6 +35,7 @@ set autoindent
 set hidden                  " 允许在有未保存的修改时切换缓冲区，此时的修改由 vim 负责保存
 "设置光标高亮显示
 set cursorline
+set cursorline              " 突出显示当前行
 "set cursorcolumn
 set ttyfast
 set ruler                   " 打开状态栏标尺
@@ -62,6 +63,7 @@ set ignorecase
 set smartcase
 "set gdefault
 set incsearch
+" 高亮显示匹配的括号
 set showmatch
 set hlsearch
 
@@ -170,19 +172,21 @@ vnoremap <space> :
 "===================================================
 "插件的设置
 
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+
 if ! isdirectory($HOME."/.vim/bundle/vundle")
-"    echo "you should setup vundle frist!"
-"    echo "use \"git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle\""
+    echo "you should setup vundle frist!"
+    echo "use \"git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle\""
 else
 
 "刷新插件
 nmap <F10> :BundleInstall<cr>
 "更新插件
 nmap <S-F10> :BundleInstall!<cr>
-"查找插件
-" :BundleSearch
-"卸载不在列表中的插件
-" :BundleClean
 
 "Indent Guides设置
 let g:indent_guides_guide_size=1
@@ -224,27 +228,30 @@ map <c-h> ,c<space>
 
 " vim-scripts repos
 Bundle 'ctrlp.vim'
-Bundle 'AutoClose'
+"Bundle 'AutoClose'
 Bundle 'ZenCoding.vim'
 Bundle 'matchit.zip'
 Bundle 'ShowTrailingWhitespace'
 
 Bundle 'neocomplcache'
-Bundle 'ack'
+"Bundle 'ack'
 Bundle 'gundo'
-Bundle 'pytest'
+"Bundle 'pytest'
 Bundle 'supertab'
-Bundle 'vim-git'
-Bundle 'vim-powerline'
+"Bundle 'vim-git'
+"Bundle 'vim-powerline'
 Bundle 'command-t'
 Bundle 'pep8'
-Bundle 'pyflakes-pathogen'
-Bundle 'snipmate'
-Bundle 'TaskList.vim'
+"Bundle 'pyflakes-pathogen'
+Bundle 'snipMate'
+"Bundle 'TaskList.vim'
 Bundle 'fugitive.vim'
-Bundle 'vim-makegreen'
-Bundle 'vim-surround'
+"Bundle 'vim-makegreen'
+"Bundle 'vim-surround'
 Bundle 'taglist.vim'
+Bundle 'biogoo.vim'
+Bundle 'calendar.vim'
+Bundle 'gtrans.vim'
 
 endif
 "===================================================
@@ -262,9 +269,14 @@ set foldmethod=syntax " 用语法高亮来定义折叠
 set foldlevel=100 " 启动vim时不要自动折叠代码
 set foldcolumn=1 " 设置折叠栏宽度
 ": exec 'cd ~/' . fnameescape('/.vim')
+" 用<F3>键来开关折叠
 nmap <F3> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 
 set   wildignore=*.bak,*.o,*.e,*~
 
-
-
+" No sound on errors
+set noerrorbells            " 关闭错误信息响铃
+set novisualbell            " 关闭使用可视响铃代替呼叫
+set t_vb=                   " 置空错误铃声的终端代码
+" 用空格代替制表符
+"set expandtab

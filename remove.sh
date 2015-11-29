@@ -14,14 +14,14 @@ while read line; do
 	fi
 done < "$origin_list"
 
-rm $HOME/.bash_history
-rm $HOME/.cdlist
-rm $HOME/.viminfo
-rm $HOME/.vim_mru_files
-#rm -rf $HOME/.origin
-rm -rf $HOME/.clipboard
-#rm -rf $HOME/.rm
-#rm -rf $HOME/.vdotfiles
+rm $HOME/.bash_history 2>/dev/null
+rm $HOME/.cdlist 2>/dev/null
+rm $HOME/.viminfo 2>/dev/null
+rm $HOME/.vim_mru_files 2>/dev/null
+#rm -rf $HOME/.origin 2>/dev/null
+rm -rf $HOME/.clipboard 2>/dev/null
+#rm -rf $HOME/.rm 2>/dev/null
+#rm -rf $HOME/.vdotfiles 2>/dev/null
 
 #	echo $line
 #	if [ -w "$HOME/$line" ]; then
