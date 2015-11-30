@@ -1,0 +1,44 @@
+#!/bin/bash
+
+DEST=0
+APP_DIR=$(which $0)
+APP_DIR=${APP_DIR%\/*}
+
+if [ $# -eq 1 ]; then
+	expr $1 + 0 &>/dev/null
+	if [ $? -eq 0 ]; then
+		DEST=$(getline $APP_DIR/.mnt_conf $1)
+	fi
+else
+	DEST=$(showlist_with_tab $APP_DIR/.mnt_conf 2 "go where ??")
+fi
+
+if [ "$DEST" != 0 ]; then
+	mnt_type="$(echo $DEST | awk '{print $1}')"
+	src="$(echo $DEST | awk '{print $2}')"
+	dest="$(echo $DEST | awk '{print $3}')"
+	case $mnt_type in
+	'sshfs')
+		[ -d $dest ] && {
+			echo 'user' | sudo fusermount -u $dest && rm -rf $dest
+		} || {
+			mkdir $dest
+			echo 'user' | sudo sshfs $src $dest -o uid=1000,gid=1000,allow_other || rm -rf $dest
+		}
+		;;
+	'win')
+		[ -d $dest ] && {
+			echo 'user' | sudo umount $dest && rm -rf $dest
+		} || {
+			mkdir $dest
+			echo 'user' | sudo mount -t cifs $src $dest -o username=wgao_bj,rw,dir_mode=0755,file_mode=0755 || rm -rf $dest
+		}
+		;;
+	esac
+	echo DEST = $DEST
+else
+	echo "wrong number"
+	echo 
+fi
+
+

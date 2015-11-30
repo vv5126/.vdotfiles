@@ -141,6 +141,54 @@ function user_select() {
 	[ -n "$DEST" ] && echo $DEST || echo 0
 }
 
+function showlist_with_tab(){
+	local NUM=0
+	local NO=0
+	local DEST=''
+	local maybe_num=${@##* }
+	local file=$1
+	local tab='$'"$2"
+	local for_user=$3
+
+	expr $maybe_num + 0 &>/dev/null
+	if [ $? -eq 0 ]; then
+		NUM=$maybe_num
+	else
+		echo >&2
+		NO=1
+		while read line; do
+			if [ -n "$line" ]; then
+				line="$(echo $line | awk '{print '$tab'}')"
+				echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$line\033[0m">&2
+				NO=$[$NO+1]
+			fi
+		done < "$file"
+		echo -en "\n  $for_user  >>> ">&2
+		read NUM
+	fi
+
+	echo >&2
+
+	expr $NUM + 0 &>/dev/null
+	if [ $? -eq 0 ]; then
+		NO=1
+		while read line; do
+			if [ -n "$line" ]; then
+				if [ $NUM -eq $NO ]; then
+					DEST="$line"
+					break
+				fi
+				NO=$[$NO+1]
+			fi
+		done < "$file"
+	fi
+	[ -n "$DEST" ] && {
+		echo $DEST
+		return 0
+	} || return 1
+}
+
+
 
 ############# will export ##############
 
@@ -150,5 +198,6 @@ export -f addlist
 export -f getline
 export -f showlist_with_value
 export -f user_select
+export -f showlist_with_tab
 
 ########### will export end ############

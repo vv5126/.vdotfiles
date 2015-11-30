@@ -1,0 +1,5 @@
+sshfs	wgao@192.168.4.4:/home1/wgao			/home/user/4.4
+sshfs	wgao@192.168.4.10:/home/wgao			/home/user/4.10
+sshfs	wgao@192.168.4.10:/backup/wgao/boards	/home/user/boards
+sshfs	wgao@192.168.4.10:/backup/wgao/vtools	/home/user/vtools
+win		//192.168.1.57/work/users/swdep/wgao	/home/user/57
