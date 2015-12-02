@@ -175,9 +175,6 @@ let Grep_Skip_Files = '*tags* *cscope* *.o* *.lib *.a* *.r* *.d*'
 nnoremap <silent> <C-f> :Rgrep<CR><CR><CR><CR>
 nnoremap <silent> <C-g> :RgrepAdd<CR><CR><CR><CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sets how many lines of history VIM has to remember
 set history=300
 
@@ -214,7 +211,6 @@ set backspace=indent,eol,start whichwrap+=<,>,[,] "允许退格键的使用
 "set backspace=eol,start,indent
 "set whichwrap+=<,>,h,l
 
-set ignorecase "Ignore case when searching
 set magic "Set magic on, for regular expressions
 set mat=2 "How many tenths of a second to blink
 
@@ -258,10 +254,6 @@ set bufhidden=hide
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 统一缩进为4
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
 "指定文件类型,这样.mak和Makefile文件将都会使用真实tab
 autocmd FileType Makefile set noexpandtab
 
@@ -293,7 +285,7 @@ function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
     emenu Foo.Bar
     unmenu Foo
-endfunction 
+endfunction
 
 " From an idea by Michael Naumann
 function! VisualSearch(direction) range
@@ -353,7 +345,7 @@ func! DeleteTillSlash()
         else
             let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
         endif
-    endif  
+    endif
     return g:cmd_edited
 endfunc
 
@@ -582,20 +574,20 @@ endif
 
 "长行显示，解决@@@@的问题
 set display=lastline
-set foldenable      " 允许折叠  
-set foldmethod=manual   " 手动折叠  
-"代码补全 
-set completeopt=preview,menu 
-"允许插件  
+set foldenable      " 允许折叠
+set foldmethod=manual   " 手动折叠
+"代码补全
+set completeopt=preview,menu
+"允许插件
 filetype plugin on
-"共享剪贴板  
-set clipboard+=unnamed 
-"比较文件  
-nnoremap <C-F2> :vert diffsplit 
-"新建标签  
-map <M-F2> :tabnew<CR>  
-"列出当前目录文件  
-map <F3> :tabnew .<CR>  
+"共享剪贴板
+set clipboard+=unnamed
+"比较文件
+nnoremap <C-F2> :vert diffsplit
+"新建标签
+map <M-F2> :tabnew<CR>
+"列出当前目录文件
+map <F3> :tabnew .<CR>
 "编码设置
 set enc=utf-8
 set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
@@ -662,18 +654,16 @@ filetype plugin indent on
 set completeopt=longest,menu
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 显示相关  
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
-set go=             " 不要图形按钮  
+set go=             " 不要图形按钮
 set fdm=indent " ...
-set guifont=Courier_New:h10:cANSI   " 设置字体  
-"syntax on           " 语法高亮  
-autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
-autocmd InsertEnter * se cul    " 用浅色高亮当前行  
-set showcmd         " 输入的命令显示出来，看的清楚些  
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容  
-set laststatus=1    " 启动显示状态行(1),总是显示状态行(2)  
+set guifont=Courier_New:h10:cANSI   " 设置字体
+"syntax on           " 语法高亮
+autocmd InsertLeave * se nocul  " 用浅色高亮当前行
+autocmd InsertEnter * se cul    " 用浅色高亮当前行
+set showcmd         " 输入的命令显示出来，看的清楚些
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容
+set laststatus=1    " 启动显示状态行(1),总是显示状态行(2)
 
 " 显示中文帮助
 if version >= 603
@@ -709,7 +699,6 @@ set autoread
 autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
 "自动保存
 set autowrite
-set magic                   " 设置魔术
 "set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\
 " 设置在状态行显示的信息
 set foldcolumn=0
@@ -731,8 +720,6 @@ set noexpandtab
 set smarttab
 " 显示行号
 set number
-"搜索忽略大小写
-set ignorecase
 "搜索逐字符高亮
 set incsearch               " 输入搜索内容时就显示搜索结果
 set hlsearch                " 搜索时高亮显示被找到的文本
@@ -741,8 +728,6 @@ set gdefault
 " 我的状态行显示的内容（包括文件类型和解码）
 "set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
 "set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]
-" 总是显示状态行
-set laststatus=2
 " 命令行（在状态行下）的高度，默认为1，这里是2
 set cmdheight=2
 " 侦测文件类型
@@ -799,13 +784,8 @@ let g:miniBufExplMapCTabSwitchBufs = 1
 let g:miniBufExplModSelTarget = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 显示相关  
+" 显示相关
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"=========================================================================
-" DesCRiption: 适合自己使用的vimrc文件，for Linux/Windows, GUI/Console
-" Last Change: 2010年08月02日 15时13分 
-" Version:     1.80
-"=========================================================================
 
 syntax on                   " 自动语法高亮
 "colorscheme evening         " 设定配色方案
@@ -928,10 +908,6 @@ nnoremap <leader>4 :set filetype=php<CR>
 " map <C-x>c <ESC>:cc<CR>
 
 
-" 让 Tohtml 产生有 CSS 语法的 html
-" syntax/2html.vim，可以用:runtime! syntax/2html.vim
-let html_use_css=1
-
 " Python 文件的一般设置，比如不要 tab 等
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab
 autocmd FileType python map <F12> :!python %<CR>
@@ -939,21 +915,11 @@ autocmd FileType python map <F12> :!python %<CR>
 " 选中状态下 Ctrl+c 复制
 vmap <C-c> "+y
 
-" 打开javascript折叠
-let b:javascript_fold=1
-" 打开javascript对dom、html和css的支持
-let javascript_enable_domhtmlcss=1
-" 设置字典 ~/.vim/dict/文件的路径
-autocmd filetype javascript set dictionary=$VIMFILES/dict/javascript.dict
-autocmd filetype css set dictionary=$VIMFILES/dict/css.dict
-autocmd filetype php set dictionary=$VIMFILES/dict/php.dict
-
 "-----------------------------------------------------------------
 " plugin - bufexplorer.vim Buffers切换
 " \be 全屏方式查看全部打开的文件列表
 " \bv 左右方式查看   \bs 上下方式查看
 "-----------------------------------------------------------------
-
 
 "-----------------------------------------------------------------
 " plugin - taglist.vim  查看函数列表，需要ctags程序
@@ -1081,12 +1047,9 @@ set   fileformat=unix
 set   guioptions-=r
 set   guioptions-=l
 set   helpheight=10
-set   laststatus=2
 set   pumheight=10
 set   scrolloff=5
-set   tabstop=4
 set   textwidth=80
-set   whichwrap=h,l
 set   wildignore=*.bak,*.o,*.e,*~
 set   wildmode=list:longest,full
 highlight WhitespaceEOL ctermbg=red guibg=red 

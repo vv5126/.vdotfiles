@@ -1,0 +1,158 @@
+#!/bin/bash
+
+
+APP_DIR=$(which $0)
+APP_DIR=${APP_DIR%\/*}
+
+
+
+cd .git
+
+project_dir=$PWD
+
+project_name=${project_dir%%}
+
+
+
+
+
+
+function make_git_push_file() {
+	local file
+	local mark
+	> git-push.sh
+	chmod +x git-push.sh
+	git status -s | {
+		while read line; do
+			[ -n "$line" -a "${line% *}" != "D" ] && {
+				line=${line##* }
+
+				file=$line
+				[ "${file:0-1}" == "/" ] && file=${file%/*}
+				file=${file##*/}
+
+				mark=1
+				while read ignore; do
+					[ "$file" == "$ignore" ] && { mark=0; break; }
+				done < "$APP_DIR/.gt_ignore"
+
+				[ "$mark" -eq 1 ] && echo "git add $line" >> git-push.sh
+			}
+		done
+	}
+
+	echo -e >> git-push.sh
+	echo git commit -m "\"xxx\"" >> git-push.sh
+
+	local branch=`git branch | awk '{print $2}'`
+	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $1}'`
+	echo git push $warehouse $branch:refs/for/refs/heads/$branch >> git-push.sh
+}
+
+
+git status
+
+
+
+
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#   modified:   drivers/mtd/nand/jz_spinand.c
+#
+# Untracked files:
+
+#   .project_info
+#   .tmp
+#   drivers/video/jz_lcd/jz_mipi_dsi/#jz_mipi_dsi.c#
+#   git-push.sh
+#   haha.sh
+#   tmp
+#   u.sh
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#   modified:   README
+#   new file:   drivers/mtd/nand/jz_spinand1.c
+#   new file:   u.sh
+
+
+
+
+
+git remote -v
+
+git branch
+
+git status
+
+git log -1
+cat .git/HEAD
+
+function git_cover() {
+	local BAKDIR=''
+	BAKDIR=${1%\/*}/git_bak/${1##*\/}/$2
+	if [ -d "$BAKDIR" ];then
+		cp -rf $BAKDIR/* $1
+	else
+		echo "NO BAKDIR"
+	fi
+	exit
+}
+
+function git_bak() {
+	local BAKDIR=''
+	local FILE=''
+	local DIR_T=''
+	local LINE=''
+	local NUM=0
+
+	BAKDIR=${1%\/*}/git_bak/${1##*\/}/${1##*\/}_$(date +%Y%m%d_%H-%M)
+	[ $# -eq 2 ] && BAKDIR=$BAKDIR-$2 || BAKDIR=$BAKDIR-no-up-git-push-file
+
+	echo baking......
+
+	[ $# -eq 2 ] && make_git_push_file $1
+	if [ -d "$BAKDIR" ]; then
+		rm $BAKDIR/ -rf
+		rm $BAKDIR.tar.gz
+		echo rm $BAKDIR
+	fi
+	mkdir -p $BAKDIR
+	while read LINE; do
+		if [[ "$LINE" =~ "git add" ]]; then
+			FILE=${LINE##* }
+
+			[[ "$FILE" =~ "/" ]] && {
+				DIR_T=${FILE%/*} && mkdir -p $BAKDIR/$DIR_T/
+				[ ${FILE:0-1} = "/" ] && cp -rf $1/$FILE/* $BAKDIR/$DIR_T/ || cp $1/$FILE $BAKDIR/$DIR_T/
+			} || {
+				cp $1/$FILE $BAKDIR/
+			}
+			NUM=$[$NUM+1]
+		fi
+	done < "$1/git-push.sh"
+	cd ${BAKDIR%\/*}
+	FILE=${BAKDIR##*\/}
+	tar -Pzcf $FILE.tar.gz $FILE
+	echo cp $NUM "files finished"
+}
+
+PROJECT_DIR_NAME=`getdir_git_repo | awk '{print $1}'`
+PROJECT_DIR=`getdir_git_repo | awk '{print $2}'`
+
+cd $PROJECT_DIR
+
+if [ -n "$PROJECT_DIR_NAME" -a $# -gt 0 ];then
+	if [ $1 == "push" ]; then
+		make_git_push_file $PROJECT_DIR
+	elif [ $1 == "bak" ]; then
+		[ $# -eq 2 ] && git_bak $PROJECT_DIR $2 || git_bak $PROJECT_DIR
+	elif [ $1 == "baklist" ]; then
+		git_bak_list $PROJECT_DIR
+	elif [ $1 == "cover" ]; then
+		[ $# -eq 2 ] && git_cover $PROJECT_DIR $2
+	fi
+fi
+
