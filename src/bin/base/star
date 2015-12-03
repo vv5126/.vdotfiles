@@ -1,0 +1,54 @@
+#!/bin/bash
+
+dirname=
+note=
+pkg=2
+num=1
+
+for para in $@; do
+    [ $num = "1" ] && [ -d "$para" ] && dirname="$para" #|| break
+    [ $num = "2" ] && [ -n "$para" ] && note="_$para" #|| break
+    [ $num = "3" ] && [ -n "$para" ] && pkg="$para" #|| break
+	num=$[$num+1]
+done
+
+#echo $dirname $note $pkg
+[ -n "$dirname" ] && {
+    tarname=${dirname%%/*}
+    case "$pkg" in
+        '1')
+            tar -cvf "$tarname""$note".tar $dirname
+            ;;
+        '2')
+            tar -zcvf "$tarname""$note".tar.gz $dirname
+            ;;
+        '3')
+            tar -jcvf "$tarname""$note".tar.bz2 $dirname
+            ;;
+        *)
+            ;;
+        esac
+} || {
+    if [ $# -eq 1 ] && [ -f "$1" ]; then
+        case "$1" in
+            *tar)
+                tar -xvf $1
+                ;;
+            *gz)
+                tar -xvf $1
+                ;;
+            *bz2)
+                tar -xvf $1
+                ;;
+            *zip)
+                unzip $1
+                ;;
+            *rpm)
+                unrpm $1
+                ;;
+            *)
+                ;;
+        esac
+    fi
+}
+

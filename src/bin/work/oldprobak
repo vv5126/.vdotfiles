@@ -1,27 +1,28 @@
 #!/bin/bash
 
 
-APP_DIR=$(which $0)
-APP_DIR=${APP_DIR%\/*}
-
-
-
-cd .git
-
-project_dir=$PWD
-
-project_name=${project_dir%%}
-
-
-
-
-
 
 function make_git_push_file() {
+
+
+>"$project_name.vk"
+echo "need_clone=1" >> "$project_name.vk"
+remote=$(git remote -v | )
+echo "remote=$remote" >> "$project_name.vk"
+branch=$()
+echo "branch=$branch" >> "$project_name.vk"
+commit=$()
+echo "commit=$commit" >> "$project_name.vk"
+
+echo >> "$project_name.add"
+echo >> "$project_name.modify"
+echo >> "$project_name.delete"
+
+
+
 	local file
 	local mark
 	> git-push.sh
-	chmod +x git-push.sh
 	git status -s | {
 		while read line; do
 			[ -n "$line" -a "${line% *}" != "D" ] && {
@@ -52,9 +53,6 @@ function make_git_push_file() {
 
 git status
 
-
-
-
 # Changes not staged for commit:
 #   (use "git add <file>..." to update what will be committed)
 #   (use "git checkout -- <file>..." to discard changes in working directory)
@@ -78,9 +76,6 @@ git status
 #   new file:   u.sh
 
 
-
-
-
 git remote -v
 
 git branch
@@ -88,7 +83,6 @@ git branch
 git status
 
 git log -1
-cat .git/HEAD
 
 function git_cover() {
 	local BAKDIR=''
@@ -102,6 +96,10 @@ function git_cover() {
 }
 
 function git_bak() {
+
+    local dirname=
+    local lastmmit=
+    local branch=
 	local BAKDIR=''
 	local FILE=''
 	local DIR_T=''
@@ -109,17 +107,19 @@ function git_bak() {
 	local NUM=0
 
 	BAKDIR=${1%\/*}/git_bak/${1##*\/}/${1##*\/}_$(date +%Y%m%d_%H-%M)
-	[ $# -eq 2 ] && BAKDIR=$BAKDIR-$2 || BAKDIR=$BAKDIR-no-up-git-push-file
+	[ $# -eq 2 ] && BAKDIR=$BAKDIR-$2
 
-	echo baking......
-
-	[ $# -eq 2 ] && make_git_push_file $1
 	if [ -d "$BAKDIR" ]; then
 		rm $BAKDIR/ -rf
 		rm $BAKDIR.tar.gz
 		echo rm $BAKDIR
 	fi
+
+	echo baking......
 	mkdir -p $BAKDIR
+	[ $# -eq 2 ] && make_git_push_file $BAKDIR
+
+
 	while read LINE; do
 		if [[ "$LINE" =~ "git add" ]]; then
 			FILE=${LINE##* }
@@ -145,12 +145,8 @@ PROJECT_DIR=`getdir_git_repo | awk '{print $2}'`
 cd $PROJECT_DIR
 
 if [ -n "$PROJECT_DIR_NAME" -a $# -gt 0 ];then
-	if [ $1 == "push" ]; then
-		make_git_push_file $PROJECT_DIR
-	elif [ $1 == "bak" ]; then
+	if [ $1 == "bak" ]; then
 		[ $# -eq 2 ] && git_bak $PROJECT_DIR $2 || git_bak $PROJECT_DIR
-	elif [ $1 == "baklist" ]; then
-		git_bak_list $PROJECT_DIR
 	elif [ $1 == "cover" ]; then
 		[ $# -eq 2 ] && git_cover $PROJECT_DIR $2
 	fi
