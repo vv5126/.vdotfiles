@@ -31,7 +31,7 @@ if [ "$DEST" != 0 ]; then
 			echo 'user' | sudo umount $dest && rm -rf $dest
 		} || {
 			mkdir $dest
-			echo 'user' | sudo mount -t cifs $src $dest -o username=wgao_bj,rw,dir_mode=0755,file_mode=0755 || rm -rf $dest
+			echo 'user' | sudo mount -t cifs $src $dest -o username=wgao_bj,rw,dir_mode=0777,file_mode=0777 || rm -rf $dest
 		}
 		;;
 	esac

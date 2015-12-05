@@ -1,89 +1,5 @@
 #!/bin/bash
 
-
-
-function make_git_push_file() {
-
-
->"$project_name.vk"
-echo "need_clone=1" >> "$project_name.vk"
-remote=$(git remote -v | )
-echo "remote=$remote" >> "$project_name.vk"
-branch=$()
-echo "branch=$branch" >> "$project_name.vk"
-commit=$()
-echo "commit=$commit" >> "$project_name.vk"
-
-echo >> "$project_name.add"
-echo >> "$project_name.modify"
-echo >> "$project_name.delete"
-
-
-
-	local file
-	local mark
-	> git-push.sh
-	git status -s | {
-		while read line; do
-			[ -n "$line" -a "${line% *}" != "D" ] && {
-				line=${line##* }
-
-				file=$line
-				[ "${file:0-1}" == "/" ] && file=${file%/*}
-				file=${file##*/}
-
-				mark=1
-				while read ignore; do
-					[ "$file" == "$ignore" ] && { mark=0; break; }
-				done < "$APP_DIR/.gt_ignore"
-
-				[ "$mark" -eq 1 ] && echo "git add $line" >> git-push.sh
-			}
-		done
-	}
-
-	echo -e >> git-push.sh
-	echo git commit -m "\"xxx\"" >> git-push.sh
-
-	local branch=`git branch | awk '{print $2}'`
-	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $1}'`
-	echo git push $warehouse $branch:refs/for/refs/heads/$branch >> git-push.sh
-}
-
-
-git status
-
-# Changes not staged for commit:
-#   (use "git add <file>..." to update what will be committed)
-#   (use "git checkout -- <file>..." to discard changes in working directory)
-#
-#   modified:   drivers/mtd/nand/jz_spinand.c
-#
-# Untracked files:
-
-#   .project_info
-#   .tmp
-#   drivers/video/jz_lcd/jz_mipi_dsi/#jz_mipi_dsi.c#
-#   git-push.sh
-#   haha.sh
-#   tmp
-#   u.sh
-# Changes to be committed:
-#   (use "git reset HEAD <file>..." to unstage)
-#
-#   modified:   README
-#   new file:   drivers/mtd/nand/jz_spinand1.c
-#   new file:   u.sh
-
-
-git remote -v
-
-git branch
-
-git status
-
-git log -1
-
 function git_cover() {
 	local BAKDIR=''
 	BAKDIR=${1%\/*}/git_bak/${1##*\/}/$2
@@ -96,6 +12,55 @@ function git_cover() {
 }
 
 function git_bak() {
+
+project_name=${1##*\/}
+project_dir=../bacccc
+
+mkdir $project_dir
+mkdir $project_dir/$project_name
+
+>"$project_name.vk"
+echo "project_name=$project_name" >> "$project_dir/$project_name.vk"
+echo "need_clone=1" >> "$project_dir/$project_name.vk"
+remote=$(git remote -v | grep -s '(fetch)'| awk '{print $2}')
+echo "remote=$remote" >> "$project_dir/$project_name.vk"
+branch=$(git branch | grep "*" | awk '{print $2}')
+echo "branch=$branch" >> "$project_dir/$project_name.vk"
+commit=$(git log --oneline -1 | awk '{print $1}')
+echo "commit=$commit" >> "$project_dir/$project_name.vk"
+
+#echo >> "$project_dir/$project_name.add"
+#echo >> "$project_dir/$project_name.modify"
+#echo >> "$project_dir/$project_name.delete"
+
+git diff HEAD > $project_dir/$project_name.patch
+
+exit
+	local file
+	local mark
+	> git-push.sh
+	git status -s | {
+		while read line; do
+			[ -n "$line" -a "${line% *}" = "??" ] && {
+				line=${line##* }
+
+				file=$line
+				[ "${file:0-1}" == "/" ] && file=${file%/*}
+				file=${file##*/}
+
+# Untracked files:
+
+#   .project_info
+#   .tmp
+#   drivers/video/jz_lcd/jz_mipi_dsi/#jz_mipi_dsi.c#
+#   git-push.sh
+#   haha.sh
+#   tmp
+				[ "$mark" -eq 1 ] && echo "git add $line" >> git-push.sh
+			}
+		done
+	}
+
 
     local dirname=
     local lastmmit=

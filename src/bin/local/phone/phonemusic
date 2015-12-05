@@ -1,0 +1,41 @@
+#!/bin/sh
+
+case "$1" in
+    'up')
+        adb shell input keyevent  KEYCODE_POWER
+        sleep 0.5
+        adb shell input keyevent KEYCODE_VOLUME_UP
+        sleep 0.5
+        adb shell input keyevent  KEYCODE_POWER
+        ;;
+    'down')
+        adb shell input keyevent  KEYCODE_POWER
+        sleep 0.5
+        adb shell input keyevent KEYCODE_VOLUME_DOWN
+        sleep 0.5
+        adb shell input keyevent  KEYCODE_POWER
+        ;;
+    'next')
+        adb shell input keyevent  KEYCODE_POWER
+        sleep 0.5
+        adb shell input keyevent KEYCODE_MEDIA_NEXT
+        sleep 0.5
+        adb shell input keyevent  KEYCODE_POWER
+        ;;
+    'prev')
+        adb shell input keyevent  KEYCODE_POWER
+        sleep 0.5
+        adb shell input keyevent KEYCODE_MEDIA_PREVIOUS
+        sleep 0.5
+        adb shell input keyevent  KEYCODE_POWER
+        ;;
+    'pause')
+        adb shell input keyevent  KEYCODE_POWER
+        sleep 0.5
+        adb shell input keyevent KEYCODE_MEDIA_PLAY_PAUSE
+        sleep 0.5
+        adb shell input keyevent  KEYCODE_POWER
+        ;;
+esac
+
+
