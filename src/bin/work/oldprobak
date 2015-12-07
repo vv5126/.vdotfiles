@@ -1,10 +1,28 @@
 #!/bin/bash
 
+function git_bak_list() {
+	local BAKDIR=''
+	BAKDIR=${1%\/*}/git_bak/${1##*\/}
+	cd $BAKDIR
+	ls -F | grep /$ | {
+		while read line; do
+			echo ${line%/*}
+		done
+	}
+	exit
+}
+
 function git_cover() {
 	local BAKDIR=''
+    project_name=${1##*\/}
 	BAKDIR=${1%\/*}/git_bak/${1##*\/}/$2
 	if [ -d "$BAKDIR" ];then
-		cp -rf $BAKDIR/* $1
+        source $BAKDIR/$project_name.vk
+        [ "$need_clone" == 1 ] && git clone $remote $project_name
+        git checkout $branch
+        git reset --hard $commit
+		cp -rf $BAKDIR/$project_name/* $1
+        git apply $project_name.patch
 	else
 		echo "NO BAKDIR"
 	fi
@@ -13,63 +31,12 @@ function git_cover() {
 
 function git_bak() {
 
-project_name=${1##*\/}
-project_dir=../bacccc
-
-mkdir $project_dir
-mkdir $project_dir/$project_name
-
->"$project_name.vk"
-echo "project_name=$project_name" >> "$project_dir/$project_name.vk"
-echo "need_clone=1" >> "$project_dir/$project_name.vk"
-remote=$(git remote -v | grep -s '(fetch)'| awk '{print $2}')
-echo "remote=$remote" >> "$project_dir/$project_name.vk"
-branch=$(git branch | grep "*" | awk '{print $2}')
-echo "branch=$branch" >> "$project_dir/$project_name.vk"
-commit=$(git log --oneline -1 | awk '{print $1}')
-echo "commit=$commit" >> "$project_dir/$project_name.vk"
-
-#echo >> "$project_dir/$project_name.add"
-#echo >> "$project_dir/$project_name.modify"
-#echo >> "$project_dir/$project_name.delete"
-
-git diff HEAD > $project_dir/$project_name.patch
-
-exit
-	local file
-	local mark
-	> git-push.sh
-	git status -s | {
-		while read line; do
-			[ -n "$line" -a "${line% *}" = "??" ] && {
-				line=${line##* }
-
-				file=$line
-				[ "${file:0-1}" == "/" ] && file=${file%/*}
-				file=${file##*/}
-
-# Untracked files:
-
-#   .project_info
-#   .tmp
-#   drivers/video/jz_lcd/jz_mipi_dsi/#jz_mipi_dsi.c#
-#   git-push.sh
-#   haha.sh
-#   tmp
-				[ "$mark" -eq 1 ] && echo "git add $line" >> git-push.sh
-			}
-		done
-	}
-
-
-    local dirname=
-    local lastmmit=
     local branch=
 	local BAKDIR=''
 	local FILE=''
 	local DIR_T=''
-	local LINE=''
-	local NUM=0
+	local line=''
+    local need_clone=0
 
 	BAKDIR=${1%\/*}/git_bak/${1##*\/}/${1##*\/}_$(date +%Y%m%d_%H-%M)
 	[ $# -eq 2 ] && BAKDIR=$BAKDIR-$2
@@ -82,26 +49,41 @@ exit
 
 	echo baking......
 	mkdir -p $BAKDIR
-	[ $# -eq 2 ] && make_git_push_file $BAKDIR
 
+    project_name=${1##*\/}
 
-	while read LINE; do
-		if [[ "$LINE" =~ "git add" ]]; then
-			FILE=${LINE##* }
+    >"$project_name.vk"
+    echo "project_name=$project_name" >> "$BAKDIR/$project_name.vk"
+    echo "need_clone=$need_clone" >> "$BAKDIR/$project_name.vk"
+    remote=$(git remote -v | grep -s '(fetch)'| awk '{print $2}')
+    echo "remote=$remote" >> "$BAKDIR/$project_name.vk"
+    branch=$(git branch | grep "*" | awk '{print $2}')
+    echo "branch=$branch" >> "$BAKDIR/$project_name.vk"
+    commit=$(git log --oneline -1 | awk '{print $1}')
+    echo "commit=$commit" >> "$BAKDIR/$project_name.vk"
 
-			[[ "$FILE" =~ "/" ]] && {
-				DIR_T=${FILE%/*} && mkdir -p $BAKDIR/$DIR_T/
-				[ ${FILE:0-1} = "/" ] && cp -rf $1/$FILE/* $BAKDIR/$DIR_T/ || cp $1/$FILE $BAKDIR/$DIR_T/
-			} || {
-				cp $1/$FILE $BAKDIR/
+    git diff HEAD > $BAKDIR/$project_name.patch
+
+    mkdir $BAKDIR/$project_name
+	git status -s | {
+		while read line; do
+			[ -n "$line" -a "${line% *}" = "??" ] && {
+			    FILE=${line##* }
+
+    			[[ "$FILE" =~ "/" ]] && {
+	    			DIR_T=${FILE%/*} && mkdir -p $BAKDIR/$project_name/$DIR_T/
+	    			[ ${FILE:0-1} = "/" ] && cp -drf $1/$FILE/* $BAKDIR/$project_name/$DIR_T/ || cp -d $1/$FILE $BAKDIR/$project_name/$DIR_T/
+	    		} || {
+	    			cp -d $1/$FILE $BAKDIR/$project_name/
+	    		}
 			}
-			NUM=$[$NUM+1]
-		fi
-	done < "$1/git-push.sh"
+		done
+	}
+
 	cd ${BAKDIR%\/*}
 	FILE=${BAKDIR##*\/}
 	tar -Pzcf $FILE.tar.gz $FILE
-	echo cp $NUM "files finished"
+	echo "finished!"
 }
 
 PROJECT_DIR_NAME=`getdir_git_repo | awk '{print $1}'`
@@ -112,6 +94,8 @@ cd $PROJECT_DIR
 if [ -n "$PROJECT_DIR_NAME" -a $# -gt 0 ];then
 	if [ $1 == "bak" ]; then
 		[ $# -eq 2 ] && git_bak $PROJECT_DIR $2 || git_bak $PROJECT_DIR
+	elif [ $1 == "baklist" ]; then
+		git_bak_list $PROJECT_DIR
 	elif [ $1 == "cover" ]; then
 		[ $# -eq 2 ] && git_cover $PROJECT_DIR $2
 	fi

@@ -4,8 +4,11 @@ function mk() {
 
 	source .project_info
 	case "$forOS" in
-	'android')
-		[ $needclean = "1" ] && make clean
+	'android'*)
+		[ "$addtime" = "1" ] && target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
+		[ -n "$note" ] && target_name=$target_name-$note
+		target_name=$target_name.img
+		[ "$needclean" = "1" ] && make clean
 		[ -f $the_image ] && rm $the_image
 		make zImage -j32
 		if [ -f $the_image ]; then
