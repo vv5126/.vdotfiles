@@ -39,14 +39,6 @@ let Tlist_Show_One_File=1 "让taglist可以同时展示多个文件的函数列�
 "是否一直处理tags.1:处理;0:不处理
 let Tlist_Inc_Winwidth=0
 
-"omnicppcomplete会打开一个预览窗口来提示变量定义，如果不想要看到详细的信息的话，在vimrc中这样配置
-set completeopt=longest,menu
-"搜索字符串，或以递增方式搜索字符串
-"let Grep_Default_Filelist = '*.[chS]' 
-"let Grep_Default_Filelist = '*.c *.cpp *.asm' 
-let Grep_Skip_Files = '*tags* *cscope* *.o* *.lib *.a* *.r* *.d*'
-nnoremap <silent> <C-f> :Rgrep<CR><CR><CR><CR>
-nnoremap <silent> <C-g> :RgrepAdd<CR><CR><CR><CR>
 
 " Sets how many lines of history VIM has to remember
 set history=300
@@ -412,20 +404,12 @@ endif
 
 "长行显示，解决@@@@的问题
 set display=lastline
-set foldenable      " 允许折叠
-set foldmethod=manual   " 手动折叠
-"代码补全
-set completeopt=preview,menu
 "允许插件
 filetype plugin on
 "共享剪贴板
 set clipboard+=unnamed
 "比较文件
 nnoremap <C-F2> :vert diffsplit
-"新建标签
-map <M-F2> :tabnew<CR>
-"列出当前目录文件
-map <F3> :tabnew .<CR>
 "编码设置
 set enc=utf-8
 set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
@@ -456,17 +440,12 @@ filetype plugin indent on
 
 "打开文件类型检测, 加了这句才可以用智能补全
 
-set completeopt=longest,menu
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
 set go=             " 不要图形按钮
 set fdm=indent " ...
 set guifont=Courier_New:h10:cANSI   " 设置字体
-"syntax on           " 语法高亮
 autocmd InsertLeave * se nocul  " 用浅色高亮当前行
 autocmd InsertEnter * se cul    " 用浅色高亮当前行
-set showcmd         " 输入的命令显示出来，看的清楚些
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容
 set laststatus=1    " 启动显示状态行(1),总是显示状态行(2)
 
@@ -506,10 +485,6 @@ autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
 set autowrite
 "set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\
 " 设置在状态行显示的信息
-set foldcolumn=0
-set foldmethod=indent 
-set foldlevel=3 
-set foldenable              " 开始折叠
 " 语法高亮
 set syntax=on
 " 在处理未保存或只读文件的时候，弹出确认
@@ -573,13 +548,9 @@ let g:miniBufExplModSelTarget = 1
 
 syntax on                   " 自动语法高亮
 "colorscheme evening         " 设定配色方案
-set nobackup                " 覆盖文件时不备份
-set autochdir               " 自动切换当前目录为当前文件所在的目录
 filetype plugin indent on   " 开启插件
-set backupcopy=yes          " 设置备份时的行为为覆盖
 set ignorecase smartcase    " 搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
 set nowrapscan              " 禁止在搜索到文件两端时重新搜索
-" set showmatch               " 插入括号时，短暂地跳转到匹配的对应括号
 " set matchtime=2             " 短暂跳转到匹配括号的时间
 set guioptions-=T           " 隐藏工具栏
 set guioptions-=m           " 隐藏菜单栏
@@ -589,28 +560,6 @@ set backspace=indent,eol,start
 set laststatus=2            " 显示状态栏 (默认值为 1, 无法显示状态栏)
 set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\ 
                             " 设置在状态行显示的信息
-"set foldenable              " 开始折叠
-set foldmethod=syntax       " 设置语法折叠
-set foldmethod=syntax       " 用语法高亮来定义折叠
-"set foldcolumn=0            " 设置折叠区域的宽度
-"setlocal foldlevel=1        " 设置折叠层数为
-set foldclose=all           " 设置为自动关闭折叠
-
-"set foldmethod=manual       " 设置语法折叠
-"set foldmethod=marker
-set foldlevel=100 " 启动vim时不要自动折叠代码
-": exec 'cd ~/' . fnameescape('/.vim')
-set foldcolumn=1 " 设置折叠栏宽度
-
-
-" return OS type, eg: windows, or linux, mac, et.st..
-function! MySys()
-    if has("win16") || has("win32") || has("win64") || has("win95")
-        return "windows"
-    elseif has("unix")
-        return "linux"
-    endif
-endfunction
 
 " 配置多语言环境
 if has("multi_byte")
@@ -624,11 +573,6 @@ if has("multi_byte")
         set ambiwidth=double
     endif
 
-    if has("win32")
-        source $VIMRUNTIME/delmenu.vim
-        source $VIMRUNTIME/menu.vim
-        language messages zh_CN.utf-8
-    endif
 else
     echoerr "Sorry, this version of (g)vim was not compiled with +multi_byte"
 endif
@@ -656,11 +600,6 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-"一些不错的映射转换语法（如果在一个文件中混合了不同语言时有用）
-nnoremap <leader>1 :set filetype=xhtml<CR>
-nnoremap <leader>2 :set filetype=css<CR>
-nnoremap <leader>3 :set filetype=javascript<CR>
-nnoremap <leader>4 :set filetype=php<CR>
 
 " set fileformats=unix,dos,mac
 " nmap <leader>fd :se fileformat=dos<CR>
@@ -687,15 +626,6 @@ vmap <C-c> "+y
 "-----------------------------------------------------------------
 
 "-----------------------------------------------------------------
-" plugin - mark.vim 给各种tags标记不同的颜色，便于观看调式的插件。
-" \m  mark or unmark the word under (or before) the cursor
-" \r  manually input a regular expression. 用于搜索.
-" \n  clear this mark (i.e. the mark under the cursor), or clear all highlighted marks .
-" \*  当前MarkWord的下一个     \#  当前MarkWord的上一个
-" \/  所有MarkWords的下一个    \?  所有MarkWords的上一个
-"-----------------------------------------------------------------
-
-"-----------------------------------------------------------------
 " plugin - DoxygenToolkit.vim  由注释生成文档，并且能够快速生成函数标准注释
 "-----------------------------------------------------------------
 let g:DoxygenToolkit_authorName="Asins - asinsimple AT gmail DOT com"
@@ -719,8 +649,6 @@ filetype plugin indent on
 " Setting colorscheme
 color mycolor
 " Other settings.
-set   autoindent
-set   cindent
 set   cinoptions=:0
 set   completeopt=longest,menuone
 set   fileencodings=utf-8,gb2312,gbk,gb18030
@@ -777,7 +705,6 @@ if has("cscope")
 	endif
 	set csverb
 endif
-" OmniCppComplete.vim
 let g:OmniCpp_DefaultNamespaces=["std"]
 let g:OmniCpp_MayCompleteScope=1
 let g:OmniCpp_SelectFirstItem=2
@@ -835,10 +762,364 @@ call pathogen#helptags()
 nnoremap <leader>v <Plug>TaskList
 set   fileencodings=gb2312,gbk
 
+loookupfile
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" a.vim
+" A few of quick commands to swtich between source files and header files
+" quickly. 
+"
+" :A switches to the header file corresponding to the current file being
+" edited (or vise versa) 
+" :AS splits and switches 
+" :AV vertical splits and switches 
+" :AT new tab and switches 
+" :AN cycles through matches 
+" :IH switches to file under cursor 
+" :IHS splits and switches 
+" :IHV vertical splits and switches 
+" :IHT new tab and switches 
+" :IHN cycles through matches 
+" <Leader>ih switches to file under cursor 
+" <Leader>is switches to the alternate file of file under cursor (e.g. on
+" <foo.h> switches to foo.cpp) 
+" <Leader>ihn cycles through matches 
+"
+" E.g. if you are editing foo.c and need to edit foo.h 
+" simply execute :A and you will be editting foo.h, 
+" to switch back to foo.c execute :A again. 
+"
+" Can be configured to support a variety of languages. Builtin support for
+" C, C++ and ADA95
+"
+" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" lookupfile.vim 插件设置
+"
+let g:LookupFile_MinPatLength = 2 "最少输入2个字符才开始查找
+let g:LookupFile_PreserveLastPattern = 0 "不保存上次查找的字符串
+let g:LookupFile_PreservePatternHistory = 1 "保存查找历史
+let g:LookupFile_AlwaysAcceptFirst = 1 "回车打开第一个匹配项目
+let g:LookupFile_AllowNewFiles = 0 "不允许创建不存在的文件
+let g:LookupFile_SortMethod = "" "关闭对搜索结果的字母排序
+"if filereadable("/home/ganquan/linux-2.6.34-rc4/filenametags")
+"设置tag文件的名字
+"let g:LookupFile_TagExpr ='"/home/ganquan/linux-2.6.34-rc4/filenametags"'
+"endif
+
+Calendar  
+getscriptPlugin.vim
+grep.vim
+gzip.vim
+matchparen.vim
+netrwPlugin.vim
+rrhelper.vim
+spellfile.vim
+tarPlugin.vim
+tohtml.vim
+vimballPlugin.vim
+winfileexplorer.vim
+winmanager.vim
+wintagexplorer.vim
+zipPlugin.vim
+bash-support.vim
+c.vim
+code_complete.vim
+cuteErrorMarker.vim
+mru.vim
+cscope.vim 
+
+vimwiki.vim
+Bundle 'FuzzyFinder'
+Bundle 'JSON.vim'
+Bundle 'JavaScript-Indent'
+Bundle 'L9'
+Bundle 'PasteBin.vim'
+Bundle 'VimRepress'
+Bundle 'VisIncr'
+Bundle 'gtags.vim'
+Bundle 'gtk-vim-syntax'
+Bundle 'jQuery'
+" original repos on github
+
+" 神级插件，ZenCoding(原名)可以让你以一种神奇而无比爽快的感觉写HTML、CSS
+Bundle 'mattn/emmet-vim'
+" coffee-scrpit support
+Bundle 'kchmck/vim-coffee-script'
+" Git in vim
+Bundle 'tpope/vim-fugitive'
+" better color
+Bundle 'tomasr/molokai'
+
+" vim-scripts repos
+
+" Use the repeat command (.) with supported plugins
+Bundle 'repeat.vim'
+" 切换缓冲区
+Bundle 'minibufexpl.vim'
+Bundle 'gmarik/vundle'
+
+"--------------- vim-scripts 的仓库 ---------------"
+if has('gui_running')
+Bundle 'vim-multiple-cursors'
+endif
+if v:version < 704
+    Bundle 'Pydiction'
+Bundle 'Python-mode-klen'endif
+"------------- github其他用户的仓库 -------------"
+if v:version == 704 &&
+    has('python')    Bundle 'Valloric/YouCompleteMe'
+endif
+lookupfile 使用部分关键字查找文件名
+EnhancedCommentify 多文本类型的快捷comment/uncomment, 据说NERD Commenter 更好一些
+DoxygenToolkit 生成doxygen风格注释，以及doxygen.syntax
+repeat 支持使用.来重复执行一些插件的命令（如speeddating, surround等)
+surround 用来加括号，引号，前后缀等等，写XML很有用（特别是配合repeat）
+manpageview 在Vim中查看Manpage，有语法高亮
+VCScommand 支持多种版本管理器
+vimcdoc vim帮助中文版
+cctree 可以查看function的call tree
+Bundle 'Stormherz/tablify'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'guns/ultisnips'
+Bundle 'jiazhoulvke/MarkdownView'
+Bundle 'jiazhoulvke/googletranslate'
+Bundle 'jiazhoulvke/imagemap'
+Bundle 'jiazhoulvke/jianfan'
+Bundle 'jiazhoulvke/myproject'
+Bundle 'jiazhoulvke/tabular'
+Bundle 'shawncplus/phpcomplete.vim'
+Bundle 'tpope/vim-markdown'
+Bundle 'xolox/vim-lua-ftplugin'
+Bundle 'xolox/vim-misc'
+Bundle 'xolox/vim-session'
+Bundle 'EasyGrep'
+Bundle 'Mark--Karkat'
+Bundle 'Shougo/unite-help'
+Bundle 'Shougo/unite-outline'
+Bundle 'Shougo/unite.vim'
+Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
+Bundle 'Shougo/vimshell.vim'
+Bundle 'Yggdroot/indentLine'
+Bundle 'bling/vim-airline'
+Bundle 'bufexplorer.zip'
+Bundle 'chrisbra/csv.vim'
+Bundle 'cscope_macros.vim'
+Bundle 'jsfaint/gen_tags.vim'
+Bundle 'majutsushi/tagbar'
+Bundle 'matchit.zip'
+Bundle 'mbbill/fencview'
+Bundle 'mhinz/vim-signify'
+Bundle 'mhinz/vim-startify'
+Bundle 'osyo-manga/unite-quickfix'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'sjl/gundo.vim'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-speeddating'
+Bundle 'tsukkee/unite-tag'
+Bundle 'xml.vim'
+
+ccglue
+"Fugitive: Git 集成，强烈推荐！Plugin 'tpope/vim-fugitive'
+" Solarized: 非常流行的配色。Plugin 'altercation/vim-colors-solarized'
+" Commentary: 快速注释。Plugin 'tpope/vim-commentary''
+" Tabular: 自动对齐。Plugin 'godlygeek/tabular'
+
+cecutil.vba.gz 
+http://www.vim.org/scripts/script.php?script_id=1066 
+netrw.vba.gz 
+http://www.vim.org/scripts/script.php?script_id=1075 
+winmanager.vba.bz2 
+http://www.vim.org/scripts/script.php?script_id=1440 
+vimball.vim 
+http://www.vim.org/scripts/script.php?script_id=1502 
+showmarks.vim 
+http://www.vim.org/scripts/script.php?script_id=152 
+omnicppcomplete-0.41.zip 
+http://www.vim.org/scripts/script.php?script_id=1520 
+fencview.vim 
+http://www.vim.org/scripts/script.php?script_id=1708 
+echofunc.vim 
+http://www.vim.org/scripts/script.php?script_id=1735 
+tlib.vba.gz 
+http://www.vim.org/scripts/script.php?script_id=1863 
+bbs.vba.gz 
+http://www.vim.org/scripts/script.php?script_id=1926 
+hookcursormoved.vba.gz 
+http://www.vim.org/scripts/script.php?script_id=2037 
+taglist_45.zip 
+http://www.vim.org/scripts/script.php?script_id=273 
+bufexplorer.zip 
+http://www.vim.org/scripts/script.php?script_id=42 
+getscript.vba.gz 
+http://www.vim.org/scripts/script.php?script_id=642 
+sketch.zip 
+http://www.vim.org/scripts/script.php?script_id=705 
+Viki.vba.gz 
+http://www.vim.org/scripts/script.php?script_id=861 
+
+除此之外还有 pyclewn。 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"函数提示
+echofunc(2.0)
+Tagbar(2.4.1)支持面向对象+
+"
+"窗口
+" WinManager(2.3)
+"
+MiniBufExplorer(6.3.2)
+"
+"智能补全 
+" supertab(2.0)
+" omnicppcomplete(0.41)
+"
+"其他
+" drawit(11)画图
+" conqueterm(2.2)vim中打开终端的功能+ 
+" csExplorer(7.0.1)提供列出配色列表的功+
+" calendar.vim(2.5)提供日历的功能，并且可以记笔记+
+" visincr(20)提供生成数列的功能+
+" fencview(4.8)字符编码识别+
+" visincr(20)提供生成数列的功能+ :SO % 后visincr.vba.gz会消失变成visincr.vba
+" cmdline completion(0.04)命令行模式的补全+ 
+" 
+"
+"项目管理插件
+" project(1.4.1)+
+" bufexplorer(7.3.1)打开历史文件列表以达到快速切换文件+
+" genutils(2.5)底层的lookupfile的功能支持+
+" FuzzyFinder(4.2.2)缓冲器/文件/命令/标签/等浏览器的模糊匹配 +
+" l9(1.1)FuzzyFinder底层依耐+
+"c/c++ 辅助
+" c.vim(6.0)+
+" stl.vim(0.1)stl语法高亮+
+" stlrefvim(1.0)stl帮助 +
+" cscope_vim.vim(cscope映射)+
+" checksyntax.vba(2.02)语法检查+
+(跟lookupfile.vim的F5冲突了，把checksyntax.vimF5改成F6)
+"
+auto.vim(2.1)自动排版，可以少打很多空格---------------------------------------------
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 文本格式和排版
+set formatoptions=tcrqn " 自动格式化
+set autoindent " 继承前一行的缩进方式，特别适用于多行注释
+set cindent " 使用C样式的缩进
+"set tabstop=4 " 制表符为4
+"set softtabstop=4 " 统一缩进为4
+"set shiftwidth=4
+"set noexpandtab " 不要用空格代替制表符
+"set nowrap " 不要换行
+set fileformats=unix,dos " 自动识别UNIX格式和MS-DOS格式
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 设置字符集(看情况具体选择)
+"
+"let &termencoding=&encoding
+"set fileencodings=utf-8,gbk,ucs-bom,cp936
+"set fileencoding=gb18030
+"set fileencodings=utf-8,gb18030,utf-16,big5
+"set enc=utf-8
+"set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
+
+set fileencoding=gb2312
 
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 搜索和匹配 
+"
+set showmatch " 高亮显示匹配的括号
+set matchtime=5 " 匹配括号高亮的时间（单位是十分之一秒）
+set scrolloff=10 " 光标移动到buffer的顶部和底部时保持10行距离
+set hlsearch " 高亮搜索
+"set nowrapscan " 查找到文件头或文件尾时停止
+set incsearch " 边输入边查找
+"set laststatus=2 " 总是显示状态行
+set ignorecase " 在搜索的时候忽略大小写
+"set statusline=%F%m%r%h%w\[POS=%l,%v][%p%%]\%{strftime(\”%d/%m/%y\ -\
+%H:%M\”)} 
+" 我的状态行显示的内容（包括文件类型和解码）
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 文件设置
+"
+set shortmess=atI " 启动的时候不显示那个援助索马里儿童的提示`
+set report=0 " 通过使用: commands命令，告诉我们文件的哪一行被改变过
+set fillchars=vert:\ ,stl:\ " 在被分割的窗口间显示空白，便于阅读
+,stlnc:\(加了这个wm分割兰有\\\\\\\\\\\\\)
+set mouse=a "
+可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
+set selection=exclusive
+set selectmode=mouse,key
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 一般设置
+"
+set viminfo+=! " 保存全局变量
+set history=300 " history文件中需要记录的行数
+set nocompatible " 不要使用vi的键盘模式，而是vim自己的
+set foldmethod=syntax
+set foldlevel=100 " 启动vim时不要自动折叠代码
+set nu
+set fileencodings=utf-8,gbk
+set ruler
+filetype on " 侦测文件类型
+set nobackup " 不要备份文件（根据自己需要取舍）
+"set backup
+syntax enable
+syntax on " 语法高亮
+set magic " 设置正表达式
+set backspace=indent,eol,start " 这指明在插入模式下在哪里允许 <BS>
+删除光标前面的字符。
+" 逗号分隔的三个值分别指：行首的空白字符，换行符和插入模式开始处之前的字符。
+set showcmd " 在 Vim 窗口右下角，标尺的右边显示未完成的命令
+" :inoremap ( ()<ESC>i
+" :inoremap { {<CR>}<ESC>O
+" :inoremap [ []<ESC>i
+" :inoremap " ""<ESC>i
+" :inoremap ' ''<ESC>i
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 编译链接
+"
+nmap<Leader>m :wa<CR>:make<CR>:cw<CR><CR>
+"
+分解说明下，<Leader>m设定快捷键为;m（;由<Leader>指定），:wa<CR>保持所有打开的文档，
+" :make<CR>执行make命令，:cw<CR>显示quickfix（如果有编译错误或警告时），
+" 最后的<CR>消除make命令执行完成屏幕上“PressENTER or type command to
+continue”的输入等待提示信息。
+
+" winmanager 
+"
+let g:winManagerWindowLayout='NERDTree|BufExplorer'
+"let g:winManagerWindowLayout = 'FileExplorer|TagList'
+"let g:winManagerWindowLayout = 'FileExplorer'
+let g:winManagerWidth = 25
+let g:defaultExplorer = 0
+nmap wm :WMToggle<cr>
+nmap <C-W><C-F> :FirstExplorerWindow<cr>
+nmap <C-W><C-B> :BottomExplorerWindow<cr>
+autocmd BufWinEnter \[Buf\ List\] setl nonumber
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" minibufexpl 
+"
+let g:miniBufExplMapWindowNavVim = 1 
+let g:miniBufExplMapWindowNavArrows = 1 
+let g:miniBufExplMapCTabSwitchBufs = 1 
+let g:miniBufExplModSelTarget = 1 
+"let g:miniBufExplorerMoreThanOne=1 "自动打开
+let g:tagbar_left = 1 "Tagbar放到左边 
+最强补齐：ycm
 
 "maybe unused----------------------------
+
+"一些不错的映射转换语法（如果在一个文件中混合了不同语言时有用）
+nnoremap <leader>1 :set filetype=xhtml<CR>
+nnoremap <leader>2 :set filetype=css<CR>
+nnoremap <leader>3 :set filetype=javascript<CR>
+nnoremap <leader>4 :set filetype=php<CR>
 
 " 用户目录变量$VIMFILES
 if MySys() == "windows"

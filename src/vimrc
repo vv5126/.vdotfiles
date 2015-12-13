@@ -11,61 +11,61 @@ set background=dark "背景使用黑色
 "colorscheme solarized
 colorscheme mycolor
 "terminal下面的背景问题
-let g:solarized_termtrans=1
-let g:solarized_termcolors=256
-let g:solarized_contrast="high"
-let g:solarized_visibility="high"
+ let g:solarized_termtrans=1
+ let g:solarized_termcolors=256
+ let g:solarized_contrast="high"
+ let g:solarized_visibility="high"
 
-set modelines=0
+ set modelines=0
 
 "tab键的设定
-set tabstop=4               " 设定 tab 长度为 4
-set shiftwidth=4            " 设定 << 和 >> 命令移动时的宽度为 4
-set softtabstop=4           " 使得按退格键时可以一次删掉 4 个空格
-set expandtab               " 用空格代替制表符
+ set tabstop=4               " 设定 tab 长度为 4
+ set shiftwidth=4            " 设定 << 和 >> 命令移动时的宽度为 4
+ set softtabstop=4           " 使得按退格键时可以一次删掉 4 个空格
+ set expandtab               " 用空格代替制表符
 
 "一些其他的设定
 "字符设置
-set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5
+ set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5
 "set encoding=utf-8
-set scrolloff=3
+ set scrolloff=3
 "新建文件编码
-set fenc=utf-8
-set autoindent
-set hidden                  " 允许在有未保存的修改时切换缓冲区，此时的修改由 vim 负责保存
+ set fenc=utf-8
+ set autoindent
+ set hidden                  " 允许在有未保存的修改时切换缓冲区，此时的修改由 vim 负责保存
 "设置光标高亮显示
-set cursorline
-set cursorline              " 突出显示当前行
+ set cursorline
+ set cursorline              " 突出显示当前行
 "set cursorcolumn
-set ttyfast
-set ruler                   " 打开状态栏标尺
-set backspace=indent,eol,start
+ set ttyfast
+ set ruler                   " 打开状态栏标尺
+ set backspace=indent,eol,start
 "set laststatus=2
 "相对行号 要想相对行号起作用要放在显示行号后面
 "set relativenumber
 "显示行号
-set number
+ set number
 "无限undo
 "set undofile
 "自动换行
 "set wrap
 "禁止自动换行
-set nowrap
+ set nowrap
 "GUI界面里的字体，默认有抗锯齿
-set guifont=Inconsolata:h12
+ set guifont=Inconsolata:h12
 "自动载入配置文件不需要重启
 "autocmd! bufwritepost _vimrc source %
 "将-连接符也设置为单词
-set isk+=-
+ set isk+=-
 
 "设置大小写敏感和聪明感知(小写全搜，大写完全匹配)
-set ignorecase
-set smartcase
+ set ignorecase
+ set smartcase
 "set gdefault
-set incsearch
+ set incsearch
 " 高亮显示匹配的括号
-set showmatch
-set hlsearch
+ set showmatch
+ set hlsearch
 
 "加入html标签配对
 "runtime macros/matchit.vim
@@ -74,12 +74,12 @@ set hlsearch
 "set textwidth=80
 "set formatoptions=qrnl
 "彩色显示第85行
-set colorcolumn=85
+ set colorcolumn=85
 "设置256色显示
-set t_Co=256
+ set t_Co=256
 
 "行号栏的宽度
-set numberwidth=4
+ set numberwidth=4
 "初始窗口的宽度
 "set columns=135
 "初始窗口的高度
@@ -90,13 +90,13 @@ set numberwidth=4
 "匹配括号的规则，增加针对html的<>
 "set matchpairs=(:),{:},[:],<:>
 "让退格，空格，上下箭头遇到行首行尾时自动移到下一行（包括insert模式）
-set whichwrap=b,s,<,>,[,]
+ set whichwrap=b,s,<,>,[,]
 
 "插入模式下移动
-inoremap <c-j> <down>
-inoremap <c-k> <up>
-inoremap <c-l> <right>
-inoremap <c-h> <left>
+ inoremap <c-j> <down>
+ inoremap <c-k> <up>
+ inoremap <c-l> <right>
+ inoremap <c-h> <left>
 
 "===================================================
 "leader键的功能设置
@@ -160,17 +160,17 @@ map <silent> <F2> :if &guioptions =~# 'T' <Bar>
         \set guioptions+=m <Bar>
     \endif<CR>
 
-"开启鼠标支持
+" 开启鼠标支持
 set mouse=a
-"查找并启用tag
-:set tags=tags;
+" 查找并启用tag
+set tags=tags;
 
 " Space to command mode.
 nnoremap <space> :
 vnoremap <space> :
 
 "===================================================
-"插件的设置
+" 插件的设置
 
 " Brief help
 " :BundleList          - list configured bundles
@@ -183,34 +183,35 @@ if ! isdirectory($HOME."/.vim/bundle/vundle")
     echo "use \"git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle\""
 else
 
-"刷新插件
-nmap <F10> :BundleInstall<cr>
-"更新插件
-nmap <S-F9> :BundleSearch<cr>
+" 刷新插件
+ nmap <F10> :BundleInstall<cr>
+" 更新插件
+ nmap <S-F9> :BundleSearch<cr>
 
-"Indent Guides设置
-let g:indent_guides_guide_size=1
+" Indent Guides设置
+ let g:indent_guides_guide_size=1
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+ set rtp+=~/.vim/bundle/vundle/
+ call vundle#rc()
 
 " let Vundle manage Vundle
 " required!
-Bundle 'gmarik/vundle'
+ Bundle 'gmarik/vundle'
+"---------------------------------------------------
 
-"jsbeautify的设置
-Bundle '_jsbeautify'
-nnoremap <leader>_ff :call g:Jsbeautify()<CR>  
+" jsbeautify的设置
+ Bundle '_jsbeautify'
+ nnoremap <leader>_ff :call g:Jsbeautify()<CR>
 
-"EasyMotion设置
-Bundle 'EasyMotion'
-let g:EasyMotion_leader_key = '<Leader><Leader>' 
+" EasyMotion设置
+ Bundle 'EasyMotion'
+ let g:EasyMotion_leader_key = '<Leader><Leader>'
 
-"Fencview的初始设置
-Bundle 'FencView.vim'
-let g:fencview_autodetect=1
+" Fencview的初始设置
+ Bundle 'FencView.vim'
+ let g:fencview_autodetect=1
 
-"NerdTree的设置 并且相对行号显示
+" NerdTree的设置 并且相对行号显示
 "-----------------------------------------------------------------
 " plugin - NERD_tree.vim 以树状方式浏览系统中的文件和目录
 " :ERDtree 打开NERD_tree         :NERDtreeClose    关闭NERD_tree
@@ -221,16 +222,16 @@ let g:fencview_autodetect=1
 " u 打开上层目录                 m 显示文件系统菜单（添加、删除、移动操作）
 " r 递归刷新当前目录             R 递归刷新当前根目录
 "-----------------------------------------------------------------
-Bundle 'The-NERD-tree'
-nmap <leader>nt :NERDTree<cr>:set rnu<cr>
+ Bundle 'The-NERD-tree'
+ nmap <leader>nt :NERDTree<cr>:set rnu<cr>
 "nmap  <F3> :NERDTreeToggle<cr>
 "imap <F3> <ESC>:NERDTreeToggle<CR>
-let NERDTreeShowBookmarks=1
-let NERDTreeShowFiles=1
-let NERDTreeShowHidden=1
-let NERDTreeIgnore=['\.$','\~$']
-let NERDTreeShowLineNumbers=1
-let NERDTreeWinPos=1
+ let NERDTreeShowBookmarks=1
+ let NERDTreeShowFiles=1
+ let NERDTreeShowHidden=1
+ let NERDTreeIgnore=['\.$','\~$']
+ let NERDTreeShowLineNumbers=1
+ let NERDTreeWinPos=1
 
 "对NERD_commenter的设置
 "-----------------------------------------------------------------
@@ -241,69 +242,174 @@ let NERDTreeWinPos=1
 " ,cA 在行尾插入 /* */,并且进入插入模式。 这个命令方便写注释。
 " 注：count参数可选，无则默认为选中行或当前行
 "-----------------------------------------------------------------
-Bundle 'The-NERD-Commenter'
-let NERDSpaceDelims=1       " 让注释符与语句之间留一个空格
-let NERDCompactSexyComs=1   " 多行注释时样子更好看
-let NERDShutUp=1
-"支持单行和多行的选择，//格式
-map <c-h> ,c<space>
+ Bundle 'The-NERD-Commenter'
+ let NERDSpaceDelims=1       " 让注释符与语句之间留一个空格
+ let NERDCompactSexyComs=1   " 多行注释时样子更好看
+ let NERDShutUp=1
+" 支持单行和多行的选择，//格式
+ map <c-h> ,c<space>
 
+ Bundle 'a.vim'
+ Bundle 'cscope.vim'
+if has("cscope")
+    set cscopequickfix=s-,c-,d-,i-,t-,e-
+    set csto=0
+    set cst
+    set nocsverb
+    if filereadable("cscope.out") " add any database in current directory
+        cs add cscope.out
+    elseif $CSCOPE_DB != "" " else add database pointed to by environment
+        cs add $CSCOPE_DB
+    endif
+    set csverb " 这个必须放在后面,不然windows上找不到cscope.out
+
+ nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR> :cw<CR>
+ nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR> :cw<CR>
+ nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR> :cw<CR>
+ nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR> :cw<CR>
+ nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR> :cw<CR>
+ nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR> :cw<CR>
+ nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR> :cw<CR>
+ nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR> :cw<CR>
+"nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+"nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+"nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+"Using 'CTRL-spacebar' then a search type makes the vim window
+"split horizontally, with search result displayed in
+"the new window.
+"nmap <C-Space>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-Space>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-Space>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-Space>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-Space>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-Space>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+"nmap <C-Space>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+"nmap <C-Space>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+
+"Hitting CTRL-space *twice* before the search type does a vertical
+"split instead of a horizontal one
+"nmap <C-Space><C-Space>s:vert scs find s <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-Space><C-Space>g:vert scs find g <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-Space><C-Space>c:vert scs find c <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-Space><C-Space>t:vert scs find t <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-Space><C-Space>e:vert scs find e <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-Space><C-Space>i:vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+"nmap <C-Space><C-Space>d:vert scs find d <C-R>=expand("<cword>")<CR><CR>
+endif
+
+"---------------------------------------------------
+
+"omnicppcomplete会打开一个预览窗口来提示变量定义，如果不想要看到详细的信息的话，在vimrc中这样配置
+ Bundle 'OmniCppComplete'
+ set completeopt=longest,menu
+"搜索字符串，或以递增方式搜索字符串
+ let Grep_Default_Filelist = '*.[chS]'
+ let Grep_Default_Filelist = '*.c *.cpp *.asm'
+ let Grep_Skip_Files = '*tags* *cscope* *.o* *.lib *.a* *.r* *.d*'
+ nnoremap <silent> <C-f> :Rgrep<CR><CR><CR><CR>
+ nnoremap <silent> <C-g> :RgrepAdd<CR><CR><CR><CR>
+ set nocp
+ set completeopt=menu "去掉提示窗口"
+ filetype plugin on
+ let OmniCpp_DefaultNamespaces = ["std"] "下面的设置用于当用户预先声明namespace时也能自动补全代码（如使用using std::string）
+ let OmniCpp_NamespaceSearch = 1
+ let OmniCpp_GlobalScopeSearch = 1
+ let OmniCpp_ShowAccess = 1
+ let OmniCpp_ShowPrototypeInAbbr = 1 " 显示函数参数列表
+ let OmniCpp_MayCompleteDot = 1 " 输入 . 后自动补全
+ let OmniCpp_MayCompleteArrow = 1 " 输入 -> 后自动补全
+ let OmniCpp_MayCompleteScope = 1 " 输入 :: 后自动补全
+ let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+
+"---------------------------------------------------
 " vim-scripts repos
-Bundle 'ctrlp.vim'
+ Bundle 'ctrlp.vim'
+" 在输入()等需要配对的符号时，自动帮你补全剩余半个
 "Bundle 'AutoClose'
-Bundle 'ZenCoding.vim'
-Bundle 'matchit.zip'
-Bundle 'ShowTrailingWhitespace'
-
-Bundle 'neocomplcache'
+ Bundle 'ZenCoding.vim'
+ Bundle 'matchit.zip'
+ Bundle 'ShowTrailingWhitespace'
+ Bundle 'neocomplcache'
 "Bundle 'ack'
-Bundle 'gundo'
+ Bundle 'gundo'
 "Bundle 'pytest'
-Bundle 'supertab'
+ Bundle 'supertab'
 "Bundle 'vim-git'
 "Bundle 'vim-powerline'
-Bundle 'command-t'
-Bundle 'pep8'
+ Bundle 'command-t'
+ Bundle 'pep8'
 "Bundle 'pyflakes-pathogen'
-Bundle 'snipMate'
+ Bundle 'snipMate'
 "Bundle 'TaskList.vim'
-Bundle 'fugitive.vim'
+ Bundle 'fugitive.vim'
 "Bundle 'vim-makegreen'
+"在两端加上、修改、删除匹配的符号如（）
 "Bundle 'vim-surround'
+"Bundle 'tpope/vim-surround'
 
+"---------------------------------------------------
 " plugin - taglist.vim  查看函数列表，需要ctags程序
-Bundle 'taglist.vim'
-nmap  <F2> :TlistToggle<cr>
+ Bundle 'taglist.vim'
+ nmap  <F2> :TlistToggle<cr>
 "nnoremap <silent><F4> :TlistToggle<CR>
-let Tlist_Show_One_File = 1            " 不同时显示多个文件的tag，只显示当前文件的
-let Tlist_Exit_OnlyWindow = 1          " 如果taglist窗口是最后一个窗口，则退出vim
-let Tlist_Use_Right_Window = 1         " 在右侧窗口中显示taglist窗口
-let Tlist_File_Fold_Auto_Close=1       " 自动折叠当前非编辑文件的方法列表
-let Tlist_Auto_Open = 0                " 默认打开Taglist
-let Tlist_Auto_Update = 1
-let Tlist_Hightlight_Tag_On_BufEnter = 1
-let Tlist_Enable_Fold_Column = 0    " 不要显示折叠树
-let Tlist_Process_File_Always = 1 "不是一直实时更新tags，因为没有必要
-let Tlist_Display_Prototype = 0
-let Tlist_Compact_Format = 1
+ let Tlist_Auto_Open = 0                " 默认打开Taglist
+ let Tlist_Auto_Update = 1
+ let Tlist_Compact_Format = 1 " 压缩方式
+ let Tlist_Display_Prototype = 0
+ let Tlist_Enable_Fold_Column = 0    " 不要显示折叠树 (鼠标可以点开)
+ let Tlist_Exit_OnlyWindow = 1          " 如果taglist窗口是最后一个窗口，则退出vim
+"let Tlist_Exist_OnlyWindow = 1 " 如果只有一个buffer，kill窗口也kill掉buffer
+ let Tlist_File_Fold_Auto_Close=1       " 自动折叠当前非编辑文件的方法列表
+"let Tlist_File_Fold_Auto_Close = 0 " 不要关闭其他文件的tags
+ let Tlist_Hightlight_Tag_On_BufEnter = 1
+ let Tlist_Inc_Winwidth = 0 "标签列表窗口显示或隐藏不影响整个gvim窗口大小
+ let Tlist_Process_File_Always = 1 "不是一直实时更新tags，因为没有必要
+ let Tlist_Show_One_File = 1 " 设置tablist插件只显示当前编辑文件的tag内容，而非当前所有打开文件的tag内容
+ let Tlist_Use_Right_Window = 1         " 在右侧窗口中显示taglist窗口
+ let Tlist_WinWidth = 25 " taglist窗口宽度
+ nmap <silent> <leader>tl :Tlist<cr>
+"---------------------------------------------------
 
-Bundle 'biogoo.vim'
-Bundle 'calendar.vim'
-Bundle 'gtrans.vim'
+ Bundle 'biogoo.vim'
+ Bundle 'calendar.vim'
+ Bundle 'gtrans.vim'
+"-----------------------------------------------------------------
+" plugin - mark.vim 给各种tags标记不同的颜色，便于观看调式的插件。
+" \m  mark or unmark the word under (or before) the cursor
+" \r  manually input a regular expression. 用于搜索.
+" \n  clear this mark (i.e. the mark under the cursor), or clear all highlighted marks .
+" \*  当前MarkWord的下一个     \#  当前MarkWord的上一个
+" \/  所有MarkWords的下一个    \?  所有MarkWords的上一个
+"-----------------------------------------------------------------
+
 
 endif
 "===================================================
 
 " wgao add
-
-let g:pydiction_location = '.vim/pydiction-1.2/complete-dict'
 nmap  <F4> :!mk<cr>
 nmap  <F9> :!mktag &<cr>
 
+" wgao add OK
+
+let g:pydiction_location = '.vim/pydiction-1.2/complete-dict'
 "支持代码折叠
+"set foldlevel=3
+"set foldenable      " 允许折叠
+"setlocal foldlevel=1        " 设置折叠层数为
+"set foldclose=all           " 设置为自动关闭折叠
 set foldmethod=syntax " 用语法高亮来定义折叠
+"set foldmethod=manual   " 手动折叠
+"set foldmethod=marker
+"set foldmethod=indent
 set foldlevel=100 " 启动vim时不要自动折叠代码
-set foldcolumn=1 " 设置折叠栏宽度
+set foldcolumn=1 " 设置折叠区域的宽度
 ": exec 'cd ~/' . fnameescape('/.vim')
 " 用<F3>键来开关折叠
 nmap <F3> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
@@ -342,3 +448,16 @@ map <leader>e :e! ~/.vimrc<cr>
 
 " When vimrc is edited, reload it
 autocmd! bufwritepost .vimrc source ~/.vimrc
+
+"代码补全
+set completeopt=preview,menu
+set completeopt=longest,menu
+"set nobackup                " 覆盖文件时不备份
+set backupcopy=yes          " 设置备份时的行为为覆盖
+set autochdir               " 自动切换当前目录为当前文件所在的目录
+"新建标签
+map <M-F2> :tabnew<CR>
+"列出当前目录文件
+map <M-F3> :tabnew .<CR>
+
+
