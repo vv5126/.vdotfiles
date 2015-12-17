@@ -371,7 +371,7 @@ endif
  let Tlist_Inc_Winwidth = 0 "标签列表窗口显示或隐藏不影响整个gvim窗口大小
  let Tlist_Process_File_Always = 1 "不是一直实时更新tags，因为没有必要
  let Tlist_Show_One_File = 1 " 设置tablist插件只显示当前编辑文件的tag内容，而非当前所有打开文件的tag内容
- let Tlist_Use_Right_Window = 1         " 在右侧窗口中显示taglist窗口
+"let Tlist_Use_Right_Window = 1         " 在右侧窗口中显示taglist窗口
  let Tlist_WinWidth = 25 " taglist窗口宽度
  nmap <silent> <leader>tl :Tlist<cr>
 "---------------------------------------------------
@@ -395,6 +395,13 @@ endif
 " wgao add
 nmap  <F4> :!mk<cr>
 nmap  <F9> :!mktag &<cr>
+
+
+"1.任意方式对齐
+"2.自动排版
+"3.注释代码
+"4.添加自定义注释
+"5.
 
 " wgao add OK
 
