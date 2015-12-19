@@ -1,15 +1,14 @@
 "必须的设置：
-filetype off
-filetype plugin indent on
+ filetype off
+ filetype plugin indent on
 "打开高亮
-syntax enable
+ syntax enable
 "不要兼容vi
-set nocompatible "不要vim模仿vi模式，建议设置，否则会有很多不兼容的问题
+ set nocompatible "不要vim模仿vi模式，建议设置，否则会有很多不兼容的问题
 
 "使用color solarized
-set background=dark "背景使用黑色
-"colorscheme solarized
-colorscheme mycolor
+ set background=dark "背景使用黑色
+ colorscheme mycolor         " 设定配色方案
 "terminal下面的背景问题
  let g:solarized_termtrans=1
  let g:solarized_termcolors=256
@@ -23,24 +22,22 @@ colorscheme mycolor
  set shiftwidth=4            " 设定 << 和 >> 命令移动时的宽度为 4
  set softtabstop=4           " 使得按退格键时可以一次删掉 4 个空格
  set expandtab               " 用空格代替制表符
+"set noexpandtab             " 不要用空格代替制表符
 
-"一些其他的设定
 "字符设置
  set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5
 "set encoding=utf-8
- set scrolloff=3
+ set scrolloff=3 " 光标移动到buffer的顶部和底部时保持10行距离
 "新建文件编码
  set fenc=utf-8
  set autoindent
  set hidden                  " 允许在有未保存的修改时切换缓冲区，此时的修改由 vim 负责保存
-"设置光标高亮显示
- set cursorline
  set cursorline              " 突出显示当前行
 "set cursorcolumn
  set ttyfast
  set ruler                   " 打开状态栏标尺
  set backspace=indent,eol,start
-"set laststatus=2
+ set laststatus=2            " 启动显示状态行(1),总是显示状态行(2)
 "相对行号 要想相对行号起作用要放在显示行号后面
 "set relativenumber
 "显示行号
@@ -52,12 +49,13 @@ colorscheme mycolor
 "禁止自动换行
  set nowrap
 "GUI界面里的字体，默认有抗锯齿
- set guifont=Inconsolata:h12
+" set guifont=Inconsolata:h12
 "自动载入配置文件不需要重启
 "autocmd! bufwritepost _vimrc source %
 "将-连接符也设置为单词
  set isk+=-
 
+set ignorecase smartcase    " 搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
 "设置大小写敏感和聪明感知(小写全搜，大写完全匹配)
  set ignorecase
  set smartcase
@@ -101,58 +99,58 @@ colorscheme mycolor
 "===================================================
 "leader键的功能设置
 "修改leader键为逗号
-let mapleader=","
+ let mapleader=","
 "esc的映射
-imap jj <esc>
+ imap jj <esc>
 "屏蔽掉讨厌的F1键
-inoremap <F1> <ESC>
-nnoremap <F1> <ESC>
-vnoremap <F1> <ESC>
+ inoremap <F1> <ESC>
+ nnoremap <F1> <ESC>
+ vnoremap <F1> <ESC>
 "修改vim的正则表达
-nnoremap / /\v
-vnoremap / /\v
+ nnoremap / /\v
+ vnoremap / /\v
 "使用tab键来代替%进行匹配跳转
-nnoremap <tab> %
-vnoremap <tab> %
+ nnoremap <tab> %
+ vnoremap <tab> %
 "折叠html标签 ,fold tag
-nnoremap <leader>ft vatzf
+ nnoremap <leader>ft vatzf
 "使用,v来选择刚刚复制的段落，这样可以用来缩进
-nnoremap <leader>v v`]
+ nnoremap <leader>v v`]
 "使用,w来垂直分割窗口，这样可以同时查看多个文件,如果想水平分割则<c-w>s
-nnoremap <leader>w <c-w>v<c-w>l
-nnoremap <leader>wc <c-w>c
-nnoremap <leader>ww <c-w>w
+ nnoremap <leader>w <c-w>v<c-w>l
+ nnoremap <leader>wc <c-w>c
+ nnoremap <leader>ww <c-w>w
 "使用<leader>t来控制Tab的切换
-nnoremap <leader>t gt
-nnoremap <leader>r gT
+ nnoremap <leader>t gt
+ nnoremap <leader>r gT
 "使用<leader>空格来取消搜索高亮
-nnoremap <leader><space> :noh<cr>
+ nnoremap <leader><space> :noh<cr>
 "html中的js加注释 取消注释
-nmap <leader>h I//jj
-nmap <leader>ch ^xx
+ nmap <leader>h I//jj
+ nmap <leader>ch ^xx
 "切换到当前目录
-nmap <leader>q :execute "cd" expand("%:h")<CR>
+ nmap <leader>q :execute "cd" expand("%:h")<CR>
 "搜索替换
-nmap <leader>s :,s///c
+ nmap <leader>s :,s///c
 
 "取消粘贴缩进
-nmap <leader>p :set paste<CR>
-nmap <leader>pp :set nopaste<CR>
+ nmap <leader>p :set paste<CR>
+ nmap <leader>pp :set nopaste<CR>
 
 "文件类型切换
-nmap <leader>fj :set ft=javascript<CR>
-nmap <leader>fc :set ft=css<CR>
-nmap <leader>fx :set ft=xml<CR>
-nmap <leader>fm :set ft=mako<CR>
+ nmap <leader>fj :set ft=javascript<CR>
+ nmap <leader>fc :set ft=css<CR>
+ nmap <leader>fx :set ft=xml<CR>
+ nmap <leader>fm :set ft=mako<CR>
 
 "设置隐藏gvim的菜单和工具栏 F2切换
-set guioptions-=m
-set guioptions-=T
+ set guioptions-=m
+ set guioptions-=T
 "去除左右两边的滚动条
-set go-=r
-set go-=L
+ set go-=r
+ set go-=L
 
-map <silent> <F2> :if &guioptions =~# 'T' <Bar>
+ map <silent> <F2> :if &guioptions =~# 'T' <Bar>
         \set guioptions-=T <Bar>
         \set guioptions-=m <bar>
     \else <Bar>
@@ -160,14 +158,20 @@ map <silent> <F2> :if &guioptions =~# 'T' <Bar>
         \set guioptions+=m <Bar>
     \endif<CR>
 
+" 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
+ set mouse=a
+ set selection=exclusive
+ set selectmode=mouse,key
 " 开启鼠标支持
-set mouse=a
+ set mouse=a
 " 查找并启用tag
-set tags=tags;
+ set tags=tags;
+"允许插件
+filetype plugin on
 
 " Space to command mode.
-nnoremap <space> :
-vnoremap <space> :
+ nnoremap <space> :
+ vnoremap <space> :
 
 "===================================================
 " 插件的设置
@@ -199,20 +203,45 @@ else
  Bundle 'gmarik/vundle'
 "---------------------------------------------------
 
+"---------------------------------------------------
+
+ Bundle 'Tabular'
+
+"---------------------------------------------------
+
+"和snipmate 冲突
+if v:version == 704
+"    has('python')    Bundle 'Valloric/YouCompleteMe'
+"Bundle 'Valloric/YouCompleteMe'
+ nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+ nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
+ let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
+"let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+ let g:ycm_confirm_extra_conf = 0 "Do not ask when starting vim
+ let g:syntastic_always_populate_loc_list = 1
+endif
+
+"---------------------------------------------------
+
 " jsbeautify的设置
  Bundle '_jsbeautify'
  nnoremap <leader>_ff :call g:Jsbeautify()<CR>
+
+"---------------------------------------------------
 
 " EasyMotion设置
  Bundle 'EasyMotion'
  let g:EasyMotion_leader_key = '<Leader><Leader>'
 
+"---------------------------------------------------
+
 " Fencview的初始设置
  Bundle 'FencView.vim'
  let g:fencview_autodetect=1
 
+"---------------------------------------------------
+
 " NerdTree的设置 并且相对行号显示
-"-----------------------------------------------------------------
 " plugin - NERD_tree.vim 以树状方式浏览系统中的文件和目录
 " :ERDtree 打开NERD_tree         :NERDtreeClose    关闭NERD_tree
 " o 打开关闭文件或者目录         t 在标签页中打开
@@ -221,7 +250,6 @@ else
 " K 到第一个节点                 J 到最后一个节点
 " u 打开上层目录                 m 显示文件系统菜单（添加、删除、移动操作）
 " r 递归刷新当前目录             R 递归刷新当前根目录
-"-----------------------------------------------------------------
  Bundle 'The-NERD-tree'
  nmap <leader>nt :NERDTree<cr>:set rnu<cr>
 "nmap  <F3> :NERDTreeToggle<cr>
@@ -232,16 +260,19 @@ else
  let NERDTreeIgnore=['\.$','\~$']
  let NERDTreeShowLineNumbers=1
  let NERDTreeWinPos=1
+"let g:NERDTreeWinPos="right"
+"let g:NERDTreeWinSize=25
+"let g:NERDTreeQuitOnOpen=1
+
+"---------------------------------------------------
 
 "对NERD_commenter的设置
-"-----------------------------------------------------------------
 " plugin - NERD_commenter.vim   注释代码用的，
 " [count],cc 光标以下count行逐行添加注释(7,cc)
 " [count],cu 光标以下count行逐行取消注释(7,cu)
 " [count],cm 光标以下count行尝试添加块注释(7,cm)
 " ,cA 在行尾插入 /* */,并且进入插入模式。 这个命令方便写注释。
 " 注：count参数可选，无则默认为选中行或当前行
-"-----------------------------------------------------------------
  Bundle 'The-NERD-Commenter'
  let NERDSpaceDelims=1       " 让注释符与语句之间留一个空格
  let NERDCompactSexyComs=1   " 多行注释时样子更好看
@@ -249,7 +280,36 @@ else
 " 支持单行和多行的选择，//格式
  map <c-h> ,c<space>
 
+"---------------------------------------------------
+
  Bundle 'a.vim'
+" A few of quick commands to swtich between source files and header files quickly.
+"
+" :A switches to the header file corresponding to the current file being
+" edited (or vise versa)
+" :AS splits and switches
+" :AV vertical splits and switches
+" :AT new tab and switches
+" :AN cycles through matches
+" :IH switches to file under cursor
+" :IHS splits and switches
+" :IHV vertical splits and switches
+" :IHT new tab and switches
+" :IHN cycles through matches
+" <Leader>ih switches to file under cursor
+" <Leader>is switches to the alternate file of file under cursor (e.g. on
+" <foo.h> switches to foo.cpp)
+" <Leader>ihn cycles through matches
+"
+" E.g. if you are editing foo.c and need to edit foo.h
+" simply execute :A and you will be editting foo.h,
+" to switch back to foo.c execute :A again.
+"
+" Can be configured to support a variety of languages. Builtin support for
+" C, C++ and ADA95
+
+"---------------------------------------------------
+
  Bundle 'cscope.vim'
 if has("cscope")
     set cscopequickfix=s-,c-,d-,i-,t-,e-
@@ -279,6 +339,27 @@ if has("cscope")
 "nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
 "nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 "nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+"nmap <leader>ss :cs find s <C-R>=expand("<cword>")<cr><cr>
+"nmap <leader>sg :cs find g <C-R>=expand("<cword>")<cr><cr>
+"nmap <leader>sc :cs find c <C-R>=expand("<cword>")<cr><cr>
+"nmap <leader>st :cs find t <C-R>=expand("<cword>")<cr><cr>
+"nmap <leader>se :cs find e <C-R>=expand("<cword>")<cr><cr>
+"nmap <leader>sf :cs find f <C-R>=expand("<cfile>")<cr><cr>
+"nmap <leader>si :cs find i <C-R>=expand("<cfile>")<cr><cr>
+"nmap <leader>sd :cs find d <C-R>=expand("<cword>")<cr><cr>
+"nmap <F2>s :cs find s <C-R>=expand("<cword>")<CR><CR>:copen<CR><CR>
+"nmap <F2>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+"nmap <F2>c :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR><CR>
+"nmap <F2>t :cs find t <C-R>=expand("<cword>")<CR><CR>:copen<CR><CR>
+"nmap <F2>e :cs find e <C-R>=expand("<cword>")<CR><CR>:copen<CR><CR>
+"nmap <F2>f :cs find f <C-R>=expand("<cfile>")<CR><CR>:copen<CR><CR>
+"nmap <F2>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>:copen<CR><CR>
+"nmap <F2>d :cs find d <C-R>=expand("<cword>")<CR><CR>:copen<CR><CR>
+"nmap <C-]> :tjump <C-R>=expand("<cword>")<CR><CR>
+""nmap <C-]> :cs find g <C-R>=expand("<cword>")<CR><CR><CR>
+"if filereadable("cscope.out")
+"    execute "cs add cscope.out"
+"endif
 
 "Using 'CTRL-spacebar' then a search type makes the vim window
 "split horizontally, with search result displayed in
@@ -326,35 +407,33 @@ endif
  let OmniCpp_MayCompleteArrow = 1 " 输入 -> 后自动补全
  let OmniCpp_MayCompleteScope = 1 " 输入 :: 后自动补全
  let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+ let OmniCpp_SelectFirstItem=2
 
 "---------------------------------------------------
-" vim-scripts repos
- Bundle 'ctrlp.vim'
+
+ Bundle 'tComment'
+
+"---------------------------------------------------
+
 " 在输入()等需要配对的符号时，自动帮你补全剩余半个
 "Bundle 'AutoClose'
- Bundle 'ZenCoding.vim'
- Bundle 'matchit.zip'
- Bundle 'ShowTrailingWhitespace'
- Bundle 'neocomplcache'
-"Bundle 'ack'
- Bundle 'gundo'
-"Bundle 'pytest'
- Bundle 'supertab'
-"Bundle 'vim-git'
-"Bundle 'vim-powerline'
- Bundle 'command-t'
- Bundle 'pep8'
-"Bundle 'pyflakes-pathogen'
- Bundle 'snipMate'
-"Bundle 'TaskList.vim'
- Bundle 'fugitive.vim'
-"Bundle 'vim-makegreen'
-"在两端加上、修改、删除匹配的符号如（）
-"Bundle 'vim-surround'
-"Bundle 'tpope/vim-surround'
 
 "---------------------------------------------------
-" plugin - taglist.vim  查看函数列表，需要ctags程序
+
+ Bundle 'command-t'
+
+"---------------------------------------------------
+
+ Bundle 'vim-powerline'
+ set guifont=PowerlineSymbols\ for\ Powerline
+ "set guifont=Droid\ Sans\ Mono\ for\ Powerline:h15
+ set nocompatible
+ set t_Co=256
+ let g:Powerline_symbols = 'fancy'
+
+"---------------------------------------------------
+
+"plugin - taglist.vim  查看函数列表，需要ctags程序
  Bundle 'taglist.vim'
  nmap  <F2> :TlistToggle<cr>
 "nnoremap <silent><F4> :TlistToggle<CR>
@@ -373,10 +452,153 @@ endif
  let Tlist_Show_One_File = 1 " 设置tablist插件只显示当前编辑文件的tag内容，而非当前所有打开文件的tag内容
 "let Tlist_Use_Right_Window = 1         " 在右侧窗口中显示taglist窗口
  let Tlist_WinWidth = 25 " taglist窗口宽度
+ let g:Tlist_Auto_Highlight_Tag=1
  nmap <silent> <leader>tl :Tlist<cr>
+let Tlist_Sort_Type            = "name"    " 按照名称排序
+let Tlist_Compart_Format       = 1    " 压缩方式
+
+"进行Tlist的设置
+"TlistUpdate可以更新tags
+map <F8> :silent! Tlist<CR>
+let Tlist_Ctags_Cmd='ctags' "因为我们放在环境变量里，所以可以直接执行
+let Tlist_Ctags_Cmd        = '/usr/bin/ctags'
+let Tlist_Show_One_File=1 "让taglist可以同时展示多个文件的函数列表，如果想只有1个，设置为1
+"是否一直处理tags.1:处理;0:不处理
+let Tlist_Inc_Winwidth=0
+
+"---------------------------------------------------
+ Bundle 'snipMate'
+"---------------------------------------------------
+" lookupfile.vim 使用部分关键字查找文件名
+"Bundle 'lookupfile.vim'
+"nmap  <F5> <Plug>LookupFile<cr>
+let g:LookupFile_MinPatLength           = 2 "最少输入2个字符才开始查找
+let g:LookupFile_PreserveLastPattern    = 0 "不保存上次查找的字符串
+let g:LookupFile_PreservePatternHistory = 1 "保存查找历史
+let g:LookupFile_AlwaysAcceptFirst      = 1 "回车打开第一个匹配项目
+let g:LookupFile_AllowNewFiles          = 0 "不允许创建不存在的文件
+let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排序
+"if filereadable("/home/ganquan/linux-2.6.34-rc4/filenametags")
+"设置tag文件的名字
+"let g:LookupFile_TagExpr ='"/home/ganquan/linux-2.6.34-rc4/filenametags"'
+"endif
+"---------------------------------------------------
+"---------------------------------------------------
+"---------------------------------------------------
+"---------------------------------------------------
+"---------------------------------------------------
+"---------------------------------------------------
 "---------------------------------------------------
 
+" vim-scripts repos
+ Bundle 'ctrlp.vim'
+ Bundle 'ZenCoding.vim'
+ Bundle 'matchit.zip'
+ Bundle 'ShowTrailingWhitespace'
+ Bundle 'neocomplcache'
+"Bundle 'ack'
+ Bundle 'gundo'
+"Bundle 'pytest'
+"智能补全
+ Bundle 'supertab'
+"Bundle 'vim-git'
+"Bundle 'pep8'
+"Bundle 'pyflakes-pathogen'
+"Bundle 'TaskList.vim'
+"Fugitive: Git 集成，强烈推荐！Plugin 'tpope/vim-fugitive'
+ Bundle 'fugitive.vim'
+"Bundle 'vim-makegreen'
+"在两端加上、修改、删除匹配的符号如（）
+"Bundle 'vim-surround'
+"Bundle 'xml.vim'
+"Bundle 'tpope/vim-surround'
+"Bundle 'altercation/vim-colors-solarized'   " Solarized: 非常流行的配色。
+"Bundle 'EnhancedCommentify' " 多文本类型的快捷comment/uncomment, 据说NERD Commenter 更好一些
+"Bundle 'surround'           " 用来加括号，引号，前后缀等等，写XML很有用（特别是配合repeat）
+"Bundle 'manpageview'        " 在Vim中查看Manpage，有语法高亮
+"Bundle 'VCScommand'         " 支持多种版本管理器
+"Bundle 'vimcdoc'            " vim帮助中文版
+"Bundle 'cctree'             " 可以查看function的call tree
+"Bundle 'vimwiki.vim'
+"Bundle 'getscriptPlugin.vim'
+"Bundle 'grep.vim'
+"Bundle 'gzip.vim'
+"Bundle 'matchparen.vim'
+"Bundle 'netrwPlugin.vim'
+"Bundle 'rrhelper.vim'
+"Bundle 'spellfile.vim'
+"Bundle 'tarPlugin.vim'
+"Bundle 'tohtml.vim'
+"Bundle 'vimballPlugin.vim'
+"Bundle 'winfileexplorer.vim'
+"Bundle 'winmanager.vim'
+"Bundle 'wintagexplorer.vim'
+"Bundle 'zipPlugin.vim'
+"Bundle 'bash-support.vim'
+"Bundle 'code_complete.vim'
+"Bundle 'cuteErrorMarker.vim'
+"Bundle 'mru.vim'
+"Bundle 'JSON.vim'
+"Bundle 'JavaScript-Indent'
+"Bundle 'PasteBin.vim'
+"Bundle 'VimRepress'
+"Bundle 'gtags.vim'
+"Bundle 'gtk-vim-syntax'
+"Bundle 'jQuery'
+" original repos on github
+" 神级插件，ZenCoding(原名)可以让你以一种神奇而无比爽快的感觉写HTML、CSS
+"Bundle 'mattn/emmet-vim'
+" coffee-scrpit support
+"Bundle 'kchmck/vim-coffee-script'
+" better color
+"Bundle 'tomasr/molokai'
+" vim-scripts repos
+"Bundle 'repeat.vim'  "repeat 支持使用.来重复执行一些插件的命令（如speeddating, surround等)
+"Bundle 'minibufexpl.vim' " 切换缓冲区
+"Bundle 'gmarik/vundle'
+"Bundle 'Stormherz/tablify'
+"Bundle 'guns/ultisnips'
+"Bundle 'jiazhoulvke/MarkdownView'
+"Bundle 'jiazhoulvke/googletranslate'
+"Bundle 'jiazhoulvke/imagemap'
+"Bundle 'jiazhoulvke/jianfan'
+"Bundle 'jiazhoulvke/myproject'
+"Bundle 'shawncplus/phpcomplete.vim'
+"Bundle 'tpope/vim-markdown'
+"Bundle 'xolox/vim-lua-ftplugin'
+"Bundle 'xolox/vim-misc'
+"Bundle 'xolox/vim-session'
+"Bundle 'EasyGrep'
+"Bundle 'Mark--Karkat'
+"Bundle 'Shougo/unite-help'
+"Bundle 'Shougo/unite-outline'
+"Bundle 'Shougo/unite.vim'
+"Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
+"Bundle 'Shougo/vimshell.vim'
+"Bundle 'Yggdroot/indentLine'
+"Bundle 'bling/vim-airline'
+"Bundle 'chrisbra/csv.vim'
+"Bundle 'cscope_macros.vim'
+"Bundle 'jsfaint/gen_tags.vim'
+"Bundle 'majutsushi/tagbar'
+"Bundle 'mbbill/fencview'
+"Bundle 'mhinz/vim-signify'
+"Bundle 'mhinz/vim-startify'
+"Bundle 'osyo-manga/unite-quickfix'
+"Bundle 'scrooloose/nerdcommenter'
+"Bundle 'sjl/gundo.vim'
+"Bundle 'tpope/vim-speeddating'
+"Bundle 'tsukkee/unite-tag'
+"Bundle 'vim-multiple-cursors'
+"if v:version < 704
+"    Bundle 'Pydiction'
+"    Bundle 'Python-mode-klen'
+"endif
+"---------------------------------------------------
+
+
  Bundle 'biogoo.vim'
+" calendar.vim(2.5)提供日历的功能，并且可以记笔记+
  Bundle 'calendar.vim'
  Bundle 'gtrans.vim'
 "-----------------------------------------------------------------
@@ -467,4 +689,44 @@ map <M-F2> :tabnew<CR>
 "列出当前目录文件
 map <M-F3> :tabnew .<CR>
 
+"搜索逐字符高亮
+set incsearch               " 输入搜索内容时就显示搜索结果
+set hlsearch                " 搜索时高亮显示被找到的文本
 
+set fillchars=vert:\ ,stl:\ " 在被分割的窗口间显示空白，便于阅读,stlnc:\(加了这个wm分割兰有\\\\\\\\\\\\\)
+"To hex modle
+let s:hexModle = "N"
+function! ToHexModle()
+    if s:hexModle == "Y"
+        %!xxd -r
+        let s:hexModle = "N"
+    else
+        %!xxd
+        let s:hexModle = "Y"
+    endif
+endfunction
+"map <leader>h :call ToHexModle()<cr>
+
+" 不要生成swap文件，当buffer被丢弃的时候隐藏它
+set nobackup
+set nowb
+set noswapfile
+set bufhidden=hide
+
+set history=300 " history文件中需要记录的行数
+
+"窗口分割时,进行切换的按键热键需要连接两次,比如从下方窗口移动
+"光标到上方窗口,需要<c-w><c-w>k,非常麻烦,现在重映射为<c-k>,切换的
+"时候会变得非常方便.
+" Switching between buffers.
+nnoremap <C-h> <C-W>h
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-l> <C-W>l
+inoremap <C-h> <Esc><C-W>h
+inoremap <C-j> <Esc><C-W>j
+inoremap <C-k> <Esc><C-W>k
+inoremap <C-l> <Esc><C-W>l
+
+" 带有如下符号的单词不要被换行分割
+"set iskeyword+=_,$,@,%,#,-
