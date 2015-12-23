@@ -3,8 +3,8 @@
 function mkinit()
 {
 	DEST=$(showlist_with_value "$VGLD_MKDATA/cfg" "what project do you want init")
-	[ $? = 0 ] && { [ ! -f "$DEST" ] && cp "$VGLD_MKDATA/$DEST" .; } || return 1
-	./$DEST init
+	[ $? = 0 ] && { [ ! -f ".$DEST" ] && cp "$VGLD_MKDATA/$DEST" ".$DEST"; } || return 1
+	./".$DEST" init
 	[ $? = 0 ] && return 0 || return 1
 }
 
@@ -22,8 +22,8 @@ function mkmain() {
 	local value=
 	local key=
 	while read line; do
-		if [ -f "${line#*=}" ]; then
-			value=${line#*=}
+		if [ -f ".${line#*=}" ]; then
+			value=".${line#*=}"
 			key=${line%%=*}
 			break
 		fi

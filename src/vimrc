@@ -3,6 +3,7 @@
  filetype plugin indent on
 "打开高亮
  syntax enable
+ syntax on
 "不要兼容vi
  set nocompatible "不要vim模仿vi模式，建议设置，否则会有很多不兼容的问题
 
@@ -424,18 +425,17 @@ endif
 
 "---------------------------------------------------
 
- Bundle 'vim-powerline'
+ Bundle 'Lokaltog/vim-powerline'
+"  https://github.com/eugeii/consolas-powerline-vim.git
+"  https://github.com/powerline/fonts.git
  set guifont=PowerlineSymbols\ for\ Powerline
- "set guifont=Droid\ Sans\ Mono\ for\ Powerline:h15
- set nocompatible
- set t_Co=256
  let g:Powerline_symbols = 'fancy'
 
 "---------------------------------------------------
 
 "plugin - taglist.vim  查看函数列表，需要ctags程序
- Bundle 'taglist.vim'
- nmap  <F2> :TlistToggle<cr>
+"  Bundle 'taglist.vim'
+"  nmap  <F2> :TlistToggle<cr>
 "nnoremap <silent><F4> :TlistToggle<CR>
  let Tlist_Auto_Open = 0                " 默认打开Taglist
  let Tlist_Auto_Update = 1
@@ -470,8 +470,8 @@ let Tlist_Inc_Winwidth=0
  Bundle 'snipMate'
 "---------------------------------------------------
 " lookupfile.vim 使用部分关键字查找文件名
-"Bundle 'lookupfile.vim'
-"nmap  <F5> <Plug>LookupFile<cr>
+ Bundle 'lookupfile'
+ nmap  <F5> <Plug>LookupFile<cr>
 let g:LookupFile_MinPatLength           = 2 "最少输入2个字符才开始查找
 let g:LookupFile_PreserveLastPattern    = 0 "不保存上次查找的字符串
 let g:LookupFile_PreservePatternHistory = 1 "保存查找历史
@@ -517,7 +517,8 @@ let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排�
 "Bundle 'surround'           " 用来加括号，引号，前后缀等等，写XML很有用（特别是配合repeat）
 "Bundle 'manpageview'        " 在Vim中查看Manpage，有语法高亮
 "Bundle 'VCScommand'         " 支持多种版本管理器
-"Bundle 'vimcdoc'            " vim帮助中文版
+ " vim帮助中文版
+"Bundle 'vimcdoc'
 "Bundle 'cctree'             " 可以查看function的call tree
 "Bundle 'vimwiki.vim'
 "Bundle 'getscriptPlugin.vim'
@@ -529,7 +530,7 @@ let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排�
 "Bundle 'spellfile.vim'
 "Bundle 'tarPlugin.vim'
 "Bundle 'tohtml.vim'
-"Bundle 'vimballPlugin.vim'
+"Bundle 'vimballPlugin.vim------'
 "Bundle 'winfileexplorer.vim'
 "Bundle 'winmanager.vim'
 "Bundle 'wintagexplorer.vim'
@@ -539,9 +540,7 @@ let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排�
 "Bundle 'cuteErrorMarker.vim'
 "Bundle 'mru.vim'
 "Bundle 'JSON.vim'
-"Bundle 'JavaScript-Indent'
 "Bundle 'PasteBin.vim'
-"Bundle 'VimRepress'
 "Bundle 'gtags.vim'
 "Bundle 'gtk-vim-syntax'
 "Bundle 'jQuery'
@@ -576,11 +575,41 @@ let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排�
 "Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
 "Bundle 'Shougo/vimshell.vim'
 "Bundle 'Yggdroot/indentLine'
-"Bundle 'bling/vim-airline'
+"---------------------------------------------------
+" Bundle 'bling/vim-airline'
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#left_sep = ' '
+" let g:airline#extensions#tabline#left_alt_sep = '|'
+" " let g:airline_powerline_fonts = 2
+" if !exists('g:airline_symbols')
+"       let g:airline_symbols = {}
+"   endif
+"   let g:airline_symbols.space = "\ua0"
+"---------------------------------------------------
 "Bundle 'chrisbra/csv.vim'
 "Bundle 'cscope_macros.vim'
 "Bundle 'jsfaint/gen_tags.vim'
-"Bundle 'majutsushi/tagbar'
+
+"---------------------------------------------------
+
+Bundle 'majutsushi/tagbar'
+nmap tb :Tagbar<cr>
+" let tagbar_ctags_bin=ctags
+let tagbar_width=25
+
+"---------------------------------------------------
+"显示git diff的插件
+ Bundle 'airblade/vim-gitgutter'
+"---------------------------------------------------
+ Bundle 'itchyny/calendar.vim'
+let g:calendar_frame = 'default'
+"---------------------------------------------------
+ Bundle 'terryma/vim-multiple-cursors'
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+"---------------------------------------------------
 "Bundle 'mbbill/fencview'
 "Bundle 'mhinz/vim-signify'
 "Bundle 'mhinz/vim-startify'
@@ -596,11 +625,9 @@ let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排�
 "endif
 "---------------------------------------------------
 
-
  Bundle 'biogoo.vim'
-" calendar.vim(2.5)提供日历的功能，并且可以记笔记+
- Bundle 'calendar.vim'
  Bundle 'gtrans.vim'
+
 "-----------------------------------------------------------------
 " plugin - mark.vim 给各种tags标记不同的颜色，便于观看调式的插件。
 " \m  mark or unmark the word under (or before) the cursor
@@ -730,3 +757,5 @@ inoremap <C-l> <Esc><C-W>l
 
 " 带有如下符号的单词不要被换行分割
 "set iskeyword+=_,$,@,%,#,-
+" set helplang=cn
+" set encoding=utf-8

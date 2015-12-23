@@ -19,20 +19,20 @@ if [ "$DEST" != 0 ]; then
 	dest="$(echo $DEST | awk '{print $3}')"
 	case $mnt_type in
 	'sshfs')
-		[ -d $dest ] && {
-			echo 'user' | sudo fusermount -u $dest && rm -rf $dest
-		} || {
+		if [ -d $dest ]; then
+            echo 'user' | sudo fusermount -u $dest && { [ $(ls $dest|wc -l)  == "0" ] && rm -rf $dest; }
+        else
 			mkdir $dest
 			echo 'user' | sudo sshfs $src $dest -o uid=1000,gid=1000,allow_other || rm -rf $dest
-		}
+	    fi
 		;;
 	'win')
-		[ -d $dest ] && {
-			echo 'user' | sudo umount $dest && rm -rf $dest
-		} || {
+		if [ -d $dest ]; then
+			echo 'user' | sudo umount $dest && { [ $(ls $dest|wc -l)  == "0" ] && rm -rf $dest; }
+	    else
 			mkdir $dest
 			echo 'user' | sudo mount -t cifs $src $dest -o username=wgao_bj,rw,dir_mode=0777,file_mode=0777 || rm -rf $dest
-		}
+        fi
 		;;
 	esac
 	echo DEST = $DEST
