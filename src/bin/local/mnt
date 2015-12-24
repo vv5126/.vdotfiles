@@ -10,7 +10,7 @@ if [ $# -eq 1 ]; then
 		DEST=$(getline $APP_DIR/.mnt_conf $1)
 	fi
 else
-	DEST=$(showlist_with_tab $APP_DIR/.mnt_conf 2 "go where ??")
+	DEST=$(showlist_with_tab $APP_DIR/.mnt_conf 4 "go where ??")
 fi
 
 if [ "$DEST" != 0 ]; then
@@ -20,7 +20,8 @@ if [ "$DEST" != 0 ]; then
 	case $mnt_type in
 	'sshfs')
 		if [ -d $dest ]; then
-            echo 'user' | sudo fusermount -u $dest && { [ $(ls $dest|wc -l)  == "0" ] && rm -rf $dest; }
+            echo 'user' | sudo fusermount -u $dest 2>/dev/null
+            [ $(ls $dest|wc -l)  == "0" ] && rm -rf $dest
         else
 			mkdir $dest
 			echo 'user' | sudo sshfs $src $dest -o uid=1000,gid=1000,allow_other || rm -rf $dest
@@ -28,14 +29,15 @@ if [ "$DEST" != 0 ]; then
 		;;
 	'win')
 		if [ -d $dest ]; then
-			echo 'user' | sudo umount $dest && { [ $(ls $dest|wc -l)  == "0" ] && rm -rf $dest; }
+			echo 'user' | sudo umount $dest 2>/dev/null
+            [ $(ls $dest|wc -l)  == "0" ] && rm -rf $dest
 	    else
 			mkdir $dest
 			echo 'user' | sudo mount -t cifs $src $dest -o username=wgao_bj,rw,dir_mode=0777,file_mode=0777 || rm -rf $dest
         fi
 		;;
 	esac
-	echo DEST = $DEST
+#	echo DEST = $DEST
 else
 	echo "wrong number"
 	echo 

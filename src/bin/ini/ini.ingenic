@@ -16,7 +16,7 @@ PATH=/pdev/chains/mipsel-linux-android-4.7/bin:$PATH
 
 export VGLD_CLIPBOARD=wgao@192.168.4.4:/home/wgao/.clipboard/global
 export VGLD_LOCALCLIPBOARD=$HOME/.clipboard/local
-export VGL_LOCAL_USER='user-FMVD42P211'
+export VGL_LOCAL_USER='user-desktop'
 export VGLD_INI=$HOME/.bin/ini
 export VGLD_LIB=$HOME/.bin/lib
 export VGLD_MKDATA=$HOME/.bin/work/mkdata

@@ -268,6 +268,7 @@ endif
 "---------------------------------------------------
 
 "对NERD_commenter的设置
+" 功能强大的代码注释工具,用来注释或者取消注释,支持很多语言,可以对文本块操作,最常用到的快捷键是\c<space>
 " plugin - NERD_commenter.vim   注释代码用的，
 " [count],cc 光标以下count行逐行添加注释(7,cc)
 " [count],cu 光标以下count行逐行取消注释(7,cu)
@@ -279,10 +280,11 @@ endif
  let NERDCompactSexyComs=1   " 多行注释时样子更好看
  let NERDShutUp=1
 " 支持单行和多行的选择，//格式
- map <c-h> ,c<space>
+ map <C-h> ,c<space>
 
 "---------------------------------------------------
 
+" 在.c/.h之间切换,写代码必备
  Bundle 'a.vim'
 " A few of quick commands to swtich between source files and header files quickly.
 "
@@ -467,8 +469,16 @@ let Tlist_Show_One_File=1 "让taglist可以同时展示多个文件的函数列�
 let Tlist_Inc_Winwidth=0
 
 "---------------------------------------------------
+
  Bundle 'snipMate'
+
 "---------------------------------------------------
+
+" 一些插件依赖的库函数
+ Bundle 'genutils'
+
+"---------------------------------------------------
+
 " lookupfile.vim 使用部分关键字查找文件名
  Bundle 'lookupfile'
  nmap  <F5> <Plug>LookupFile<cr>
@@ -482,100 +492,89 @@ let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排�
 "设置tag文件的名字
 "let g:LookupFile_TagExpr ='"/home/ganquan/linux-2.6.34-rc4/filenametags"'
 "endif
-"---------------------------------------------------
-"---------------------------------------------------
-"---------------------------------------------------
-"---------------------------------------------------
-"---------------------------------------------------
-"---------------------------------------------------
-"---------------------------------------------------
 
-" vim-scripts repos
- Bundle 'ctrlp.vim'
- Bundle 'ZenCoding.vim'
- Bundle 'matchit.zip'
- Bundle 'ShowTrailingWhitespace'
- Bundle 'neocomplcache'
-"Bundle 'ack'
- Bundle 'gundo'
-"Bundle 'pytest'
+"---------------------------------------------------
 "智能补全
  Bundle 'supertab'
-"Bundle 'vim-git'
-"Bundle 'pep8'
-"Bundle 'pyflakes-pathogen'
-"Bundle 'TaskList.vim'
-"Fugitive: Git 集成，强烈推荐！Plugin 'tpope/vim-fugitive'
- Bundle 'fugitive.vim'
-"Bundle 'vim-makegreen'
-"在两端加上、修改、删除匹配的符号如（）
-"Bundle 'vim-surround'
-"Bundle 'xml.vim'
-"Bundle 'tpope/vim-surround'
-"Bundle 'altercation/vim-colors-solarized'   " Solarized: 非常流行的配色。
-"Bundle 'EnhancedCommentify' " 多文本类型的快捷comment/uncomment, 据说NERD Commenter 更好一些
-"Bundle 'surround'           " 用来加括号，引号，前后缀等等，写XML很有用（特别是配合repeat）
-"Bundle 'manpageview'        " 在Vim中查看Manpage，有语法高亮
-"Bundle 'VCScommand'         " 支持多种版本管理器
- " vim帮助中文版
-"Bundle 'vimcdoc'
-"Bundle 'cctree'             " 可以查看function的call tree
-"Bundle 'vimwiki.vim'
-"Bundle 'getscriptPlugin.vim'
-"Bundle 'grep.vim'
-"Bundle 'gzip.vim'
-"Bundle 'matchparen.vim'
-"Bundle 'netrwPlugin.vim'
-"Bundle 'rrhelper.vim'
-"Bundle 'spellfile.vim'
-"Bundle 'tarPlugin.vim'
-"Bundle 'tohtml.vim'
-"Bundle 'vimballPlugin.vim------'
-"Bundle 'winfileexplorer.vim'
-"Bundle 'winmanager.vim'
-"Bundle 'wintagexplorer.vim'
-"Bundle 'zipPlugin.vim'
-"Bundle 'bash-support.vim'
-"Bundle 'code_complete.vim'
-"Bundle 'cuteErrorMarker.vim'
-"Bundle 'mru.vim'
-"Bundle 'JSON.vim'
-"Bundle 'PasteBin.vim'
-"Bundle 'gtags.vim'
-"Bundle 'gtk-vim-syntax'
-"Bundle 'jQuery'
-" original repos on github
-" 神级插件，ZenCoding(原名)可以让你以一种神奇而无比爽快的感觉写HTML、CSS
-"Bundle 'mattn/emmet-vim'
-" coffee-scrpit support
-"Bundle 'kchmck/vim-coffee-script'
-" better color
-"Bundle 'tomasr/molokai'
-" vim-scripts repos
-"Bundle 'repeat.vim'  "repeat 支持使用.来重复执行一些插件的命令（如speeddating, surround等)
-"Bundle 'minibufexpl.vim' " 切换缓冲区
-"Bundle 'gmarik/vundle'
-"Bundle 'Stormherz/tablify'
-"Bundle 'guns/ultisnips'
-"Bundle 'jiazhoulvke/MarkdownView'
-"Bundle 'jiazhoulvke/googletranslate'
-"Bundle 'jiazhoulvke/imagemap'
-"Bundle 'jiazhoulvke/jianfan'
-"Bundle 'jiazhoulvke/myproject'
-"Bundle 'shawncplus/phpcomplete.vim'
-"Bundle 'tpope/vim-markdown'
-"Bundle 'xolox/vim-lua-ftplugin'
-"Bundle 'xolox/vim-misc'
-"Bundle 'xolox/vim-session'
-"Bundle 'EasyGrep'
-"Bundle 'Mark--Karkat'
-"Bundle 'Shougo/unite-help'
-"Bundle 'Shougo/unite-outline'
-"Bundle 'Shougo/unite.vim'
-"Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
-"Bundle 'Shougo/vimshell.vim'
-"Bundle 'Yggdroot/indentLine'
 "---------------------------------------------------
+" 给vim增加IDE的功能,提供目录浏览和buffer浏览功能,因为显示器太小,感觉太占空间,所以单独使用bufexplorer,而且现在vim7的netrw功能也够强大,所以感觉比较鸡肋,而且貌似很久没有更新,所以基本不用
+Bundle 'winmanager'
+" let g:winManagerWindowLayout='NERDTree|TagList'
+nmap wm :if IsWinManagerVisible() <BAR> WMToggle<CR> <BAR> else <BAR> WMToggle<CR>:q<CR> endif <CR><CR>
+"---------------------------------------------------
+ Bundle 'biogoo.vim'
+ Bundle 'gtrans.vim'
+"---------------------------------------------------
+
+" plugin - NeoComplCache.vim    自动补全插件
+ Bundle 'neocomplcache'
+let g:AutoComplPop_NotEnableAtStartup = 1
+let g:NeoComplCache_EnableAtStartup = 1
+let g:NeoComplCache_SmartCase = 1
+let g:NeoComplCache_TagsAutoUpdate = 1
+let g:NeoComplCache_EnableInfo = 1
+let g:NeoComplCache_EnableCamelCaseCompletion = 1
+let g:NeoComplCache_MinSyntaxLength = 3
+let g:NeoComplCache_EnableSkipCompletion = 1
+let g:NeoComplCache_SkipInputTime = '0.5'
+let g:NeoComplCache_SnippetsDir = $VIMFILES.'/snippets'
+" <TAB> completion.
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+" snippets expand key
+imap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
+smap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
+
+"---------------------------------------------------
+
+Bundle 'mhinz/vim-startify'
+Bundle 'jlanzarotta/bufexplorer'
+"---------------------------------------------------
+
+Bundle 'majutsushi/tagbar'
+nmap tb :Tagbar<cr>
+" let tagbar_ctags_bin=ctags
+let tagbar_width=25
+
+"---------------------------------------------------
+
+ Bundle 'terryma/vim-multiple-cursors'
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+
+"---------------------------------------------------
+
+" color theme浏览插件,列出所有的vim color theme到一个列表中,选中后按回车即可应用相应的color theme,试验color theme时再也不用一次次输入:colo theme_name了,从上百个color theme中选择自己喜欢的theme时有用
+Bundle 'sjas/csExplorer'
+
+"---------------------------------------------------
+
+" 一个对齐的插件,用来排版,面对一堆乱七八糟的代码时,用来对齐代码,功能强大,不过用到的机会不多
+Bundle 'Align'
+
+"---------------------------------------------------
+
+Bundle 'checksyntax'
+
+"---------------------------------------------------
+
+" 在vim里画图
+Bundle 'DrawIt'
+
+"---------------------------------------------------
+
+"显示git diff的插件
+ Bundle 'airblade/vim-gitgutter'
+
+"---------------------------------------------------
+
+" 日历插件,有了它,用vim来写日记很方便
+ Bundle 'itchyny/calendar.vim'
+let g:calendar_frame = 'default'
+
+"---------------------------------------------------
+
 " Bundle 'bling/vim-airline'
 " let g:airline#extensions#tabline#enabled = 1
 " let g:airline#extensions#tabline#left_sep = ' '
@@ -585,56 +584,247 @@ let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排�
 "       let g:airline_symbols = {}
 "   endif
 "   let g:airline_symbols.space = "\ua0"
-"---------------------------------------------------
-"Bundle 'chrisbra/csv.vim'
-"Bundle 'cscope_macros.vim'
-"Bundle 'jsfaint/gen_tags.vim'
 
 "---------------------------------------------------
 
-Bundle 'majutsushi/tagbar'
-nmap tb :Tagbar<cr>
-" let tagbar_ctags_bin=ctags
-let tagbar_width=25
+"Fugitive: Git 集成，强烈推荐！Plugin 'tpope/vim-fugitive'
+ Bundle 'fugitive.vim'
+"在两端加上、修改、删除匹配的符号如（）
+"Bundle 'vim-surround'
+ " vim帮助中文版
+"Bundle 'vimcdoc'
+"Bundle 'altercation/vim-colors-solarized'   " Solarized: 非常流行的配色。
+"Bundle 'EnhancedCommentify' " 多文本类型的快捷comment/uncomment, 据说NERD Commenter 更好一些
+"Bundle 'surround'           " 用来加括号，引号，前后缀等等，写XML很有用（特别是配合repeat）
+"Bundle 'manpageview'        " 在Vim中查看Manpage，有语法高亮
+"Bundle 'VCScommand'         " 支持多种版本管理器
+"Bundle 'cctree'             " 可以查看function的call tree
+" vim自带的文件浏览器
+"Bundle 'netrwPlugin.vim'
 
 "---------------------------------------------------
-"显示git diff的插件
- Bundle 'airblade/vim-gitgutter'
-"---------------------------------------------------
- Bundle 'itchyny/calendar.vim'
-let g:calendar_frame = 'default'
-"---------------------------------------------------
- Bundle 'terryma/vim-multiple-cursors'
-let g:multi_cursor_next_key='<C-n>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
-"---------------------------------------------------
-"Bundle 'mbbill/fencview'
-"Bundle 'mhinz/vim-signify'
-"Bundle 'mhinz/vim-startify'
-"Bundle 'osyo-manga/unite-quickfix'
-"Bundle 'scrooloose/nerdcommenter'
-"Bundle 'sjl/gundo.vim'
-"Bundle 'tpope/vim-speeddating'
-"Bundle 'tsukkee/unite-tag'
-"Bundle 'vim-multiple-cursors'
-"if v:version < 704
-"    Bundle 'Pydiction'
-"    Bundle 'Python-mode-klen'
-"endif
+
+" Bundle 'SirVer/ultisnips'
+" " Trigger configuration. Do not use <tab>
+" "if you use https://github.com/Valloric/YouCompleteMe.
+" let g:UltiSnipsExpandTrigger="<c-j>"
+" let g:UltiSnipsJumpForwardTrigger="<c-j>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+
 "---------------------------------------------------
 
- Bundle 'biogoo.vim'
- Bundle 'gtrans.vim'
-
-"-----------------------------------------------------------------
+" 同时高亮多个单词
 " plugin - mark.vim 给各种tags标记不同的颜色，便于观看调式的插件。
 " \m  mark or unmark the word under (or before) the cursor
 " \r  manually input a regular expression. 用于搜索.
 " \n  clear this mark (i.e. the mark under the cursor), or clear all highlighted marks .
 " \*  当前MarkWord的下一个     \#  当前MarkWord的上一个
 " \/  所有MarkWords的下一个    \?  所有MarkWords的上一个
+
+"---------------------------------------------------
+
+" vim-scripts repos
+" Bundle 'ctrlp.vim'
+" Bundle 'matchit.zip'
+" Bundle 'ShowTrailingWhitespace'
+" Bundle 'rosenfeld/conque-term'
+" Bundle 'gundo'
+" Bundle 'sjl/gundo.vim'
+" Bundle 'ack'
+" Bundle 'vim-git'
+" Bundle 'pep8'
+" Bundle 'TaskList.vim'
+" Bundle 'vim-makegreen'
+" Bundle 'xml.vim'
+" Bundle 'tpope/vim-surround'
+" Bundle 'vimwiki.vim'
+" Bundle 'getscriptPlugin.vim'
+" Bundle 'grep.vim'
+" Bundle 'gzip.vim'
+" Bundle 'matchparen.vim'
+" Bundle 'rrhelper.vim'
+" Bundle 'spellfile.vim'
+" Bundle 'tarPlugin.vim'
+" Bundle 'tohtml.vim'
+" Bundle 'winfileexplorer.vim'
+" Bundle 'wintagexplorer.vim'
+" Bundle 'bash-support.vim'
+" Bundle 'code_complete.vim'
+" Bundle 'cuteErrorMarker.vim'
+" Bundle 'mru.vim'
+" Bundle 'JSON.vim'
+" Bundle 'PasteBin.vim'
+" Bundle 'gtags.vim'
+" Bundle 'gtk-vim-syntax'
+" Bundle 'jQuery'
+" Bundle 'Stormherz/tablify'
+" Bundle 'UltiSnips'
+" Bundle 'guns/ultisnips'
+" Bundle 'jiazhoulvke/MarkdownView'
+" Bundle 'jiazhoulvke/googletranslate'
+" Bundle 'jiazhoulvke/imagemap'
+" Bundle 'jiazhoulvke/jianfan'
+" Bundle 'jiazhoulvke/myproject'
+" Bundle 'shawncplus/phpcomplete.vim'
+" Bundle 'tpope/vim-markdown'
+" Bundle 'xolox/vim-lua-ftplugin'
+" Bundle 'xolox/vim-misc'
+" Bundle 'xolox/vim-session'
+" Bundle 'EasyGrep'
+" Bundle 'Mark--Karkat'
+" Bundle 'Shougo/unite-help'
+" Bundle 'Shougo/unite-outline'
+" Bundle 'Shougo/unite.vim'
+" Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
+" Bundle 'Shougo/vimshell.vim'
+" Bundle 'Yggdroot/indentLine'
+" Bundle 'chrisbra/csv.vim'
+" Bundle 'cscope_macros.vim'
+" Bundle 'jsfaint/gen_tags.vim'
+" Bundle 'mbbill/fencview'
+" Bundle 'mhinz/vim-signify'
+" Bundle 'mhinz/vim-startify'
+" Bundle 'osyo-manga/unite-quickfix'
+" Bundle 'tpope/vim-speeddating'
+" Bundle 'tsukkee/unite-tag'
+
+"---------------------------------------------------
+"repeat 支持使用.来重复执行一些插件的命令（如speeddating, surround等)
+" Bundle 'repeat.vim'
+
+" 切换缓冲区
+" Bundle 'minibufexpl.vim'
+
+" original repos on github
+" Bundle 'mattn/emmet-vim'
+
+" coffee-scrpit support
+" Bundle 'kchmck/vim-coffee-script'
+
+" better color
+" Bundle 'tomasr/molokai'
+
+" 神级插件，ZenCoding(原名)可以让你以一种神奇而无比爽快的感觉写HTML、CSS
+"  Bundle 'ZenCoding.vim'
+
+" c/c++ support,让你用编写c/c++程序时如虎添翼,有很多贴心的功能,每个功能都有快捷键,不过一部分和NERD_comments冲突 如果经常编写一些单文件的c程序,但是不想写makefile,用这个,他帮你完成,F9编译并链接,ctrl-F9运行
+" c.vim
+
+" electbuf.vim相比，它少了对多个buf的批量选择和处理
+" mru.vim -> fuzzyfinder.vim:FuzzyFinderMruFile
+" favex.vim -> fuzzyfinder.vim:FuzzyFinderFavFile
+" selectbuf.vim -> fuzzyfinder.vim:FuzzyFinderBuffer
+" NERDTree.vim -> fuzzyfinder.vim:FuzzyFinderFile
+
+" AlignPlugin.vim的一些按键映射
+" AlignMaps.vim
+
+" 按照一定格式对齐文本
+" AlignPlugin.vim
+
+" 列出当前打开的buffer,可以很容易的切换到和删除选定的buffer,必备插件之一
+" bufexplorer.vim
+
+" 一些插件用到的一些库函数
+" cecutil.vim
+
+" cscope的vim插件,提供快捷键操纵cscope,好东东,如果你在用cscope的话
+" cscope_maps.vim
+
+" 添加doxygen注释
+" DoxygenToolkit.vim
+
+" FavEx : Favorite file and directory explorer ,可以添加目录和文件到收藏夹，可以把经常编辑的文件添加到收藏夹来，在文件打开以后，\ff新增文件到收藏夹，\fd新增目录到收藏夹
+" favex.vim
+
+" fencview.vim
+" mbbill的编码识别插件
+
+" great for latex
+" latex-suite
+
+" Switch very quickly between your most recently used buffers
+" LustyJuggler
+
+" 扩展了vim的%功能,让%可以匹配的,不再仅仅是括号,支持多种语言.必备插件之一
+" matchit.vim
+
+" Address, 给vim增加MRU功能,也就是保留最近打开的文件记录,:MRU打开,q退出,很方便,有过一个支持菜单的类似的插件 不过对于我这样的不用菜单的用户,还是这个命令行的好用一点,因为经常使用,所以我映射到了F2
+" Mru
+
+" 同时选择多个区域
+" multiselect.vim
+
+" array操作库函数，multiselect依赖它
+" multvals.vim
+
+" netrw清理工具，经常升级netrw的话，用来删除老版本
+" netrwclean.vim
+
+" 给选中的文字加上引号,支持( { [ < ' " `,选中后,\加上你想要添加的符号,比如选中abc后,\(,得到(abc)
+" parenquote.vim
+
+" 快速打开关闭quickfix window
+" qfixtoggle.vim
+
+" Very small, clean but quick and powerful buffer manager. c.
+" qbuf
+
+" 提供快速的buffer选择
+" selectbuf.vim
+
+" 画图
+" sketch.vim
+
+" 扩展了vim的abbr缩写功能,支持占位符,支持变量替换.
+" snippetEmu.vim
+
+" 功能强大的缩写扩展，vim版的TextMate
+" snippetsEmu.vim
+
+" 给vim整合了cvs/subversion功能,不用离开vim环境也能执行常用的cvs/subversion操作.
+" vcscommand.vim
+
+" vimincr.vim的公共接口
+" visincrPlugin.vim
+
+" 给vim增加生成递增或者递减数列的功能,支持十进制,十六进制,日期,星期等,功能强大灵活
+" visincr.vim
+
+" 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
+" vis.vim
+
+" 单词完成，没用它
+" word_complete.vim
+
+" 类似emacs的king ring,给vim的yank也增加缓冲,vim本身只缓冲删除的字符串,不缓冲yank的内容
+" yankring.vim
+"-----------------------------------------------------------------
+"unused
+" vim的wiki
+" viki.vim
+" toansi.vim
+" 将语法高亮转成 BBS 上的彩色
+" LargeFile.vim
+" 让大文件打开快一点
+" 给vim增加url的识别功能,但是功能远不只是支持url,还有更多,详情见utl的帮.
+" utl.vim
+" 自制的工程管理插件
+" project.vim
+" 在vim里查看man
+" manpageview.vim
+"if v:version < 704
+"    Bundle 'Pydiction'
+"    Bundle 'Python-mode-klen'
+"endif
+" python_calltips
+" best for python
+
+
+" Bundle 'zipPlugin.vim'
+" Bundle 'pyflakes'
+" Bundle 'pytest'
+" Bundle 'vimballPlugin.vim'
 "-----------------------------------------------------------------
 
 
@@ -676,24 +866,6 @@ set   wildignore=*.bak,*.o,*.e,*~
 set noerrorbells            " 关闭错误信息响铃
 set novisualbell            " 关闭使用可视响铃代替呼叫
 set t_vb=                   " 置空错误铃声的终端代码
-"-----------------------------------------------------------------
-" plugin - NeoComplCache.vim    自动补全插件
-"-----------------------------------------------------------------
-let g:AutoComplPop_NotEnableAtStartup = 1
-let g:NeoComplCache_EnableAtStartup = 1
-let g:NeoComplCache_SmartCase = 1
-let g:NeoComplCache_TagsAutoUpdate = 1
-let g:NeoComplCache_EnableInfo = 1
-let g:NeoComplCache_EnableCamelCaseCompletion = 1
-let g:NeoComplCache_MinSyntaxLength = 3
-let g:NeoComplCache_EnableSkipCompletion = 1
-let g:NeoComplCache_SkipInputTime = '0.5'
-let g:NeoComplCache_SnippetsDir = $VIMFILES.'/snippets'
-" <TAB> completion.
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-" snippets expand key
-imap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
-smap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
 
 " Fast saving
 nmap <leader>w :w!<cr>
