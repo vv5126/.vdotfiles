@@ -428,8 +428,12 @@ endif
 "---------------------------------------------------
 
  Bundle 'Lokaltog/vim-powerline'
-"  https://github.com/eugeii/consolas-powerline-vim.git
-"  https://github.com/powerline/fonts.git
+" mkfontscale
+" mkfontdir
+" fc-cache -vf
+" rm ~/.vim/bundle/vim-powerline/*.cache
+" https://github.com/eugeii/consolas-powerline-vim.git
+" https://github.com/powerline/fonts.git
  set guifont=PowerlineSymbols\ for\ Powerline
  let g:Powerline_symbols = 'fancy'
 
