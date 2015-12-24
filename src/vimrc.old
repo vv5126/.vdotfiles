@@ -428,10 +428,6 @@ set report=0 " 通过使用: commands命令，告诉我们文件的哪一行被�
 " 一般设置
 set viminfo+=! " 保存全局变量
 "set backup
-" 语法高亮
-set syntax=on
-syntax on                   " 自动语法高亮
-syntax enable "Enable syntax hl
 set magic " 设置正表达式
 set magic "Set magic on, for regular expressions
 set backspace=indent,eol,start " 这指明在插入模式下在哪里允许 <BS>
@@ -452,81 +448,32 @@ nmap<Leader>m :wa<CR>:make<CR>:cw<CR><CR>
 " :make<CR>执行make命令，:cw<CR>显示quickfix（如果有编译错误或警告时），
 " 最后的<CR>消除make命令执行完成屏幕上“PressENTER or type command to continue”的输入等待提示信息。
 
-" winmanager 
-"
-let g:winManagerWindowLayout='NERDTree|BufExplorer'
-"let g:winManagerWindowLayout = 'FileExplorer|TagList'
-"let g:winManagerWindowLayout = 'FileExplorer'
-let g:winManagerWidth = 25
-let g:defaultExplorer = 0
-nmap wm :WMToggle<cr>
-nmap <C-W><C-F> :FirstExplorerWindow<cr>
-nmap <C-W><C-B> :BottomExplorerWindow<cr>
-autocmd BufWinEnter \[Buf\ List\] setl nonumber
-
-" minibufexpl插件的一般设置
-let g:miniBufExplMapWindowNavVim    = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs  = 1
-let g:miniBufExplModSelTarget       = 1
-"let g:miniBufExplorerMoreThanOne   = 1 "自动打开
-let g:tagbar_left                   = 1 "Tagbar放到左边
-
 ccglue
 Bundle 'tpope/vim-commentary' " Commentary: 快速注释。
 man.vim
-cecutil.vba.gz
 netrw.vba.gz
 vimball.vim
 showmarks.vim
 tlib.vba.gz
 bbs.vba.gz
 hookcursormoved.vba.gz
-taglist_45.zip
 getscript.vba.gz
-sketch.zip
-Viki.vba.gz
 pyclewn
 echofunc.vim "函数提示
-Tagbar支持面向对象+
 MiniBufExplorer
-" drawit画图
-" conquetermvim中打开终端的功能+
-" csExplorer提供列出配色列表的功+
-" visincr提供生成数列的功能+
-" fencview字符编码识别+
-" visincr提供生成数列的功能+ :SO % 后visincr.vba.gz会消失变成visincr.vba
-" cmdline completion命令行模式的补全+
-"项目管理插件
-" project
-" bufexplorer打开历史文件列表以达到快速切换文件+
-" genutils底层的lookupfile的功能支持+
-" FuzzyFinder缓冲器/文件/命令/标签/等浏览器的模糊匹配 +
-" l9FuzzyFinder底层依耐+
-"c/c++ 辅助
-" c.vim
-" stl.vimstl语法高亮+
-" stlrefvimstl帮助 +
-" checksyntax.vba语法检查+
-(跟lookupfile.vim的F5冲突了，把checksyntax.vimF5改成F6)
+conquetermvim中打开终端的功能+
+fencview字符编码识别+
+cmdline completion命令行模式的补全+
+genutils底层的lookupfile的功能支持+
+l9FuzzyFinder底层依耐+
+stl.vimstl语法高亮+
+stlrefvimstl帮助 +
 auto.vim自动排版，可以少打很多空格
 "-----------------------------------------------------------------
+" bufexplorer打开历史文件列表以达到快速切换文件+
 " plugin - bufexplorer.vim Buffers切换
 " \be 全屏方式查看全部打开的文件列表
 " \bv 左右方式查看   \bs 上下方式查看
-"-----------------------------------------------------------------
-" plugin - DoxygenToolkit.vim  由注释生成文档，并且能够快速生成函数标准注释
-"-----------------------------------------------------------------
-let g:DoxygenToolkit_authorName="Asins - asinsimple AT gmail DOT com"
-let g:DoxygenToolkit_briefTag_funcName="yes"
-map <leader>da :DoxAuthor<CR>
-map <leader>df :Dox<CR>
-map <leader>db :DoxBlock<CR>
-map <leader>dc a /*  */<LEFT><LEFT><LEFT>
-"-----------------------------------------------------------------
-" plugin - matchit.vim   对%命令进行扩展使得能在嵌套标签和语句之间跳转
-" % 正向匹配      g% 反向匹配
-" [% 定位块首     ]% 定位块尾
 "-----------------------------------------------------------------
 
 function! <SID>BufcloseCloseIt()

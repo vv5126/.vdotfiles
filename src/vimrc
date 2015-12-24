@@ -505,6 +505,15 @@ let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排�
 Bundle 'winmanager'
 " let g:winManagerWindowLayout='NERDTree|TagList'
 nmap wm :if IsWinManagerVisible() <BAR> WMToggle<CR> <BAR> else <BAR> WMToggle<CR>:q<CR> endif <CR><CR>
+let g:winManagerWindowLayout='NERDTree|BufExplorer'
+"let g:winManagerWindowLayout = 'FileExplorer|TagList'
+"let g:winManagerWindowLayout = 'FileExplorer'
+let g:winManagerWidth = 25
+let g:defaultExplorer = 0
+nmap wm :WMToggle<cr>
+nmap <C-W><C-F> :FirstExplorerWindow<cr>
+nmap <C-W><C-B> :BottomExplorerWindow<cr>
+autocmd BufWinEnter \[Buf\ List\] setl nonumber
 "---------------------------------------------------
  Bundle 'biogoo.vim'
  Bundle 'gtrans.vim'
@@ -535,6 +544,7 @@ Bundle 'jlanzarotta/bufexplorer'
 "---------------------------------------------------
 
 Bundle 'majutsushi/tagbar'
+let g:tagbar_left                   = 1 "Tagbar放到左边
 nmap tb :Tagbar<cr>
 " let tagbar_ctags_bin=ctags
 let tagbar_width=25
@@ -629,7 +639,6 @@ let g:calendar_frame = 'default'
 
 " vim-scripts repos
 " Bundle 'ctrlp.vim'
-" Bundle 'matchit.zip'
 " Bundle 'ShowTrailingWhitespace'
 " Bundle 'rosenfeld/conque-term'
 " Bundle 'gundo'
@@ -698,6 +707,12 @@ let g:calendar_frame = 'default'
 
 " 切换缓冲区
 " Bundle 'minibufexpl.vim'
+" minibufexpl插件的一般设置
+let g:miniBufExplMapWindowNavVim    = 1
+let g:miniBufExplMapWindowNavArrows = 1
+let g:miniBufExplMapCTabSwitchBufs  = 1
+let g:miniBufExplModSelTarget       = 1
+"let g:miniBufExplorerMoreThanOne   = 1 "自动打开
 
 " original repos on github
 " Bundle 'mattn/emmet-vim'
@@ -714,6 +729,7 @@ let g:calendar_frame = 'default'
 " c/c++ support,让你用编写c/c++程序时如虎添翼,有很多贴心的功能,每个功能都有快捷键,不过一部分和NERD_comments冲突 如果经常编写一些单文件的c程序,但是不想写makefile,用这个,他帮你完成,F9编译并链接,ctrl-F9运行
 " c.vim
 
+" FuzzyFinder缓冲器/文件/命令/标签/等浏览器的模糊匹配 +
 " electbuf.vim相比，它少了对多个buf的批量选择和处理
 " mru.vim -> fuzzyfinder.vim:FuzzyFinderMruFile
 " favex.vim -> fuzzyfinder.vim:FuzzyFinderFavFile
@@ -737,6 +753,14 @@ let g:calendar_frame = 'default'
 
 " 添加doxygen注释
 " DoxygenToolkit.vim
+" plugin - DoxygenToolkit.vim  由注释生成文档，并且能够快速生成函数标准注释
+"-----------------------------------------------------------------
+let g:DoxygenToolkit_authorName="Asins - asinsimple AT gmail DOT com"
+let g:DoxygenToolkit_briefTag_funcName="yes"
+map <leader>da :DoxAuthor<CR>
+map <leader>df :Dox<CR>
+map <leader>db :DoxBlock<CR>
+map <leader>dc a /*  */<LEFT><LEFT><LEFT>
 
 " FavEx : Favorite file and directory explorer ,可以添加目录和文件到收藏夹，可以把经常编辑的文件添加到收藏夹来，在文件打开以后，\ff新增文件到收藏夹，\fd新增目录到收藏夹
 " favex.vim
@@ -752,6 +776,10 @@ let g:calendar_frame = 'default'
 
 " 扩展了vim的%功能,让%可以匹配的,不再仅仅是括号,支持多种语言.必备插件之一
 " matchit.vim
+" Bundle 'matchit.zip'
+" plugin - matchit.vim   对%命令进行扩展使得能在嵌套标签和语句之间跳转
+" % 正向匹配      g% 反向匹配
+" [% 定位块首     ]% 定位块尾
 
 " Address, 给vim增加MRU功能,也就是保留最近打开的文件记录,:MRU打开,q退出,很方便,有过一个支持菜单的类似的插件 不过对于我这样的不用菜单的用户,还是这个命令行的好用一点,因为经常使用,所以我映射到了F2
 " Mru
@@ -793,6 +821,7 @@ let g:calendar_frame = 'default'
 " visincrPlugin.vim
 
 " 给vim增加生成递增或者递减数列的功能,支持十进制,十六进制,日期,星期等,功能强大灵活
+" visincr提供生成数列的功能+ :SO % 后visincr.vba.gz会消失变成visincr.vba
 " visincr.vim
 
 " 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
