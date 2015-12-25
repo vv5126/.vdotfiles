@@ -637,28 +637,29 @@ let g:calendar_frame = 'default'
 
 "---------------------------------------------------
 
+"显示缩进对齐线
+Bundle 'Yggdroot/indentLine'
+map <leader>il :IndentLinesToggle<CR>
+
+"---------------------------------------------------
 " vim-scripts repos
 " Bundle 'ctrlp.vim'
 " Bundle 'ShowTrailingWhitespace'
+"在vim在模拟Terminal
 " Bundle 'rosenfeld/conque-term'
-" Bundle 'gundo'
-" Bundle 'sjl/gundo.vim'
+Bundle 'sjl/gundo.vim'
 " Bundle 'ack'
 " Bundle 'vim-git'
 " Bundle 'pep8'
 " Bundle 'TaskList.vim'
-" Bundle 'vim-makegreen'
-" Bundle 'xml.vim'
+Bundle 'reinh/vim-makegreen'
 " Bundle 'tpope/vim-surround'
-" Bundle 'vimwiki.vim'
 " Bundle 'getscriptPlugin.vim'
 " Bundle 'grep.vim'
 " Bundle 'gzip.vim'
-" Bundle 'matchparen.vim'
 " Bundle 'rrhelper.vim'
 " Bundle 'spellfile.vim'
 " Bundle 'tarPlugin.vim'
-" Bundle 'tohtml.vim'
 " Bundle 'winfileexplorer.vim'
 " Bundle 'wintagexplorer.vim'
 " Bundle 'bash-support.vim'
@@ -666,7 +667,6 @@ let g:calendar_frame = 'default'
 " Bundle 'cuteErrorMarker.vim'
 " Bundle 'mru.vim'
 " Bundle 'JSON.vim'
-" Bundle 'PasteBin.vim'
 " Bundle 'gtags.vim'
 " Bundle 'gtk-vim-syntax'
 " Bundle 'jQuery'
@@ -690,11 +690,8 @@ let g:calendar_frame = 'default'
 " Bundle 'Shougo/unite.vim'
 " Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
 " Bundle 'Shougo/vimshell.vim'
-" Bundle 'Yggdroot/indentLine'
 " Bundle 'chrisbra/csv.vim'
 " Bundle 'cscope_macros.vim'
-" Bundle 'jsfaint/gen_tags.vim'
-" Bundle 'mbbill/fencview'
 " Bundle 'mhinz/vim-signify'
 " Bundle 'mhinz/vim-startify'
 " Bundle 'osyo-manga/unite-quickfix'
@@ -834,6 +831,14 @@ map <leader>dc a /*  */<LEFT><LEFT><LEFT>
 " yankring.vim
 "-----------------------------------------------------------------
 "unused
+"查看和自动识别文件的编码格式
+" Bundle 'mbbill/fencview'
+" Bundle 'jsfaint/gen_tags.vim'
+" Bundle 'PasteBin.vim'
+" Bundle 'tohtml.vim'
+" Bundle 'matchparen.vim'
+" Bundle 'xml.vim'
+" Bundle 'vimwiki.vim'
 " vim的wiki
 " viki.vim
 " toansi.vim
@@ -866,7 +871,7 @@ endif
 
 " wgao add
 nmap  <F4> :!mk<cr>
-nmap  <F9> :!mktag &<cr>
+nmap  <S-F4> :!mktag &<cr>
 
 
 "1.任意方式对齐
