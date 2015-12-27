@@ -1,6 +1,12 @@
 "必须的设置：
+
+" 侦测文件类型
  filetype off
- filetype plugin indent on
+"载入文件类型插件
+ filetype plugin on
+"为特定文件类型载入相关缩进文件
+ filetype indent on
+"  filetype plugin indent on
 "打开高亮
  syntax enable
  syntax on
@@ -28,6 +34,7 @@
 "字符设置
  set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5
 "set encoding=utf-8
+" set helplang=cn
  set scrolloff=3 " 光标移动到buffer的顶部和底部时保持10行距离
 "新建文件编码
  set fenc=utf-8
@@ -133,6 +140,12 @@ set ignorecase smartcase    " 搜索时忽略大小写，但在有一个或以�
  nmap <leader>q :execute "cd" expand("%:h")<CR>
 "搜索替换
  nmap <leader>s :,s///c
+
+"选中状态下 Ctrl+c 复制
+ vmap <C-c> "+y
+
+" 设置当文件被改动时自动载入
+" set autoread
 
 "取消粘贴缩进
  nmap <leader>p :set paste<CR>
@@ -427,15 +440,15 @@ endif
 
 "---------------------------------------------------
 
- Bundle 'Lokaltog/vim-powerline'
-" mkfontscale
-" mkfontdir
-" fc-cache -vf
-" rm ~/.vim/bundle/vim-powerline/*.cache
-" https://github.com/eugeii/consolas-powerline-vim.git
-" https://github.com/powerline/fonts.git
- set guifont=PowerlineSymbols\ for\ Powerline
- let g:Powerline_symbols = 'fancy'
+"  Bundle 'Lokaltog/vim-powerline'
+" " mkfontscale
+" " mkfontdir
+" " fc-cache -vf
+" " rm ~/.vim/bundle/vim-powerline/*.cache
+" " https://github.com/eugeii/consolas-powerline-vim.git
+" " https://github.com/powerline/fonts.git
+"  set guifont=PowerlineSymbols\ for\ Powerline
+"  let g:Powerline_symbols = 'fancy'
 
 "---------------------------------------------------
 
@@ -479,6 +492,7 @@ let Tlist_Inc_Winwidth=0
 "---------------------------------------------------
 
 " 一些插件依赖的库函数
+"   genutils(2.5)底层的lookupfile的功能支持+
  Bundle 'genutils'
 
 "---------------------------------------------------
@@ -645,8 +659,6 @@ map <leader>il :IndentLinesToggle<CR>
 " vim-scripts repos
 " Bundle 'ctrlp.vim'
 " Bundle 'ShowTrailingWhitespace'
-"在vim在模拟Terminal
-" Bundle 'rosenfeld/conque-term'
 Bundle 'sjl/gundo.vim'
 " Bundle 'ack'
 " Bundle 'vim-git'
@@ -655,6 +667,7 @@ Bundle 'sjl/gundo.vim'
 Bundle 'reinh/vim-makegreen'
 " Bundle 'tpope/vim-surround'
 " Bundle 'getscriptPlugin.vim'
+" 工程内查找与替换+
 " Bundle 'grep.vim'
 " Bundle 'gzip.vim'
 " Bundle 'rrhelper.vim'
@@ -791,7 +804,8 @@ map <leader>dc a /*  */<LEFT><LEFT><LEFT>
 " netrwclean.vim
 
 " 给选中的文字加上引号,支持( { [ < ' " `,选中后,\加上你想要添加的符号,比如选中abc后,\(,得到(abc)
-" parenquote.vim
+" Bundle 'parenquote'
+" Bundle 'jiangmiao/auto-pairs'
 
 " 快速打开关闭quickfix window
 " qfixtoggle.vim
@@ -831,37 +845,46 @@ map <leader>dc a /*  */<LEFT><LEFT><LEFT>
 " yankring.vim
 "-----------------------------------------------------------------
 "unused
-"查看和自动识别文件的编码格式
+" 查看和自动识别文件的编码格式
 " Bundle 'mbbill/fencview'
-" Bundle 'jsfaint/gen_tags.vim'
-" Bundle 'PasteBin.vim'
-" Bundle 'tohtml.vim'
-" Bundle 'matchparen.vim'
-" Bundle 'xml.vim'
-" Bundle 'vimwiki.vim'
 " vim的wiki
 " viki.vim
-" toansi.vim
+" 在vim在模拟Terminal
+" Bundle 'rosenfeld/conque-term'
 " 将语法高亮转成 BBS 上的彩色
-" LargeFile.vim
+" toansi.vim
 " 让大文件打开快一点
+" LargeFile.vim
 " 给vim增加url的识别功能,但是功能远不只是支持url,还有更多,详情见utl的帮.
 " utl.vim
 " 自制的工程管理插件
 " project.vim
 " 在vim里查看man
 " manpageview.vim
+
+"-----------------------------------------------------------------
+"python 插件
 "if v:version < 704
 "    Bundle 'Pydiction'
 "    Bundle 'Python-mode-klen'
 "endif
-" python_calltips
 " best for python
-
-
-" Bundle 'zipPlugin.vim'
-" Bundle 'pyflakes'
+" python_calltips
+"   pydiction       补全提示+
+let g:pydiction_location = '.vim/pydiction-1.2/complete-dict'
+"   pythoncomplete  vim自带的python补全提示
+"   VimPdb          调试Python程序+
+" Bundle 'pyflakes' "Python代码检查+
 " Bundle 'pytest'
+"-----------------------------------------------------------------
+
+" Bundle 'jsfaint/gen_tags.vim'
+" Bundle 'PasteBin.vim'
+" Bundle 'tohtml.vim'
+" Bundle 'matchparen.vim'
+" Bundle 'xml.vim'
+" Bundle 'vimwiki.vim'
+" Bundle 'zipPlugin.vim'
 " Bundle 'vimballPlugin.vim'
 "-----------------------------------------------------------------
 
@@ -882,7 +905,6 @@ nmap  <S-F4> :!mktag &<cr>
 
 " wgao add OK
 
-let g:pydiction_location = '.vim/pydiction-1.2/complete-dict'
 "支持代码折叠
 "set foldlevel=3
 "set foldenable      " 允许折叠
@@ -967,5 +989,29 @@ inoremap <C-l> <Esc><C-W>l
 
 " 带有如下符号的单词不要被换行分割
 "set iskeyword+=_,$,@,%,#,-
-" set helplang=cn
-" set encoding=utf-8
+
+" 映射全选+复制 ctrl+a
+" map <C-A> ggVGY
+" map! <C-A> <Esc>ggVGY
+"
+" 命令行（在状态行下）的高度，默认为1
+set cmdheight=1
+
+" Bash like keys for the command line
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <C-K> <C-U>
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
+
+"共享剪贴板
+set clipboard+=unnamed
+map <F12> gg=G
+" 在行和段开始处使用制表符
+set smarttab
+
+
+set guifont=Courier_New:h10:cANSI   " 设置字体
+
+" 移除高亮
+
