@@ -1,21 +1,21 @@
 "必须的设置：
 
-" 侦测文件类型
+"关闭文件类型侦测
  filetype off
-"载入文件类型插件
+"根据侦测到的不同类型加载对应的插件
  filetype plugin on
 "为特定文件类型载入相关缩进文件
  filetype indent on
-"  filetype plugin indent on
-"打开高亮
+" 开启语法高亮功能
  syntax enable
+" 允许用指定语法高亮配色方案替换默认方案
  syntax on
-"不要兼容vi
+" 关闭兼容模式, 不要兼容vi
  set nocompatible "不要vim模仿vi模式，建议设置，否则会有很多不兼容的问题
 
-"使用color solarized
+"配色方案
+ colorscheme mycolor
  set background=dark "背景使用黑色
- colorscheme mycolor         " 设定配色方案
 "terminal下面的背景问题
  let g:solarized_termtrans=1
  let g:solarized_termcolors=256
@@ -25,30 +25,37 @@
  set modelines=0
 
 "tab键的设定
- set tabstop=4               " 设定 tab 长度为 4
- set shiftwidth=4            " 设定 << 和 >> 命令移动时的宽度为 4
- set softtabstop=4           " 使得按退格键时可以一次删掉 4 个空格
- set expandtab               " 用空格代替制表符
-"set noexpandtab             " 不要用空格代替制表符
+"设置编辑时制表符占用空格数
+ set tabstop=4
+"设置格式化时制表符占用空格数
+ set shiftwidth=4
+"让 vim 把连续数量的空格视为一个制表符, 使得按退格键时可以一次删掉 4 个空格
+ set softtabstop=4
+"用空格代替制表符
+ set expandtab
+"不要用空格代替制表符
+"set noexpandtab
 
 "字符设置
  set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5
 "set encoding=utf-8
-" set helplang=cn
+"set helplang=cn
  set scrolloff=3 " 光标移动到buffer的顶部和底部时保持10行距离
 "新建文件编码
  set fenc=utf-8
  set autoindent
  set hidden                  " 允许在有未保存的修改时切换缓冲区，此时的修改由 vim 负责保存
- set cursorline              " 突出显示当前行
+"高亮显示当前行/列
+ set cursorline
 "set cursorcolumn
  set ttyfast
+"显示光标当前位置
  set ruler                   " 打开状态栏标尺
  set backspace=indent,eol,start
  set laststatus=2            " 启动显示状态行(1),总是显示状态行(2)
 "相对行号 要想相对行号起作用要放在显示行号后面
 "set relativenumber
-"显示行号
+"开启行号显示
  set number
 "无限undo
 "set undofile
@@ -65,13 +72,20 @@
 
 set ignorecase smartcase    " 搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
 "设置大小写敏感和聪明感知(小写全搜，大写完全匹配)
+" 搜索时大小写不敏感
  set ignorecase
  set smartcase
 "set gdefault
+" 开启实时搜索功能
  set incsearch
 " 高亮显示匹配的括号
  set showmatch
  set hlsearch
+"搜索逐字符高亮
+set incsearch               " 输入搜索内容时就显示搜索结果
+set hlsearch                " 搜索时高亮显示被找到的文本
+" 高亮显示搜索结果
+set hlsearch
 
 "加入html标签配对
 "runtime macros/matchit.vim
@@ -180,8 +194,6 @@ set ignorecase smartcase    " 搜索时忽略大小写，但在有一个或以�
  set mouse=a
 " 查找并启用tag
  set tags=tags;
-"允许插件
-filetype plugin on
 
 " Space to command mode.
  nnoremap <space> :
@@ -615,6 +627,22 @@ let g:calendar_frame = 'default'
 
 "---------------------------------------------------
 
+"可视化的方式能将相同缩进的代码关联起来
+ Bundle 'nathanaelkane/vim-indent-guides'
+ " 随 vim 自启动
+ let g:indent_guides_enable_on_vim_startup=1
+ " 从第二层开始可视化显示缩进
+ let g:indent_guides_start_level=2
+ " 色块宽度
+ let g:indent_guides_guide_size=1
+ " 快捷键 i 开/关缩进可视化
+ :nmap <silent> <Leader>i <Plug>IndentGuidesToggle
+
+"---------------------------------------------------
+"让书签可视化的插件
+ Bundle 'kshenoy/vim-signature'
+"---------------------------------------------------
+
 "Fugitive: Git 集成，强烈推荐！Plugin 'tpope/vim-fugitive'
  Bundle 'fugitive.vim'
 "在两端加上、修改、删除匹配的符号如（）
@@ -633,11 +661,13 @@ let g:calendar_frame = 'default'
 "---------------------------------------------------
 
 " Bundle 'SirVer/ultisnips'
+" Bundle 'UltiSnips'
 " " Trigger configuration. Do not use <tab>
 " "if you use https://github.com/Valloric/YouCompleteMe.
 " let g:UltiSnipsExpandTrigger="<c-j>"
 " let g:UltiSnipsJumpForwardTrigger="<c-j>"
 " let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+" Bundle 'UltiSnips'
 
 "---------------------------------------------------
 
@@ -656,6 +686,17 @@ Bundle 'Yggdroot/indentLine'
 map <leader>il :IndentLinesToggle<CR>
 
 "---------------------------------------------------
+
+" 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。快捷键速记法：search in project
+" ack 后端， 需要ack版本不低于2.0
+" 可以键入 p 键，将在右侧子窗口中给出该匹配项的完整代码，而不再仅有前后几行。
+" 不想跳至任何匹配项，可以直接键入  q 退出 ctrlsf.vim；如果有钟意的匹配项，
+" 光标定位该项后回车，立即跳至新 buffer 中对应位置。
+" Bundle 'dyng/ctrlsf.vim'
+" Bundle 'ack.vim'
+
+nnoremap <Leader>sp :CtrlSF<CR>
+"---------------------------------------------------
 " vim-scripts repos
 " Bundle 'ctrlp.vim'
 " Bundle 'ShowTrailingWhitespace'
@@ -668,7 +709,7 @@ Bundle 'reinh/vim-makegreen'
 " Bundle 'tpope/vim-surround'
 " Bundle 'getscriptPlugin.vim'
 " 工程内查找与替换+
-" Bundle 'grep.vim'
+Bundle 'grep.vim'
 " Bundle 'gzip.vim'
 " Bundle 'rrhelper.vim'
 " Bundle 'spellfile.vim'
@@ -684,7 +725,6 @@ Bundle 'reinh/vim-makegreen'
 " Bundle 'gtk-vim-syntax'
 " Bundle 'jQuery'
 " Bundle 'Stormherz/tablify'
-" Bundle 'UltiSnips'
 " Bundle 'guns/ultisnips'
 " Bundle 'jiazhoulvke/MarkdownView'
 " Bundle 'jiazhoulvke/googletranslate'
@@ -716,13 +756,19 @@ Bundle 'reinh/vim-makegreen'
 " Bundle 'repeat.vim'
 
 " 切换缓冲区
-" Bundle 'minibufexpl.vim'
 " minibufexpl插件的一般设置
 let g:miniBufExplMapWindowNavVim    = 1
 let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs  = 1
 let g:miniBufExplModSelTarget       = 1
 "let g:miniBufExplorerMoreThanOne   = 1 "自动打开
+
+Bundle 'fholgado/minibufexpl.vim'
+" 显示/隐藏 MiniBufExplorer 窗口
+map <Leader>bl :MBEToggle<cr>
+" buffer 切换快捷键
+map <C-Tab> :MBEbn<cr>
+map <C-S-Tab> :MBEbp<cr>
 
 " original repos on github
 " Bundle 'mattn/emmet-vim'
@@ -896,6 +942,13 @@ endif
 nmap  <F4> :!mk<cr>
 nmap  <S-F4> :!mktag &<cr>
 
+"定义快捷键的前缀，即<Leader>
+ let mapleader=";"
+
+" No sound on errors
+set noerrorbells            " 关闭错误信息响铃
+set novisualbell            " 关闭使用可视响铃代替呼叫
+set t_vb=                   " 置空错误铃声的终端代码
 
 "1.任意方式对齐
 "2.自动排版
@@ -922,11 +975,6 @@ nmap <F3> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 
 set   wildignore=*.bak,*.o,*.e,*~
 
-" No sound on errors
-set noerrorbells            " 关闭错误信息响铃
-set novisualbell            " 关闭使用可视响铃代替呼叫
-set t_vb=                   " 置空错误铃声的终端代码
-
 " Fast saving
 nmap <leader>w :w!<cr>
 nmap <leader>qq :qa!<cr>
@@ -948,9 +996,6 @@ map <M-F2> :tabnew<CR>
 "列出当前目录文件
 map <M-F3> :tabnew .<CR>
 
-"搜索逐字符高亮
-set incsearch               " 输入搜索内容时就显示搜索结果
-set hlsearch                " 搜索时高亮显示被找到的文本
 
 set fillchars=vert:\ ,stl:\ " 在被分割的窗口间显示空白，便于阅读,stlnc:\(加了这个wm分割兰有\\\\\\\\\\\\\)
 "To hex modle
@@ -1014,4 +1059,41 @@ set smarttab
 set guifont=Courier_New:h10:cANSI   " 设置字体
 
 " 移除高亮
+" 基于缩进或语法进行代码折叠
+"set foldmethod=indent
+set foldmethod=syntax
+" 启动 vim 时关闭折叠代码
+set nofoldenable
 
+" 替换函数。参数说明：
+" confirm：是否替换前逐一确认
+" wholeword：是否整词匹配
+" replace：被替换字符串
+function! Replace(confirm, wholeword, replace)
+
+    wa
+    let flag = ''
+    if a:confirm
+        let flag .= 'gec'
+    else
+        let flag .= 'ge'
+    endif
+    let search = ''
+    if a:wholeword
+        let search .= '\<' . escape(expand('<cword>'), '/\.*$^~[') . '\>'
+    else
+        let search .= expand('<cword>')
+    endif
+    let replace = escape(a:replace, '/\&~')
+    execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
+endfunction
+
+" 不确认、非整词
+nnoremap <Leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
+" 不确认、整词
+nnoremap <Leader>rw :call Replace(0, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+" 确认、非整词
+nnoremap <Leader>rc :call Replace(1, 0, input('Replace '.expand('<cword>').' with: '))<CR>
+" 确认、整词
+nnoremap <Leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+nnoremap <Leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
