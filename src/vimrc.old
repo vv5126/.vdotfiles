@@ -390,8 +390,6 @@ endif
 
 " 高亮显示普通txt文件（需要txt.vim脚本）
 " 搜索和匹配 
-"set matchtime=2             " 短暂跳转到匹配括号的时间
-set matchtime=5 " 匹配括号高亮的时间（单位是十分之一秒）
 set nowrapscan              " 禁止在搜索到文件两端时重新搜索
 "set statusline=%F%m%r%h%w\[POS=%l,%v][%p%%]\%{strftime(\”%d/%m/%y\ -\
 %H:%M\”)} 
@@ -402,7 +400,6 @@ set report=0 " 通过使用: commands命令，告诉我们文件的哪一行被�
 set viminfo+=! " 保存全局变量
 "set backup
 set magic " 设置正表达式
-set magic "Set magic on, for regular expressions
 set backspace=indent,eol,start " 这指明在插入模式下在哪里允许 <BS>
 删除光标前面的字符。
 " 逗号分隔的三个值分别指：行首的空白字符，换行符和插入模式开始处之前的字符。
@@ -422,17 +419,14 @@ nmap<Leader>m :wa<CR>:make<CR>:cw<CR><CR>
 " 最后的<CR>消除make命令执行完成屏幕上“PressENTER or type command to continue”的输入等待提示信息。
 
 ccglue
-Bundle 'tpope/vim-commentary' " Commentary: 快速注释。
 man.vim
 netrw.vba.gz
 showmarks.vim
 tlib.vba.gz
-bbs.vba.gz
 hookcursormoved.vba.gz
 getscript.vba.gz
 pyclewn
 echofunc.vim "函数提示
-MiniBufExplorer
 conqueterm vim中打开终端的功能+
 fencview 字符编码识别+
 cmdline completion命令行模式的补全+
@@ -782,12 +776,6 @@ nnoremap <Leader>kw <C-W>k
 nnoremap <Leader>jw <C-W>j
 " 定义快捷键在结对符之间跳转，助记pair
 nmap <Leader>pa %
-" 增强模式中的命令行自动完成操作
-set wildmenu
-" vim 自身命令行模式智能补全
-set wildmenu
-" 禁止光标闪烁
-set gcr=a:block-blinkon0
 " 禁止显示滚动条
 set guioptions-=l
 set guioptions-=L
@@ -796,16 +784,6 @@ set guioptions-=R
 " 禁止显示菜单和工具条
 set guioptions-=m
 set guioptions-=T
-" 将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
-fun! ToggleFullscreen()
-  call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
-endf
-" 全屏开/关快捷键
-map <silent> <F11> :call ToggleFullscreen()<CR>
-" 启动 vim 时自动全屏
-autocmd VimEnter * call ToggleFullscreen()
-" 总是显示状态栏
-set laststatus=2
 " 设置 gvim 显示字体
 set guifont=YaHei\ Consolas\ Hybrid\ 11.5
 阅读优秀开源项目源码是提高能力的重要手段

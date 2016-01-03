@@ -238,7 +238,7 @@ else
 "和snipmate 冲突
 if v:version == 704
 "    has('python')    Bundle 'Valloric/YouCompleteMe'
-"Bundle 'Valloric/YouCompleteMe'
+" Bundle 'Valloric/YouCompleteMe'
  nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
  nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
  let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'
@@ -628,7 +628,7 @@ let g:calendar_frame = 'default'
 "---------------------------------------------------
 
 "可视化的方式能将相同缩进的代码关联起来
- Bundle 'nathanaelkane/vim-indent-guides'
+"  Bundle 'nathanaelkane/vim-indent-guides'
  " 随 vim 自启动
  let g:indent_guides_enable_on_vim_startup=1
  " 从第二层开始可视化显示缩进
@@ -636,7 +636,7 @@ let g:calendar_frame = 'default'
  " 色块宽度
  let g:indent_guides_guide_size=1
  " 快捷键 i 开/关缩进可视化
- :nmap <silent> <Leader>i <Plug>IndentGuidesToggle
+"  :nmap <silent> <Leader>i <Plug>IndentGuidesToggle
 
 "---------------------------------------------------
 "让书签可视化的插件
@@ -821,6 +821,9 @@ map <leader>dc a /*  */<LEFT><LEFT><LEFT>
 " FavEx : Favorite file and directory explorer ,可以添加目录和文件到收藏夹，可以把经常编辑的文件添加到收藏夹来，在文件打开以后，\ff新增文件到收藏夹，\fd新增目录到收藏夹
 " favex.vim
 
+" Commentary: 快速注释。
+" Bundle 'tpope/vim-commentary'
+
 " fencview.vim
 " mbbill的编码识别插件
 
@@ -949,6 +952,9 @@ nmap  <S-F4> :!mktag &<cr>
 set noerrorbells            " 关闭错误信息响铃
 set novisualbell            " 关闭使用可视响铃代替呼叫
 set t_vb=                   " 置空错误铃声的终端代码
+
+" vim 自身命令行模式智能补全
+ set wildmenu
 
 "1.任意方式对齐
 "2.自动排版
@@ -1097,3 +1103,16 @@ nnoremap <Leader>rc :call Replace(1, 0, input('Replace '.expand('<cword>').' wit
 " 确认、整词
 nnoremap <Leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
 nnoremap <Leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+
+" 全屏开/关快捷键
+" map <silent> <F11> :call ToggleFullscreen()<CR>
+" 启动 vim 时自动全屏
+" autocmd VimEnter * call ToggleFullscreen()
+" 将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
+fun! ToggleFullscreen()
+  call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
+endf
+
+" 禁止光标闪烁
+set gcr=a:block-blinkon0
+set matchtime=5 " 匹配括号高亮的时间（单位是十分之一秒）
