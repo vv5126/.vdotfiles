@@ -1,5 +1,16 @@
 #!/bin/bash
 
+function dosomething() {
+    local file
+    [ -n "$the_image" ] && {
+        file=$(find -name "$the_image")
+		[ "$addtime" = "1" ] && the_image=$the_image-$(date +%Y-%m-%d_%H:%M)
+		[ -n "$note" ] && the_image=$the_image-$note
+        smkdir $target_dir
+        scp "$file" "$target_dir/$the_image"
+    }
+}
+
 function mk() {
 	if [ $# -gt 0 ];then
 		if [ $1 == "all" ]; then
@@ -13,6 +24,7 @@ function mk() {
                 cp -f $(find ~/GBS-ROOT -name $target_name) ./out 2>/dev/null
                 cd out
                 unrpm $target_name
+                dosomething
             fi
 		fi
 	fi
@@ -25,7 +37,7 @@ function init(){
 	repositories_type='git'
 	git_remote=$(git remote -v | head -2 | tail -1 | awk '{print $2}')
 	git_branch=$(git branch | grep '*' | awk '{print $2}')
-	# target_dir='$VGL_BOARDS/$forBOARD-$forOS-imgs'
+	target_dir='$VGL_BOARDS/$forOS-debug'
 
     while read line; do
         if [[ "$line" =~ "Name:" ]]; then
