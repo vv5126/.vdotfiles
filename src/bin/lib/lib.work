@@ -153,27 +153,27 @@ local PROJECT_DIR_NAME=
 local PROJECT_DIR=
 
 while [ "$COMP_DIR" != "$DIR/" ];do
-	if [ -f "$DIR/k.sh" ]; then
+	if [ -f "$DIR/.k.sh" ]; then
 		PROJECT_DIR_NAME='KERNEL_DIR'
 		PROJECT_DIR=$DIR
 		break
-	elif [ -f "$DIR/u.sh" ]; then
+	elif [ -f "$DIR/.u.sh" ]; then
 		PROJECT_DIR_NAME='UBOOT_DIR'
 		PROJECT_DIR=$DIR
 		break
-	elif [ -f "$DIR/a.sh" ]; then
+	elif [ -f "$DIR/.a.sh" ]; then
 		PROJECT_DIR_NAME='ANDROID_DIR'
 		PROJECT_DIR=$DIR
 		break
-	elif [ -f "$DIR/t.sh" ]; then
+	elif [ -f "$DIR/.t.sh" ]; then
 		PROJECT_DIR_NAME='TIZEN_DIR'
 		PROJECT_DIR=$DIR
 		break
-	elif [ -f "$DIR/m.sh" ]; then
+	elif [ -f "$DIR/.m.sh" ]; then
 		PROJECT_DIR_NAME='MODELE_DIR'
 		PROJECT_DIR=$DIR
 		break
-	elif [ -f "$DIR/app.sh" ]; then
+	elif [ -f "$DIR/.app.sh" ]; then
 		PROJECT_DIR_NAME='NORMAL_DIR'
 		PROJECT_DIR=$DIR
 		break

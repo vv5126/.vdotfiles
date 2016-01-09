@@ -1,0 +1,10 @@
+#!/bin/bash
+
+file=/tmp/v.boot.on
+
+if [ ! -f "$file" ]; then
+    touch "$file"
+    nohup ~/.bin/local/vnotify > /dev/null &
+else
+    sleep 1
+fi

@@ -1,0 +1,26 @@
+#!/bin/bash - 
+#===============================================================================
+#
+#          FILE: notify.sh
+# 
+#         USAGE: ./notify.sh 
+# 
+#   DESCRIPTION: 
+# 
+#       OPTIONS: ---
+#  REQUIREMENTS: ---
+#          BUGS: ---
+#         NOTES: ---
+#        AUTHOR: YOUR NAME (), 
+#  ORGANIZATION: 
+#       CREATED: 2016年01月07日 19:58
+#      REVISION:  ---
+#===============================================================================
+
+set -o nounset                              # Treat unset variables as an error
+
+[ ! -f "$VGL_NOTIFY" ] && mknod "$VGL_NOTIFY" pipe
+while true; do
+    str=$(cat $VGL_NOTIFY)
+    notify-send $str
+done

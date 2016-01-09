@@ -19,9 +19,12 @@ function read_key() {
 	fi
 }
 
+nicemount() { (echo "DEVICE PATH TYPE FLAGS" && mount | awk '$2=$4="";1') | column -t; }
+
 ############# will export ##############
 
 export -f mem
 export -f read_key
+export -f nicemount
 
 ########### will export end ############

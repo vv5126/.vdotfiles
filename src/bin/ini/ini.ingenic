@@ -30,5 +30,6 @@ export VGLD_MKDATA=$HOME/.bin/work/mkdata
 	rm .goutputstream* >/dev/null 2>&1
 }
 
-
+# local #
+export VGL_NOTIFY=/tmp/.notify_pipe
 

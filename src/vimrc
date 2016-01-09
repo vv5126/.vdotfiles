@@ -338,8 +338,8 @@ endif
 
 "---------------------------------------------------
 
- Bundle 'cscope.vim'
 if has("cscope")
+ Bundle 'cscope.vim'
     set cscopequickfix=s-,c-,d-,i-,t-,e-
     set csto=0
     set cst
@@ -692,8 +692,11 @@ map <leader>il :IndentLinesToggle<CR>
 " 可以键入 p 键，将在右侧子窗口中给出该匹配项的完整代码，而不再仅有前后几行。
 " 不想跳至任何匹配项，可以直接键入  q 退出 ctrlsf.vim；如果有钟意的匹配项，
 " 光标定位该项后回车，立即跳至新 buffer 中对应位置。
-" Bundle 'dyng/ctrlsf.vim'
-" Bundle 'ack.vim'
+
+if has('ack')
+Bundle 'dyng/ctrlsf.vim'
+Bundle 'ack.vim'
+endif
 
 nnoremap <Leader>sp :CtrlSF<CR>
 "---------------------------------------------------
@@ -716,7 +719,7 @@ Bundle 'grep.vim'
 " Bundle 'tarPlugin.vim'
 " Bundle 'winfileexplorer.vim'
 " Bundle 'wintagexplorer.vim'
-" Bundle 'bash-support.vim'
+Bundle 'bash-support.vim'
 " Bundle 'code_complete.vim'
 " Bundle 'cuteErrorMarker.vim'
 " Bundle 'mru.vim'
@@ -805,7 +808,7 @@ map <C-S-Tab> :MBEbp<cr>
 " cecutil.vim
 
 " cscope的vim插件,提供快捷键操纵cscope,好东东,如果你在用cscope的话
-" cscope_maps.vim
+" Bundle 'cscope_maps.vim'
 
 " 添加doxygen注释
 " DoxygenToolkit.vim

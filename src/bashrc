@@ -3,7 +3,7 @@
 #LD_LIBRARY_PATH=$HOME/project
 #export LD_LIBRARY_PATH
 
-# export  LC_ALL=en_US.UTF-8
+export  LC_ALL=en_US.UTF-8
 
 #export CROSS_COMPILE=mips64el-linux-android-
 
@@ -122,15 +122,15 @@ complete -W "get_status" rp
 
 clear
 
-[ "$VGL_LOCAL_USER" = "$HOSTNAME" ] && {
-	source ~/.bin/local/login
-}
-
 [ "$(uname -n)" != "soft-4" ] && {
-    alias vsync='rsync -url wgao@192.168.4.10:~/.vdotfiles ~'
+    alias vsync='rsync -rl wgao@192.168.4.10:~/.vdotfiles ~'
 }
 
 source $HOME/.bin/base/batchExport $HOME/.bin/base/base.conf
+
+[ "$VGL_LOCAL_USER" = "$HOSTNAME" ] && {
+	source ~/.bin/local/vlogin
+}
 
 export JAVA_HOME=/usr/lib/jvm/java
 export JRE_HOME=${JAVA_HOME}/jre

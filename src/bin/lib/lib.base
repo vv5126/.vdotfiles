@@ -4,6 +4,7 @@ function quickcd() {
 	if [ "$#" -eq 0 -o -d "$1" ]; then
 		cd $1
 	else
+		[ -d "${1%\/*}" ] && { cd "${1%\/*}"; return; }
 		[[ "$1" =~ ":~" ]] && { cd $HOME"${1##*:~}"; return; }
 		[[ "$1" =~ ":" ]] && { cd "${1##*:}"; return; }
 		[ $1 = "-" ] && { cd $OLDPWD; return; }
