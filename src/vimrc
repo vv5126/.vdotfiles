@@ -340,6 +340,32 @@ endif
 
 if has("cscope")
  Bundle 'cscope.vim'
+    set cscopetag
+    set cscopeverbose 
+    " nmap s :cs find s =expand("")   
+    " nmap g :cs find g =expand("")   
+    " nmap c :cs find c =expand("")   
+    " nmap t :cs find t =expand("")   
+    " nmap e :cs find e =expand("")   
+    " nmap f :cs find f =expand("")   
+    " nmap i :cs find i ^=expand("")$
+    " nmap d :cs find d =expand("")   
+    " nmap s :scs find s =expand("")  
+    " nmap g :scs find g =expand("")  
+    " nmap c :scs find c =expand("")  
+    " nmap t :scs find t =expand("")  
+    " nmap e :scs find e =expand("")  
+    " nmap f :scs find f =expand("")  
+    " nmap i :scs find i ^=expand("")$
+    " nmap d :scs find d =expand("")  
+    " nmap s :vert scs find s =expand("")
+    " nmap g :vert scs find g =expand("")
+    " nmap c :vert scs find c =expand("")
+    " nmap t :vert scs find t =expand("")
+    " nmap e :vert scs find e =expand("")
+    " nmap f :vert scs find f =expand("")  
+    " nmap i :vert scs find i ^=expand("")$
+    " nmap d :vert scs find d =expand("")
     set cscopequickfix=s-,c-,d-,i-,t-,e-
     set csto=0
     set cst
@@ -570,10 +596,49 @@ Bundle 'jlanzarotta/bufexplorer'
 "---------------------------------------------------
 
 Bundle 'majutsushi/tagbar'
-let g:tagbar_left                   = 1 "Tagbar放到左边
-nmap tb :Tagbar<cr>
 " let tagbar_ctags_bin=ctags
-let tagbar_width=25
+" 设置 tagbar 子窗口的位置出现在主编辑区的左边 
+let tagbar_left=1 
+" 设置显示／隐藏标签列表子窗口的快捷键。速记：tag list 
+" nnoremap <Leader>tl :TagbarToggle<CR> 
+nmap tb :Tagbar<cr>
+" 设置标签子窗口的宽度 
+let tagbar_width=32 
+" tagbar 子窗口中不显示冗余帮助信息 
+let g:tagbar_compact=1
+" 设置 ctags 对哪些代码元素生成标签
+let g:tagbar_type_cpp = {
+  \ 'kinds' : [
+    \ 'd:macros:1',
+    \ 'g:enums',
+    \ 't:typedefs:0:0',
+    \ 'e:enumerators:0:0',
+    \ 'n:namespaces',
+    \ 'c:classes',
+    \ 's:structs',
+    \ 'u:unions',
+    \ 'f:functions',
+    \ 'm:members:0:0',
+    \ 'v:global:0:0',
+    \ 'x:external:0:0',
+    \ 'l:local:0:0'
+   \ ],
+   \ 'sro'      : '::',
+   \ 'kind2scope' : {
+     \ 'g' : 'enum',
+     \ 'n' : 'namespace',
+     \ 'c' : 'class',
+     \ 's' : 'struct',
+     \ 'u' : 'union'
+   \ },
+   \ 'scope2kind' : {
+     \ 'enum'     : 'g',
+     \ 'namespace' : 'n',
+     \ 'class'   : 'c',
+     \ 'struct' : 's',
+     \ 'union'   : 'u'
+   \ }
+\ }
 
 "---------------------------------------------------
 
@@ -947,6 +1012,7 @@ endif
 " wgao add
 nmap  <F4> :!mk<cr>
 nmap  <S-F4> :!mktag &<cr>
+nmap <leader>cb :g/^\s*$/d<cr>
 
 "定义快捷键的前缀，即<Leader>
  let mapleader=";"
