@@ -60,7 +60,7 @@ function init(){
 			}
 		fi
 	done < ".config"
-	target_dir='$VGL_BOARDS/$forBOARD-$forOS-imgs'
+	target_dir='$VGL_BOARDS/$forBOARD_$forOS-imgs'
 	target_name='$project_type-$forBOARD-$forOS'
 
 	tmp=$(user_select 'what OS' tizen23 tizen30 android51 android44)

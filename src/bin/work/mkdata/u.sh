@@ -39,7 +39,7 @@ function init(){
 	project_type='uboot'
 	git_remote=$(git remote -v | head -2 | tail -1 | awk '{print $2}')
 	git_branch=$(git branch | grep '*' | awk '{print $2}')
-	target_dir='$VGL_BOARDS/$forBOARD-$forOS-imgs'
+	target_dir='$VGL_BOARDS/$forBOARD_$forOS-imgs'
 	target_name='$project_type-$forBOARD-$forOS-$board_config'
 
 	tmp=$(user_select 'what OS' tizen23 tizen30 android51 android44)

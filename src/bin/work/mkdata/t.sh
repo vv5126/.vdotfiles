@@ -25,6 +25,7 @@ function mk() {
                 cd out
                 unrpm $target_name
                 dosomething
+                ssh user@192.168.4.150 "echo "$target_name 编译完成!" > $VGL_NOTIFY"
             fi
 		fi
 	fi
@@ -69,7 +70,6 @@ function init(){
 		;;
 	esac
 } || {
-    tizen_base_dir=`getdir_project | awk '{print $2}'`
-    cd $tizen_base_dir
+    cd $(getdir '.repo')
     mk $OLDPWD
 }
