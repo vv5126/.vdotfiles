@@ -130,6 +130,7 @@ source $HOME/.bin/base/batchExport $HOME/.bin/base/base.conf
 
 [ "$VGL_LOCAL_USER" = "$HOSTNAME" ] && {
 	source ~/.bin/local/vlogin
+    alias VB='VirtualBox --startvm $HOME/work/VirtualBox/xp/xp.vbox'
 }
 
 export JAVA_HOME=/usr/lib/jvm/java

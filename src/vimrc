@@ -15,6 +15,7 @@
 
 "配色方案
  colorscheme mycolor
+"  colorscheme molokai
  set background=dark "背景使用黑色
 "terminal下面的背景问题
  let g:solarized_termtrans=1
@@ -87,9 +88,6 @@ set hlsearch                " 搜索时高亮显示被找到的文本
 " 高亮显示搜索结果
 set hlsearch
 
-"加入html标签配对
-"runtime macros/matchit.vim
-
 "以下设置用来是vim正确显示过长的行
 "set textwidth=80
 "set formatoptions=qrnl
@@ -143,8 +141,8 @@ set hlsearch
  nnoremap <leader>wc <c-w>c
  nnoremap <leader>ww <c-w>w
 "使用<leader>t来控制Tab的切换
- nnoremap <leader>t gt
- nnoremap <leader>r gT
+"  nnoremap <leader>t gt
+"  nnoremap <leader>r gT
 "使用<leader>空格来取消搜索高亮
  nnoremap <leader><space> :noh<cr>
 "html中的js加注释 取消注释
@@ -229,6 +227,11 @@ else
  Bundle 'gmarik/vundle'
 "---------------------------------------------------
 
+"支持分支的 undo
+ Bundle 'sjl/gundo.vim'
+"调用 gundo 树
+ nnoremap <Leader>ud :GundoToggle<CR>
+
 "---------------------------------------------------
 
  Bundle 'Tabular'
@@ -255,9 +258,6 @@ endif
 
 "---------------------------------------------------
 
-" EasyMotion设置
- Bundle 'EasyMotion'
- let g:EasyMotion_leader_key = '<Leader><Leader>'
 
 "---------------------------------------------------
 
@@ -337,8 +337,8 @@ endif
 " C, C++ and ADA95
 
 "---------------------------------------------------
-
 if has("cscope")
+if 0
  Bundle 'cscope.vim'
     set cscopetag
     set cscopeverbose 
@@ -436,6 +436,11 @@ if has("cscope")
 "nmap <C-Space><C-Space>e:vert scs find e <C-R>=expand("<cword>")<CR><CR>
 "nmap <C-Space><C-Space>i:vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 "nmap <C-Space><C-Space>d:vert scs find d <C-R>=expand("<cword>")<CR><CR>
+
+" cscope的vim插件,提供快捷键操纵cscope,好东东,如果你在用cscope的话
+" Bundle 'cscope_maps.vim'
+" Bundle 'cscope_macros.vim'
+endif
 endif
 
 "---------------------------------------------------
@@ -591,6 +596,9 @@ smap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
 
 "---------------------------------------------------
 
+" 列出当前打开的buffer,可以很容易的切换到和删除选定的buffer,必备插件之一
+" bufexplorer.vim
+
 Bundle 'mhinz/vim-startify'
 Bundle 'jlanzarotta/bufexplorer'
 "---------------------------------------------------
@@ -726,6 +734,7 @@ let g:calendar_frame = 'default'
 "---------------------------------------------------
 
 " Bundle 'SirVer/ultisnips'
+" Bundle 'guns/ultisnips'
 " Bundle 'UltiSnips'
 " " Trigger configuration. Do not use <tab>
 " "if you use https://github.com/Valloric/YouCompleteMe.
@@ -764,65 +773,63 @@ Bundle 'ack.vim'
 endif
 
 nnoremap <Leader>sp :CtrlSF<CR>
-"---------------------------------------------------
-" vim-scripts repos
-" Bundle 'ctrlp.vim'
-" Bundle 'ShowTrailingWhitespace'
-Bundle 'sjl/gundo.vim'
-" Bundle 'ack'
-" Bundle 'vim-git'
-" Bundle 'pep8'
-" Bundle 'TaskList.vim'
-Bundle 'reinh/vim-makegreen'
-" Bundle 'tpope/vim-surround'
-" Bundle 'getscriptPlugin.vim'
-" 工程内查找与替换+
-Bundle 'grep.vim'
-" Bundle 'gzip.vim'
-" Bundle 'rrhelper.vim'
-" Bundle 'spellfile.vim'
-" Bundle 'tarPlugin.vim'
-" Bundle 'winfileexplorer.vim'
-" Bundle 'wintagexplorer.vim'
-Bundle 'bash-support.vim'
-" Bundle 'code_complete.vim'
-" Bundle 'cuteErrorMarker.vim'
-" Bundle 'mru.vim'
-" Bundle 'JSON.vim'
-" Bundle 'gtags.vim'
-" Bundle 'gtk-vim-syntax'
-" Bundle 'jQuery'
-" Bundle 'Stormherz/tablify'
-" Bundle 'guns/ultisnips'
-" Bundle 'jiazhoulvke/MarkdownView'
-" Bundle 'jiazhoulvke/googletranslate'
-" Bundle 'jiazhoulvke/imagemap'
-" Bundle 'jiazhoulvke/jianfan'
-" Bundle 'jiazhoulvke/myproject'
-" Bundle 'shawncplus/phpcomplete.vim'
-" Bundle 'tpope/vim-markdown'
-" Bundle 'xolox/vim-lua-ftplugin'
-" Bundle 'xolox/vim-misc'
-" Bundle 'xolox/vim-session'
-" Bundle 'EasyGrep'
-" Bundle 'Mark--Karkat'
-" Bundle 'Shougo/unite-help'
-" Bundle 'Shougo/unite-outline'
-" Bundle 'Shougo/unite.vim'
-" Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
-" Bundle 'Shougo/vimshell.vim'
-" Bundle 'chrisbra/csv.vim'
-" Bundle 'cscope_macros.vim'
-" Bundle 'mhinz/vim-signify'
-" Bundle 'mhinz/vim-startify'
-" Bundle 'osyo-manga/unite-quickfix'
-" Bundle 'tpope/vim-speeddating'
-" Bundle 'tsukkee/unite-tag'
 
+"---------------------------------------------------
+
+if 0 " EasyMotion设置
+Bundle 'easymotion/vim-easymotion'
+" nmap s <Plug>(easymotion-s2)
+nmap t <Plug>(easymotion-t2)
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
+
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" Bi-directional find motion
+" Jump to anywhere you want with minimal keystrokes, with just one key
+" binding.
+" `s{char}{label}`
+nmap s <Plug>(easymotion-s)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap s <Plug>(easymotion-s2)
+" Turn on case insensitive feature
+let g:EasyMotion_smartcase = 1
+" JK motions: Line motions
+" map <Leader>j <Plug>(easymotion-j)
+" map <Leader>k <Plug>(easymotion-k)
+endif
+
+"---------------------------------------------------
+
+" 任务列表的插件 —— TaskList.vim，方便管理项目中的 TODO、FIXME 等标签.
+" Bundle 'TaskList.vim'
+"---------------------------------------------------
+Bundle 'dkprice/vim-easygrep'
+let g:EasyGrepMode = 2     " All:0, Open Buffers:1, TrackExt:2, 
+let g:EasyGrepCommand = 0  " Use vimgrep:0, grepprg:1
+let g:EasyGrepRecursive  = 1 " Recursive searching
+let g:EasyGrepIgnoreCase = 1 " not ignorecase:0
+let g:EasyGrepFilesToExclude = "*.bak, *~, cscope.*, *.a, *.o, *.pyc, *.bak"
+"---------------------------------------------------
+
+" Syntax highlighting for GLib, Gtk+, Xlib, Gimp, Gstreamer, and more. 
+Bundle 'gtk-vim-syntax'
 "---------------------------------------------------
 "repeat 支持使用.来重复执行一些插件的命令（如speeddating, surround等)
 " Bundle 'repeat.vim'
 
+"---------------------------------------------------
+" 工程内查找与替换+
+Bundle 'grep.vim'
+"---------------------------------------------------
 " 切换缓冲区
 " minibufexpl插件的一般设置
 let g:miniBufExplMapWindowNavVim    = 1
@@ -837,21 +844,7 @@ map <Leader>bl :MBEToggle<cr>
 " buffer 切换快捷键
 map <C-Tab> :MBEbn<cr>
 map <C-S-Tab> :MBEbp<cr>
-
-" original repos on github
-" Bundle 'mattn/emmet-vim'
-
-" coffee-scrpit support
-" Bundle 'kchmck/vim-coffee-script'
-
-" better color
-" Bundle 'tomasr/molokai'
-
-" 神级插件，ZenCoding(原名)可以让你以一种神奇而无比爽快的感觉写HTML、CSS
-"  Bundle 'ZenCoding.vim'
-
-" c/c++ support,让你用编写c/c++程序时如虎添翼,有很多贴心的功能,每个功能都有快捷键,不过一部分和NERD_comments冲突 如果经常编写一些单文件的c程序,但是不想写makefile,用这个,他帮你完成,F9编译并链接,ctrl-F9运行
-" c.vim
+"---------------------------------------------------
 
 " FuzzyFinder缓冲器/文件/命令/标签/等浏览器的模糊匹配 +
 " electbuf.vim相比，它少了对多个buf的批量选择和处理
@@ -860,93 +853,74 @@ map <C-S-Tab> :MBEbp<cr>
 " selectbuf.vim -> fuzzyfinder.vim:FuzzyFinderBuffer
 " NERDTree.vim -> fuzzyfinder.vim:FuzzyFinderFile
 
+" 提供快速的buffer选择
+" Bundle 'SelectBuf'
+
+" Address, 给vim增加MRU功能,也就是保留最近打开的文件记录,:MRU打开,q退出,很方便,有过一个支持菜单的类似的插件 不过对于我这样的不用菜单的用户,还是这个命令行的好用一点,因为经常使用,所以我映射到了F2
+" Bundle 'mru.vim'
+" FavEx : Favorite file and directory explorer ,可以添加目录和文件到收藏夹，可以把经常编辑的文件添加到收藏夹来，在文件打开以后，\ff新增文件到收藏夹，\fd新增目录到收藏夹
+" favex.vim
+"---------------------------------------------------
+
+"加入html标签配对
+"runtime macros/matchit.vim
+" 扩展了vim的%功能,让%可以匹配的,不再仅仅是括号,支持多种语言.必备插件之一
+" matchit.vim
+Bundle 'matchit.zip'
+" plugin - matchit.vim   对%命令进行扩展使得能在嵌套标签和语句之间跳转
+" % 正向匹配      g% 反向匹配
+" [% 定位块首     ]% 定位块尾
+
+"---------------------------------------------------
+
+" better color
+" Bundle 'tomasr/molokai'
+" let g:molokai_original=1
+
+"---------------------------------------------------
+
+" Switch very quickly between your most recently used buffers
+Bundle 'LustyJuggler'
+
+"---------------------------------------------------
+
+" 将代码行最后无效的空格标红
+Bundle 'ShowTrailingWhitespace'
+
+"---------------------------------------------------
+
+" c/c++ support,让你用编写c/c++程序时如虎添翼,有很多贴心的功能,每个功能都有快捷键,不过一部分和NERD_comments冲突 如果经常编写一些单文件的c程序,但是不想写makefile,用这个,他帮你完成,F9编译并链接,ctrl-F9运行
+" c.vim
+
 " AlignPlugin.vim的一些按键映射
 " AlignMaps.vim
-
 " 按照一定格式对齐文本
 " AlignPlugin.vim
 
-" 列出当前打开的buffer,可以很容易的切换到和删除选定的buffer,必备插件之一
-" bufexplorer.vim
-
-" 一些插件用到的一些库函数
-" cecutil.vim
-
-" cscope的vim插件,提供快捷键操纵cscope,好东东,如果你在用cscope的话
-" Bundle 'cscope_maps.vim'
-
+if 0
 " 添加doxygen注释
 " DoxygenToolkit.vim
 " plugin - DoxygenToolkit.vim  由注释生成文档，并且能够快速生成函数标准注释
-"-----------------------------------------------------------------
 let g:DoxygenToolkit_authorName="Asins - asinsimple AT gmail DOT com"
 let g:DoxygenToolkit_briefTag_funcName="yes"
 map <leader>da :DoxAuthor<CR>
 map <leader>df :Dox<CR>
 map <leader>db :DoxBlock<CR>
 map <leader>dc a /*  */<LEFT><LEFT><LEFT>
-
-" FavEx : Favorite file and directory explorer ,可以添加目录和文件到收藏夹，可以把经常编辑的文件添加到收藏夹来，在文件打开以后，\ff新增文件到收藏夹，\fd新增目录到收藏夹
-" favex.vim
+endif
 
 " Commentary: 快速注释。
 " Bundle 'tpope/vim-commentary'
-
-" fencview.vim
-" mbbill的编码识别插件
-
-" great for latex
-" latex-suite
-
-" Switch very quickly between your most recently used buffers
-" LustyJuggler
-
-" 扩展了vim的%功能,让%可以匹配的,不再仅仅是括号,支持多种语言.必备插件之一
-" matchit.vim
-" Bundle 'matchit.zip'
-" plugin - matchit.vim   对%命令进行扩展使得能在嵌套标签和语句之间跳转
-" % 正向匹配      g% 反向匹配
-" [% 定位块首     ]% 定位块尾
-
-" Address, 给vim增加MRU功能,也就是保留最近打开的文件记录,:MRU打开,q退出,很方便,有过一个支持菜单的类似的插件 不过对于我这样的不用菜单的用户,还是这个命令行的好用一点,因为经常使用,所以我映射到了F2
-" Mru
-
-" 同时选择多个区域
-" multiselect.vim
-
-" array操作库函数，multiselect依赖它
-" multvals.vim
-
-" netrw清理工具，经常升级netrw的话，用来删除老版本
-" netrwclean.vim
 
 " 给选中的文字加上引号,支持( { [ < ' " `,选中后,\加上你想要添加的符号,比如选中abc后,\(,得到(abc)
 " Bundle 'parenquote'
 " Bundle 'jiangmiao/auto-pairs'
 
 " 快速打开关闭quickfix window
-" qfixtoggle.vim
+" Bundle 'QFixToggle'
 
 " Very small, clean but quick and powerful buffer manager. c.
 " qbuf
-
-" 提供快速的buffer选择
-" selectbuf.vim
-
-" 画图
-" sketch.vim
-
-" 扩展了vim的abbr缩写功能,支持占位符,支持变量替换.
-" snippetEmu.vim
-
-" 功能强大的缩写扩展，vim版的TextMate
-" snippetsEmu.vim
-
-" 给vim整合了cvs/subversion功能,不用离开vim环境也能执行常用的cvs/subversion操作.
-" vcscommand.vim
-
-" vimincr.vim的公共接口
-" visincrPlugin.vim
 
 " 给vim增加生成递增或者递减数列的功能,支持十进制,十六进制,日期,星期等,功能强大灵活
 " visincr提供生成数列的功能+ :SO % 后visincr.vba.gz会消失变成visincr.vba
@@ -955,12 +929,65 @@ map <leader>dc a /*  */<LEFT><LEFT><LEFT>
 " 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
 " vis.vim
 
-" 单词完成，没用它
-" word_complete.vim
-
 " 类似emacs的king ring,给vim的yank也增加缓冲,vim本身只缓冲删除的字符串,不缓冲yank的内容
+" 这个插件可以同时粘贴多个需要的单词等
 " yankring.vim
-"-----------------------------------------------------------------
+
+
+"---------------------------------------------------
+Bundle 'reinh/vim-makegreen'
+Bundle 'bash-support.vim'
+"---------------------------------------------------
+Bundle 'ctrlp.vim'
+" Bundle 'kien/ctrlp.vim'
+" 漂亮的括号
+Bundle 'kien/rainbow_parentheses.vim'
+" Bundle 'vim-git'
+" 快速给词加环绕符号,例如引号
+" Bundle 'tpope/vim-surround'
+" Bundle 'getscriptPlugin.vim'
+" Bundle 'gzip.vim'
+" Bundle 'rrhelper.vim'
+" Bundle 'spellfile.vim'
+" Bundle 'tarPlugin.vim'
+" Bundle 'winfileexplorer.vim'
+" Bundle 'wintagexplorer.vim'
+" Bundle 'code_complete.vim'
+" Bundle 'JSON.vim'
+" Bundle 'gtags.vim'
+" Bundle 'jQuery'
+" Bundle 'Stormherz/tablify'
+" Bundle 'jiazhoulvke/MarkdownView'
+" Bundle 'jiazhoulvke/googletranslate'
+" Bundle 'jiazhoulvke/imagemap'
+" Bundle 'jiazhoulvke/jianfan'
+" Bundle 'jiazhoulvke/myproject'
+" Bundle 'shawncplus/phpcomplete.vim'
+" 语法高亮
+Bundle 'tpope/vim-markdown'
+" Bundle 'xolox/vim-lua-ftplugin'
+" Bundle 'xolox/vim-misc'
+" Bundle 'xolox/vim-session'
+" Bundle 'mhinz/vim-signify'
+" Bundle 'mhinz/vim-startify'
+" Bundle 'tpope/vim-speeddating'
+" Bundle 'Shougo/unite-help'
+" Bundle 'Shougo/unite-outline'
+" Bundle 'Shougo/unite.vim'
+" Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
+" Bundle 'Shougo/vimshell.vim'
+" Bundle 'chrisbra/csv.vim'
+" Bundle 'tsukkee/unite-tag'
+" Bundle 'osyo-manga/unite-quickfix'
+" Bundle 'Mark--Karkat'
+Bundle 'vim-tmux-navigator'
+"---------------------------------------------------
+
+
+
+
+
+"---------------------------------------------------
 "unused
 " 查看和自动识别文件的编码格式
 " Bundle 'mbbill/fencview'
@@ -978,8 +1005,46 @@ map <leader>dc a /*  */<LEFT><LEFT><LEFT>
 " project.vim
 " 在vim里查看man
 " manpageview.vim
+" 神级插件，ZenCoding(原名)可以让你以一种神奇而无比爽快的感觉写HTML、CSS
+"  Bundle 'ZenCoding.vim'
+" coffee-scrpit support
+" Bundle 'kchmck/vim-coffee-script'
+"自动生成HTML/CSS代码背景,编辑html.
+" Bundle 'mattn/emmet-vim'
+" 单词完成，没用它
+" word_complete.vim
+" mbbill的编码识别插件
+" Bundle 'mbbill/fencview'
+" great for latex
+" latex-suite
+" 同时选择多个区域
+" Bundle 'voithos/vim-multiselect'
+" array操作库函数，multiselect依赖它
+" Bundle 'multvals.vim'
+" 扩展了vim的abbr缩写功能,支持占位符,支持变量替换.
+" snippetEmu.vim
+" 可以对数字, 日期, 星期, 字母进行序列填充, 方式有升序和降序, 同时可以指定step间隔.
+" Bundle 'VisIncr'
+" 给vim整合了cvs/subversion功能,不用离开vim环境也能执行常用的cvs/subversion操作.
+" vcscommand.vim
+" 一些插件用到的一些库函数
+" cecutil.vim
+" 画图
+" Bundle 'sketch.vim'
+" netrw清理工具，经常升级netrw的话，用来删除老版本
+" netrwclean.vim
+" 功能强大的缩写扩展，vim版的TextMate
+" snippetsEmu.vim
 
-"-----------------------------------------------------------------
+
+
+
+
+
+
+
+
+"---------------------------------------------------
 "python 插件
 "if v:version < 704
 "    Bundle 'Pydiction'
@@ -988,12 +1053,13 @@ map <leader>dc a /*  */<LEFT><LEFT><LEFT>
 " best for python
 " python_calltips
 "   pydiction       补全提示+
-let g:pydiction_location = '.vim/pydiction-1.2/complete-dict'
+" let g:pydiction_location = '.vim/pydiction-1.2/complete-dict'
 "   pythoncomplete  vim自带的python补全提示
 "   VimPdb          调试Python程序+
 " Bundle 'pyflakes' "Python代码检查+
 " Bundle 'pytest'
-"-----------------------------------------------------------------
+" Bundle 'pep8'
+"---------------------------------------------------
 
 " Bundle 'jsfaint/gen_tags.vim'
 " Bundle 'PasteBin.vim'
@@ -1003,7 +1069,9 @@ let g:pydiction_location = '.vim/pydiction-1.2/complete-dict'
 " Bundle 'vimwiki.vim'
 " Bundle 'zipPlugin.vim'
 " Bundle 'vimballPlugin.vim'
-"-----------------------------------------------------------------
+" Bundle 'cuteErrorMarker.vim'
+" Bundle 'kevinw/pyflakes-vim'
+"---------------------------------------------------
 
 
 endif

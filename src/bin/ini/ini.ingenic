@@ -33,3 +33,5 @@ export VGLD_MKDATA=$HOME/.bin/work/mkdata
 # local #
 export VGL_NOTIFY=/tmp/.notify_pipe
 
+ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
+
