@@ -39,8 +39,9 @@
 
 "字符设置
  set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5
-"set encoding=utf-8
-"set helplang=cn
+ set encoding=utf-8
+" 显示中文帮助
+ set helplang=cn
  set scrolloff=3 " 光标移动到buffer的顶部和底部时保持10行距离
 "新建文件编码
  set fenc=utf-8
@@ -76,6 +77,7 @@ set ignorecase smartcase    " 搜索时忽略大小写，但在有一个或以�
 " 搜索时大小写不敏感
  set ignorecase
  set smartcase
+"行内替换
 "set gdefault
 " 开启实时搜索功能
  set incsearch
@@ -169,20 +171,9 @@ set hlsearch
  nmap <leader>fx :set ft=xml<CR>
  nmap <leader>fm :set ft=mako<CR>
 
-"设置隐藏gvim的菜单和工具栏 F2切换
- set guioptions-=m
- set guioptions-=T
 "去除左右两边的滚动条
  set go-=r
  set go-=L
-
- map <silent> <F2> :if &guioptions =~# 'T' <Bar>
-        \set guioptions-=T <Bar>
-        \set guioptions-=m <bar>
-    \else <Bar>
-        \set guioptions+=T <Bar>
-        \set guioptions+=m <Bar>
-    \endif<CR>
 
 " 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
  set mouse=a
@@ -746,6 +737,7 @@ let g:calendar_frame = 'default'
 "---------------------------------------------------
 
 " 同时高亮多个单词
+Bundle 'Mark--Karkat'
 " plugin - mark.vim 给各种tags标记不同的颜色，便于观看调式的插件。
 " \m  mark or unmark the word under (or before) the cursor
 " \r  manually input a regular expression. 用于搜索.
@@ -889,13 +881,15 @@ Bundle 'ShowTrailingWhitespace'
 
 "---------------------------------------------------
 
-" c/c++ support,让你用编写c/c++程序时如虎添翼,有很多贴心的功能,每个功能都有快捷键,不过一部分和NERD_comments冲突 如果经常编写一些单文件的c程序,但是不想写makefile,用这个,他帮你完成,F9编译并链接,ctrl-F9运行
-" c.vim
+" 使用菜单和热键来编写和执行BASH脚本
+Bundle 'bash-support.vim'
 
-" AlignPlugin.vim的一些按键映射
-" AlignMaps.vim
-" 按照一定格式对齐文本
-" AlignPlugin.vim
+"---------------------------------------------------
+
+" 结构化数据变成漂亮的表
+" Bundle 'Stormherz/tablify'
+
+"---------------------------------------------------
 
 if 0
 " 添加doxygen注释
@@ -907,7 +901,27 @@ map <leader>da :DoxAuthor<CR>
 map <leader>df :Dox<CR>
 map <leader>db :DoxBlock<CR>
 map <leader>dc a /*  */<LEFT><LEFT><LEFT>
+
+map fg : Dox<cr>
+let g:DoxygenToolkit_authorName="Anders"
+let g:DoxygenToolkit_licenseTag="My own license\<enter>"
+let g:DoxygenToolkit_undocTag="DOXIGEN_SKIP_BLOCK"
+let g:DoxygenToolkit_briefTag_pre = "@brief\t"
+let g:DoxygenToolkit_paramTag_pre = "@param\t"
+let g:DoxygenToolkit_returnTag = "@return\t"
+let g:DoxygenToolkit_briefTag_funcName = "no"
+let g:DoxygenToolkit_maxFunctionProtoLines = 30
 endif
+
+"---------------------------------------------------
+
+" c/c++ support,让你用编写c/c++程序时如虎添翼,有很多贴心的功能,每个功能都有快捷键,不过一部分和NERD_comments冲突 如果经常编写一些单文件的c程序,但是不想写makefile,用这个,他帮你完成,F9编译并链接,ctrl-F9运行
+" c.vim
+
+" AlignPlugin.vim的一些按键映射
+" AlignMaps.vim
+" 按照一定格式对齐文本
+" AlignPlugin.vim
 
 " Commentary: 快速注释。
 " Bundle 'tpope/vim-commentary'
@@ -933,13 +947,10 @@ endif
 " 这个插件可以同时粘贴多个需要的单词等
 " yankring.vim
 
-
-"---------------------------------------------------
-Bundle 'reinh/vim-makegreen'
-Bundle 'bash-support.vim'
 "---------------------------------------------------
 Bundle 'ctrlp.vim'
-" Bundle 'kien/ctrlp.vim'
+" Bundle 'ctrlpvim/ctrlp.vim'
+Bundle 'vimcn/ctrlp.cnx'
 " 漂亮的括号
 Bundle 'kien/rainbow_parentheses.vim'
 " Bundle 'vim-git'
@@ -953,18 +964,12 @@ Bundle 'kien/rainbow_parentheses.vim'
 " Bundle 'winfileexplorer.vim'
 " Bundle 'wintagexplorer.vim'
 " Bundle 'code_complete.vim'
-" Bundle 'JSON.vim'
 " Bundle 'gtags.vim'
-" Bundle 'jQuery'
-" Bundle 'Stormherz/tablify'
 " Bundle 'jiazhoulvke/MarkdownView'
 " Bundle 'jiazhoulvke/googletranslate'
 " Bundle 'jiazhoulvke/imagemap'
 " Bundle 'jiazhoulvke/jianfan'
 " Bundle 'jiazhoulvke/myproject'
-" Bundle 'shawncplus/phpcomplete.vim'
-" 语法高亮
-Bundle 'tpope/vim-markdown'
 " Bundle 'xolox/vim-lua-ftplugin'
 " Bundle 'xolox/vim-misc'
 " Bundle 'xolox/vim-session'
@@ -979,8 +984,7 @@ Bundle 'tpope/vim-markdown'
 " Bundle 'chrisbra/csv.vim'
 " Bundle 'tsukkee/unite-tag'
 " Bundle 'osyo-manga/unite-quickfix'
-" Bundle 'Mark--Karkat'
-Bundle 'vim-tmux-navigator'
+" Bundle 'christoomey/vim-tmux-navigator'
 "---------------------------------------------------
 
 
@@ -989,6 +993,10 @@ Bundle 'vim-tmux-navigator'
 
 "---------------------------------------------------
 "unused
+" 语法高亮 似乎不好用
+" Bundle 'tpope/vim-markdown'
+" Bundle 'plasticboy/vim-markdown'
+" let g:vim_markdown_frontmatter=1
 " 查看和自动识别文件的编码格式
 " Bundle 'mbbill/fencview'
 " vim的wiki
@@ -1035,6 +1043,8 @@ Bundle 'vim-tmux-navigator'
 " netrwclean.vim
 " 功能强大的缩写扩展，vim版的TextMate
 " snippetsEmu.vim
+" runs make and shows the test run status with a red or green bar.
+" Bundle 'reinh/vim-makegreen'
 
 
 
@@ -1061,6 +1071,9 @@ Bundle 'vim-tmux-navigator'
 " Bundle 'pep8'
 "---------------------------------------------------
 
+" Bundle 'jQuery'
+" Bundle 'JSON.vim'
+" Bundle 'shawncplus/phpcomplete.vim'
 " Bundle 'jsfaint/gen_tags.vim'
 " Bundle 'PasteBin.vim'
 " Bundle 'tohtml.vim'
@@ -1199,7 +1212,9 @@ map <F12> gg=G
 set smarttab
 
 
+" 设置 gvim 显示字体
 set guifont=Courier_New:h10:cANSI   " 设置字体
+" set guifont=YaHei\ Consolas\ Hybrid\ 11.5
 
 " 移除高亮
 " 基于缩进或语法进行代码折叠
@@ -1253,3 +1268,41 @@ endf
 " 禁止光标闪烁
 set gcr=a:block-blinkon0
 set matchtime=5 " 匹配括号高亮的时间（单位是十分之一秒）
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader        = ";"
+let g:mapleader      = ";"
+let maplocalleader   = ";"
+let g:maplocalleader = ";"
+
+"gvim使用的
+" set guioptions-=r
+" set guioptions-=l
+"设置隐藏gvim的菜单和工具栏 F2切换
+"  set guioptions-=m
+"  set guioptions-=T
+"  map <silent> <F2> :if &guioptions =~# 'T' <Bar>
+"         \set guioptions-=T <Bar>
+"         \set guioptions-=m <bar>
+"     \else <Bar>
+"         \set guioptions+=T <Bar>
+"         \set guioptions+=m <Bar>
+"     \endif<CR>
+
+" 设置在状态行显示的信息
+" 我的状态行显示的内容（包括文件类型和解码）
+" set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\ 
+" set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
+set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]
+" set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\
+" set statusline=\ %F%m%r%h\ %w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ %w\ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
+" set statusline=\ %r%{Tlist_Get_Tagname_By_Line()}%h\ %w\ %F%m%r%h\ %w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ %w\ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
+" set statusline=%F%m%r%h%w\[POS=%l,%v][%p%%]\%{strftime(\”%d/%m/%y\ -\ %H:%M\”)}
+
+" autocmd InsertLeave * se nocul  " 用浅色高亮当前行
+" autocmd InsertEnter * se cul    " 用浅色高亮当前行
+
+"自动保存
+" set autowrite
+
