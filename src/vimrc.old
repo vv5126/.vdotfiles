@@ -365,34 +365,11 @@ set showcmd " 在 Vim 窗口右下角，标尺的右边显示未完成的命令
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 编译链接
-"
 nmap<Leader>m :wa<CR>:make<CR>:cw<CR><CR>
 "分解说明下，<Leader>m设定快捷键为;m（;由<Leader>指定），:wa<CR>保持所有打开的文档，
 " :make<CR>执行make命令，:cw<CR>显示quickfix（如果有编译错误或警告时），
 " 最后的<CR>消除make命令执行完成屏幕上“PressENTER or type command to continue”的输入等待提示信息。
 
-ccglue
-man.vim
-netrw.vba.gz
-showmarks.vim
-tlib.vba.gz
-hookcursormoved.vba.gz
-getscript.vba.gz
-pyclewn
-echofunc.vim "函数提示
-conqueterm vim中打开终端的功能+
-fencview 字符编码识别+
-cmdline completion命令行模式的补全+
-genutils 底层的lookupfile的功能支持+
-l9FuzzyFinder 底层依耐+
-stl.vim stl语法高亮+
-stlrefvim stl帮助 +
-auto.vim 自动排版，可以少打很多空格
-"-----------------------------------------------------------------
-" bufexplorer打开历史文件列表以达到快速切换文件+
-" plugin - bufexplorer.vim Buffers切换
-" \be 全屏方式查看全部打开的文件列表
-" \bv 左右方式查看   \bs 上下方式查看
 "-----------------------------------------------------------------
 
 function! <SID>BufcloseCloseIt()

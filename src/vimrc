@@ -225,6 +225,7 @@ else
 
 "---------------------------------------------------
 
+"允许你在 Vim中按等号、冒号、表格等来对齐文本
  Bundle 'Tabular'
 
 "---------------------------------------------------
@@ -588,10 +589,15 @@ smap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
 "---------------------------------------------------
 
 " 列出当前打开的buffer,可以很容易的切换到和删除选定的buffer,必备插件之一
-" bufexplorer.vim
-
-Bundle 'mhinz/vim-startify'
+" \be 全屏方式查看全部打开的文件列表
+" \bv 左右方式查看   \bs 上下方式查看
 Bundle 'jlanzarotta/bufexplorer'
+" Bundle 'bufexplorer.zip'
+
+
+"---------------------------------------------------
+"列出最近打开过的文件
+" Bundle 'mhinz/vim-startify'
 "---------------------------------------------------
 
 Bundle 'majutsushi/tagbar'
@@ -656,6 +662,7 @@ Bundle 'sjas/csExplorer'
 
 " 一个对齐的插件,用来排版,面对一堆乱七八糟的代码时,用来对齐代码,功能强大,不过用到的机会不多
 Bundle 'Align'
+" Bundle 'junegunn/vim-easy-align'
 
 "---------------------------------------------------
 
@@ -669,7 +676,8 @@ Bundle 'DrawIt'
 "---------------------------------------------------
 
 "显示git diff的插件
- Bundle 'airblade/vim-gitgutter'
+"  Bundle 'airblade/vim-gitgutter'
+Bundle 'mhinz/vim-signify'
 
 "---------------------------------------------------
 
@@ -915,20 +923,62 @@ endif
 
 "---------------------------------------------------
 
-" c/c++ support,让你用编写c/c++程序时如虎添翼,有很多贴心的功能,每个功能都有快捷键,不过一部分和NERD_comments冲突 如果经常编写一些单文件的c程序,但是不想写makefile,用这个,他帮你完成,F9编译并链接,ctrl-F9运行
-" c.vim
+Bundle 'ctrlpvim/ctrlp.vim'
+Bundle 'vimcn/ctrlp.cnx'
 
-" AlignPlugin.vim的一些按键映射
-" AlignMaps.vim
-" 按照一定格式对齐文本
-" AlignPlugin.vim
+"---------------------------------------------------
+
+" 保存当前会话
+" Bundle 'xolox/vim-misc'
+" Bundle 'xolox/vim-session'
+
+"---------------------------------------------------
+
+" 利用Google翻译在vim进行翻译的插件
+" Bundle 'jiazhoulvke/googletranslate'
+
+"---------------------------------------------------
+
+"自动排版，可以少打很多空格
+" Bundle 'ywgx/auto.vim'
+
+"---------------------------------------------------
+
+" 检测当光标改变时，执行函数。
+" Bundle 'hookcursormoved'
+
+"---------------------------------------------------
+
+"函数提示
+" Bundle 'mbbill/echofunc'
+
+"---------------------------------------------------
 
 " Commentary: 快速注释。
 " Bundle 'tpope/vim-commentary'
 
+"---------------------------------------------------
+
+" 类似emacs的king ring,给vim的yank也增加缓冲,vim本身只缓冲删除的字符串,不缓冲yank的内容,这个插件可以同时粘贴多个需要的单词等
+" Bundle 'YankRing.vim'
+
+"---------------------------------------------------
+
 " 给选中的文字加上引号,支持( { [ < ' " `,选中后,\加上你想要添加的符号,比如选中abc后,\(,得到(abc)
-" Bundle 'parenquote'
 " Bundle 'jiangmiao/auto-pairs'
+" Bundle 'Raimondi/delimitMate'
+
+" 快速给词加环绕符号,例如引号
+" Bundle 'tpope/vim-surround'
+"
+"---------------------------------------------------
+
+" c/c++ support,让你用编写c/c++程序时如虎添翼,有很多贴心的功能,每个功能都有快捷键,不过一部分和NERD_comments冲突 如果经常编写一些单文件的c程序,但是不想写makefile,用这个,他帮你完成,F9编译并链接,ctrl-F9运行
+Bundle 'c.vim'
+
+"---------------------------------------------------
+
+"---------------------------------------------------
 
 " 快速打开关闭quickfix window
 " Bundle 'QFixToggle'
@@ -936,63 +986,42 @@ endif
 " Very small, clean but quick and powerful buffer manager. c.
 " qbuf
 
-" 给vim增加生成递增或者递减数列的功能,支持十进制,十六进制,日期,星期等,功能强大灵活
-" visincr提供生成数列的功能+ :SO % 后visincr.vba.gz会消失变成visincr.vba
-" visincr.vim
-
 " 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
 " vis.vim
 
-" 类似emacs的king ring,给vim的yank也增加缓冲,vim本身只缓冲删除的字符串,不缓冲yank的内容
-" 这个插件可以同时粘贴多个需要的单词等
-" yankring.vim
-
-"---------------------------------------------------
-Bundle 'ctrlp.vim'
-" Bundle 'ctrlpvim/ctrlp.vim'
-Bundle 'vimcn/ctrlp.cnx'
-" 漂亮的括号
-Bundle 'kien/rainbow_parentheses.vim'
 " Bundle 'vim-git'
-" 快速给词加环绕符号,例如引号
-" Bundle 'tpope/vim-surround'
-" Bundle 'getscriptPlugin.vim'
-" Bundle 'gzip.vim'
 " Bundle 'rrhelper.vim'
-" Bundle 'spellfile.vim'
 " Bundle 'tarPlugin.vim'
 " Bundle 'winfileexplorer.vim'
 " Bundle 'wintagexplorer.vim'
-" Bundle 'code_complete.vim'
 " Bundle 'gtags.vim'
-" Bundle 'jiazhoulvke/MarkdownView'
-" Bundle 'jiazhoulvke/googletranslate'
-" Bundle 'jiazhoulvke/imagemap'
-" Bundle 'jiazhoulvke/jianfan'
 " Bundle 'jiazhoulvke/myproject'
-" Bundle 'xolox/vim-lua-ftplugin'
-" Bundle 'xolox/vim-misc'
-" Bundle 'xolox/vim-session'
-" Bundle 'mhinz/vim-signify'
-" Bundle 'mhinz/vim-startify'
 " Bundle 'tpope/vim-speeddating'
+" Bundle 'mbbill/code_complete'
+" Bundle 'gtags.vim'
 " Bundle 'Shougo/unite-help'
 " Bundle 'Shougo/unite-outline'
 " Bundle 'Shougo/unite.vim'
 " Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
-" Bundle 'Shougo/vimshell.vim'
 " Bundle 'chrisbra/csv.vim'
 " Bundle 'tsukkee/unite-tag'
 " Bundle 'osyo-manga/unite-quickfix'
 " Bundle 'christoomey/vim-tmux-navigator'
-"---------------------------------------------------
-
-
-
-
+" Bundle 'ccglue'
+" Bundle 'ShowMarks'
+" Bundle 'tlib.vba.gz'
+" Bundle 'getscript.vba.gz'
+" Bundle 'fencview' "字符编码识别+
+" Bundle 'cmdline completion命令行模式的补全+
+" Bundle 'genutils' "底层的lookupfile的功能支持+
+" Bundle 'l9FuzzyFinder' "底层依耐+
 
 "---------------------------------------------------
 "unused
+"让Vim变成所见即所得的MarkDown文件编辑器，可以在编辑时预览最终效果。
+" Bundle 'jiazhoulvke/MarkdownView'
+" 漂亮的括号 感觉意义不大
+" Bundle 'kien/rainbow_parentheses.vim'
 " 语法高亮 似乎不好用
 " Bundle 'tpope/vim-markdown'
 " Bundle 'plasticboy/vim-markdown'
@@ -1001,8 +1030,11 @@ Bundle 'kien/rainbow_parentheses.vim'
 " Bundle 'mbbill/fencview'
 " vim的wiki
 " viki.vim
+"vim中打开终端的功能+
+" Bundle 'pazzavita/ConqueTerm'
 " 在vim在模拟Terminal
 " Bundle 'rosenfeld/conque-term'
+" Bundle 'Shougo/vimshell.vim'
 " 将语法高亮转成 BBS 上的彩色
 " toansi.vim
 " 让大文件打开快一点
@@ -1032,6 +1064,7 @@ Bundle 'kien/rainbow_parentheses.vim'
 " 扩展了vim的abbr缩写功能,支持占位符,支持变量替换.
 " snippetEmu.vim
 " 可以对数字, 日期, 星期, 字母进行序列填充, 方式有升序和降序, 同时可以指定step间隔.
+" 给vim增加生成递增或者递减数列的功能,支持十进制,十六进制,日期,星期等,功能强大灵活
 " Bundle 'VisIncr'
 " 给vim整合了cvs/subversion功能,不用离开vim环境也能执行常用的cvs/subversion操作.
 " vcscommand.vim
@@ -1041,16 +1074,24 @@ Bundle 'kien/rainbow_parentheses.vim'
 " Bundle 'sketch.vim'
 " netrw清理工具，经常升级netrw的话，用来删除老版本
 " netrwclean.vim
+" Bundle 'netrw.vba.gz'
 " 功能强大的缩写扩展，vim版的TextMate
 " snippetsEmu.vim
 " runs make and shows the test run status with a red or green bar.
 " Bundle 'reinh/vim-makegreen'
+" C++相关
+" Bundle 'stl.vim' "stl语法高亮+
+" Bundle 'stlrefvim' "stl帮助 +
+" Bundle 'man.vim'
+"LUA用的
+" Bundle 'xolox/vim-lua-ftplugin'
 
 
 
 
-
-
+"没找到
+" Bundle 'getscriptPlugin.vim'
+" Bundle 'gzip.vim'
 
 
 
@@ -1069,6 +1110,7 @@ Bundle 'kien/rainbow_parentheses.vim'
 " Bundle 'pyflakes' "Python代码检查+
 " Bundle 'pytest'
 " Bundle 'pep8'
+" Bundle 'pyclewn'
 "---------------------------------------------------
 
 " Bundle 'jQuery'
