@@ -1,15 +1,5 @@
-" 以下列出了和语言编码的相关的设置：
-" 环境变量 LANG（使用的语言）；
-" 环境变量 LC_CTYPE（使用的内部编码）；
-" Vim 选项 encoding（Vim 的内部编码）；不管文件的编码如何，不管如何显示和输入， Vim 内部使用的编码是 UTF-8；这是国际化支持的基础。
-" Vim 选项 termencoding（Vim 在与屏幕/键盘交互时使用的编码）；
-" Vim 选项 fileencoding（Vim 当前编辑的文件在存储时的编码）；
-" Vim 选项 fileencodings（Vim 打开文件时的尝试使用的编码）；
-" Vim 选项 ambiwidth（对“不明宽度”字符的处理方式；Vim 6.1.455 后引入）。
-"
 set   cinoptions=:0
 set   completeopt=longest,menuone
-set   fileformat=unix
 set   helpheight=10
 set   pumheight=10
 set   wildmode=list:longest,full
@@ -43,28 +33,6 @@ nnoremap <C-F2> :vert diffsplit
 "语言设置
 set langmenu=zh_CN.UTF-8
 
-" Map auto complete of (, ", ', [
-"inoremap $1 ()<esc>i
-"inoremap $2 []<esc>i
-"inoremap $3 {}<esc>i
-"inoremap $4 {<esc>o}<esc>O
-"inoremap $q ''<esc>i
-"inoremap $e ""<esc>i
-"自动补全
-:inoremap { {<CR>}<ESC>O
-:inoremap } <c-r>=ClosePair('}')<CR>
-:inoremap [ []<ESC>i
-:inoremap ] <c-r>=ClosePair(']')<CR>
-:inoremap " ""<ESC>i
-:inoremap ' ''<ESC>i
-function! ClosePair(char)
-    if getline('.')[col('.') - 1] == a:char
-        return "\<Right>"
-    else
-        return a:char
-    endif
-endfunction
-"打开文件类型检测, 加了这句才可以用智能补全
 
 "[count],cc:光标以下count行逐行添加注释(7,cc)
 "[count],cu:光标以下count行逐行取消注释(7,cu)
@@ -83,11 +51,8 @@ else
     set autoindent " always set autoindenting on "智能缩进，相应的有cindent，官方说autoindent可以支持各种文件的缩进，但是效果会比只支持C/C++cindent效果会差一点，但笔者并没有看出来
 endif " has("autocmd")
 
-map <F12> :call Do_CsTag()<CR>
 
 
-" Set 7 lines to the curors - when moving vertical..
-"set so=7
 
 set hid "Change buffer - without saving
 set mat=2 "How many tenths of a second to blink
@@ -192,18 +157,6 @@ map <C-p> :cprev<cr>
 "nmap <C-t> :colder<CR>:cc<CR>
 "nmap <C-o> :colder<CR>:cc<CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Spell checking
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Pressing ,ss will toggle and untoggle spell checking
-map <leader>ss :setlocal spell!<cr>
-
-"Shortcuts using <leader>
-map <leader>sn ]s
-map <leader>sp [s
-map <leader>sa zg
-map <leader>s? z=
-
 """"""""""""""""""""""""""""""
 " => Vim grep
 """"""""""""""""""""""""""""""
@@ -232,22 +185,23 @@ function! RunShell(Msg, Shell)
 	echon 'done'
 endfunction
 "nmap  <F9> :call RunShell("get tags_dir","tag")<cr>:
+"nmap  <F9> :call RunShell("Generate tags", "ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .")<cr>
+"nmap <F11> :call RunShell("Generate filename tags", "~/.vim/shell/genfiletags.sh")<cr>
+"nmap <F12> :call RunShell("Generate cscope", "cscope -Rb")<cr>:cs add cscope.out<cr>
+"
 "nmap <F2> :set mouse=i<cr>
 "nmap <F3> :set mouse=a<cr>
 "nmap  <F4> :%s/ *$//g<cr>
 "nmap  <F4> :MRU<cr>
 "nmap  <F6> :vimgrep /<C-R>=expand("<cword>")<cr>/ **/*.c **/*.h<cr><C-o>:cw<cr>
-"nmap  <F9> :call RunShell("Generate tags", "ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .")<cr>
 "nmap <F10> :call HLUDSync()<cr>
-"nmap <F11> :call RunShell("Generate filename tags", "~/.vim/shell/genfiletags.sh")<cr>
-"nmap <F12> :call RunShell("Generate cscope", "cscope -Rb")<cr>:cs add cscope.out<cr>
 "nmap <leader>sa :cs add cscope.out<cr>
 "nmap <leader>zz <C-w>o
 "nmap <leader>gs :GetScripts<cr>
 
-" set fileformats=unix,dos,mac
 " nmap <leader>fd :se fileformat=dos<CR>
 " nmap <leader>fu :se fileformat=unix<CR>
+set   fileformat=unix
 
 " use Ctrl+[l|n|p|cc] to list|next|previous|jump to count the result
 " map <C-x>l <ESC>:cl<CR>
@@ -279,7 +233,17 @@ set formatoptions=tcrqn " 自动格式化
 set autoindent " 继承前一行的缩进方式，特别适用于多行注释
 set cindent " 使用C样式的缩进
 set fileformats=unix,dos " 自动识别UNIX格式和MS-DOS格式
+" set fileformats=unix,dos,mac
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 以下列出了和语言编码的相关的设置：
+" 环境变量 LANG（使用的语言）；
+" 环境变量 LC_CTYPE（使用的内部编码）；
+" Vim 选项 encoding（Vim 的内部编码）；不管文件的编码如何，不管如何显示和输入， Vim 内部使用的编码是 UTF-8；这是国际化支持的基础。
+" Vim 选项 termencoding（Vim 在与屏幕/键盘交互时使用的编码）；
+" Vim 选项 fileencoding（Vim 当前编辑的文件在存储时的编码）；
+" Vim 选项 fileencodings（Vim 打开文件时的尝试使用的编码）；
+" Vim 选项 ambiwidth（对“不明宽度”字符的处理方式；Vim 6.1.455 后引入）。
+"
 " 设置字符集(看情况具体选择)
 set termencoding=utf-8
 set fileencoding=utf-8
@@ -377,7 +341,44 @@ autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
 " 去掉所有的^M
 noremap <Leader>ff :%s/$//g<cr>:%s// /g<cr>
 
+" Map auto complete of (, ", ', [
+"inoremap $1 ()<esc>i
+"inoremap $2 []<esc>i
+"inoremap $3 {}<esc>i
+"inoremap $4 {<esc>o}<esc>O
+"inoremap $q ''<esc>i
+"inoremap $e ""<esc>i
+
+"自动补全
+:inoremap { {<CR>}<ESC>O
+:inoremap } <c-r>=ClosePair('}')<CR>
+:inoremap [ []<ESC>i
+:inoremap ] <c-r>=ClosePair(']')<CR>
+:inoremap " ""<ESC>i
+:inoremap ' ''<ESC>i
+function! ClosePair(char)
+    if getline('.')[col('.') - 1] == a:char
+        return "\<Right>"
+    else
+        return a:char
+    endif
+endfunction
+"打开文件类型检测, 加了这句才可以用智能补全
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 不写文章用不到
+" => Spell checking
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Pressing ,ss will toggle and untoggle spell checking
+map <leader>ss :setlocal spell!<cr>
+
+"Shortcuts using <leader>
+map <leader>sn ]s
+map <leader>sp [s
+map <leader>sa zg
+map <leader>s? z=
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <F12> :call Do_CsTag()<CR>
 function! Do_CsTag()
     let dir = getcwd()
     if filereadable("tags")

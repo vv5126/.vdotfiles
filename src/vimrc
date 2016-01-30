@@ -1429,3 +1429,6 @@ function! VisualSearch(direction) range
     let @" = l:saved_reg
 endfunction
 """"""""""""""""""""""""""""""
+" Set 2 lines to the curors - when moving vertical..
+" set so=2
+""""""""""""""""""""""""""""""
