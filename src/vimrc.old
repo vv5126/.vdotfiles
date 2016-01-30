@@ -118,17 +118,6 @@ map <leader>t2 :setlocal shiftwidth=2<cr>
 map <leader>t4 :setlocal shiftwidth=4<cr>
 map <leader>t8 :setlocal shiftwidth=4<cr>
 
-""""""""""""""""""""""""""""""
-" => Visual mode related
-""""""""""""""""""""""""""""""
-" Really useful!
-"  In visual mode when you press * or # to search for the current selection
-vnoremap <silent> * :call VisualSearch('f')<CR>
-vnoremap <silent> # :call VisualSearch('b')<CR>
-
-" When you press gv you vimgrep after the selected text
-vnoremap <silent> gv :call VisualSearch('gv')<CR>
-map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Command mode related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -181,16 +170,6 @@ function! CurDir()
     return curdir
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Parenthesis/bracket expanding
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-vnoremap $1 <esc>`>a)<esc>`<i(<esc>
-vnoremap $2 <esc>`>a]<esc>`<i[<esc>
-vnoremap $3 <esc>`>a}<esc>`<i{<esc>
-vnoremap $$ <esc>`>a"<esc>`<i"<esc>
-vnoremap $q <esc>`>a'<esc>`<i'<esc>
-vnoremap $e <esc>`>a"<esc>`<i"<esc>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Abbrevs
@@ -226,17 +205,6 @@ map <leader>sa zg
 map <leader>s? z=
 
 """"""""""""""""""""""""""""""
-" => Fuzzy finder
-""""""""""""""""""""""""""""""
-try
-    call fuf#defineLaunchCommand('FufCWD', 'file', 'fnamemodify(getcwd(), ''%:p:h'')')
-    map <leader>t :FufCWD **/<CR>
-catch
-endtry
-map <F7> :FufTag<cr>
-map <C-F7> :FufTaggedFile<cr>
-
-""""""""""""""""""""""""""""""
 " => Vim grep
 """"""""""""""""""""""""""""""
 let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
@@ -256,7 +224,6 @@ endtry
 set ffs=unix,dos,mac "Default file types
 set cscopequickfix=c-,d-,e-,g-,i-,s-,t-
 
-noremap <Leader>ff :%s/$//g<cr>:%s// /g<cr>
 
 " plugin shortcuts
 function! RunShell(Msg, Shell)
@@ -277,8 +244,6 @@ endfunction
 "nmap <leader>sa :cs add cscope.out<cr>
 "nmap <leader>zz <C-w>o
 "nmap <leader>gs :GetScripts<cr>
-
-vmap <C-S-P> dO#endif<Esc>PO#if 0<Esc>
 
 " set fileformats=unix,dos,mac
 " nmap <leader>fd :se fileformat=dos<CR>
@@ -347,10 +312,7 @@ else
 endif
 
 " 高亮显示普通txt文件（需要txt.vim脚本）
-" 搜索和匹配 
 set nowrapscan              " 禁止在搜索到文件两端时重新搜索
-
-set shortmess=atI " 启动的时候不显示那个援助索马里儿童的提示`
 set report=0 " 通过使用: commands命令，告诉我们文件的哪一行被改变过
 set viminfo+=! " 保存全局变量
 "set backup
@@ -362,13 +324,6 @@ set showcmd " 在 Vim 窗口右下角，标尺的右边显示未完成的命令
 " :inoremap [ []<ESC>i
 " :inoremap " ""<ESC>i
 " :inoremap ' ''<ESC>i
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 编译链接
-nmap<Leader>m :wa<CR>:make<CR>:cw<CR><CR>
-"分解说明下，<Leader>m设定快捷键为;m（;由<Leader>指定），:wa<CR>保持所有打开的文档，
-" :make<CR>执行make命令，:cw<CR>显示quickfix（如果有编译错误或警告时），
-" 最后的<CR>消除make命令执行完成屏幕上“PressENTER or type command to continue”的输入等待提示信息。
 
 "-----------------------------------------------------------------
 
@@ -405,25 +360,6 @@ function! CmdLine(str)
     unmenu Foo
 endfunction
 
-" From an idea by Michael Naumann
-function! VisualSearch(direction) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", '\\/.*$^~[]')
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'b'
-        execute "normal ?" . l:pattern . "^M"
-    elseif a:direction == 'gv'
-        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
-    elseif a:direction == 'f'
-        execute "normal /" . l:pattern . "^M"
-    endif
-
-    let @/ = l:pattern
-    let @" = l:saved_reg
-endfunction
 
 "maybe unused----------------------------
 
@@ -438,6 +374,8 @@ nnoremap <leader>3 :set filetype=javascript<CR>
 nnoremap <leader>4 :set filetype=php<CR>
 " quickfix模式
 autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
+" 去掉所有的^M
+noremap <Leader>ff :%s/$//g<cr>:%s// /g<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! Do_CsTag()

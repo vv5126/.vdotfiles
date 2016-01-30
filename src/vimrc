@@ -256,6 +256,11 @@ endif
 " Fencview的初始设置
  Bundle 'FencView.vim'
  let g:fencview_autodetect=1
+" 查看和自动识别文件的编码格式
+" Bundle 'mbbill/fencview'
+" Bundle 'fencview' "字符编码识别+
+" mbbill的编码识别插件
+" Bundle 'mbbill/fencview'
 
 "---------------------------------------------------
 
@@ -549,6 +554,7 @@ let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排�
 "---------------------------------------------------
 "智能补全
  Bundle 'supertab'
+" Bundle 'mbbill/code_complete'
 "---------------------------------------------------
 " 给vim增加IDE的功能,提供目录浏览和buffer浏览功能,因为显示器太小,感觉太占空间,所以单独使用bufexplorer,而且现在vim7的netrw功能也够强大,所以感觉比较鸡肋,而且貌似很久没有更新,所以基本不用
 Bundle 'winmanager'
@@ -676,8 +682,8 @@ Bundle 'DrawIt'
 "---------------------------------------------------
 
 "显示git diff的插件
-"  Bundle 'airblade/vim-gitgutter'
-Bundle 'mhinz/vim-signify'
+ Bundle 'airblade/vim-gitgutter'
+" Bundle 'mhinz/vim-signify'
 
 "---------------------------------------------------
 
@@ -846,6 +852,7 @@ map <C-Tab> :MBEbn<cr>
 map <C-S-Tab> :MBEbp<cr>
 "---------------------------------------------------
 
+" Bundle 'l9'   "FuzzyFinder底层依耐+
 " FuzzyFinder缓冲器/文件/命令/标签/等浏览器的模糊匹配 +
 " electbuf.vim相比，它少了对多个buf的批量选择和处理
 " mru.vim -> fuzzyfinder.vim:FuzzyFinderMruFile
@@ -860,6 +867,17 @@ map <C-S-Tab> :MBEbp<cr>
 " Bundle 'mru.vim'
 " FavEx : Favorite file and directory explorer ,可以添加目录和文件到收藏夹，可以把经常编辑的文件添加到收藏夹来，在文件打开以后，\ff新增文件到收藏夹，\fd新增目录到收藏夹
 " favex.vim
+
+""""""""""""""""""""""""""""""
+" => Fuzzy finder
+""""""""""""""""""""""""""""""
+try
+    call fuf#defineLaunchCommand('FufCWD', 'file', 'fnamemodify(getcwd(), ''%:p:h'')')
+    map <leader>t :FufCWD **/<CR>
+catch
+endtry
+map <F7> :FufTag<cr>
+map <C-F7> :FufTaggedFile<cr>
 "---------------------------------------------------
 
 "加入html标签配对
@@ -978,6 +996,36 @@ Bundle 'c.vim'
 
 "---------------------------------------------------
 
+" Unite可以在一个项目中快速浏览文件。但是它不仅限于文件，其他任何可以列出的东西都可以很好的被显示和搜索。
+Bundle 'Shougo/unite-help'
+Bundle 'Shougo/unite-outline'
+Bundle 'Shougo/unite.vim'
+" Bundle 'osyo-manga/unite-quickfix'
+" Bundle 'tsukkee/unite-tag'
+
+"---------------------------------------------------
+
+" 可以在vim和tmux的任何组合间无缝切换
+" Bundle 'christoomey/vim-tmux-navigator'
+
+"---------------------------------------------------
+
+
+"---------------------------------------------------
+
+
+"---------------------------------------------------
+
+
+"---------------------------------------------------
+
+
+"---------------------------------------------------
+
+
+"---------------------------------------------------
+
+
 "---------------------------------------------------
 
 " 快速打开关闭quickfix window
@@ -989,35 +1037,25 @@ Bundle 'c.vim'
 " 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
 " vis.vim
 
-" Bundle 'vim-git'
+Bundle 'tpope/vim-git'
 " Bundle 'rrhelper.vim'
 " Bundle 'tarPlugin.vim'
 " Bundle 'winfileexplorer.vim'
 " Bundle 'wintagexplorer.vim'
 " Bundle 'gtags.vim'
 " Bundle 'jiazhoulvke/myproject'
-" Bundle 'tpope/vim-speeddating'
-" Bundle 'mbbill/code_complete'
 " Bundle 'gtags.vim'
-" Bundle 'Shougo/unite-help'
-" Bundle 'Shougo/unite-outline'
-" Bundle 'Shougo/unite.vim'
 " Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
 " Bundle 'chrisbra/csv.vim'
-" Bundle 'tsukkee/unite-tag'
-" Bundle 'osyo-manga/unite-quickfix'
-" Bundle 'christoomey/vim-tmux-navigator'
 " Bundle 'ccglue'
 " Bundle 'ShowMarks'
-" Bundle 'tlib.vba.gz'
-" Bundle 'getscript.vba.gz'
-" Bundle 'fencview' "字符编码识别+
-" Bundle 'cmdline completion命令行模式的补全+
+" Bundle 'cmdline-completion' 命令行模式的补全+
 " Bundle 'genutils' "底层的lookupfile的功能支持+
-" Bundle 'l9FuzzyFinder' "底层依耐+
 
 "---------------------------------------------------
 "unused
+" 某些插件会用到的库
+" Bundle 'tlib'
 "让Vim变成所见即所得的MarkDown文件编辑器，可以在编辑时预览最终效果。
 " Bundle 'jiazhoulvke/MarkdownView'
 " 漂亮的括号 感觉意义不大
@@ -1026,8 +1064,6 @@ Bundle 'c.vim'
 " Bundle 'tpope/vim-markdown'
 " Bundle 'plasticboy/vim-markdown'
 " let g:vim_markdown_frontmatter=1
-" 查看和自动识别文件的编码格式
-" Bundle 'mbbill/fencview'
 " vim的wiki
 " viki.vim
 "vim中打开终端的功能+
@@ -1053,8 +1089,6 @@ Bundle 'c.vim'
 " Bundle 'mattn/emmet-vim'
 " 单词完成，没用它
 " word_complete.vim
-" mbbill的编码识别插件
-" Bundle 'mbbill/fencview'
 " great for latex
 " latex-suite
 " 同时选择多个区域
@@ -1348,3 +1382,50 @@ set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]
 "自动保存
 " set autowrite
 
+" 屏蔽代码
+vmap <C-\> dO#endif<Esc>PO#if 0<Esc>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 为选中代码加括号啥的
+" => Parenthesis/bracket expanding
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+vnoremap $$ <esc>`>a"<esc>`<i"<esc>
+vnoremap $q <esc>`>a'<esc>`<i'<esc>
+vnoremap $e <esc>`>a"<esc>`<i"<esc>
+
+""""""""""""""""""""""""""""""
+" 对选中代码进行匹配
+" => Visual mode related
+""""""""""""""""""""""""""""""
+" Really useful!
+"  In visual mode when you press * or # to search for the current selection
+vnoremap <silent> * :call VisualSearch('f')<CR>
+vnoremap <silent> # :call VisualSearch('b')<CR>
+
+" When you press gv you vimgrep after the selected text
+vnoremap <silent> gv :call VisualSearch('gv')<CR>
+map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
+
+" From an idea by Michael Naumann
+function! VisualSearch(direction) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", '\\/.*$^~[]')
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'b'
+        execute "normal ?" . l:pattern . "^M"
+    elseif a:direction == 'gv'
+        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
+    elseif a:direction == 'f'
+        execute "normal /" . l:pattern . "^M"
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+""""""""""""""""""""""""""""""
