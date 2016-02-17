@@ -97,7 +97,7 @@ alias emacs='emacs -nw'
 alias grep='grep --color -irn --exclude-dir=".git"'
 alias gbsa='gbs -v build -A mipsel'
 alias py='$HOME/project/tools/pycharm-community-4.5.4/bin/pycharm.sh &'
-alias vdpush='git push -u origin master;git pull'
+alias vdpush='git push -u origin master && git pull'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like

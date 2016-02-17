@@ -34,8 +34,11 @@
  set softtabstop=4
 "用空格代替制表符
  set expandtab
+"autocmd FileType c,cpp set expandtab
 "不要用空格代替制表符
 "set noexpandtab
+"指定文件类型,这样.mak和Makefile文件将都会使用真实tab
+" autocmd FileType Makefile set noexpandtab
 
 "字符设置
  set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5
@@ -45,7 +48,7 @@
  set scrolloff=3 " 光标移动到buffer的顶部和底部时保持10行距离
 "新建文件编码
  set fenc=utf-8
- set autoindent
+ set autoindent " 继承前一行的缩进方式，特别适用于多行注释
  set hidden                  " 允许在有未保存的修改时切换缓冲区，此时的修改由 vim 负责保存
 "高亮显示当前行/列
  set cursorline
@@ -53,7 +56,7 @@
  set ttyfast
 "显示光标当前位置
  set ruler                   " 打开状态栏标尺
- set backspace=indent,eol,start
+ set backspace=indent,eol,start " 这指明在插入模式下在哪里允许 <BS> 删除光标前面的字符。
  set laststatus=2            " 启动显示状态行(1),总是显示状态行(2)
 "相对行号 要想相对行号起作用要放在显示行号后面
 "set relativenumber
@@ -111,6 +114,8 @@ set hlsearch
 "set matchpairs=(:),{:},[:],<:>
 "让退格，空格，上下箭头遇到行首行尾时自动移到下一行（包括insert模式）
  set whichwrap=b,s,<,>,[,]
+" 允许backspace和光标键跨越行边界
+" set whichwrap+=h,l
 
 "插入模式下移动
  inoremap <c-j> <down>
@@ -1037,6 +1042,12 @@ Bundle 'Shougo/unite.vim'
 " 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
 " vis.vim
 
+" 命令行模式的补全+
+" Bundle 'cmdline-completion'
+
+"底层的lookupfile的功能支持+
+" Bundle 'genutils'
+
 Bundle 'tpope/vim-git'
 " Bundle 'rrhelper.vim'
 " Bundle 'tarPlugin.vim'
@@ -1044,13 +1055,8 @@ Bundle 'tpope/vim-git'
 " Bundle 'wintagexplorer.vim'
 " Bundle 'gtags.vim'
 " Bundle 'jiazhoulvke/myproject'
-" Bundle 'gtags.vim'
-" Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
 " Bundle 'chrisbra/csv.vim'
-" Bundle 'ccglue'
 " Bundle 'ShowMarks'
-" Bundle 'cmdline-completion' 命令行模式的补全+
-" Bundle 'genutils' "底层的lookupfile的功能支持+
 
 "---------------------------------------------------
 "unused
@@ -1147,6 +1153,7 @@ Bundle 'tpope/vim-git'
 " Bundle 'pyclewn'
 "---------------------------------------------------
 
+" Bundle 'ccglue'
 " Bundle 'jQuery'
 " Bundle 'JSON.vim'
 " Bundle 'shawncplus/phpcomplete.vim'
@@ -1160,6 +1167,7 @@ Bundle 'tpope/vim-git'
 " Bundle 'vimballPlugin.vim'
 " Bundle 'cuteErrorMarker.vim'
 " Bundle 'kevinw/pyflakes-vim'
+" Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
 "---------------------------------------------------
 
 
@@ -1432,3 +1440,13 @@ endfunction
 " Set 2 lines to the curors - when moving vertical..
 " set so=2
 """"""""""""""""""""""""""""""
+
+" When pressing <leader>cd switch to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>
+
+"实现打开同一文件时，vim能够自动记住上一次的位置
+" Restore the last quit position when open file.
+autocmd BufReadPost *
+			\ if line("'\"") > 0 && line("'\"") <= line("$") |
+			\     exe "normal g'\"" |
+			\ endif
