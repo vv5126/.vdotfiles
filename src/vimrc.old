@@ -1,17 +1,15 @@
-set   cinoptions=:0
+set cinoptions=:0
 set ffs=unix,dos,mac "Default file types
 set cscopequickfix=c-,d-,e-,g-,i-,s-,t-
-set   completeopt=longest,menuone
-set   helpheight=10
-set   pumheight=10
-set   wildmode=list:longest,full
+set completeopt=longest,menuone
+set helpheight=10
+set pumheight=10
+set wildmode=list:longest,full
 " 在处理未保存或只读文件的时候，弹出确认
 set confirm
 " 字符间插入的像素行数目
 set linespace=0
 set backspace=2
-set smartindent             " 开启新行时使用智能自动缩进
-                            " 不设定在插入状态无法用退格键和 Delete 键删除回车符
 set fdm=indent " ...
 set lazyredraw
 "长行显示，解决@@@@的问题
@@ -25,47 +23,22 @@ set lbr
 set tw=500
 set ai "Auto indent
 set si "Smart indet
+set smartindent             " 开启新行时使用智能自动缩进
+                            " 不设定在插入状态无法用退格键和 Delete 键删除回车符
 set wrap "Wrap lines
-let OpenDir=system("pwd")
 " 高亮显示普通txt文件（需要txt.vim脚本）
-set nowrapscan              " 禁止在搜索到文件两端时重新搜索
 set report=0 " 通过使用: commands命令，告诉我们文件的哪一行被改变过
 set viminfo+=! " 保存全局变量
 "set backup
 set magic " 设置正表达式
 " 逗号分隔的三个值分别指：行首的空白字符，换行符和插入模式开始处之前的字符。
-set showcmd " 在 Vim 窗口右下角，标尺的右边显示未完成的命令
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 文本格式和排版
 set formatoptions=tcrqn " 自动格式化
 set cindent " 使用C样式的缩进
 set fileformats=unix,dos,mac " 自动识别UNIX格式和MS-DOS格式
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 以下列出了和语言编码的相关的设置：
-" 环境变量 LANG（使用的语言）；
-" 环境变量 LC_CTYPE（使用的内部编码）；
-" Vim 选项 encoding（Vim 的内部编码）；不管文件的编码如何，不管如何显示和输入， Vim 内部使用的编码是 UTF-8；这是国际化支持的基础。
-" Vim 选项 termencoding（Vim 在与屏幕/键盘交互时使用的编码）；
-" Vim 选项 fileencoding（Vim 当前编辑的文件在存储时的编码）；
-" Vim 选项 fileencodings（Vim 打开文件时的尝试使用的编码）；
-" Vim 选项 ambiwidth（对“不明宽度”字符的处理方式；Vim 6.1.455 后引入）。
-"
-" 设置字符集(看情况具体选择)
-set termencoding=utf-8
-set fileencoding=utf-8
-"let &termencoding = &encoding
-"set fileencoding  = gb18030
- set fileencoding  = gb2312
-"set fileencodings = utf-8,gbk,ucs-bom,cp936
-"set fileencodings = utf-8,gb18030,utf-16,big5
- set fileencodings = utf-8,gb2312,gbk,gb18030
-"set fileencodings = ucs-bom,utf-8,chinese
- set fileencodings = ucs-bom,utf-8,cp936
-set   fileformat=unix
-"编码设置
-"set enc           = utf-8
-"set fencs         = utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set fileformat=unix
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set font according to system
 if (g:iswindows==1)
     set gfn=Bitstream\ Vera\ Sans\ Mono:h10
@@ -73,57 +46,20 @@ else
     set gfn=Monospace\ 10
     set shell=/bin/bash
 endif
-" 配置多语言环境
-if has("multi_byte")
-    " UTF-8 编码
-    set encoding       = utf-8
-    set termencoding   = utf-8
-    set formatoptions+ = mM
-    " 设定默认解码
-    set fenc          = utf-8
-    set fencs         = usc-bom,utf-8,euc-jp,gb18030,gbk,gb2312,cp936,iso-8859-1
-    if v:lang         = ~? '^\(zh\)\|\(ja\)\|\(ko\)'
-        set ambiwidth = double
-    endif
-else
-    echoerr "Sorry, this version of (g)vim was not compiled with +multi_byte"
-endif
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Specify the behavior when switching between buffers
 try
     set switchbuf=usetab
     set stal=2
 catch
 endtry
-""""""""""""""""""""""""""""""
-" => Vim grep
-""""""""""""""""""""""""""""""
 let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
 set grepprg=/bin/grep\ -nH
 
 
 
-
-
-" "cd" to change to open directory.
-nmap <silent> <leader>cd :exe 'cd ' . OpenDir<cr>:pwd<cr>
-nnoremap <leader>v <Plug>TaskList
 nmap <leader>f :find<cr>
 "比较文件
 nnoremap <C-F2> :vert diffsplit
-" :inoremap ( ()<ESC>i
-" :inoremap { {<CR>}<ESC>O
-" :inoremap [ []<ESC>i
-" :inoremap " ""<ESC>i
-" :inoremap ' ''<ESC>i
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs and buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <silent> <leader><cr> :noh<cr>
-" Close the current buffer
-map <leader>bd :Bclose<cr>
-" Close all the buffers
-map <leader>ba :1,300 bd!<cr>
 
 "关于buffer的快捷键
 nnoremap <C-RETURN> :bnext<CR>
@@ -139,12 +75,6 @@ nnoremap <C-S-TAB> :tabprev<CR>
 " map tc :tabclose<cr>
 map <leader>tm :tabmove
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Remap VIM 0
-"map 0 ^
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Cope
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Do :help cope if you are unsure what cope is. It's super useful!
@@ -153,48 +83,27 @@ map <C-n> :cnext<cr>
 map <C-p> :cprev<cr>
 "nmap <C-t> :colder<CR>:cc<CR>
 "nmap <C-o> :colder<CR>:cc<CR>
-" plugin shortcuts
-function! RunShell(Msg, Shell)
-	echo a:Msg . '...'
-	call system(a:Shell)
-	echon 'done'
-endfunction
-"nmap  <F9> :call RunShell("get tags_dir","tag")<cr>:
-"nmap  <F9> :call RunShell("Generate tags", "ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .")<cr>
-"nmap <F11> :call RunShell("Generate filename tags", "~/.vim/shell/genfiletags.sh")<cr>
-"nmap <F12> :call RunShell("Generate cscope", "cscope -Rb")<cr>:cs add cscope.out<cr>
-"
-"nmap <F2> :set mouse=i<cr>
-"nmap <F3> :set mouse=a<cr>
 "nmap  <F4> :%s/ *$//g<cr>
 "nmap  <F4> :MRU<cr>
-"nmap  <F6> :vimgrep /<C-R>=expand("<cword>")<cr>/ **/*.c **/*.h<cr><C-o>:cw<cr>
 "nmap <F10> :call HLUDSync()<cr>
 "nmap <leader>sa :cs add cscope.out<cr>
+"只显示一个buffer
 "nmap <leader>zz <C-w>o
 "nmap <leader>gs :GetScripts<cr>
-
-" nmap <leader>fd :se fileformat=dos<CR>
-" nmap <leader>fu :se fileformat=unix<CR>
 
 " use Ctrl+[l|n|p|cc] to list|next|previous|jump to count the result
 " map <C-x>l <ESC>:cl<CR>
 " map <C-x>n <ESC>:cn<CR>
 " map <C-x>p <ESC>:cp<CR>
 " map <C-x>c <ESC>:cc<CR>
+
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
-"Quickly open a buffer for scripbble
-"map <leader>q :e ~/buffer<cr>
 map <leader>t2 :setlocal shiftwidth=2<cr>
 map <leader>t4 :setlocal shiftwidth=4<cr>
 map <leader>t8 :setlocal shiftwidth=4<cr>
 
-
-
-highlight WhitespaceEOL ctermbg=red guibg=red
-match WhitespaceEOL /\s\+$/
 
 " 侦测文件类型
 filetype on
@@ -244,26 +153,6 @@ call pathogen#infect()
 call pathogen#helptags()
 
 "-----------------------------------------------------------------
-
-command! Bclose call <SID>BufcloseCloseIt()
-function! <SID>BufcloseCloseIt()
-    let l:currentBufNum = bufnr("%")
-    let l:alternateBufNum = bufnr("#")
-
-    if buflisted(l:alternateBufNum)
-        buffer #
-    else
-        bnext
-    endif
-
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
-
-    if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
-    endif
-endfunction
 
 func! Cwd()
     let cwd = getcwd()
@@ -562,6 +451,49 @@ set guioptions-=l
 set guioptions-=L
 set guioptions-=r
 set guioptions-=R
+
+"然并卵
+" Close all the buffers
+map <leader>ba :1,300 bd!<cr>
+" :inoremap ( ()<ESC>i
+" :inoremap { {<CR>}<ESC>O
+" :inoremap [ []<ESC>i
+" :inoremap " ""<ESC>i
+" :inoremap ' ''<ESC>i
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Editing mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Remap VIM 0
+"map 0 ^
+"nmap <F2> :set mouse=i<cr>
+"nmap <F3> :set mouse=a<cr>
+highlight WhitespaceEOL ctermbg=red guibg=red
+match WhitespaceEOL /\s\+$/
+"Quickly open a buffer for scripbble
+"map <leader>q :e ~/buffer<cr>
+" nmap <leader>fd :se fileformat=dos<CR>
+" nmap <leader>fu :se fileformat=unix<CR>
+" Close the current buffer
+map <leader>bd :Bclose<cr>
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+    let l:currentBufNum = bufnr("%")
+    let l:alternateBufNum = bufnr("#")
+
+    if buflisted(l:alternateBufNum)
+        buffer #
+    else
+        bnext
+    endif
+
+    if bufnr("%") == l:currentBufNum
+        new
+    endif
+
+    if buflisted(l:currentBufNum)
+        execute("bdelete! ".l:currentBufNum)
+    endif
+endfunction
 
 
 ------------------------------------------------
