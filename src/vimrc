@@ -94,7 +94,7 @@ set hlsearch                " 搜索时高亮显示被找到的文本
 set hlsearch
 
 "以下设置用来是vim正确显示过长的行
-"set textwidth=80
+"set textwidth=80 "插入文本的最大宽度
 "set formatoptions=qrnl
 "彩色显示第85行
  set colorcolumn=85
@@ -1504,3 +1504,17 @@ let OpenDir=system("pwd")
 " set showcmd " 在 Vim 窗口右下角，标尺的右边显示未完成的命令
 " set nowrapscan              " 禁止在搜索到文件两端时重新搜索
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"关于buffer的快捷键
+nnoremap <C-RETURN> :bnext<CR>
+nnoremap <C-S-RETURN> :bprevious<CR>
+
+"关于tab的快捷键
+nnoremap <C-TAB> :tabnext<CR>
+nnoremap <C-S-TAB> :tabprev<CR>
+" map tn :tabnext<cr>
+" map tp :tabprevious<cr>
+" map td :tabnew .<cr>
+" map te :tabedit
+" map tc :tabclose<cr>
+" map tm :tabmove

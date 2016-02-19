@@ -1,51 +1,35 @@
-set cinoptions=:0
-set ffs=unix,dos,mac "Default file types
+set cinoptions=:0   "设置 'cindent' 时如何缩进
 set cscopequickfix=c-,d-,e-,g-,i-,s-,t-
 set completeopt=longest,menuone
-set helpheight=10
-set pumheight=10
-set wildmode=list:longest,full
-" 在处理未保存或只读文件的时候，弹出确认
-set confirm
-" 字符间插入的像素行数目
-set linespace=0
+set helpheight=10   "帮助窗口的最小高度
+set pumheight=10    "弹出窗口的最大高度
+set wildmode=list:longest,full  "'wildchar' 命令行扩展所用的模式
+set confirm "退出、写入等有未保存的改动或文件只读时询问
+set linespace=0 " 字符间插入的像素行数目
 set backspace=2
-set fdm=indent " ...
-set lazyredraw
+set lazyredraw  "执行宏时不重画
 "长行显示，解决@@@@的问题
 set display=lastline
 "语言设置
-set langmenu=zh_CN.UTF-8
 set hid "Change buffer - without saving
-set mat=2 "How many tenths of a second to blink
-set nu
-set lbr
-set tw=500
-set ai "Auto indent
-set si "Smart indet
+set lbr "在空白处回绕长行
+set si "Smart indet 'smartindent'     'si'      C 程序智能自动缩进
 set smartindent             " 开启新行时使用智能自动缩进
                             " 不设定在插入状态无法用退格键和 Delete 键删除回车符
 set wrap "Wrap lines
 " 高亮显示普通txt文件（需要txt.vim脚本）
 set report=0 " 通过使用: commands命令，告诉我们文件的哪一行被改变过
 set viminfo+=! " 保存全局变量
-"set backup
+"set backup "覆盖文件时保留备份文件
 set magic " 设置正表达式
 " 逗号分隔的三个值分别指：行首的空白字符，换行符和插入模式开始处之前的字符。
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 文本格式和排版
 set formatoptions=tcrqn " 自动格式化
 set cindent " 使用C样式的缩进
-set fileformats=unix,dos,mac " 自动识别UNIX格式和MS-DOS格式
-set fileformat=unix
+set fileformats=unix,dos,mac " 自动识别UNIX格式和MS-DOS格式     参与自动检测的 'fileformat' 的格式
+set fileformat=unix     "文件输入输出使用的格式
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set font according to system
-if (g:iswindows==1)
-    set gfn=Bitstream\ Vera\ Sans\ Mono:h10
-else
-    set gfn=Monospace\ 10
-    set shell=/bin/bash
-endif
 " Specify the behavior when switching between buffers
 try
     set switchbuf=usetab
@@ -53,27 +37,13 @@ try
 catch
 endtry
 let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
-set grepprg=/bin/grep\ -nH
+set grepprg=/bin/grep\ -nH  "":grep" 使用的程序
 
 
 
 nmap <leader>f :find<cr>
 "比较文件
 nnoremap <C-F2> :vert diffsplit
-
-"关于buffer的快捷键
-nnoremap <C-RETURN> :bnext<CR>
-nnoremap <C-S-RETURN> :bprevious<CR>
-
-"关于tab的快捷键
-nnoremap <C-TAB> :tabnext<CR>
-nnoremap <C-S-TAB> :tabprev<CR>
-" map tn :tabnext<cr>
-" map tp :tabprevious<cr>
-" map td :tabnew .<cr>
-" map te :tabedit
-" map tc :tabclose<cr>
-map <leader>tm :tabmove
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Cope
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -114,11 +84,11 @@ au BufRead,BufNewFile *  setfiletype txt
 
 if has("autocmd")
     augroup vimrcEx
-        au!
-        autocmd FileType text setlocal textwidth=78
+        au! "清除所有自动命令
     augroup END
 else
     set autoindent " always set autoindenting on "智能缩进，相应的有cindent，官方说autoindent可以支持各种文件的缩进，但是效果会比只支持C/C++cindent效果会差一点，但笔者并没有看出来
+set ai "Auto indent 'autoindent'      'ai'      根据上一行决定新行的缩进
 endif " has("autocmd")
 
 
@@ -499,3 +469,11 @@ endfunction
 ------------------------------------------------
 " for gvim
 set go=                     " 不要图形按钮
+set langmenu=zh_CN.UTF-8    "菜单使用的语言
+" Set font according to system
+if (g:iswindows==1)
+    set gfn=Bitstream\ Vera\ Sans\ Mono:h10
+else
+    set gfn=Monospace\ 10
+    set shell=/bin/bash
+endif
