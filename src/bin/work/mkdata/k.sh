@@ -1,32 +1,40 @@
 #!/bin/bash
 
-function mk() {
+. ~/.bin/ini/ini.work
 
+function mk() {
+    local new_target_name=
 	source .project_info
 	case "$forOS" in
 	'android'*)
-		[ "$addtime" = "1" ] && target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
-		[ -n "$note" ] && target_name=$target_name-$note
-		target_name=$target_name.img
 		[ "$needclean" = "1" ] && make clean
 		[ -f $the_image ] && rm $the_image
 		make zImage -j32
 		if [ -f $the_image ]; then
-			[ ! -d "build_bootimage" ] && cp -r $VGL_BUILD_ROOT_DIR ./build_bootimage
-		   cd build_bootimage
-		   bash m.sh
+		    [ ! -d "build_bootimage" ] && cp -r $VGL_BUILD_ROOT_DIR ./build_bootimage
+		    cd build_bootimage
+		    bash m.sh && {
+                new_target_name=$target_name
+                [ "$addtime" = "1" ] && new_target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
+                [ -n "$note" ] && new_target_name=$new_target_name-$note
+                new_target_name=$new_target_name.img
+			    echo -e "\n  the out img: $new_target_name" >&2
+			    smkdir $target_dir
+			    scp "out/$target_name" $target_dir/$new_target_name
+            }
 		fi
 		;;
 	'tizen'*)
-		[ "$addtime" = "1" ] && target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
-		[ -n "$note" ] && target_name=$target_name-$note
-		target_name=$target_name.img
 		[ "$needclean" = "1" ] && make clean
 		[ -f $the_image ] && rm $the_image
 		make uImage -j32 && {
-			echo the out img: $target_name >&2
+            new_target_name=$target_name
+            [ "$addtime" = "1" ] && new_target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
+            [ -n "$note" ] && new_target_name=$new_target_name-$note
+            new_target_name=$new_target_name.img
+			echo -e "\n  the out img: $new_target_name" >&2
 			smkdir $target_dir
-			scp $the_image $target_dir/$target_name
+			scp $the_image $target_dir/$new_target_name
 		}
 		;;
 	*)
@@ -45,11 +53,12 @@ function init(){
 		[ -f "arch/mips/configs/$tmp" ] && cp arch/mips/configs/$tmp .config || return 1
 	fi
 
-	tmp=$(user_select 'what Version' '3.10' '3.08')
-	[ $? = 0 ] && project_type='kernel'$tmp
+	# tmp=$(user_select 'what Version' '3.10' '3.08')
+	# [ $? = 0 ] && project_type='kernel'$tmp
 	git_remote=$(git remote -v | head -2 | tail -1 | awk '{print $2}')
 	git_branch=$(git branch | grep '*' | awk '{print $2}')
 	while read line; do
+		[[ $line =~ "Kernel Configuration" ]] && project_type="kernel$(echo "$line" | cut -d " " -f 3)"
 		[[ "$line" =~ "CONFIG_BOARD_NAME" ]] && forBOARD=${line##*=}
 		[[ "$line" =~ "CONFIG_PRODUCT_NAME" ]] && platfrom_name=${line##*=}
 		if [[ "$line" =~ "CONFIG_LCD_" ]] && [ "${line:0-1}" = "y" ]; then
@@ -60,10 +69,10 @@ function init(){
 			}
 		fi
 	done < ".config"
-	target_dir='$VGL_BOARDS/$forBOARD_$forOS-imgs'
+	target_dir='$VGL_BOARDS/$forBOARD-$forOS-imgs'
 	target_name='$project_type-$forBOARD-$forOS'
 
-	tmp=$(user_select 'what OS' tizen23 tizen30 android51 android44)
+	tmp=$(user_select 'what OS' "${surport_os[@]}")
 	[ $? = 0 ] && forOS=$tmp
 
 	case $forOS in

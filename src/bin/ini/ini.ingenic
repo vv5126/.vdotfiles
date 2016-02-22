@@ -1,7 +1,7 @@
 # tizen #
 
 # imgs #
-export VGL_BOARDS=wgao@192.168.4.10:/home/wgao/backup/boards
+export VGL_BOARDS=wgao@192.168.4.10:/backup/wgao/boards
 
 # build bootimage #
 export VGL_BUILD_ROOT_DIR=$HOME/project/tools/build_bootimage

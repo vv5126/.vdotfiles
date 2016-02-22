@@ -10,8 +10,23 @@
  syntax enable
 " 允许用指定语法高亮配色方案替换默认方案
  syntax on
-" 关闭兼容模式, 不要兼容vi
- set nocompatible "不要vim模仿vi模式，建议设置，否则会有很多不兼容的问题
+" 关闭兼容模式, 不要兼容vi，建议设置，否则会有很多不兼容的问题
+ set nocompatible
+
+if has("autocmd")
+    augroup vimrcEx
+        "清除所有自动命令
+        au!
+" 实现打开同一文件时，vim能够自动记住上一次的位置
+" Restore the last quit position when open file.
+        autocmd BufReadPost *
+			\ if line("'\"") > 0 && line("'\"") <= line("$") |
+			\     exe "normal g'\"" |
+			\ endif
+    augroup END
+else
+    set autoindent " always set autoindenting on "智能缩进，相应的有cindent，官方说autoindent可以支持各种文件的缩进，但是效果会比只支持C/C++cindent效果会差一点，但笔者并没有看出来
+endif " has("autocmd")
 
 "配色方案
  colorscheme mycolor
@@ -95,7 +110,13 @@ set hlsearch
 
 "以下设置用来是vim正确显示过长的行
 "set textwidth=80 "插入文本的最大宽度
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 文本格式和排版
+set formatoptions=tcrqn "控制 Vim 如何对文本进行排版
 "set formatoptions=qrnl
+set fileformats=unix,dos,mac " 自动识别UNIX格式和MS-DOS格式     参与自动检测的 'fileformat' 的格式
+set fileformat=unix     "文件输入输出使用的格式
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "彩色显示第85行
  set colorcolumn=85
 "设置256色显示
@@ -345,6 +366,7 @@ if 0
  Bundle 'cscope.vim'
     set cscopetag
     set cscopeverbose 
+    set cscopequickfix=c-,d-,e-,g-,i-,s-,t-
     " nmap s :cs find s =expand("")   
     " nmap g :cs find g =expand("")   
     " nmap c :cs find c =expand("")   
@@ -1017,6 +1039,18 @@ Bundle 'Shougo/unite.vim'
 
 "---------------------------------------------------
 
+" 记录最近打开的文件
+Bundle 'mru.vim'
+" let MRU_File='/tmp/mru_files' "设置默认保存最近打开文件列表的文件，默认$HOME/.vim_mru_files；
+let MRU_Max_Entries = 1000 "设置默认记录的打开文件数量，默认100；
+let MRU_Exclude_Files = '^/tmp/.*|^/var/tmp/.*' "设置默认不包含哪些文件，默认空；
+let MRU_Include_Files = '.c$|.h$' "设置默认只包含哪些文件，默认空；
+let MRU_Window_Height = 15 "设置MRU窗口的高度，默认8；
+let MRU_Use_Current_Window = 1 "设置默认在本窗口打开最近文件列表，而不是新的窗口；
+let MRU_Auto_Close = 0 "设置默认不关闭MRU窗口，默认关闭；
+let MRU_Max_Menu_Entries = 20 "设置MRU窗口默认显示多少条记录，默认10；
+let MRU_Max_Submenu_Entries = 15 "设置MRU窗口默认子菜单显示多少条记录，默认10。如果有太多的记录显示在MRU窗口时，记录会被分割成子菜单，该配置设置子菜单里显示多少条记录；
+nmap <leader>ff :MRU<CR>
 
 "---------------------------------------------------
 
@@ -1056,7 +1090,7 @@ Bundle 'tpope/vim-git'
 "---------------------------------------------------
 "unused
 "添加标记,可以来回跳,但不太好用.
-Bundle 'ShowMarks'
+" Bundle 'ShowMarks'
 " 快速打开关闭quickfix window
 " Bundle '907th/vim-qfix'
 " 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
@@ -1445,13 +1479,6 @@ endfunction
 " When pressing <leader>cd switch to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>
 
-"实现打开同一文件时，vim能够自动记住上一次的位置
-" Restore the last quit position when open file.
-autocmd BufReadPost *
-			\ if line("'\"") > 0 && line("'\"") <= line("$") |
-			\     exe "normal g'\"" |
-			\ endif
-
 " plugin shortcuts
 function! RunShell(Msg, Shell)
 	echo a:Msg . '...'
@@ -1503,6 +1530,17 @@ let OpenDir=system("pwd")
 " 可能用不到的配置
 " set showcmd " 在 Vim 窗口右下角，标尺的右边显示未完成的命令
 " set nowrapscan              " 禁止在搜索到文件两端时重新搜索
+" map <leader>t2 :setlocal shiftwidth=2<cr>
+" map <leader>t4 :setlocal shiftwidth=4<cr>
+" map <leader>t8 :setlocal shiftwidth=4<cr>
+" Remove the Windows ^M - when the encodings gets messed up
+" noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+" 去掉所有的^M
+" noremap <Leader>ff :%s/\$//g<cr>:%s/\/ /g<cr>
+" nmap  <F4> :%s/ *$//g<cr>
+set grepprg=/bin/grep\ -nH  "":grep" 使用的程序
+let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
+"set backup "覆盖文件时保留备份文件
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "关于buffer的快捷键
@@ -1518,3 +1556,19 @@ nnoremap <C-S-TAB> :tabprev<CR>
 " map te :tabedit
 " map tc :tabclose<cr>
 " map tm :tabmove
+set viminfo+=! " 保存全局变量
+set magic "改变搜索模式使用的特殊字符
+" set cindent " 使用C样式的缩进
+" set cinoptions=:0   "设置 'cindent' 时如何缩进
+" set smartindent "C 程序智能自动缩进
+set showtabline=1  "指定何时显示带有标签页标签的行,这里设置为至少有两个以上才显示.
+
+set confirm "退出、写入等有未保存的改动或文件只读时询问
+set linespace=0 " 字符间插入的像素行数目
+set lazyredraw  "执行宏时不重画
+set display=lastline    "长行显示，解决@@@@的问题
+"只显示一个buffer
+"nmap <leader>zz <C-w>o
+
+"在插入模式输入xtime自动插入时间.
+iab xtime <c-r>=strftime("%Y-%m-%d %H:%M:%S")<C-I>
