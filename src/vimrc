@@ -70,7 +70,7 @@ endif " has("autocmd")
 "set cursorcolumn
  set ttyfast
 "显示光标当前位置
- set ruler                   " 打开状态栏标尺
+ set ruler         " 显示标尺
  set backspace=indent,eol,start " 这指明在插入模式下在哪里允许 <BS> 删除光标前面的字符。
  set laststatus=2            " 启动显示状态行(1),总是显示状态行(2)
 "相对行号 要想相对行号起作用要放在显示行号后面

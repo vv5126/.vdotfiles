@@ -1,2 +1,3 @@
 #!/bin/bash
-emacs ~/.bin/work/.asd &
+gedit ~/.bin/work/.asd &
+# emacs ~/.bin/work/.asd &

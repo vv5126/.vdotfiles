@@ -123,14 +123,15 @@ complete -W "get_status" rp
 clear
 
 [ "$(uname -n)" != "soft-4" ] && {
-    alias vsync='rsync -rl wgao@192.168.4.10:~/.vdotfiles ~'
+    alias vsync='rsync -rul wgao@192.168.4.10:~/.vdotfiles ~'
+    alias vsync1='rsync -rl wgao@192.168.4.10:~/.vdotfiles ~'
 }
 
 source $HOME/.bin/base/batchExport $HOME/.bin/base/base.conf
 
 [ "$VGL_LOCAL_USER" = "$HOSTNAME" ] && {
 	source ~/.bin/local/vlogin
-    alias VB='VirtualBox --startvm $HOME/work/VirtualBox/xp/xp.vbox'
+    alias VB='VirtualBox --startvm $HOME/.VirtualBox/xp/xp.vbox &'
 }
 
 export JAVA_HOME=/usr/lib/jvm/java

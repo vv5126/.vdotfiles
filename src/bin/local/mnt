@@ -27,7 +27,7 @@ if [ "$DEST" != 0 ]; then
 		    if [ -d $dest ]; then
                 [ $(ls $dest|wc -l)  != "0" ] && { echo "the dest dir isn't empty!"; exit 1; }
             else
-                mkdir $dest
+                sudo mkdir $dest
             fi
 			echo 'user' | sudo sshfs $src $dest -o uid=1000,gid=1000,allow_other || rm -rf $dest
 	    fi
@@ -41,7 +41,7 @@ if [ "$DEST" != 0 ]; then
 		    if [ -d $dest ]; then
                 [ $(ls $dest|wc -l)  != "0" ] && { echo "the dest dir isn't empty!"; exit 1; }
             else
-                mkdir $dest
+                sudo mkdir $dest
             fi
 			echo 'user' | sudo mount -t cifs $src $dest -o username=wgao_bj,rw,dir_mode=0777,file_mode=0777 || rm -rf $dest
         fi
