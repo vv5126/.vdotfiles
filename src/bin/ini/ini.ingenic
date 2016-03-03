@@ -14,12 +14,13 @@ PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
 PATH=/pdev/chains/mips-2012.09/bin:$PATH
 PATH=/pdev/chains/mipsel-linux-android-4.7/bin:$PATH
 
-export VGLD_CLIPBOARD=wgao@192.168.4.4:/home/wgao/.clipboard/global
+export VGLD_CLIPBOARD=wgao@192.168.4.10:/home/wgao/.clipboard/global
 export VGLD_LOCALCLIPBOARD=$HOME/.clipboard/local
 export VGL_LOCAL_USER='user-desktop'
 export VGLD_INI=$HOME/.bin/ini
 export VGLD_LIB=$HOME/.bin/lib
 export VGLD_MKDATA=$HOME/.bin/work/mkdata
+export VGL_ASD_FILE=wgao@192.168.4.10:/home/wgao/.bin/work/.asd
 
 [ -d "$HOME/.bin" ] && {
 	PATH="$HOME/.bin/base:$HOME/.bin/work:$PATH"
