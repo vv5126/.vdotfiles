@@ -60,7 +60,7 @@ endif " has("autocmd")
  set encoding=utf-8
 " 显示中文帮助
  set helplang=cn
- set scrolloff=3 " 光标移动到buffer的顶部和底部时保持10行距离
+ set scrolloff=3 " 光标移动到buffer的顶部和底部时保持的行距离
 "新建文件编码
  set fenc=utf-8
  set autoindent " 继承前一行的缩进方式，特别适用于多行注释
@@ -90,6 +90,7 @@ endif " has("autocmd")
 "将-连接符也设置为单词
  set isk+=-
 
+set smartcase     " 如果有大写就区别大小写匹配 
 set ignorecase smartcase    " 搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
 "设置大小写敏感和聪明感知(小写全搜，大写完全匹配)
 " 搜索时大小写不敏感
@@ -97,7 +98,7 @@ set ignorecase smartcase    " 搜索时忽略大小写，但在有一个或以�
  set smartcase
 "行内替换
 "set gdefault
-" 开启实时搜索功能
+" 开启实时搜索匹配功能
  set incsearch
 " 高亮显示匹配的括号
  set showmatch
@@ -1328,9 +1329,9 @@ endfunction
 "map <leader>h :call ToHexModle()<cr>
 
 " 不要生成swap文件，当buffer被丢弃的时候隐藏它
-set nobackup
+set nobackup      " 不备份
 set nowb
-set noswapfile
+set noswapfile    " 关闭交换文件
 set bufhidden=hide
 
 set history=300 " history文件中需要记录的行数
@@ -1608,3 +1609,8 @@ set display=lastline    "长行显示，解决@@@@的问题
 
 "在插入模式输入xtime自动插入时间.
 iab xtime <c-r>=strftime("%Y-%m-%d %H:%M:%S")<C-I>
+set splitright    " 用vsplit新建窗口，让新的放右边
+set splitbelow    " 用split新建窗口，让新的放下面
+set iskeyword-=.  " 让'.' 作为单词分割符
+set iskeyword-=#  " 让'#' 作为单词分割符
+set iskeyword-=-  " 让'-' 作为单词分割符
