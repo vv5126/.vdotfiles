@@ -1,3 +1,5 @@
 src/vim/bundle
 src/vim/.netrwhist
 src/bin/work/.asd~
+src/vim/autoload/
+src/vim/plugin/

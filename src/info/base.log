@@ -1,0 +1,9 @@
+1.auto-startup: vlogin
+
+2.add to local /etc/crontab:
+*/30 *    * * *   user    /bin/tmsync
+*/10 *    * * *   user    /home/user/.bin/local/check-new-mail
+
+3.add to local /etc/sudoers:
+
+

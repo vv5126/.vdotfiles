@@ -1,0 +1,51 @@
+*-----------*
+base:
+git
+zsh
+powerline
+tmux
+screen
+teamviewer
+xrdp
+getmail4
+dia
+beep
+
+*-----------*
+wine
+
+*-----------*
+game:
+nethack
+*-----------*
+
+├── dialog_1.2-20130928-1_i386.deb
+├── fetchmail_6.3.26-1_i386.deb
+├── Firefox-latest.tar.bz2
+├── iptux_0.6.1-1_i386.deb
+├── minicom_2.7-1_i386.deb
+├── mtd-utils
+│   ├── liblzo2-2_2.06-1.2ubuntu1.1_i386.deb
+│   └── mtd-utils_1.5.0-1_i386.deb
+├── mutt
+├── oneko_1.2.sakura.6-9_i386.deb
+├── sdb_2.2.49_ubuntu-32.zip
+├── ssh-fs
+├── stardict
+├── driver
+│   ├── AX88772C_772B_772A_760_772_178_LINUX_DRIVER_v4.17.1_Source.tar.gz
+│   └── rtl8188eu-master.zip
+├── LightTableLinux.tar.gz
+├── need
+├── oh-my-zsh-master.zip
+├── python
+│   ├── pycharm-community-4.5.4.tar.gz
+│   └── pycharm-professional-4.5.4.tar.gz
+├── shc-3.8.9.tgz
+├── sogoupinyin_1.2.0.0056_amd64.deb
+├── sogoupinyin_2.0.0.0068_i386.deb
+└── wpa
+    ├── aircrack-ng
+        ├── aircrack-ng-1.2-rc4.tar.gz
+            └── wpa2pjzd.tar.bz2
+
