@@ -1,0 +1,104 @@
+#!/bin/bash
+
+function htmldiff(){
+
+src=$VGL_BOOKMARK
+dst=$1
+out=./bookmarks_diff
+
+tmp_add=htmladd
+tmp_rm=htmlrm
+
+echo '' > $tmp_add
+echo '' > $tmp_rm
+
+while read line_src; do
+    if [[ "$line_src" =~ "HREF=" ]]; then
+        # echo line_src = $line_src
+        url=${line_src##*HREF=}
+        url=${url%% *}
+        # echo url ==== $url
+        got=0
+        while read line_dest; do
+            if [[ "$line_dest" =~ "$url" ]]; then
+                got=1
+                break
+            fi
+        done < $dst
+        if [ $got -eq 0 ]; then
+            str=${line_src##*\"\>}
+            str=${str%%\<\/*}
+            # echo str = $str
+            echo "rm >>> $str ($url)" >> $tmp_rm
+        fi
+    fi
+done < $src
+
+while read line_src; do
+    if [[ "$line_src" =~ "HREF=" ]]; then
+        # echo line_src = $line_src
+        url=${line_src##*HREF=}
+        url=${url%% *}
+        # echo url ==== $url
+        got=0
+        while read line_dest; do
+            if [[ "$line_dest" =~ "$url" ]]; then
+                got=1
+                break
+            fi
+        done < $src
+        if [ $got -eq 0 ]; then
+            str=${line_src##*\"\>}
+            str=${str%%\<\/*}
+            # echo str = $str
+            echo "add >>> $str ($url)" >> $tmp_add
+        fi
+    fi
+done < $dst
+
+cat $tmp_add > $out
+cat $tmp_rm >> $out
+
+rm $tmp_add
+rm $tmp_rm
+
+echo "done!"
+
+}
+
+function htmlbak(){
+
+src=$VGL_BOOKMARK
+dst=$1
+out=./bookmarks_diff
+
+[ -f "$out" ] && rm "$out"
+
+tmp_dir=${src%\/*}
+tmp_file=${src##*\/}
+mv $src $tmp_dir/.$tmp_file.bak
+
+mv $dst $src
+
+echo "done!"
+
+}
+
+
+case "$1" in
+    diff)
+        htmldiff "$2"
+        ;;
+    bak)
+        htmlbak "$2"
+        ;;
+    *)
+        ;;
+esac
+
+
+
+
+
+
+

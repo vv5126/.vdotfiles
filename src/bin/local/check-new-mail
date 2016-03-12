@@ -5,14 +5,15 @@ VGL_NOTIFY=/tmp/.notify_pipe
 getmail_dir="/home/user/.getmail"
 dir="$getmail_dir/maildir"
 rc="$getmail_dir/getmailrc"
+check_dir="$dir/new"
 
 [ ! -d "$dir" ] && {
-    mkdir -p "$dir/new"
+    mkdir -p "$check_dir"
     mkdir -p "$dir/cur"
     mkdir -p "$dir/tmp"
 }
 
-rm "$dir"/new/*
+rm "$check_dir"/*
 
 cat > "$rc" << EOF
 
@@ -36,7 +37,7 @@ getmail --rcfile=getmailrc
 
 rm "$rc"
 
-l_fileCount=`ls "$dir" | wc -l`
+l_fileCount=`ls "$check_dir" | wc -l`
 echo "fileCount: ${l_fileCount}"
 
 [ "$l_fileCount" -gt "0" ] && echo "收到新邮件!" > "$VGL_NOTIFY"
