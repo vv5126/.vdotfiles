@@ -1,101 +1,112 @@
 #!/bin/bash
 
+# DIR=${PWD##*\/}
+
 text(){
     [ -n "$2" ] && echo "[  OK  ] $1=$2" || echo "[ FAIL ] $1=$2"
-
 }
 
 function bak(){
     src=$1
     dest=$1_whole_bak_$(date +%Y%m%d_%H-%M)
 
-tmp=/tmp/.bak.tmp
+    tmp=/tmp/.bak.tmp
 
-[ -d "$src/.git" ] && echo baking ...... || exit
+    [ -d "$src/.git" ] && echo baking ...... || exit
 
 # get source
+    cd $src
 
-cd $src
+    git reflog > $tmp
+    while read line; do
+        # if [[ "$line" =~ "reset:" ]]; then
+        if [[ "$line" =~ "pull:" ]]; then
+            commit="${line%% *}"
+            break
+        fi
+    done < $tmp
+    rm $tmp
 
-git reflog > $tmp
-while read line; do
-    # if [[ "$line" =~ "reset:" ]]; then
-    if [[ "$line" =~ "pull:" ]]; then
-        commit="${line%% *}"
-        break
-    fi
-done < $tmp
-rm $tmp
+    branch=$(git branch | grep '*' | awk '{print $2}')
+    remote=$(git remote -v | head -2 | tail -1 | awk '{print $2}')
 
-branch=$(git branch | grep '*' | awk '{print $2}')
-remote=$(git remote -v | head -2 | tail -1 | awk '{print $2}')
-
-text commit $commit
-text dest   $dest
-text branch $branch
-
+	text commit $commit
+	text dest   $dest
+	text branch $branch
+	text remote $remote
 # get source end
-[ -z "$commit" ] && {
-    echo "can't find pull log!"
+
+    [ -z "$commit" ] && {
+        echo "can't find pull log!"
+        git reflog
+        read commit
+        echo $commit
+        exit
+    }
+
+    # exit
+#record scene.
+    git log -p --stat -5 > git.log
+    git status > git.status
+    [ -f ".config" ] && cp .config lastconfig
+#record scene end.
+
+    mkdir ../$dest
+
+    echo "remote=\"$remote\"" > ../$dest/info
+    echo "branch=\"$branch\"" >> ../$dest/info
+    echo "commit=\"$commit\"" >> ../$dest/info
+
+#way 1:stash
+    # git stash -a
+    # git diff $commit stash@{0} > ../$dest/patch
+    # git stash pop
+
+#way 2:add all
+    git add .
+    [ -f ".project_info" ] && git add .project_info
+    git diff $commit > ../$dest/patch
+
+    cd -
+    tar -zcvf $dest.tar.gz $dest
+    # rm -r $dest
+
+    echo bak done!
     exit
 }
 
-git reset --soft $commit
-# git stash --keep-index
-text remote $remote
-git stash -a
-
-mkdir ../$dest
-
-echo "remote=\"$remote\"" > ../$dest/info
-echo "branch=\"$branch\"" >> ../$dest/info
-echo "commit=\"$commit\"" >> ../$dest/info
-
-git diff HEAD stash@{0} > ../$dest/patch
-
-git stash pop
-
-cd -
-
-tar -zcvf $dest.tar.gz $dest
-# rm -r $dest
-
-echo bak done!
-exit
-BAKDIR=${1%\/*}/git_bak/${1##*\/}/${1##*\/}_$(date +%Y%m%d_%H-%M)
-}
-
 function cover(){
-src=$1
-dest=${src%%.tar.gz*}
-# dest=${src%%-whole_bak*}-whole_bak
+    src=$1
+    dest=${src%%.tar.gz*}
 
-# tar -xf $src
+    tar -xf $src
 
-echo src = $src
-echo dest = $dest
-cd $dest
-# echo $PWD
+    echo src = $src
+    echo dest = $dest
+    cd $dest
 
-dest=${dest%%_whole_bak*}
-source ./info
+    dest=${dest%%_whole_bak*}
+    source ./info
 
-echo last commit = $commit
-echo branch $branch
-echo remote $remote
+	text commit $commit
+	text dest   $dest
+	text branch $branch
+	text remote $remote
 
-# git clone $remote $dest
+    git clone $remote $dest
 
-cd $dest
+    cd $dest
 
-git checkout $branch
+    git checkout $branch
 
-git reset --hard $commit
+    git reset --hard $commit
 
-patch -p 1 < ../patch
+    patch -p 1 < ../patch
 
-echo cover done!
+    echo cover done!
 }
 
-bak $@
-# cover $@
+if [ $# -eq 1 ]; then
+    [ -d $1 ] && { bak $1; exit; }
+    [[ $1 =~ ".tar.gz" ]] && { cover $1; exit; }
+fi
