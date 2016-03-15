@@ -64,12 +64,12 @@ function bak(){
 
 #way 2:add all
     git add .
-    [ -f ".project_info" ] && git add .project_info
+    [ -f ".project_info" ] && git add -f .project_info
     git diff $commit > ../$dest/patch
 
     cd -
     tar -zcvf $dest.tar.gz $dest
-    # rm -r $dest
+    rm -r $dest
 
     echo bak done!
     exit

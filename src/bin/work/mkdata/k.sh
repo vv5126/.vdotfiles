@@ -4,6 +4,8 @@
 
 function mk() {
     local new_target_name=
+    local build_bootimage_tar=${VGL_BUILD_BOOTIMAGE##*\/}
+    local build_bootimage_dir=${build_bootimage_tar%%.*}
 	source .project_info
 	case "$forOS" in
 	'android'*)
@@ -11,8 +13,11 @@ function mk() {
 		[ -f $the_image ] && rm $the_image
 		make zImage -j32
 		if [ -f $the_image ]; then
-		    [ ! -d "build_bootimage" ] && cp -r $VGL_BUILD_ROOT_DIR ./build_bootimage
-		    cd build_bootimage
+		    [ ! -d "$build_bootimage_dir" ] && {
+                scp $VGL_BUILD_BOOTIMAGE .
+                tar -xf $build_bootimage_tar && rm $build_bootimage_tar
+            }
+		    cd $build_bootimage_dir
 		    bash m.sh && {
                 new_target_name=$target_name
                 [ "$addtime" = "1" ] && new_target_name=$target_name-$(date +%Y-%m-%d_%H:%M)

@@ -42,10 +42,14 @@ nethack
 │   ├── pycharm-community-4.5.4.tar.gz
 │   └── pycharm-professional-4.5.4.tar.gz
 ├── shc-3.8.9.tgz
-├── sogoupinyin_1.2.0.0056_amd64.deb
-├── sogoupinyin_2.0.0.0068_i386.deb
 └── wpa
     ├── aircrack-ng
-        ├── aircrack-ng-1.2-rc4.tar.gz
-            └── wpa2pjzd.tar.bz2
+    ├── aircrack-ng-1.2-rc4.tar.gz
+    └── wpa2pjzd.tar.bz2
+
+
+sogoupinyin:
+wget -O sogoupinyin64 http://pinyin.sogou.com/linux/download.php?f=linux&bit=64
+wget -O sogoupinyin32 http://pinyin.sogou.com/linux/download.php?f=linux&bit=32
+
 

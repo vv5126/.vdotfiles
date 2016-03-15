@@ -1,4 +1,5 @@
-1.auto-startup: vlogin
+1.auto-startup: gnome-session-properties
+vlogin
 
 2.add to local /etc/crontab:
 */30 *    * * *   user    /bin/tmsync

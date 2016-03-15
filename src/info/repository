@@ -4,3 +4,7 @@ https://github.com/eugeii/consolas-powerline-vim.git
 
 tmux-powerline
 git://github.com/erikw/tmux-powerline.git
+
+
+mipsel-linux-android:
+ssh://192.168.1.26:29418/toolchains/install/mipsel-linux-android-4.7

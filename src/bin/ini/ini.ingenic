@@ -4,15 +4,19 @@
 export VGL_BOARDS=wgao@192.168.4.10:/backup/wgao/boards
 
 # build bootimage #
-export VGL_BUILD_ROOT_DIR=$HOME/project/tools/build_bootimage
+export VGL_BUILD_BOOTIMAGE=wgao@192.168.4.10:/home/wgao/project/tools/tools-bak/build_bootimage.tar.gz
 
 # project reday #
 export VGL_RDY_SH_DIR=$HOME/.bin/work/mkrdy_sh
 
 # path #
-PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
-PATH=/pdev/chains/mips-2012.09/bin:$PATH
-PATH=/pdev/chains/mipsel-linux-android-4.7/bin:$PATH
+[ $(uname -n) == 'lqchen-0B' ] && {
+    PATH=/data1/home/wgao/toolchains/mipsel-linux-android-4.7/bin:$PATH
+} || {
+    PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
+    PATH=/pdev/chains/mips-2012.09/bin:$PATH
+    PATH=/pdev/chains/mipsel-linux-android-4.7/bin:$PATH
+}
 
 export VGLD_CLIPBOARD=wgao@192.168.4.10:/home/wgao/.clipboard/global
 export VGLD_LOCALCLIPBOARD=$HOME/.clipboard/local
@@ -29,6 +33,7 @@ export VGL_ASD_FILE=wgao@192.168.4.10:/home/wgao/.bin/work/.asd
 [ $VGL_LOCAL_USER = $HOSTNAME ] && {
 	PATH="$HOME/.bin/local:$PATH"
 	rm .goutputstream* >/dev/null 2>&1
+    rm .xsession-errors* >/dev/null 2>&1
 }
 
 # local #
