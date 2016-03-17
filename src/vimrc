@@ -1091,10 +1091,6 @@ nmap <leader>ff :MRU<CR>
 
 "---------------------------------------------------
 
-Bundle 'robbyrussell/oh-my-zsh.git'
-
-"---------------------------------------------------
-
 
 "---------------------------------------------------
 
@@ -1121,6 +1117,13 @@ Bundle 'tpope/vim-git'
 " Bundle 'gtags.vim'
 " Bundle 'jiazhoulvke/myproject'
 " Bundle 'chrisbra/csv.vim'
+
+"---------------------------------------------------
+
+"外部库,借用Bundle,下载完成即可注释.
+" Bundle 'robbyrussell/oh-my-zsh.git'
+" Bundle 'gpakosz/.tmux.git'
+" Bundle 'erikw/tmux-powerline.git'
 
 "---------------------------------------------------
 "unused

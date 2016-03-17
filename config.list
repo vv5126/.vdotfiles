@@ -8,3 +8,4 @@
 .emacs=emacs
 .emacs.d=emacs.d
 .tmux.conf=tmux.conf
+.zshrc=zshrc

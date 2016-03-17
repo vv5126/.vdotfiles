@@ -1,0 +1,62 @@
+
+if which tput >/dev/null 2>&1; then
+    ncolors=$(tput colors)
+fi
+if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
+    B_RED="$(tput setaf 1)"
+    B_GREEN="$(tput setaf 2)"
+    B_YELLOW="$(tput setaf 3)"
+    B_BLUE="$(tput setaf 4)"
+    B_BLACK="$(tput setaf 5)"
+    B_MAGENTA="$(tput setaf 6)"
+    B_CYAN="$(tput setaf 7)"
+    B_WHITE="$(tput setaf 8)"
+
+    F_RED="$(tput setaf 1)"
+    F_GREEN="$(tput setaf 2)"
+    F_YELLOW="$(tput setaf 3)"
+    F_BLUE="$(tput setaf 4)"
+    F_BLACK="$(tput setaf 5)"
+    F_MAGENTA="$(tput setaf 6)"
+    F_CYAN="$(tput setaf 7)"
+    F_WHITE="$(tput setaf 8)"
+
+    BOLD="$(tput bold)"
+    NORMAL="$(tput sgr0)"
+    CLEAR="$(tput clear)" # 清屏
+    # ="$(tput sc)" # 保存当前光标位置
+    # ="$(tput cup 10 13)" # 将光标移动到 row col
+    # ="$(tput civis)" # 光标不可见
+    # ="$(tput cnorm)" # 光标可见
+    # ="$(tput rc)" # 显示输出
+else
+    B_RED=""
+    B_GREEN=""
+    B_YELLOW=""
+    B_BLUE=""
+    B_BLACK=""
+    B_MAGENTA=""
+    B_CYAN=""
+    B_WHITE=""
+
+    F_RED=""
+    F_GREEN=""
+    F_YELLOW=""
+    F_BLUE=""
+    F_BLACK=""
+    F_MAGENTA=""
+    F_CYAN=""
+    F_WHITE=""
+
+    BOLD=""
+    NORMAL=""
+fi
+
+
+# example:
+# printf "${F_BLUE} hello ${NORMAL}\n"
+# printf "${F_YELLOW} hello ${NORMAL} ${F_GREEN} hello ${NORMAL}\n";
+# printf "${F_GREEN}"
+# echo ' hello '
+# printf "${NORMAL}"
+

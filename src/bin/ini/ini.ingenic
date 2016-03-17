@@ -42,3 +42,5 @@ export VGL_NOTIFY=/tmp/.notify_pipe
 export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 
 export VGL_BOOKMARK='/home/wgao/project/mine/bookmark.html'
+
+export ZSH=$HOME/.vim/bundle/oh-my-zsh
