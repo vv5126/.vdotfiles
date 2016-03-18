@@ -1,7 +1,7 @@
 #!/bin/bash
 
 origin_list="$PWD/config.list"
-origin_dir="$HOME/.origin"
+origin_dir="$HOME/.local/.origin"
 
 while read line; do
 	src_name=${line#*=}

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 origin_list="$PWD/config.list"
-origin_dir="$HOME/.origin"
+origin_dir="$HOME/.local/.origin"
 
-[ ! -d "$origin_dir" ] && mkdir "$origin_dir"
+[ ! -d "$origin_dir" ] && mkdir -p "$origin_dir"
 
 while read line; do
 	src_name=${line#*=}
