@@ -1,43 +1,70 @@
+
+WORK_SERVER_MAIN=wgao@192.168.4.15
+
 # tizen #
 
 # imgs #
-export VGL_BOARDS=wgao@192.168.4.10:/backup/wgao/boards
+export VGL_BOARDS="$WORK_SERVER_MAIN":/data1/home/wgao/.boards
 
-# build bootimage #
-export VGL_BUILD_BOOTIMAGE=wgao@192.168.4.10:/home/wgao/project/tools/tools-bak/build_bootimage.tar.gz
+# build image #
+export VGL_BUILD_BOOTIMAGE="$WORK_SERVER_MAIN":/data1/home/wgao/other/tools/tools-bak/build_bootimage.tar.gz
+export VGLD_MKDATA=$HOME/.bin/work/mkdata
 
-# path #
-[ $(uname -n) == 'lqchen-0B' ] && {
-    PATH=/data1/home/wgao/.toolchains/mipsel-linux-android-4.7/bin:$PATH
-} || {
-    PATH=/pdev/chains/mips-2012.09/bin:$PATH
-    PATH=/pdev/chains/mipsel-linux-android-4.7/bin:$PATH
-}
-PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
-
-export VGLD_CLIPBOARD=wgao@192.168.4.10:/home/wgao/.local/.clipboard/global
+# clipboard
+export VGLD_CLIPBOARD="$WORK_SERVER_MAIN":/home/wgao/.local/.clipboard/global
 export VGLD_LOCALCLIPBOARD=$HOME/.local/.clipboard/local
+
 export VGL_LOCAL_USER='user-desktop'
 export VGLD_INI=$HOME/.bin/ini
 export VGLD_LIB=$HOME/.bin/lib
-export VGLD_MKDATA=$HOME/.bin/work/mkdata
-export VGL_ASD_FILE=wgao@192.168.4.10:/home/wgao/.bin/work/.asd
-
-[ -d "$HOME/.bin" ] && {
-	PATH="$HOME/.bin/base:$HOME/.bin/work:$PATH"
-}
-
-[ $VGL_LOCAL_USER = $HOSTNAME ] && {
-	PATH="$HOME/.bin/local:$PATH"
-	rm .goutputstream* >/dev/null 2>&1
-    rm .xsession-errors* >/dev/null 2>&1
-}
-
-# local #
-export VGL_NOTIFY=/tmp/.notify_pipe
-
+export VGL_ASD_FILE="$WORK_SERVER_MAIN":/home/wgao/.bin/work/.asd
 export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 
-export VGL_BOOKMARK='/home/wgao/project/mine/bookmark.html'
+# 4.15 #
+[ $(uname -n) == 'lqchen-0B' ] && {
+    PATH=/data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin:$PATH
+    PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
+    [ -d "$HOME/.bin" ] && PATH="$HOME/.bin/base:$HOME/.bin/work:$PATH"
+    alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
+    alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
+    alias gbsa='gbs -v build -A mipsel'
+    complete -W "push bak baklist cover" gt
+    complete -W "*.c rdy cfg tag tagup bak -h" mk
+    complete -W "get_status" rp
+    export VGL_BOOKMARK='/data1/home/wgao/deal/mine/bookmark.html'
+    export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
+}
 
-export ZSH=$HOME/.vim/bundle/oh-my-zsh
+# 4.10 #
+[ $(uname -n) == 'soft-4' ] && {
+    PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
+    PATH=/pdev/chains/mipsel-linux-android-4.7/bin:$PATH
+    PATH=/pdev/chains/mips-2012.09/bin:$PATH
+}
+
+# 4.150 #
+[ "$VGL_LOCAL_USER" = "$HOSTNAME" ] && {
+    export VGL_NOTIFY=/tmp/.notify_pipe
+    export ZSH=$HOME/.vim/bundle/oh-my-zsh
+    [ -d "$HOME/.bin" ] && PATH="$HOME/.bin/base:$HOME/.bin/work:$PATH"
+	PATH="$HOME/.bin/local:$PATH"
+	# source ~/.bin/local/vlogin
+    alias VB='VirtualBox --startvm $HOME/.VirtualBox/xp/xp.vbox &'
+}
+
+# java jdk
+${JAVA_HOME:=/usr/lib/jvm/java}
+export JRE_HOME=${JAVA_HOME}/jre
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+export PATH=${JAVA_HOME}/bin:$PATH
+
+
+rm .goutputstream* >/dev/null 2>&1
+rm .xsession-errors* >/dev/null 2>&1
+rm ~/.bash_history* >/dev/null 2>&1
+
+[ "$(uname -n)" != "lqchen-0B" ] && {
+    alias vsync='rsync -rul wgao@192.168.4.15:~/.vdotfiles ~'
+    alias vsync1='rsync -rl --exclude=bundle wgao@192.168.4.15:~/.vdotfiles ~'
+}
+clear
