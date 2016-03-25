@@ -1,6 +1,9 @@
 
 " 相关vim脚本文档 http://vimdoc.sourceforge.net
 " 相关好文 https://github.com/yangyangwithgnu/use_vim_as_ide
+
+
+
 " 导入vim插件管理文件
 if filereadable(expand("~/.vimrc.bundles"))
     source ~/.vimrc.bundles
@@ -16,7 +19,6 @@ set shortmess=atI"  " 关闭欢迎页面
 set viewoptions=cursor,folds,slash,unix " viminfo 记录的内容
 set virtualedit=onemore             " 光标可以移到当行最后一个字符之后 
 set hidden                          " 切换文件不保存，隐藏 
-"set confirm       " 退出前验证
 " set spell         " 拼写检查
 set wildmode=list:longest,full " 自动补全时，匹配最长子串，列出文件
 set whichwrap=b,s,h,l,<,>,[,]  " 行尾可右移到下行，行首左移到上行,b：退格，s：空格，hl：左右，<>：n/v模式下的左右，[]：i/r模式下的左右
@@ -64,9 +66,6 @@ endif
 noremap j gj
 noremap k gk
 
-" 没sudo却想保存
-cmap w!! w !sudo tee % >/dev/null
-
 " ,fc查找冲突的地方
 map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
 
@@ -107,7 +106,6 @@ if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"
 	color solarized             " Load a colorscheme
 endif
 
-set cursorline " 选中行高亮 
 autocmd BufEnter *.py set cc=81 " 打开py文件81行高亮  
 " 之前的高亮线太难看，重新制定颜色，这里的black和iterm2颜色配置中的black一样
 hi CursorLine   cterm=NONE ctermbg=black guibg=black  
@@ -116,30 +114,7 @@ highlight ColorColumn ctermbg=black guibg=black
 set number " 设置行号
 hi LineNr ctermbg=black
 
-" Indent Guides 缩进列对齐线
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 1
-
-" airline 就是状态栏的箭头
-let g:airline_theme="dark"
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-
-" NerdTree配置 control+e打开当前文件目录树
-map <C-e> :NERDTreeToggle<CR>
-map <leader>ee :NERDTreeToggle<CR>
 nmap <leader>nt :NERDTreeFind<CR>
-
-let NERDTreeShowBookmarks=1
-let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-let NERDTreeChDirMode=0
-let NERDTreeQuitOnOpen=1
-let NERDTreeMouseMode=2
-let NERDTreeShowHidden=1
-let NERDTreeKeepTreeInNewTab=1
-let g:nerdtree_tabs_open_on_gui_startup=0
 
 " syntastic 配置
 " 设置每次w保存后语法检查
@@ -227,11 +202,6 @@ endf
 
 let python_highlight_all = 1
 
-if &compatible
-	set nocompatible
-end
-
-filetype off
 set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 Bundle "gmarik/vundle"
@@ -246,10 +216,6 @@ Bundle "scrooloose/nerdtree"
 Bundle 'scrooloose/nerdcommenter'
 " 语法检查 推荐：****
 Bundle "scrooloose/syntastic"
-" 括号自动匹配 推荐：****
-Bundle 'jiangmiao/auto-pairs'
-" 引号处理 推荐：****
-Bundle 'tpope/vim-surround'
 " 光标多行编辑 <C-n> <C-x> <C-p> 推荐：****
 Bundle 'terryma/vim-multiple-cursors'
 " 配色主题 推荐：****
@@ -261,9 +227,6 @@ Bundle 'kana/vim-textobj-indent'
 Bundle 'kana/vim-textobj-user'
 " 保存vim编辑信息，比如最后的位置 推荐：****
 Bundle "vim-scripts/restore_view.vim"
-
-" 状态栏效果 推荐：***
-Bundle "bling/vim-airline"
 
 " python 推荐：****
 Bundle 'yssource/python.vim'
@@ -289,7 +252,6 @@ Bundle 'mattn/emmet-vim'
 if filereadable(expand("~/.vimrc.bundles.local"))
 source ~/.vimrc.bundles.local
 endif
-filetype on
 
 "maybe unused----------------------------
 

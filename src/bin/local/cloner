@@ -1,6 +1,13 @@
 #!/bin/bash
 
+CLONER_LINK="$HOME/.local/cloner_link"
+
 cd ~
+
 cloner_file=$(ls ~/ -at1 | grep .cloner- | head -1 &2>/dev/null)
-#echo $cloner_file
-[ -n $cloner_file ] && cd $cloner_file && echo 'user' | sudo  ./cloner
+
+[ ! -f "$CLONER_LINK" ] && ln -s $HOME/$cloner_file/cloner $CLONER_LINK
+
+cd $cloner_file
+
+sudo $CLONER_LINK

@@ -1,10 +1,15 @@
 1.auto-startup: gnome-session-properties
 vlogin
+gnome-panel
+xmodmap /home/user/.Xmodmap
 
 2.add to local /etc/crontab:
 */30 *    * * *   user    /bin/tmsync
 */10 *    * * *   user    /home/user/.bin/local/check-new-mail
 
-3.add to local /etc/sudoers:
-
+3.add to local /etc/sudoers:    sudo visudo
+sudo chgrp root vsudoer
+sudo chown root vsudoer
+chmod 440 vsudoer
+ln -s /home/user/.bin/local/vsudoer /etc/sudoers.d/
 

@@ -5,17 +5,7 @@ function mk() {
 
 	source .project_info
 	case "$forOS" in
-	'android')
-		[ $needclean = "1" ] && make clean
-		[ -f $the_image ] && rm $the_image
-		make zImage -j32
-		if [ -f $the_image ]; then
-			[ ! -d "build_bootimage" ] && cp -r $VGL_BUILD_ROOT_DIR ./build_bootimage
-		   cd build_bootimage
-		   bash m.sh
-		fi
-		;;
-	'tizen'*)
+	*)
 		[ "$addtime" = "1" ] && target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
 		[ -n "$note" ] && target_name=$target_name-$note
 		target_name=$target_name.img
@@ -26,8 +16,6 @@ function mk() {
 			smkdir $target_dir
 			scp $the_image $target_dir/$target_name
 		}
-		;;
-	*)
 		;;
 	esac
 }

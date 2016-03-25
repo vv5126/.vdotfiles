@@ -1,0 +1,8 @@
+user    ALL =(ALL:ALL) NOPASSWD: /bin/mount
+user    ALL =(ALL:ALL) NOPASSWD: /bin/umount
+user    ALL =(ALL:ALL) NOPASSWD: /bin/fusermount
+user    ALL =(ALL:ALL) NOPASSWD: /usr/bin/sshfs
+user    ALL =(ALL:ALL) NOPASSWD: /bin/rm
+user    ALL =(ALL:ALL) NOPASSWD: /bin/mkdir
+user    ALL =(ALL:ALL) NOPASSWD: /usr/bin/minicom
+user    ALL =(ALL:ALL) NOPASSWD: /home/user/.local/cloner_link
