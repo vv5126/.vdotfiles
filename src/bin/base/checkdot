@@ -1,0 +1,63 @@
+#!/bin/bash
+
+dot_templat=(
+.android
+.bash_history
+.bashrc
+.bin
+.cache
+.cloner-0.27.2-ubuntu-14.04-32bit_release
+.cloner-1.0.0-ubuntu-14.04-32bit_release
+.desktop
+.emacs.d
+.getmail
+.origin
+.minirc.ttyUSB0
+.minirc.ttyUSB1
+.ssh
+.thumbnails
+.thunderbird
+.profile
+.tmux.conf
+.VADD
+.vdotfiles
+.vim
+.vimrc
+.VirtualBox
+.Xmodmap
+.zsh_history
+.zshrc
+.mozilla
+.ICEauthority
+.gksu.lock
+.xsession.bak
+.ICAClient
+.repopickle_.gitconfig
+.viminfo
+.zsh-update
+.gvfs
+.gnupg
+.gnome2_private
+)
+
+# for i in $(ls ~ -A | grep '^\.'); do
+#     got=1
+#     while read line; do
+#         [[ "$line" == "$i" ]] && {
+#             got=0
+#             break
+#         }
+#     done < dot_template
+#     [ "$got" == 1 ] && echo new one $i
+# done
+
+
+for i in $(ls ~ -A | grep '^\.'); do
+    got=1
+    for j in ${dot_templat[*]}; do
+        [[ "$i" == "$j" ]] && { got=0; break; }
+    done
+    [ "$got" == 1 ] && echo new one $i
+done
+
+

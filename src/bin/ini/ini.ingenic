@@ -7,14 +7,14 @@ WORK_SERVER_MAIN=wgao@192.168.4.15
 export VGL_BOARDS="$WORK_SERVER_MAIN":/data1/home/wgao/.boards
 
 # build image #
-export VGL_BUILD_BOOTIMAGE="$WORK_SERVER_MAIN":/data1/home/wgao/other/tools/tools-bak/build_bootimage.tar.gz
+export VGL_BUILD_BOOTIMAGE="$WORK_SERVER_MAIN":/data1/home/wgao/tools/tools-bak/build_bootimage.tar.gz
 export VGLD_MKDATA=$HOME/.bin/work/mkdata
 
 # clipboard
 export VGLD_CLIPBOARD="$WORK_SERVER_MAIN":/home/wgao/.local/.clipboard/global
 export VGLD_LOCALCLIPBOARD=$HOME/.local/.clipboard/local
 
-export VGL_LOCAL_USER='user-desktop'
+export VGL_LOCAL_USER='ingenic-wgao'
 export VGLD_INI=$HOME/.bin/ini
 export VGLD_LIB=$HOME/.bin/lib
 export VGL_ASD_FILE="$WORK_SERVER_MAIN":/home/wgao/.bin/work/.asd
@@ -23,6 +23,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 # 4.15 #
 [ $(uname -n) == 'lqchen-0B' ] && {
     PATH=/data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin:$PATH
+    PATH=/data1/home/wgao/tools/toolchains/mips64el-linux-android-4.9/bin:$PATH
     PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
     [ -d "$HOME/.bin" ] && PATH="$HOME/.bin/base:$HOME/.bin/work:$PATH"
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
@@ -32,7 +33,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     complete -W "*.c rdy cfg tag tagup bak -h" mk
     complete -W "get_status" rp
     export VGL_BOOKMARK='/data1/home/wgao/deal/mine/bookmark.html'
-    export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
+    # export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
 }
 
 # 4.10 #
@@ -50,13 +51,14 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 	PATH="$HOME/.bin/local:$PATH"
 	# source ~/.bin/local/vlogin
     alias VB='VirtualBox --startvm $HOME/.VirtualBox/xp/xp.vbox &'
-}
-
+} || {
 # java jdk
 ${JAVA_HOME:=/usr/lib/jvm/java}
 export JRE_HOME=${JAVA_HOME}/jre
 export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
+}
+
 
 
 rm .goutputstream* >/dev/null 2>&1

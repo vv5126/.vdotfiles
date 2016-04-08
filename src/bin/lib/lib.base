@@ -1,18 +1,29 @@
 #!/bin/bash
 
 function quickcd() {
-	if [ "$#" -eq 0 -o -d "$1" ]; then
-		cd $1
+	if [ "$#" -eq 0 ]; then
+        local try_old_dir="$(history | tail -n 2 | head -1)"
+        if [[ "$try_old_dir" =~ ' cd ' ]]; then
+		    cd ~
+        elif [ -d "${try_old_dir##* }" ]; then
+            cd "${try_old_dir##* }"
+        else
+            cd ~
+        fi
+    elif [ -d "$1" ]; then
+        cd $1
 	else
 		[ -d "${1%\/*}" ] && { cd "${1%\/*}"; return; }
 		[[ "$1" =~ ":~" ]] && { cd $HOME"${1##*:~}"; return; }
 		[[ "$1" =~ ":" ]] && { cd "${1##*:}"; return; }
 		[ $1 = "-" ] && { cd $OLDPWD; return; }
-		[ $1 = "clean" ] && > ~/.cdlist
+		[ $1 = "clean" ] && { > ~/.cdlist; return; }
 		[ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" >> ~/.cdlist; return; }
-		while read line; do
-			[ $1 = "${line% *}" ] && { cd ${line#* }; return; }
-		done < ~/.cdlist
+        [ $# -eq 1 ] && {
+	    	while read line; do
+		    	[ $1 = "${line% *}" ] && { cd ${line#* }; return; }
+    		done < ~/.cdlist
+        }
 	fi
 }
 

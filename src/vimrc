@@ -1233,6 +1233,18 @@ Bundle 'tpope/vim-git'
 " Bundle 'pytest'
 " Bundle 'pep8'
 " Bundle 'pyclewn'
+"Bundle 'Python-mode-klen'
+"djang
+" Bundle 'django_templates.vim'
+" Bundle 'Django-Projects'
+" Bundle 'djangojump'
+"---------------------------------------------------
+"java 插件
+" Bundle 'Javascript-OmniCompletion-with-YUI-and-j'
+" Bundle 'JavaScript-Indent'
+" Bundle 'Better-Javascript-Indentation'
+" Bundle 'jslint.vim'
+" Bundle 'pangloss/vim-javascript'
 "---------------------------------------------------
 
 " Bundle 'ccglue'
@@ -1524,7 +1536,7 @@ endfunction
 """"""""""""""""""""""""""""""
 
 " When pressing <leader>cd switch to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>
+" map <leader>cd :cd %:p:h<cr>
 
 " plugin shortcuts
 function! RunShell(Msg, Shell)
@@ -1569,7 +1581,7 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " "cd" to change to open directory.
-nmap <silent> <leader>cd :exe 'cd ' . OpenDir<cr>:pwd<cr>
+" nmap <silent> <leader>cd :exe 'cd ' . OpenDir<cr>:pwd<cr>
 let OpenDir=system("pwd")
 "在当前目录查找光标词的所有位置
 " nmap  <F6> :vimgrep /<C-R>=expand("<cword>")<cr>/ **/*.c **/*.h<cr><C-o>:cw<cr>

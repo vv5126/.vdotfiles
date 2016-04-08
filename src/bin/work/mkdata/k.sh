@@ -8,9 +8,9 @@ function mk() {
     local build_bootimage_dir=${build_bootimage_tar%%.*}
 	source .project_info
 	case "$forOS" in
-	'android'*)
+	'brillo'* | 'android'*)
 		[ "$needclean" = "1" ] && make clean
-		[ -f $the_image ] && rm $the_image
+		[ -f "$the_image" ] && rm $the_image
 		make zImage -j32
 		if [ -f $the_image ]; then
 		    [ ! -d "$build_bootimage_dir" ] && {
@@ -31,7 +31,7 @@ function mk() {
 		;;
 	'tizen'*)
 		[ "$needclean" = "1" ] && make clean
-		[ -f $the_image ] && rm $the_image
+		[ -f "$the_image" ] && rm $the_image
 		make uImage -j32 && {
             new_target_name=$target_name
             [ "$addtime" = "1" ] && new_target_name=$target_name-$(date +%Y-%m-%d_%H:%M)

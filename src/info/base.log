@@ -13,3 +13,13 @@ sudo chown root vsudoer
 chmod 440 vsudoer
 ln -s /home/user/.bin/local/vsudoer /etc/sudoers.d/
 
+4.add samba
+edit /etc/samba/smb.conf to add the smb-dir.
+use smbpasswd  -a xxx to add your user's name.
+service smb restart
+maybe unused:
+service  iptables stop
+setenforce 0
+vi /etc/selinux/config
+change 'SELINUX=enforcing' to 'SELINUX=disabled'
+
