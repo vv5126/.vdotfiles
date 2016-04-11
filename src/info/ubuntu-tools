@@ -27,30 +27,22 @@ nethack
 │   └── mtd-utils_1.5.0-1_i386.deb
 ├── mutt
 ├── oneko_1.2.sakura.6-9_i386.deb
-├── sdb_2.2.49_ubuntu-32.zip
-├── ssh-fs
-├── stardict
 ├── driver
-│   ├── AX88772C_772B_772A_760_772_178_LINUX_DRIVER_v4.17.1_Source.tar.gz
-│   └── rtl8188eu-master.zip
-├── LightTableLinux.tar.gz
-├── need
-├── oh-my-zsh-master.zip
-├── python
-│   └── pycharm-professional-4.5.4.tar.gz
-├── shc-3.8.9.tgz
-└── wpa
-    ├── aircrack-ng
-    ├── aircrack-ng-1.2-rc4.tar.gz
-    └── wpa2pjzd.tar.bz2
-
+   ├── AX88772C_772B_772A_760_772_178_LINUX_DRIVER_v4.17.1_Source.tar.gz
+   └── rtl8188eu-master.zip
+LightTableLinux.tar.gz
+pycharm-professional-4.5.4.tar.gz
+shc-3.8.9.tgz
 
 sogoupinyin:
 wget -O sogoupinyin64 http://pinyin.sogou.com/linux/download.php?f=linux&bit=64
 wget -O sogoupinyin32 http://pinyin.sogou.com/linux/download.php?f=linux&bit=32
 
 
-aircrack: need
+aircrack
+    ├── aircrack-ng-1.2-rc4.tar.gz
+    └── wpa2pjzd.tar.bz2
+=need:
 libnl-3-dev
 libnl-genl-3-dev
 libssl-dev

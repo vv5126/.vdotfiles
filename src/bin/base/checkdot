@@ -1,15 +1,48 @@
 #!/bin/bash
 
 dot_templat=(
-.android
+.pam_environment
+.screenrc
+.gitconfig
+.bash_logout
+-----------------------------
+# 当前用户的配置主要在 #
+.local
+.config
+.gconf
+-----------------------------
+# 其他 #
+.bash_logout
+.emacs.d
+.viminfo
+.xsession
+.vnc
+.freerdp
+.cscope.vim
+-----------------------------
+# 可以忽略 #
+.xinputrc
+.gnupg
+.gnome
+.gnome2
+.gnome2_private
+-----------------------------
+# 确定忽略 #
+.docker.sh
+.zcompdump
+.gvfs
+.compiz
+.gstreamer-0.10
+.repopickle_.gitconfig
+.zsh-update
 .bash_history
 .bashrc
 .bin
 .cache
+.config.bak
 .cloner-0.27.2-ubuntu-14.04-32bit_release
 .cloner-1.0.0-ubuntu-14.04-32bit_release
 .desktop
-.emacs.d
 .getmail
 .origin
 .minirc.ttyUSB0
@@ -17,6 +50,7 @@ dot_templat=(
 .ssh
 .thumbnails
 .thunderbird
+.android
 .profile
 .tmux.conf
 .VADD
@@ -32,26 +66,30 @@ dot_templat=(
 .gksu.lock
 .xsession.bak
 .ICAClient
-.repopickle_.gitconfig
-.viminfo
-.zsh-update
-.gvfs
-.gnupg
-.gnome2_private
+.rm
+.rpmdb
+.Trash-1000
+.cdlist
+.boards
+.gbs.conf
+.Xauthority
+.subversion
+.dbus
+.dmrc
+.fonts
+.pki
 )
 
+#文件方式
 # for i in $(ls ~ -A | grep '^\.'); do
 #     got=1
 #     while read line; do
-#         [[ "$line" == "$i" ]] && {
-#             got=0
-#             break
-#         }
+#         [[ "$line" == "$i" ]] && { got=0; break; }
 #     done < dot_template
 #     [ "$got" == 1 ] && echo new one $i
 # done
 
-
+#数组方式
 for i in $(ls ~ -A | grep '^\.'); do
     got=1
     for j in ${dot_templat[*]}; do
@@ -59,5 +97,4 @@ for i in $(ls ~ -A | grep '^\.'); do
     done
     [ "$got" == 1 ] && echo new one $i
 done
-
 

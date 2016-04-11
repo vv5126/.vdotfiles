@@ -23,3 +23,18 @@ setenforce 0
 vi /etc/selinux/config
 change 'SELINUX=enforcing' to 'SELINUX=disabled'
 
+5.font setup
+add fonts to ~/.fonts
+mkfontscale
+mkfontdir
+fc-cache -vf
+rm ~/.vim/bundle/vim-powerline/*.cache
+
+
+
+
+清理本地电脑
+清理服务器
+清理windows服务器
+清理邮件
+整理收藏夹 为知
