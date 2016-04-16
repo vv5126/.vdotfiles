@@ -3,14 +3,17 @@
 function htmldiff(){
 
 src=$VGL_BOOKMARK
-dst=$1
-out=./bookmarks_diff
+dst=${1:-$(ls ~/bookmarks_*.html)}
 
+out=./bookmarks_diff
 tmp_add=htmladd
 tmp_rm=htmlrm
 
-echo '' > $tmp_add
-echo '' > $tmp_rm
+[ -s $out ] && rm $out
+[ -s $tmp_add ] && rm $tmp_add
+[ -s $tmp_rm ] && rm $tmp_rm
+
+[ ! -f "$dst" ] && exit
 
 while read line_src; do
     if [[ "$line_src" =~ "HREF=" ]]; then
@@ -56,20 +59,18 @@ while read line_src; do
     fi
 done < $dst
 
-cat $tmp_add > $out
-cat $tmp_rm >> $out
+ret=0
+[ -s $tmp_add ] && { ((ret+=1)); cat $tmp_add > $out; rm $tmp_add; }
+[ -s $tmp_rm ] && { ((ret+=2)); cat $tmp_rm >> $out; rm $tmp_rm; }
 
-rm $tmp_add
-rm $tmp_rm
-
-echo "done!"
+return $ret
 
 }
 
 function htmlbak(){
 
 src=$VGL_BOOKMARK
-dst=$1
+dst=${1:-$(ls ~/bookmarks_*.html)}
 out=./bookmarks_diff
 
 [ -f "$out" ] && rm "$out"
@@ -79,8 +80,6 @@ tmp_file=${src##*\/}
 mv $src $tmp_dir/.$tmp_file.bak
 
 mv $dst $src
-
-echo "done!"
 
 }
 
@@ -93,12 +92,11 @@ case "$1" in
         htmlbak "$2"
         ;;
     *)
+        htmldiff
+        ret=$?
+        [ $ret == 0 ] && rm ~/bookmarks_*.html
+        [ $ret == 1 ] && htmlbak
+        [ $ret == 2 -o $ret == 3 ] && echo "please check it by hand~"
         ;;
 esac
-
-
-
-
-
-
-
+echo "$ret done!"
