@@ -4,6 +4,7 @@
 .bash_logout=bash_logout
 .vimrc=vimrc
 .vim=vim
+.screenrc=screenrc
 .gitconfig=gitconfig
 .emacs=emacs
 .emacs.d=emacs.d

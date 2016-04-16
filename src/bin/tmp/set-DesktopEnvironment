@@ -1,0 +1,56 @@
+#!/bin/sh
+# DESK_TYPE=xfce
+DESK_TYPE=gnome
+# DESK_TYPE=unity
+
+# Uncomment the following two lines for normal desktop:
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+# exec /etc/X11/xinit/xinitrc
+
+[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
+[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
+xsetroot -solid grey
+vncconfig -iconic &
+# x-terminal-emulator -geometry 80x24+10+10 -ls -title "$VNCDESKTOP Desktop" &
+# x-window-manager &
+
+echo $DESK_TYPE
+# xfce desktop
+if test $DESK_TYPE = xfce; then
+    x-terminal-emulator -geometry 80x24+10+10 -ls -title "$VNCDESKTOP Desktop" &
+    x-session=-manager &
+    xfdesktop & xfce4-panel &
+    xfce4-menu-plugin &
+    xfsettingsd &
+    xfconfd i&
+    xfwm4&
+fi
+
+# gnome desktop
+if test $DESK_TYPE = gnome; then
+    gnome-session &
+    gnome-panel &
+    gnome-settings-daemon &
+    metacity &
+    nautilus -n &
+    gnome-terminal &
+    /usr/bin/gsettings set org.gnome.desktop.wm.keybindings panel-main-menu "['F1']"
+    /usr/bin/gsettings set org.gnome.desktop.wm.keybindings maximize "['KP_5']"
+    /usr/bin/gsettings set org.gnome.desktop.wm.keybindings unmaximize "['F5']"
+    /usr/bin/gsettings set org.gnome.desktop.wm.keybindings show-desktop "['d']"
+    /usr/bin/gsettings set org.gnome.desktop.wm.keybindings switch-applications "['Tab']"
+    /usr/bin/gsettings set org.gnome.desktop.wm.keybindings switch-group "['Above_Tab']"
+    /usr/bin/gsettings set org.gnome.desktop.wm.keybindings switch-input-source "[]"
+    /usr/bin/gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "[]"
+    /usr/bin/gsettings set org.gnome.settings-daemon.plugins.media-keys terminal "['t']"
+fi
+
+# unity desktop
+if test $DESK_TYPE = unity; then
+    export DESKTOP_SESSION=ubuntu
+    export GDMSESSION=ubuntu
+    export STARTUP="/usr/bin/gnome-session --session=ubuntu"
+    $STARTUP &
+fi
+

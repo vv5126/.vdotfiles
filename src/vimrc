@@ -1281,6 +1281,7 @@ nmap <leader>cb :g/^\s*$/d<cr>
 set noerrorbells            " 关闭错误信息响铃
 set novisualbell            " 关闭使用可视响铃代替呼叫
 set t_vb=                   " 置空错误铃声的终端代码
+set tm=500
 
 " vim 自身命令行模式智能补全
  set wildmenu
