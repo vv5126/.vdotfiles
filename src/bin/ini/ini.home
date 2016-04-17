@@ -1,0 +1,4 @@
+
+export ZSH=$HOME/.vim/bundle/oh-my-zsh
+[ -d "$HOME/.bin" ] && PATH="$HOME/.bin/base:$HOME/.bin/work:$PATH"
+PATH="$HOME/.bin/local:$PATH"

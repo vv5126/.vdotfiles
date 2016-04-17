@@ -9,6 +9,7 @@
 .emacs=emacs
 .emacs.d=emacs.d
 .tmux.conf=tmux.conf
+.tmux.conf.local=tmux.conf.local
 .zshrc=zshrc
 .Xmodmap=Xmodmap
 .tmux-powerlinerc=tmux-powerlinerc

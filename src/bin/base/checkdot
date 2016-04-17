@@ -1,8 +1,9 @@
 #!/bin/bash
 
 dot_templat=(
+.cmus
+.selected_editor
 .pam_environment
-.screenrc
 .gitconfig
 .bash_logout
 -----------------------------
@@ -20,6 +21,7 @@ dot_templat=(
 .freerdp
 .cscope.vim
 -----------------------------
+-----------------------------
 # 可以忽略 #
 .xinputrc
 .gnupg
@@ -28,6 +30,11 @@ dot_templat=(
 .gnome2_private
 -----------------------------
 # 确定忽略 #
+.screenrc
+.sdcv_history
+.PyCharm40
+.java
+.oracle_jre_usage
 .docker.sh
 .zcompdump
 .gvfs
@@ -53,6 +60,9 @@ dot_templat=(
 .android
 .profile
 .tmux.conf
+.tmux.conf.local
+.tmux-powerlinerc
+.zcompdump-ubuntu-5.0.2
 .VADD
 .vdotfiles
 .vim

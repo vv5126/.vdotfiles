@@ -1,15 +1,13 @@
 #!/bin/bash
 
-LIBCONF="$HOME/.bin/base/lib-base.conf"
+source $HOME/.bin/base/base.conf
 
-if [ "$#" != 0 ]; then
-	[ -f "$1" ] && LIBCONF="$1"
-	while read line; do
-		if [ -f "$HOME/$line" ]; then
-   			source "$HOME/$line"
-#		else
-#			echo skip "$HOME/$line"
-		fi
-	done < "$LIBCONF"
+list=($(echo ${!HOSTNAME}))
+
+if [ -n $list ]; then
+    for line in "${list[@]}"; do
+        if [ -f "$HOME/$line" ]; then
+            source "$HOME/$line"
+        fi
+    done
 fi
-
