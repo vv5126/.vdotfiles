@@ -72,6 +72,7 @@ endif " has("autocmd")
 "显示光标当前位置
  set ruler         " 显示标尺
  set backspace=indent,eol,start " 这指明在插入模式下在哪里允许 <BS> 删除光标前面的字符。
+" set backspace=indent,eol,start   " 退格键分别可删除缩进，上一行结束，insert之前的字
  set laststatus=2            " 启动显示状态行(1),总是显示状态行(2)
 "相对行号 要想相对行号起作用要放在显示行号后面
 "set relativenumber
@@ -718,6 +719,7 @@ let g:tagbar_type_cpp = {
 
 "---------------------------------------------------
 
+" 光标多行编辑 <C-n> <C-x> <C-p> 推荐：****
  Bundle 'terryma/vim-multiple-cursors'
 let g:multi_cursor_next_key='<C-n>'
 let g:multi_cursor_prev_key='<C-p>'

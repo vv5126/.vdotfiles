@@ -30,14 +30,10 @@ endif
 
 " 基本配置
 set mousehide    " 输入文件时隐藏鼠标
-set backspace=indent,eol,start   " 退格键分别可删除缩进，上一行结束，insert之前的字
-set showmatch     " 设置匹配模式 
 set nowritebackup " 不写入备份文件
-" set autowrite     " 切换文件自动保存 https://github.com/terryma/vim-multiple-cursors/raw/master/assets/example1.gif?raw=true
 set shortmess=atI"  " 关闭欢迎页面
 set viewoptions=cursor,folds,slash,unix " viminfo 记录的内容
 set virtualedit=onemore             " 光标可以移到当行最后一个字符之后 
-set hidden                          " 切换文件不保存，隐藏 
 " set spell         " 拼写检查
 set wildmode=list:longest,full " 自动补全时，匹配最长子串，列出文件
 set whichwrap=b,s,h,l,<,>,[,]  " 行尾可右移到下行，行首左移到上行,b：退格，s：空格，hl：左右，<>：n/v模式下的左右，[]：i/r模式下的左右
@@ -118,7 +114,6 @@ set gfw=幼圆:h10:cGB2312
 " 设置主题,UI
 " solarized 主题
 if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
-	let g:solarized_termcolors=256
 	let g:solarized_termtrans=1
 	let g:solarized_contrast="normal"
 	let g:solarized_visibility="normal"
@@ -130,7 +125,6 @@ autocmd BufEnter *.py set cc=81 " 打开py文件81行高亮
 hi CursorLine   cterm=NONE ctermbg=black guibg=black  
 hi CursorColumn   cterm=NONE ctermbg=black guibg=black " 
 highlight ColorColumn ctermbg=black guibg=black
-set number " 设置行号
 hi LineNr ctermbg=black
 
 nmap <leader>nt :NERDTreeFind<CR>
@@ -141,7 +135,6 @@ function! ToggleErrors()
     Errors
 endfunction
 let g:syntastic_check_on_open=1
-let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_wq = 0
 let syntastic_loc_list_height = 5
@@ -222,7 +215,6 @@ endf
 let python_highlight_all = 1
 
 set rtp+=~/.vim/bundle/vundle
-call vundle#rc()
 Bundle "gmarik/vundle"
 " 星级越多越推荐, 5星为必选，4星强烈推荐，3星比较推荐
 " 文件模糊匹配查找 推荐：****
@@ -235,8 +227,6 @@ Bundle "scrooloose/nerdtree"
 Bundle 'scrooloose/nerdcommenter'
 " 语法检查 推荐：****
 Bundle "scrooloose/syntastic"
-" 光标多行编辑 <C-n> <C-x> <C-p> 推荐：****
-Bundle 'terryma/vim-multiple-cursors'
 " 配色主题 推荐：****
 Bundle "altercation/vim-colors-solarized"
 " 缩进引导线 推荐：****
@@ -493,11 +483,7 @@ endfunction
 """"""""""""""""""""""""""""""
 " => Minibuffer plugin
 """"""""""""""""""""""""""""""
-"let g:miniBufExplModSelTarget = 1
-"let g:miniBufExplorerMoreThanOne = 2
-"let g:miniBufExplModSelTarget = 0
 "let g:miniBufExplUseSingleClick = 1
-"let g:miniBufExplMapWindowNavVim = 1
 "let g:miniBufExplVSplit = 25
 "let g:miniBufExplSplitBelow=1
 
@@ -506,9 +492,6 @@ endfunction
 autocmd BufRead,BufNew :call UMiniBufExplorer
 
 map <leader>u :TMiniBufExplorer<cr>:TMiniBufExplorer<cr>
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
 
 nmap <script> <silent> <S-F7> :BufExplorer<CR>
 
@@ -706,9 +689,7 @@ set   fileencodings=gb2312,gbk
 set   fileencodings=utf-8,gb2312,gbk,gb18030
 set   helpheight=10
 set   pumheight=10
-set   wildignore=*.bak,*.o,*.e,*~
 set   wildmode=list:longest,full
-set selection=exclusive
 
 "set fenc=utf-8
 "set fencs=utf-8,usc-bom,euc-jp,gb18030,gbk,gb2312,cp936
@@ -738,20 +719,6 @@ Bundle 'tacahiroy/ctrlp-funky'
  au BufReadPost * if line("`\"") > 1 && line("`\"") <= line("$") | exe "normal! g`\"" | endif
  endif
 """""""""""""""""""""
-  "Only do this part when compiled with support for autocommands.
-  if has("autocmd")
-    " When editing a file, always jump to the last known cursor position.
-    " Don't do it when the position is invalid or when inside an event handler
-   " (happens when dropping a file on gvim).
-    autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-
-  endif " has("autocmd")
-
-
-""""""""""""""""""""""""""""""
 
 nmap ww :w<cr>
 nmap wqa :wqa<cr>
@@ -842,11 +809,7 @@ imap <F6> <ESC>:s=^\(//\)*==g<cr>:noh<cr>
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = ","
 let g:mapleader = ","
-
-" Fast saving
-nmap <leader>w :w!<cr>
 
 " Fast editing of the .vimrc
 map <leader>e :e! ~/.vim_runtime/vimrc<cr>
@@ -881,7 +844,6 @@ map <C-A> :set mouse=a<CR>
 "  set shell=/bin/bash
 
 "if has("gui_running")
-"  set guioptions-=T
 "  set background=dark
 "  set nonu
 "endif
@@ -898,7 +860,6 @@ map <C-A> :set mouse=a<CR>
 " => Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Turn backup off, since most stuff is in SVN, git anyway...
-set nowb
 "set swapfile
 
 "Persistent undo
@@ -912,44 +873,6 @@ try
     set undofile
 catch
 endtry
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-""""""""""""""""""""""""""""""
-" => Visual mode related
-""""""""""""""""""""""""""""""
-" Really useful!
-"  In visual mode when you press * or # to search for the current selection
-vnoremap <silent> * :call VisualSearch('f')<CR>
-vnoremap <silent> # :call VisualSearch('b')<CR>
-
-" When you press gv you vimgrep after the selected text
-vnoremap <silent> gv :call VisualSearch('gv')<CR>
-map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
-
-" From an idea by Michael Naumann
-function! VisualSearch(direction) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", '\\/.*$^~[]')
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'b'
-        execute "normal ?" . l:pattern . "^M"
-    elseif a:direction == 'gv'
-        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
-    elseif a:direction == 'f'
-        execute "normal /" . l:pattern . "^M"
-    endif
-
-    let @/ = l:pattern
-    let @" = l:saved_reg
-endfunction
-
 
 " Bash like keys for the command line
 "cnoremap <C-A>		<Home>
@@ -1032,16 +955,6 @@ function! HasPaste()
     endif
 endfunction
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Parenthesis/bracket expanding
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-vnoremap $1 <esc>`>a)<esc>`<i(<esc>
-vnoremap $2 <esc>`>a]<esc>`<i[<esc>
-vnoremap $3 <esc>`>a}<esc>`<i{<esc>
-vnoremap $$ <esc>`>a"<esc>`<i"<esc>
-vnoremap $q <esc>`>a'<esc>`<i'<esc>
-vnoremap $e <esc>`>a"<esc>`<i"<esc>
 
 "inoremap $t <><esc>i
 
@@ -1157,14 +1070,6 @@ let g:CommandTMaxHeight = 15
 set wildignore+=*.o,*.obj,.git,*.pyc
 noremap <leader>j :CommandT<cr>
 noremap <leader>y :CommandTFlush<cr>
-
-
-""""""""""""""""""""""""""""""
-" => Vim grep
-""""""""""""""""""""""""""""""
-let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
-set grepprg=/bin/grep\ -nH
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
@@ -1308,7 +1213,6 @@ imap <C-j> <ESC>
 imap <C-v> <Esc>"*pa
 imap <C-a> <Esc>^
 imap <C-e> <Esc>$
-vmap <C-c> "+y
 "去空行  
 nnoremap <F2> :g/^\s*$/d<CR> 
 "比较文件  
@@ -1386,12 +1290,6 @@ endfunc
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""实用设置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has("autocmd")
-      autocmd BufReadPost *
-          \ if line("'\"") > 0 && line("'\"") <= line("$") |
-          \   exe "normal g`\"" |
-          \ endif
-endif
 "当打开vim且没有文件时自动打开NERDTree
 autocmd vimenter * if !argc() | NERDTree | endif
 " 只剩 NERDTree时自动关闭
@@ -1434,7 +1332,6 @@ if has("gdb")
 	run macros/gdb_mappings.vim
 endif
 
-"nmap  <F3> :NERDTreeToggle<cr>
 
 let g:pydiction_location = '.vim/pydiction-1.2/complete-dict'
 
@@ -1456,15 +1353,11 @@ matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
 map <silent> <leader>ee :e $HOME/.vimrc<cr>
 autocmd! bufwritepost *.vimrc source $HOME/.vimrc
  
-" 保存文件
-nmap <leader>ww :w!<cr>
 " ^z快速进入shell
 nmap <C-Z> :shell<cr>
  
- 
 "在gvim中高亮当前行
 if (g:isGUI)
-    set cursorline
     hi cursorline guibg=#333333
     hi CursorColumn guibg=#333333
     set guifont=Consolas\ 14
@@ -1553,7 +1446,6 @@ let Tlist_File_Fold_Auto_Close = 1
 let Tlist_GainFocus_On_ToggleOpen = 0
 let Tlist_WinWidth = s:PlugWinSize
 let Tlist_Auto_Open = 0
-let Tlist_Display_Prototype = 0
 "let Tlist_Close_On_Select = 1
  
 " minibufexpl.vim
@@ -1591,10 +1483,6 @@ let NERDTreeShowHidden = 1
 let NERDTreeWinPos = "right"
 let NERDTreeWinSize = s:PlugWinSize 
 nmap <leader>n :NERDTreeToggle<cr>
- 
-" DoxygenToolkit.vim
-" http://www.vim.org/scripts/script.php?script_id=987
-" 暂时没有使用
  
 " 更新ctags和cscope索引
 " href: http://www.vimer.cn/2009/10/把vim打造成一个真正的ide2.html
@@ -1701,10 +1589,6 @@ match WhitespaceEOL /\s\+$/
 " Set mapleader
 let mapleader=","
 
-" "cd" to change to open directory.
-let OpenDir=system("pwd")
-nmap <silent> <leader>cd :exe 'cd ' . OpenDir<cr>:pwd<cr>
-
 " PLUGIN SE TTINGS: {{{1
 " taglist.vim
 let g:Tlist_Auto_Update=1
@@ -1713,7 +1597,6 @@ let g:Tlist_Exit_OnlyWindow=1
 let g:Tlist_Show_One_File=1
 let g:Tlist_WinWidth=25
 let g:Tlist_Enable_Fold_Column=0
-let g:Tlist_Auto_Highlight_Tag=1
 
 " OmniCppComplete.vim
 let g:OmniCpp_DefaultNamespaces=["std"]
@@ -1744,7 +1627,6 @@ nmap  <F9> :call RunShell("get tags_dir","tag")<cr>:
 
 "nmap <leader>sa :cs add cscope.out<cr>
 
-"nmap <leader>zz <C-w>o
 "nmap <leader>gs :GetScripts<cr>
 
 vmap <C-S-P> dO#endif<Esc>PO#if 0<Esc>
