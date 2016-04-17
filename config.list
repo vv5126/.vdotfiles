@@ -11,3 +11,4 @@
 .tmux.conf=tmux.conf
 .zshrc=zshrc
 .Xmodmap=Xmodmap
+.tmux-powerlinerc=tmux-powerlinerc

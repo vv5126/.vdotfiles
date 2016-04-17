@@ -1,0 +1,37 @@
+#!/bin/bash
+
+cmd=$(which tmux) # tmux pathd
+
+if [ -z $cmd ]; then
+echo "You need to install tmux."
+exit 1
+fi
+
+session='work'
+if [ ! -z $1 ]; then
+    [ $1 == 1 ] && session='vvcode'
+fi
+
+$cmd has -t $session
+if [ $? != 0 ]; then
+    echo session $session
+    case $session in
+        'vvcode')
+            cd ~
+            $cmd new -d -n zsh -s $session "zsh"
+            # $cmd neww -n cmus -t $session "cmus"
+            # $cmd splitw -h -p 20 -t $session "zsh"
+            $cmd selectw -t $session:1
+            ;;
+        'work')
+            $cmd new -d -n bash -s $session "bash"
+            $cmd selectw -t $session:1
+            ;;
+        *)
+            ;;
+    esac
+fi
+
+$cmd att -t $session
+
+exit 0
