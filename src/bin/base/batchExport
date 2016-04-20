@@ -2,7 +2,8 @@
 
 source $HOME/.bin/base/base.conf
 
-list=($(echo ${!HOSTNAME}))
+hostname="${HOSTNAME//-/_}"
+list=($(echo ${!hostname}))
 
 if [ -n $list ]; then
     for line in "${list[@]}"; do

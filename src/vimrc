@@ -220,6 +220,7 @@ let maplocalleader = '_'    " 本地leader设置
 " :BundleSearch(!) foo - search(or refresh cache first) for foo
 " :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
 
+" if filereadable(expand("~/.vimrc.bundles.local"))
 if ! isdirectory($HOME."/.vim/bundle/vundle")
     echo "you should setup vundle frist!"
     echo "use \"git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle\""
@@ -250,6 +251,8 @@ else
 
 "允许你在 Vim中按等号、冒号、表格等来对齐文本
  Bundle 'Tabular'
+
+" ex: :TAb /=
 
 "---------------------------------------------------
 
@@ -592,6 +595,9 @@ let Tlist_Inc_Winwidth=0
 "---------------------------------------------------
 
  Bundle 'snipMate'
+let g:snips_author="ingenic"
+let g:snips_email="ingenic@ingenic.com"
+let g:snips_copyright="SicMicro, Inc"
 
 "---------------------------------------------------
 
@@ -604,6 +610,7 @@ let Tlist_Inc_Winwidth=0
 " lookupfile.vim 使用部分关键字查找文件名
  Bundle 'lookupfile'
  nmap  <F5> <Plug>LookupFile<cr>
+nmap <silent> <leader>ff :LookupFile<cr>
 let g:LookupFile_MinPatLength           = 2 "最少输入2个字符才开始查找
 let g:LookupFile_PreserveLastPattern    = 0 "不保存上次查找的字符串
 let g:LookupFile_PreservePatternHistory = 1 "保存查找历史
@@ -1102,10 +1109,29 @@ nmap <leader>ff :MRU<CR>
 
 "---------------------------------------------------
 
+" 语法检查 推荐：****
 Bundle 'scrooloose/syntastic'
 
 "---------------------------------------------------
 
+" 星级越多越推荐, 5星为必选，4星强烈推荐，3星比较推荐
+" 文件模糊匹配查找 推荐：****
+Bundle "kien/ctrlp.vim"
+" 函数模糊匹配查找(,fu) 推荐：****
+Bundle 'tacahiroy/ctrlp-funky'
+" 文件索引树 推荐：*****
+Bundle "scrooloose/nerdtree"
+" 自动注释 推荐：*****
+Bundle 'scrooloose/nerdcommenter'
+" 配色主题 推荐：****
+Bundle "altercation/vim-colors-solarized"
+" 缩进引导线 推荐：****
+Bundle "nathanaelkane/vim-indent-guides"
+" 文本同级文字选取，和文本处理 推荐：****
+Bundle 'kana/vim-textobj-indent'
+Bundle 'kana/vim-textobj-user'
+" 保存vim编辑信息，比如最后的位置 推荐：****
+Bundle "vim-scripts/restore_view.vim"
 
 "---------------------------------------------------
 
@@ -1241,6 +1267,11 @@ Bundle 'tpope/vim-git'
 " Bundle 'django_templates.vim'
 " Bundle 'Django-Projects'
 " Bundle 'djangojump'
+" Bundle 'yssource/python.vim'
+" Bundle 'python_match.vim'
+" Bundle 'pythoncomplete'
+" Bundle 'hdima/python-syntax'
+" Bundle 'hynek/vim-python-pep8-indent'
 "---------------------------------------------------
 "java 插件
 " Bundle 'Javascript-OmniCompletion-with-YUI-and-j'
@@ -1248,6 +1279,20 @@ Bundle 'tpope/vim-git'
 " Bundle 'Better-Javascript-Indentation'
 " Bundle 'jslint.vim'
 " Bundle 'pangloss/vim-javascript'
+"---------------------------------------------------
+" js 推荐：****
+" Bundle 'elzr/vim-json'
+" Bundle 'groenewege/vim-less'
+" Bundle 'pangloss/vim-javascript'
+" Bundle 'briancollins/vim-jst'
+" Bundle 'kchmck/vim-coffee-script'
+"---------------------------------------------------
+" html 推荐：****
+" Bundle 'amirh/HTML-AutoCloseTag'
+" Bundle 'hail2u/vim-css3-syntax'
+" Bundle 'gorodinskiy/vim-coloresque'
+" Bundle 'tpope/vim-haml'
+" Bundle 'mattn/emmet-vim'
 "---------------------------------------------------
 
 " Bundle 'ccglue'

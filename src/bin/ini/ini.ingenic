@@ -34,6 +34,8 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     complete -W "get_status" rp
     export VGL_BOOKMARK='/data1/home/wgao/.vdotfiles/src/bookmark/bookmark.html'
     # export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
+    export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
+    export ANDROID_JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
 }
 
 # 4.10 #

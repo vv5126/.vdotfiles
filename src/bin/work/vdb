@@ -18,19 +18,22 @@ dir_list=(
 }
 
 for target in $@; do
-    target=${target%*\/}
+    target_dir=
+    whole_path=$PWD/${target%*\/}
+    target=${target##*\/}
 
     # echo the file is $target
-    [ -f "$PWD/$target" -o -d "$PWD/$target" ] || continue
+    [ -f "$whole_path" -o -d "$whole_path" ] || continue
 
-    scp -r "$PWD/$target" "user@192.168.4.150:/tmp/$target" > /dev/null
+    scp -r "$whole_path" "user@192.168.4.150:/tmp/$target" > /dev/null
     [ $? != 0 ] && exit
 
-    for dir in $dir_list; do
-        [[ "$PWD/$target" =~ "$dir/$target" ]] && { target_dir=$dir; break; }
+    for dir in "${dir_list[@]}"; do
+        [[ "$whole_path" =~ "$dir/$target" ]] && { target_dir=$dir; break; }
     done
-    [ -n "$target_dir" ] && target_dir=$dir
+    [ "x$target_dir" == "x" ] && target_dir=$dir
 
-    echo the target dir is $target_dir
+    echo -n "the target dir is $target_dir >>> "
     vadb push "/tmp/$target" $target_dir/$target
+    vadb shell sync
 done
