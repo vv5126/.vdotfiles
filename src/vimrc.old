@@ -6,23 +6,19 @@
 "cnoremap <C-P> <Up>
 "cnoremap <C-N> <Down>
 
+" ^z快速进入shell
+nmap <C-Z> :shell<cr>
+ 
 " Useful on some European keyboards
 map 陆 $
 imap 陆 $
 vmap 陆 $
 cmap 陆 $
 
-"Ctrl+I 开启右键复制项
-map <C-I> :set mouse=<CR>
-"Ctrl+L  禁用右键复制项
-map <C-A> :set mouse=a<CR>
-
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 map <leader>pp :setlocal paste!<cr>
-
-map <leader>bb :cd ..<cr>
 map <leader>q :e ~/buffer<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
@@ -37,7 +33,6 @@ vmap <A-j> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <A-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 " Map space to / (search) and c-space to ? (backgwards search)
-map <space> /
 map <c-space> ?
 " Smart way to move btw. windows
 "map <C-j> <C-W>j
@@ -48,14 +43,8 @@ map <c-space> ?
 " Close the current buffer
 map <leader>bd :Bclose<cr>
 
-" Close all the buffers
-map <leader>ba :1,300 bd!<cr>
-
 " Tab configuration
 map <leader>nn :n <cr>
-map <leader>te :tabedit
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
 
 " When pressing <leader>cd switch to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>
@@ -92,12 +81,6 @@ endf
 "nmap <leader>gs :GetScripts<cr>
 
 vmap <C-S-P> dO#endif<Esc>PO#if 0<Esc>
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 不写文章用不到
-" => Spell checking
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Pressing ,ss will toggle and untoggle spell checking
-map <leader>ss :setlocal spell!<cr>
 
 "Shortcuts using <leader>
 map <leader>sn ]s
@@ -222,7 +205,6 @@ map <F4> :WMToggle<CR>
 nnoremap <F8> :TlistToggle<CR>
 
 nmap ww :w<cr>
-nmap wqa :wqa<cr>
 nmap tt :Tlist<cr>
 "nmap ww <C-w><C-w>
 nmap -- 5<C-w>-
@@ -245,7 +227,6 @@ nmap ll :n <space>
 nmap cc :color <space>
 
 nmap ds :%s/\s\+$//<cr>
-nmap nt :tabnext<cr>
 
 "nmap vv :vsplit
 nmap bd :bdelete<cr>
@@ -253,8 +234,6 @@ nmap tc :tabclose<cr>
 nmap vv :bnext<cr>
 nmap zz :bprevious<cr>
 "nmap ff :cs find t <C-R>=expand("<cword>")<CR><CR>:cw<CR>
-
-"F5 for comment
 
 vmap <F7> :s=^\(//\)*=//=g<cr>:noh<cr>
 nmap <F7> :s=^\(//\)*=//=g<cr>:noh<cr>
@@ -279,29 +258,12 @@ vnoremap <Leader>y "+y
 nmap <Leader>p "+p
 " 定义快捷键关闭当前分割窗口
 nmap <Leader>q :q<CR>
-" 定义快捷键保存当前窗口内容
-nmap <Leader>w :w<CR>
 " 定义快捷键保存所有窗口内容并退出 vim
 nmap <Leader>WQ :wa<CR>:q<CR>
-" 不做任何保存，直接退出 vim
-nmap <Leader>Q :qa!<CR>
-" 依次遍历子窗口
-nnoremap nw <C-W><C-W>
-" 跳转至右方的窗口
-nnoremap <Leader>lw <C-W>l
-" 跳转至方的窗口
-nnoremap <Leader>hw <C-W>h
-" 跳转至上方的子窗口
-nnoremap <Leader>kw <C-W>k
-" 跳转至下方的子窗口
-nnoremap <Leader>jw <C-W>j
 " 定义快捷键在结对符之间跳转，助记pair
 nmap <Leader>pa %
 "nmap <F2> :set ic<cr>/
 map <C-U> :set mouse=a<CR>
-map <C-w> <Esc>:w <CR>
-vmap <C-w> <Esc>:w <CR>
-imap <C-w> <Esc>:w <CR>
 
 " OmniCppComplete.vim
 " c-j自动补全，当补全菜单打开时，c-j,k上下选择
@@ -333,28 +295,66 @@ imap <C-e> <END>
 "imap <C-k> <esc>d$i  " 与自动补全中的绑定冲突
 
 
+set mouse=a      " 在所有模式下都允许使用鼠标，还可以是n,v,i,c等
+set mouse=n
+set mouse=i
+set mouse=c
+set mouse=h
+set mouse=v
 
-" 基本配置
+set csprg=/usr/bin/cscope
+set path+=include;\
+
+"let g:SuperTabRetainCompletionType=2
+"let g:SuperTabDefaultCompletionType="<C-X><C-O>"
+
+"折叠方式"zf创建折叠
+"set fdm=indent
+set fdm=manual
+set rtp+=$GOROOT/misc/vim
+set cul "高亮光标所在行
+set cuc
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容  
+
+" 去掉输入错误的提示声音
+set noeb
+
+" 使回格键（backspace）正常处理indent, eol, start等
+set backspace=2
+" 通过使用: commands命令，告诉我们文件的哪一行被改变过
+set report=0
+autocmd BufEnter * :syntax sync fromstart
+set nu              " 显示行号
+set lz              " 当运行宏时，在命令执行完成之前，不重绘屏幕
+set hid             " 可以在没有保存的情况下切换buffer
+set lbr             " 在breakat字符处而不是最后一个字符处断行
+set ai              " 自动缩进
+set si              " 智能缩进
+set nofen
+set fdl=10
+" 不使用beep或flash
+set vb t_vb=
+set   completeopt=longest,menuone
+set   helpheight=10
+set   pumheight=10
+"set fenc=utf-8
+"set fencs=utf-8,usc-bom,euc-jp,gb18030,gbk,gb2312,cp936
+"set fileencoding=utf-8
+"set encoding=cp936
+" Set 7 lines to the curors - when moving vertical..
+set so=7
+set nolazyredraw "Don't redraw while executing macros
+set mat=2 "How many tenths of a second to blink
+set tw=500
 set mousehide    " 输入文件时隐藏鼠标
 set nowritebackup " 不写入备份文件
 set shortmess=atI"  " 关闭欢迎页面
 set viewoptions=cursor,folds,slash,unix " viminfo 记录的内容
-set virtualedit=onemore             " 光标可以移到当行最后一个字符之后 
-" set spell         " 拼写检查
-set wildmode=list:longest,full " 自动补全时，匹配最长子串，列出文件
-set whichwrap=b,s,h,l,<,>,[,]  " 行尾可右移到下行，行首左移到上行,b：退格，s：空格，hl：左右，<>：n/v模式下的左右，[]：i/r模式下的左右
 set scrolljump=5  " 光标离开屏幕范围 
-
 set nojoinspaces  " 用J合并两行用一个空格隔开
 set pastetoggle=<F12> " 指定F12进入黏贴模式，可以正常复制缩进
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " 空格等无效字符显示
-
-" 开启新的buffer时，自动转到对应文件目录
-let g:autochdir = 1
-
-"字体的设置
-set guifont=Consolas,Bitstream_Vera_Sans_Mono:h9:cANSI "设置gui下的字体
-set gfw=幼圆:h10:cGB2312
+set listchars=tab:>-,trail:-
 
 "以UNIX的换行符格式保存文件，注意是去掉一个^M
 ":set ff=unix
@@ -363,20 +363,16 @@ set gfw=幼圆:h10:cGB2312
 
 " Enable ShowMarks
 let showmarks_enable = 1
-set wildmode=list:longest,full      " command completion mode
-
+set wildmode=list:longest,full " 自动补全时，匹配最长子串，列出文件
 " Show which marks
 let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLM"
-
 " Ignore help, quickfix, non-modifiable buffers
 let showmarks_ignore_type = "hqm"
-
 " Hilight lower & upper marks
 let showmarks_hlline_lower = 1
 let showmarks_hlline_upper = 1
 
 let marksCloseWhenSelected = 0
-
 set sw=4
 set ts=4
 set et
@@ -385,27 +381,8 @@ set sm
 set selection=inclusive
 set mousemodel=popup
 
-
-
-
-
-" 相关vim脚本文档 http://vimdoc.sourceforge.net
-" 相关好文 https://github.com/yangyangwithgnu/use_vim_as_ide
-
-" 导入vim插件管理文件
-if filereadable(expand("~/.vimrc.bundles"))
-    source ~/.vimrc.bundles
-endif
-
 if exists('g:autochdir')
     autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
-endif
-
-" 设置u的返回步数限制
-if has('persistent_undo')
-    set undofile               " 开启u回滚文件记录
-    set undolevels=1000         " 最大数量的改变回滚
-    set undoreload=10000        " 最大数量重载可回滚行数
 endif
 
 " 特殊文件打开
@@ -435,11 +412,6 @@ if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"
 endif
 
 autocmd BufEnter *.py set cc=81 " 打开py文件81行高亮  
-" 之前的高亮线太难看，重新制定颜色，这里的black和iterm2颜色配置中的black一样
-hi CursorLine   cterm=NONE ctermbg=black guibg=black  
-hi CursorColumn   cterm=NONE ctermbg=black guibg=black " 
-highlight ColorColumn ctermbg=black guibg=black
-hi LineNr ctermbg=black
 
 nmap <leader>nt :NERDTreeFind<CR>
 
@@ -494,39 +466,8 @@ if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
     endif
 endif
 
-
-"maybe unused----------------------------
-
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-" Python 文件的一般设置，比如不要 tab 等
-autocmd FileType python set tabstop=4 shiftwidth=4 expandtab
-autocmd FileType python map <F12> :!python %<CR>
-" quickfix模式
-autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
-
-" Map auto complete of (, ", ', [
-"inoremap $1 ()<esc>i
-"inoremap $2 []<esc>i
-"inoremap $3 {}<esc>i
-"inoremap $4 {<esc>o}<esc>O
-"inoremap $q ''<esc>i
-"inoremap $e ""<esc>i
-
-"打开文件类型检测, 加了这句才可以用智能补全
-" VimGDB.vim
-if has("gdb")
-	set asm=0
-	let g:vimgdb_debug_file=""
-	run macros/gdb_mappings.vim
-endif
-
 " unkown---------------------------------
 
-" Specify the behavior when switching between buffers
-try
-    set switchbuf=usetab "控制缓冲区切换的行为
-catch
-endtry
 " Smart mappings on the command line
 cno $h e ~/
 cno $d e ~/Desktop/
@@ -567,12 +508,9 @@ endfunction
 
 
 autocmd BufRead,BufNew :call UMiniBufExplorer
-
 map <leader>u :TMiniBufExplorer<cr>:TMiniBufExplorer<cr>
-
 nmap <script> <silent> <S-F7> :BufExplorer<CR>
 
-set splitbelow
 nmap <S-C> :stj <C-R>=expand("<cword>")<CR><CR>
 
 if !(g:iswindows==1)
@@ -598,14 +536,6 @@ if !(g:iswindows==1)
 endif
 
 
-
-
-" 禁止显示滚动条
-set guioptions-=l
-set guioptions-=L
-set guioptions-=r
-set guioptions-=R
-
 "然并卵
 " Close all the buffers
 map <leader>ba :1,300 bd!<cr>
@@ -629,115 +559,7 @@ match WhitespaceEOL /\s\+$/
 " nmap <leader>fu :se fileformat=unix<CR>
 
 ------------------------------------------------
-" for gvim
-set go=                     " 不要图形按钮
-set langmenu=zh_CN.UTF-8    "菜单使用的语言
-" Set font according to system
-if (g:iswindows==1)
-    set gfn=Bitstream\ Vera\ Sans\ Mono:h10
-else
-    set gfn=Monospace\ 10
-    set shell=/bin/bash
-endif
 
-
-
-
-
-
-
-
-
-
-
-set mouse=a
-set mouse=n
-set mouse=i
-set mouse=c
-set mouse=h
-set mouse=n
-set mouse=v
-"set mouse=v
-
-set csprg=/usr/bin/cscope
-"let g:winManagerWindowLayout='FileExplorer|MarksBrowser'
-
-set wildmode=list:longest,full      " command completion mode
-
-"let g:SuperTabRetainCompletionType=2
-"let g:SuperTabDefaultCompletionType="<C-X><C-O>"
-
-set iskeyword+=_,$,@,%,#,-
-
-set path+=include;\
-
-"折叠方式"zf创建折叠
-"set fdm=indent
-set fdm=manual
-set rtp+=$GOROOT/misc/vim
-set cul "高亮光标所在行
-set cuc
-"set guifont=Courier_New:h10:cANSI   " 设置字体  
-"autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
-autocmd InsertEnter * se cul    " 用浅色高亮当前行  
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容  
-
-" 去掉输入错误的提示声音
-set noeb
-
-" 使回格键（backspace）正常处理indent, eol, start等
-set backspace=2
-" 通过使用: commands命令，告诉我们文件的哪一行被改变过
-set report=0
-autocmd BufEnter * :syntax sync fromstart
-set nu              " 显示行号
-set lz              " 当运行宏时，在命令执行完成之前，不重绘屏幕
-set hid             " 可以在没有保存的情况下切换buffer
-set lbr             " 在breakat字符处而不是最后一个字符处断行
-set ai              " 自动缩进
-set si              " 智能缩进
-set nofen
-set fdl=10
-
-" 不使用beep或flash
-set vb t_vb=
-
-set mouse=a      " 在所有模式下都允许使用鼠标，还可以是n,v,i,c等
-" Other settings.
-set   completeopt=longest,menuone
-set   fileencodings=gb2312,gbk
-set   fileencodings=utf-8,gb2312,gbk,gb18030
-set   helpheight=10
-set   pumheight=10
-set   wildmode=list:longest,full
-
-"set fenc=utf-8
-"set fencs=utf-8,usc-bom,euc-jp,gb18030,gbk,gb2312,cp936
-"set fileencoding=utf-8
-"set encoding=cp936
-
-" Set 7 lines to the curors - when moving vertical..
-set so=7
-set nolazyredraw "Don't redraw while executing macros
-set mat=2 "How many tenths of a second to blink
-set tw=500
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-highlight StatusLine guifg=SlateBlue guibg=Yellow
-highlight StatusLineNC guifg=Gray guibg=White
 
 Bundle 'tpope/vim-fugitive'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -750,25 +572,11 @@ Bundle 'last_edit_marker.vim'
 Bundle 'synmark.vim'
 Bundle 'SQLComplete.vim'
 Bundle 'Vim-Script-Updater'
-Bundle 'ctrlp.vim'
 Bundle 'tacahiroy/ctrlp-funky'
-
-"""""""""""""""""""""
-" Uncomment the following to have Vim jump to the last position when reopening a file
- if has("autocmd")
- au BufReadPost * if line("`\"") > 1 && line("`\"") <= line("$") | exe "normal! g`\"" | endif
- endif
-"""""""""""""""""""""
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let g:mapleader = ","
-
-" Fast editing of the .vimrc
-map <leader>e :e! ~/.vim_runtime/vimrc<cr>
-
-" When vimrc is edited, reload it
-autocmd! bufwritepost vimrc source ~/.vim_runtime/vimrc
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -776,8 +584,8 @@ autocmd! bufwritepost vimrc source ~/.vim_runtime/vimrc
 "syntax enable "Enable syntax hl
 
 " Set font according to system
-"  set gfn=Monospace\ 10
-"  set shell=/bin/bash
+" set gfn=Monospace\ 10
+" set shell=/bin/bash
 
 "if has("gui_running")
 "  set background=dark
@@ -805,8 +613,6 @@ try
     else
       set undodir=~/.vim_runtime/undodir
     endif
-
-    set undofile
 catch
 endtry
 
@@ -814,7 +620,6 @@ func! Cwd()
   let cwd = getcwd()
   return "e " . cwd
 endfunc
-
 
 func! CurrentFileDir(cmd)
   return a:cmd . " " . expand("%:p:h") . "/"
@@ -842,21 +647,12 @@ function! HasPaste()
     endif
 endfunction
 
-
 "inoremap $t <><esc>i
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General Abbrevs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
-
-"Delete trailing white space, useful for Python ;)
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
 
 set guitablabel=%t
 
@@ -866,21 +662,14 @@ set guitablabel=%t
 let g:bufExplorerDefaultHelp=0
 let g:bufExplorerShowRelativePath=1
 map <leader>o :BufExplorer<cr>
-
 let g:bufExplorerSortBy = "name"
 
 map <leader>u :TMiniBufExplorer<cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Omni complete functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 
 """"""""""""""""""""""""""""""
 " => Command-T
 """"""""""""""""""""""""""""""
 let g:CommandTMaxHeight = 15
-set wildignore+=*.o,*.obj,.git,*.pyc
 noremap <leader>j :CommandT<cr>
 noremap <leader>y :CommandTFlush<cr>
 
@@ -892,39 +681,21 @@ set t_Sf=^[[3%dm
 endif
 let g:neocomplcache_enable_at_startup = 1
 
-set listchars=tab:>-,trail:-
 
 "set filetype=unix
 "删除行尾的一个^M
 nmap dm :%s/\r\+$//e<cr>:set ff=unix<cr>
-au FileType php setlocal dict+=~/.vim/dict/php_funclist.dict
-au FileType css setlocal dict+=~/.vim/dict/css.dict
-au FileType c setlocal dict+=~/.vim/dict/c.dict
-au FileType cpp setlocal dict+=~/.vim/dict/cpp.dict
-au FileType scale setlocal dict+=~/.vim/dict/scale.dict
-au FileType javascript setlocal dict+=~/.vim/dict/javascript.dict
-au FileType html setlocal dict+=~/.vim/dict/javascript.dict
-au FileType html setlocal dict+=~/.vim/dict/css.dict
 
 "syntastic相关
 execute pathogen#infect()
 let g:syntastic_python_checkers=['pylint']
 let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
 "golang
-"Processing... % (ctrl+c to stop)
+" Processing... % (ctrl+c to stop)
 let g:fencview_autodetect=0
-"markdown配置
-au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn}   set filetype=mkd
-au BufRead,BufNewFile *.{go}   set filetype=go
-au BufRead,BufNewFile *.{js}   set filetype=javascript
 autocmd BufNewFile * normal G
-
 :autocmd BufRead,BufNewFile *.dot map <F5> :w<CR>:!dot -Tjpg -o %<.jpg % && eog %<.jpg  <CR><CR> && exec "redr!"
 
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""实用设置
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "当打开vim且没有文件时自动打开NERDTree
 autocmd vimenter * if !argc() | NERDTree | endif
 " 只剩 NERDTree时自动关闭
@@ -948,19 +719,7 @@ set statusline=[%n]\ %f%m%r%h\ \|\ \ pwd:\ %{CurDir()}\ \ \|%=\|\ %l,%c\ %p%%\ \
 matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
 " 快捷打开编辑vimrc文件的键盘绑定
 map <silent> <leader>ee :e $HOME/.vimrc<cr>
-autocmd! bufwritepost *.vimrc source $HOME/.vimrc
- 
-" ^z快速进入shell
-nmap <C-Z> :shell<cr>
- 
-"在gvim中高亮当前行
-if (g:isGUI)
-    hi cursorline guibg=#333333
-    hi CursorColumn guibg=#333333
-    set guifont=Consolas\ 14
-    set guifontwide=Consolas\ 14
-endif
- 
+
 " 设置字符集编码，默认使用utf8
 if (g:isWin)
     let &termencoding=&encoding " 通常win下的encoding为cp936
@@ -970,8 +729,6 @@ else
     set fileencodings=utf8,gb2312,gb18030,ucs-bom,latin1
 endif
 
-" 状态栏
-highlight StatusLine cterm=bold ctermfg=yellow ctermbg=blue
 " 获取当前路径，将$HOME转化为~
 function! CurDir()
     let curdir = substitute(getcwd(), $HOME, "~", "g")
@@ -979,31 +736,29 @@ function! CurDir()
 endfunction
 set statusline=[%n]\ %f%m%r%h\ \|\ \ pwd:\ %{CurDir()}\ \ \|%=\|\ %l,%c\ %p%%\ \|\ ascii=%b,hex=%b%{((&fenc==\"\")?\"\":\"\ \|\ \".&fenc)}\ \|\ %{$USER}\ @\ %{hostname()}\
 
-" 第80列往后加下划线
-"au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
 
 " 根据给定方向搜索当前光标下的单词，结合下面两个绑定使用
         execute "normal ?" . l:pattern . "<cr>"
         execute "normal /" . l:pattern . "<cr>"
-" 用 */# 向 前/后 搜索光标下的单词
 
 " 恢复上次文件打开位置
 set viminfo='10,\"100,:20,%,n~/.viminfo
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 
+"""""""""""""""""""""
+" Uncomment the following to have Vim jump to the last position when reopening a file
+ if has("autocmd")
+ au BufReadPost * if line("`\"") > 1 && line("`\"") <= line("$") | exe "normal! g`\"" | endif
+ endif
+"""""""""""""""""""""
 " 缩写
 iab idate <c-r>=strftime("%Y-%m-%d")<CR>
 iab itime <c-r>=strftime("%H:%M")<CR>
-iab imail Stephen <stephenpcg@gmail.com>
-iab iumail stephen1@mail.ustc.edu.cn
-iab igmail stephenpcg@gmail.com
-iab iname Zhang Cheng
 
 " 插件窗口的宽度，如TagList,NERD_tree等，自己设置
 let s:PlugWinSize = 30
 
 " ShowFunc.vim  <-------- 暂时没有使用
-" http://www.vim.org/scripts/script.php?script_id=397
 " F2打开ShowFunc TagList窗口，显示C/C++函数原型
 " map <F2> <Plug>ShowFunc
 " map! <F2> <Plug>ShowFunc
@@ -1023,149 +778,4 @@ nmap <leader>n :NERDTreeToggle<cr>
 
 " Man.vim
 source $VIMRUNTIME/ftplugin/man.vim
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-""""""""""""""""""""""""""""""
-" => Python section
-""""""""""""""""""""""""""""""
-let python_highlight_all = 1
-au FileType python syn keyword pythonDecorator True None False self
-
-au BufNewFile,BufRead *.jinja set syntax=htmljinja
-au BufNewFile,BufRead *.mako set ft=mako
-
-au FileType python inoremap <buffer> $r return
-au FileType python inoremap <buffer> $i import
-au FileType python inoremap <buffer> $p print
-au FileType python inoremap <buffer> $f #--- PH ----------------------------------------------<esc>FP2xi
-au FileType python map <buffer> <leader>1 /class
-au FileType python map <buffer> <leader>2 /def
-au FileType python map <buffer> <leader>C ?class
-au FileType python map <buffer> <leader>D ?def
-
-
-""""""""""""""""""""""""""""""
-" => JavaScript section
-"""""""""""""""""""""""""""""""
-au FileType javascript call JavaScriptFold()
-au FileType javascript setl fen
-au FileType javascript setl nocindent
-
-au FileType javascript imap <c-t> AJS.log();<esc>hi
-au FileType javascript imap <c-a> alert();<esc>hi
-
-au FileType javascript inoremap <buffer> $r return
-au FileType javascript inoremap <buffer> $f //--- PH ----------------------------------------------<esc>FP2xi
-
-function! JavaScriptFold()
-    setl foldmethod=syntax
-    setl foldlevelstart=1
-    syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-
-    function! FoldText()
-    return substitute(getline(v:foldstart), '{.*', '{...}', '')
-    endfunction
-    setl foldtext=FoldText()
-endfunction
-
-
-
-"C,C++的调试
-map <F8> :call Rungdb()<CR>
-func! Rungdb()
-	exec "w"
-	exec "!g++ % -g -o %<"
-	exec "!gdb ./%<"
-endfunc
-
-"python补全
-let g:pydiction_location = '~/.vim/after/complete-dict'
-let g:pydiction_menu_height = 20
-
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-
-
-"Bundle 'FredKSchott/CoVim'
-let g:html_indent_inctags = "html,body,head,tbody"
-let g:html_indent_script1 = "inc"
-let g:html_indent_style1 = "inc"
-
-" complete
-autocmd Filetype * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-
-"C，C++ 按F5编译运行
-map <F5> :call CompileRunGcc()<CR>
-func! CompileRunGcc()
-	exec "w"
-	if &filetype == 'c'
-		exec "!g++ % -o %<"
-		exec "!time ./%<"
-	elseif &filetype == 'cpp'
-		exec "!g++ % -o %<"
-		exec "!time ./%<"
-	elseif &filetype == 'java' 
-		exec "!javac %" 
-		exec "!time java %<"
-	elseif &filetype == 'sh'
-		:!time bash %
-	elseif &filetype == 'python'
-		exec "!time python2.7 %"
-    elseif &filetype == 'html'
-        exec "!firefox % &"
-    elseif &filetype == 'go'
-"        exec "!go build %<"
-        exec "!time go run %"
-    elseif &filetype == 'mkd'
-        exec "!~/.vim/markdown.pl % > %.html &"
-        exec "!firefox %.html &"
-	endif
-endfunc
-
-"代码格式优化化
-map <F6> :call FormartSrc()<CR><CR>
-
-func FormartSrc()
-    exec "w"
-    if &filetype == 'c'
-        exec "!astyle --style=ansi -a --suffix=none %"
-    elseif &filetype == 'cpp' || &filetype == 'hpp'
-        exec "r !astyle --style=ansi --one-line=keep-statements -a --suffix=none %> /dev/null 2>&1"
-    elseif &filetype == 'perl'
-        exec "!astyle --style=gnu --suffix=none %"
-    elseif &filetype == 'py'||&filetype == 'python'
-        exec "r !autopep8 -i --aggressive %"
-    elseif &filetype == 'java'
-        exec "!astyle --style=java --suffix=none %"
-    elseif &filetype == 'jsp'
-        exec "!astyle --style=gnu --suffix=none %"
-    elseif &filetype == 'xml'
-        exec "!astyle --style=gnu --suffix=none %"
-    else
-        exec "normal gg=G"
-        return
-    endif
-    exec "e! %"
-endfunc
 

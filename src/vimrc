@@ -68,6 +68,11 @@ endif " has("autocmd")
 "高亮显示当前行/列
  set cursorline
 "set cursorcolumn
+" 之前的高亮线太难看，重新制定颜色，这里的black和iterm2颜色配置中的black一样
+hi CursorLine   cterm=NONE ctermbg=black guibg=black  
+hi CursorColumn   cterm=NONE ctermbg=black guibg=black " 
+highlight ColorColumn ctermbg=black guibg=black
+hi LineNr ctermbg=black
  set ttyfast
 "显示光标当前位置
  set ruler         " 显示标尺
@@ -129,6 +134,7 @@ set fileformat=unix     "文件输入输出使用的格式
 
 "匹配括号的规则，增加针对html的<>
 "set matchpairs=(:),{:},[:],<:>
+set whichwrap=b,s,h,l,<,>,[,]  " 行尾可右移到下行，行首左移到上行,b：退格，s：空格，hl：左右，<>：n/v模式下的左右，[]：i/r模式下的左右
 "让退格，空格，上下箭头遇到行首行尾时自动移到下一行（包括insert模式）
  set whichwrap=b,s,<,>,[,]
 " 允许backspace和光标键跨越行边界
@@ -633,6 +639,7 @@ Bundle 'winmanager'
 nmap wm :if IsWinManagerVisible() <BAR> WMToggle<CR> <BAR> else <BAR> WMToggle<CR>:q<CR> endif <CR><CR>
 let g:winManagerWindowLayout='NERDTree|BufExplorer'
 "let g:winManagerWindowLayout = 'FileExplorer|TagList'
+"let g:winManagerWindowLayout='FileExplorer|MarksBrowser'
 "let g:winManagerWindowLayout = 'FileExplorer'
 let g:winManagerWidth = 25
 let g:defaultExplorer = 0
@@ -1116,22 +1123,22 @@ Bundle 'scrooloose/syntastic'
 
 " 星级越多越推荐, 5星为必选，4星强烈推荐，3星比较推荐
 " 文件模糊匹配查找 推荐：****
-Bundle "kien/ctrlp.vim"
+" Bundle "kien/ctrlp.vim"
 " 函数模糊匹配查找(,fu) 推荐：****
-Bundle 'tacahiroy/ctrlp-funky'
+" Bundle 'tacahiroy/ctrlp-funky'
 " 文件索引树 推荐：*****
-Bundle "scrooloose/nerdtree"
+" Bundle "scrooloose/nerdtree"
 " 自动注释 推荐：*****
-Bundle 'scrooloose/nerdcommenter'
+" Bundle 'scrooloose/nerdcommenter'
 " 配色主题 推荐：****
-Bundle "altercation/vim-colors-solarized"
+" Bundle "altercation/vim-colors-solarized"
 " 缩进引导线 推荐：****
-Bundle "nathanaelkane/vim-indent-guides"
+" Bundle "nathanaelkane/vim-indent-guides"
 " 文本同级文字选取，和文本处理 推荐：****
-Bundle 'kana/vim-textobj-indent'
-Bundle 'kana/vim-textobj-user'
+" Bundle 'kana/vim-textobj-indent'
+" Bundle 'kana/vim-textobj-user'
 " 保存vim编辑信息，比如最后的位置 推荐：****
-Bundle "vim-scripts/restore_view.vim"
+" Bundle "vim-scripts/restore_view.vim"
 
 "---------------------------------------------------
 
@@ -1362,6 +1369,7 @@ set foldcolumn=1 " 设置折叠区域的宽度
 nmap <F3> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 
 set   wildignore=*.bak,*.o,*.e,*~
+set wildignore+=*.o,*.obj,.git,*.pyc
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -1379,6 +1387,7 @@ set completeopt=longest,menu
 "set nobackup                " 覆盖文件时不备份
 set backupcopy=yes          " 设置备份时的行为为覆盖
 " set autochdir               " 自动切换当前目录为当前文件所在的目录
+" let g:autochdir = 1
 "新建标签
 map <M-F2> :tabnew<CR>
 "列出当前目录文件
@@ -1527,6 +1536,10 @@ set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]
 " set statusline=\ %r%{Tlist_Get_Tagname_By_Line()}%h\ %w\ %F%m%r%h\ %w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ %w\ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
 " set statusline=%F%m%r%h%w\[POS=%l,%v][%p%%]\%{strftime(\”%d/%m/%y\ -\ %H:%M\”)}
 
+highlight StatusLine cterm=bold ctermfg=yellow ctermbg=blue
+" highlight StatusLine guifg=SlateBlue guibg=Yellow
+" highlight StatusLineNC guifg=Gray guibg=White
+
 " autocmd InsertLeave * se nocul  " 用浅色高亮当前行
 " autocmd InsertEnter * se cul    " 用浅色高亮当前行
 
@@ -1671,6 +1684,7 @@ set magic "改变搜索模式使用的特殊字符
 " set smartindent "C 程序智能自动缩进
 set showtabline=1  "指定何时显示带有标签页标签的行,这里设置为至少有两个以上才显示.
 
+set virtualedit=onemore             " 光标可以移到当行最后一个字符之后 
 set confirm "退出、写入等有未保存的改动或文件只读时询问
 set linespace=0 " 字符间插入的像素行数目
 set linespace=0   " 行之间没有多余的空格
@@ -1689,3 +1703,12 @@ set splitbelow    " 用split新建窗口，让新的放下面
 set iskeyword-=.  " 让'.' 作为单词分割符
 set iskeyword-=#  " 让'#' 作为单词分割符
 set iskeyword-=-  " 让'-' 作为单词分割符
+
+" 第80列往后加下划线
+au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
+
+"Ctrl+I 开启右键复制项
+map <C-I> :set mouse=<CR>
+"Ctrl+L  禁用右键复制项
+map <C-A> :set mouse=a<CR>
+
