@@ -1,0 +1,470 @@
+" Bash like keys for the command line
+cnoremap <C-A>		<Home>
+cnoremap <C-E>		<End>
+cnoremap <C-K>		<C-U>
+
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
+
+" ^z快速进入shell
+nmap <C-Z> :shell<cr>
+
+" Useful on some European keyboards
+map 陆 $
+imap 陆 $
+vmap 陆 $
+cmap 陆 $
+
+" Remove the Windows ^M - when the encodings gets messed up
+noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+map <leader>pp :setlocal paste!<cr>
+map <leader>q :e ~/buffer<cr>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Editing mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Remap VIM 0
+map 0 ^
+
+"Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
+nmap <A-j> mz:m+<cr>`z
+nmap <A-k> mz:m-2<cr>`z
+vmap <A-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <A-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+" Map space to / (search) and c-space to ? (backgwards search)
+map <c-space> ?
+
+" Close the current buffer
+map <leader>bd :Bclose<cr>
+
+" Tab configuration
+map <leader>nn :n <cr>
+
+" When pressing <leader>cd switch to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>
+
+" Do :help cope if you are unsure what cope is. It's super useful!
+map <leader>cc :botright cope<cr>
+map <F3> :cp<cr>
+" map <F4> :cn<cr>
+nmap  <F5> <Plug>LookupFile<cr>
+nmap  <F6> :vimgrep /<C-R>=expand("<cword>")<cr>/ **/*.c **/*.h<cr><C-o>:cw<cr>
+nmap <F10> :call HLUDSync()<cr>
+nmap <leader>sa :cs add cscope.out<cr>
+nmap <leader>gs :GetScripts<cr>
+vmap <C-S-P> dO#endif<Esc>PO#if 0<Esc>
+
+" 设置tag和window间快速跳转
+let g:easyWindows = 1
+if exists('g:easyWindows')
+    " 向上
+    map <C-J> <C-W>j<C-W>_
+    " 向下
+    map <C-K> <C-W>k<C-W>_
+    " 向右
+    map <C-L> <C-W>l<C-W>_
+    " 向左
+    map <C-H> <C-W>h<C-W>_
+endif
+
+" 映射vsp这些开启新的buffer,默认目录为当前目录
+cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
+map <leader>ew :e %%
+map <leader>es :sp %%
+map <leader>ev :vsp %%
+map <leader>et :tabe %%
+
+" shift tab pages
+map <S-Left> :tabp<CR>
+map <S-Right> :tabn<CR>
+map! <C-Z> <Esc>zzi
+map! <C-O> <C-Y>,
+
+" quanxuan jia fuzhi
+map <C-A> ggVG$"+y
+
+imap <C-k> <C-y>,
+imap <C-t> <C-q><TAB>
+nnoremap <Leader>fu :CtrlPFunky<Cr>
+nnoremap <C-n> :CtrlPFunky<Cr>
+"打开树状文件目录
+map <C-F3> \be
+nmap \ \cc
+vmap \ \cc
+nmap <F9> :marks<CR>
+" nmap <F4> :MarksBrowser<CR>
+" nmap <F2> ,mm
+" nmap <F3> ,mh
+vmap <C-S-P> dO#endif<Esc>PO#if 0<Esc>
+
+"以unix格式显示换行符
+nmap xsm :e ++ff=unix
+"以dos格式显示换行符
+nmap xsm :e ++ff=dos
+map ff :WMToggle<CR>
+
+nmap <C-x> :b
+nmap <C-r> :ConqueTermVSplit bash <cr>
+nmap <C-P> :ConqueTermSplit bash <cr>
+nmap <C-c> :
+nmap ff :1,$s///g
+" nmap ll :n <space>
+nmap bd :bdelete<cr>
+" nmap ff :cs find t <C-R>=expand("<cword>")<CR><CR>:cw<CR>
+
+"inoremap <C-u> <esc>gUiwea
+" 定义快捷键到行首和行尾
+nmap lb 0
+nmap le $
+" 定义快捷键关闭当前分割窗口
+nmap <Leader>q :q<CR>
+" 定义快捷键在结对符之间跳转，助记pair
+nmap <Leader>pa %
+"nmap <F2> :set ic<cr>/
+
+" OmniCppComplete.vim
+" c-j自动补全，当补全菜单打开时，c-j,k上下选择
+imap <expr> <c-j>      pumvisible()?"\<C-N>":"\<C-X><C-O>"
+imap <expr> <c-k>      pumvisible()?"\<C-P>":"\<esc>"
+" f:文件名补全，l:行补全，d:字典补全，]:tag补全
+imap <C-]>             <C-X><C-]>
+imap <C-F>             <C-X><C-F>
+imap <C-D>             <C-X><C-D>
+imap <C-L>             <C-X><C-L>
+
+" NERD_commenter.vim
+" Toggle单行注释/“性感”注释/注释到行尾/取消注释
+map <leader>cc ,c<space>
+map <leader>cs ,cs
+map <leader>c$ ,c$
+map <leader>cu ,cu
+" Quick Fix 设置
+map <leader>cw :cw<cr>
+
+imap <C-u> <esc>d0i
+imap <C-k> <esc>d$i  " 与自动补全中的绑定冲突
+
+set csprg=/usr/bin/cscope
+set path+=include;\
+
+let g:SuperTabRetainCompletionType=2
+let g:SuperTabDefaultCompletionType="<C-X><C-O>"
+
+set rtp+=$GOROOT/misc/vim
+
+" 使回格键（backspace）正常处理indent, eol, start等
+set backspace=2
+" 通过使用: commands命令，告诉我们文件的哪一行被改变过
+set report=0
+autocmd BufEnter * :syntax sync fromstart
+set ai              " 自动缩进
+set nofen
+set fo+=mB
+
+" Enable ShowMarks
+let showmarks_enable = 1
+set wildmode=list:longest,full " 自动补全时，匹配最长子串，列出文件
+" Show which marks
+let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLM"
+" Ignore help, quickfix, non-modifiable buffers
+let showmarks_ignore_type = "hqm"
+" Hilight lower & upper marks
+let showmarks_hlline_lower = 1
+let showmarks_hlline_upper = 1
+let marksCloseWhenSelected = 0
+set mousemodel=popup
+
+if exists('g:autochdir')
+    autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+endif
+
+" 设置主题,UI
+" solarized 主题
+if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+	let g:solarized_termtrans=1
+	let g:solarized_contrast="normal"
+	let g:solarized_visibility="normal"
+	color solarized             " Load a colorscheme
+endif
+
+autocmd BufEnter *.py set cc=81 " 打开py文件81行高亮
+
+nmap <leader>nt :NERDTreeFind<CR>
+
+" syntastic 配置
+let g:syntastic_check_on_open=1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_wq = 0
+let syntastic_loc_list_height = 5
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+autocmd WinEnter * if &buftype ==#'quickfix' && winnr('$') == 1 | quit |endif
+autocmd WinLeave * lclose
+
+" Ctrlp 和 Ctrlp-funky(,fu)
+if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
+    let g:ctrlp_working_path_mode = 'ra'
+    nnoremap <silent> <D-t> :CtrlP<CR>
+    nnoremap <silent> <D-r> :CtrlPMRU<CR>
+    let g:ctrlp_custom_ignore = {
+                \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+                \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+
+    if executable('ag')
+        let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
+    elseif executable('ack-grep')
+        let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
+    elseif executable('ack')
+        let s:ctrlp_fallback = 'ack %s --nocolor -f'
+        " On Windows use "dir" as fallback command.
+    else
+        let s:ctrlp_fallback = 'find %s -type f'
+    endif
+    if exists("g:ctrlp_user_command")
+        unlet g:ctrlp_user_command
+    endif
+    let g:ctrlp_user_command = {
+                \ 'types': {
+                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                \ },
+                \ 'fallback': s:ctrlp_fallback
+                \ }
+
+    if isdirectory(expand("~/.vim/bundle/ctrlp-funky/"))
+        " CtrlP extensions
+        let g:ctrlp_extensions = ['funky']
+        "funky
+        nnoremap <Leader>fu :CtrlPFunky<Cr>
+    endif
+endif
+
+let g:indentLine_char = '┊'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Set font according to system
+" set gfn=Monospace\ 10
+
+" Turn backup off, since most stuff is in SVN, git anyway...
+"set swapfile
+
+"Persistent undo
+try
+    if MySys() == "windows"
+      set undodir=C:\Windows\Temp
+    else
+      set undodir=~/.vim_runtime/undodir
+    endif
+catch
+endtry
+
+func! CurrentFileDir(cmd)
+    return a:cmd . " " . expand("%:p:h") . "/"
+endfunc
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Moving around, tabs and buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Specify the behavior when switching between buffers
+try
+  set switchbuf=usetab
+"  set stal=2           //shang mian xian shi
+catch
+endtry
+
+set guitablabel=%t
+
+""""""""""""""""""""""""""""""
+" => bufExplorer plugin
+""""""""""""""""""""""""""""""
+let g:bufExplorerDefaultHelp=0
+let g:bufExplorerShowRelativePath=1
+map <leader>o :BufExplorer<cr>
+let g:bufExplorerSortBy = "name"
+
+map <leader>u :TMiniBufExplorer<cr>
+
+""""""""""""""""""""""""""""""
+" => Command-T
+""""""""""""""""""""""""""""""
+let g:CommandTMaxHeight = 15
+noremap <leader>j :CommandT<cr>
+noremap <leader>y :CommandTFlush<cr>
+
+au BufRead,BufNewFile ~/buffer iab <buffer> xh1 ===========================================
+
+if &term=="xterm"
+set t_Sb=^[[4%dm
+set t_Sf=^[[3%dm
+endif
+let g:neocomplcache_enable_at_startup = 1
+
+"golang
+" Processing... % (ctrl+c to stop)
+let g:fencview_autodetect=0
+autocmd BufNewFile * normal G
+:autocmd BufRead,BufNewFile *.dot map <F5> :w<CR>:!dot -Tjpg -o %<.jpg % && eog %<.jpg  <CR><CR> && exec "redr!"
+
+" let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+" let g:ctrlp_custom_ignore = '\v\.(exe|so|dll)$'
+" let g:ctrlp_extensions = ['funky']
+
+" 根据给定方向搜索当前光标下的单词，结合下面两个绑定使用
+" execute "normal ?" . l:pattern . "<cr>"
+" execute "normal /" . l:pattern . "<cr>"
+
+" 缩写
+iab idate <c-r>=strftime("%Y-%m-%d")<CR>
+iab itime <c-r>=strftime("%H:%M")<CR>
+iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+
+" 插件窗口的宽度，如TagList,NERD_tree等，自己设置
+let s:PlugWinSize = 30
+
+" ShowFunc.vim  <-------- 暂时没有使用
+" F2打开ShowFunc TagList窗口，显示C/C++函数原型
+" map <F2> <Plug>ShowFunc
+" map! <F2> <Plug>ShowFunc
+
+" Man.vim
+source $VIMRUNTIME/ftplugin/man.vim
+
+" unkown---------------------------------
+if 0
+" Smart mappings on the command line
+cno $h e ~/
+cno $d e ~/Desktop/
+cno $j e ./
+cno $c e <C-\>eCurrentFileDir("e")<cr>
+" $q is super useful when browsing on the command line
+cno $q <C-\>eDeleteTillSlash()<cr>
+try
+    lang en_US
+catch
+endtry
+
+function! CmdLine(str)
+    exe "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction
+""""""""""""""""""""""""""""""
+" => Minibuffer plugin
+""""""""""""""""""""""""""""""
+"let g:miniBufExplUseSingleClick = 1
+"let g:miniBufExplVSplit = 25
+"let g:miniBufExplSplitBelow=1
+
+
+autocmd BufRead,BufNew :call UMiniBufExplorer
+map <leader>u :TMiniBufExplorer<cr>:TMiniBufExplorer<cr>
+nmap <script> <silent> <S-F7> :BufExplorer<CR>
+
+nmap <S-C> :stj <C-R>=expand("<cword>")<CR><CR>
+
+
+"然并卵
+" VimGDB.vim
+if has("gdb")
+	set asm=0
+	let g:vimgdb_debug_file=""
+	run macros/gdb_mappings.vim
+endif
+
+":inoremap ) <c-r>=ClosePair(')')<CR>
+":inoremap } <c-r>=ClosePair('}')<CR>
+":inoremap ] <c-r>=ClosePair(']')<CR>
+":inoremap > <c-r>=ClosePair('>')<CR>
+function ClosePair(char)
+if getline('.')[col('.') - 1] == a:char
+return "\<Right>"
+else
+return a:char
+endif
+endf
+":inoremap ( ()<ESC>i
+":inoremap { {}<ESC>i
+":inoremap [ []<ESC>i
+":inoremap < <><ESC>i
+"inoremap $t <><esc>i
+":inoremap { {<CR>}<ESC>O
+":inoremap " ""<ESC>i
+":inoremap ' ''<ESC>i
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Editing mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Remap VIM 0
+"map 0 ^
+"nmap <F2> :set mouse=i<cr>
+"nmap <F3> :set mouse=a<cr>
+highlight WhitespaceEOL ctermbg=red guibg=red
+match WhitespaceEOL /\s\+$/
+"Quickly open a buffer for scripbble
+"map <leader>q :e ~/buffer<cr>
+" nmap <leader>fd :se fileformat=dos<CR>
+" nmap <leader>fu :se fileformat=unix<CR>
+
+" ------------------------------------------------
+
+
+" 特殊文件打开
+autocmd BufNewFile,BufRead *.py,*.pyw set filetype=python
+autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
+autocmd FileType haskell setlocal expandtab shiftwidth=2 softtabstop=2
+autocmd BufNewFile,BufRead *.coffee set filetype=coffee
+autocmd FileType haskell setlocal commentstring=--\ %s
+autocmd FileType haskell setlocal nospell
+
+"一些不错的映射转换语法（如果在一个文件中混合了不同语言时有用）
+nnoremap <leader>1 :set filetype=xhtml<CR>
+nnoremap <leader>2 :set filetype=css<CR>
+nnoremap <leader>3 :set filetype=javascript<CR>
+nnoremap <leader>4 :set filetype=php<CR>
+"set filetype=unix
+
+" 设置字符集编码，默认使用utf8
+" if (g:isWin)
+"     let &termencoding=&encoding " 通常win下的encoding为cp936
+"     set fileencodings=utf8,cp936,ucs-bom,latin1
+" else
+"     set fileencodings=utf8,gb2312,gb18030,ucs-bom,latin1
+" endif
+"
+" if !(g:iswindows==1)
+"     autocmd BufNewFile,BufRead *.c
+"                 \ map <F9> <Esc><Esc>:!gcc -g -Wall -lm -o %< % <CR>
+"     autocmd BufNewFile,BufRead *.c
+"                 \ map <S-F9> <Esc><Esc>:!gcc -O3 -o %< % <CR>
+"
+"     autocmd BufNewFile,BufRead *.cc,*.cpp,*.c++,*.cxx,*.CC
+"                 \ map <F9> <Esc><Esc>:!g++ -g -Wall -o %< % <CR>
+"     autocmd BufNewFile,BufRead *.cc,*.cpp,*.c++,*.cxx,*.CC
+"                 \ map <S-F9> <Esc><Esc>:!g++ -O3 -o %< % <CR>
+"
+"     autocmd BufNewFile,BufRead *.sh
+"                 \ map <F9> <Esc><Esc>:!./% <CR>
+"
+"     autocmd BufNewFile,BufRead *.py
+"                 \ map <F9> <Esc><Esc>:!python -u % <CR>
+"
+"     map <C-F9> <Esc><Esc>:!./%<<CR>
+"     map <C-F8> <Esc><Esc>:!gdb ./%<<CR>
+"     map <C-F5> :make<CR>
+" endif
+"
+"if has("gui_running")
+"  set background=dark
+"  set nonu
+"endif
+
+"rkdown to HTML
+nmap md :!~/.vim/markdown.pl % > %.html <CR><CR>
+nmap fi :!firefox %.html & <CR><CR>
+
+"syntastic相关
+" execute pathogen#infect()
+let g:syntastic_python_checkers=['pylint']
+let g:syntastic_php_checkers=['php', 'phpcs', 'phpmd']
+endif
