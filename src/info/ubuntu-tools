@@ -11,6 +11,7 @@ getmail4
 dia
 beep
 music: cmus
+xdotool
 
 *-----------*
 wine

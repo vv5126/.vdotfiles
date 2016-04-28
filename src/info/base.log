@@ -1,5 +1,5 @@
 1.auto-startup: gnome-session-properties
-vlogin
+vpipedaemon
 gnome-panel
 xmodmap /home/user/.Xmodmap
 

@@ -4,7 +4,7 @@ file=/tmp/v.boot.on
 
 if [ ! -f "$file" ]; then
     touch "$file"
-    nohup ~/.bin/local/vnotify > /dev/null &
+    nohup ~/.bin/local/vpipedaemon > /dev/null &
 else
     sleep 1
 fi

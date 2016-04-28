@@ -125,6 +125,7 @@ set hlsearch                " 搜索时高亮显示被找到的文本
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 文本格式和排版
 set formatoptions=tcrqn "控制 Vim 如何对文本进行排版
+set formatoptions+=mB
 "set formatoptions=qrnl
 set fileformats=unix,dos,mac " 自动识别UNIX格式和MS-DOS格式     参与自动检测的 'fileformat' 的格式
 set fileformat=unix     "文件输入输出使用的格式
@@ -278,7 +279,7 @@ else
 "---------------------------------------------------
 
 "和snipmate 冲突
-if 1
+if 0
  Bundle 'Valloric/YouCompleteMe'
 
 "首先要保证有ycm_client_support.so、ycm_core.so、libclang.so 这三个库.
@@ -356,6 +357,7 @@ endif
 " u 打开上层目录                 m 显示文件系统菜单（添加、删除、移动操作）
 " r 递归刷新当前目录             R 递归刷新当前根目录
  Bundle 'The-NERD-tree'
+nmap <leader>nt :NERDTreeFind<CR>
  nmap <leader>nt :NERDTree<cr>:set rnu<cr>
 "nmap  <F3> :NERDTreeToggle<cr>
 "imap <F3> <ESC>:NERDTreeToggle<CR>
@@ -376,6 +378,7 @@ endif
 
 "---------------------------------------------------
 
+if 0
 "对NERD_commenter的设置
 " 功能强大的代码注释工具,用来注释或者取消注释,支持很多语言,可以对文本块操作,最常用到的快捷键是\c<space>
 " plugin - NERD_commenter.vim   注释代码用的，
@@ -390,6 +393,13 @@ endif
  let NERDShutUp=1
 " 支持单行和多行的选择，//格式
  map <C-h> ,c<space>
+" NERD_commenter.vim
+" Toggle单行注释/“性感”注释/注释到行尾/取消注释
+map <leader>cc ,c<space>
+map <leader>cs ,cs
+map <leader>c$ ,c$
+map <leader>cu ,cu
+endif
 
 "---------------------------------------------------
 
@@ -541,7 +551,6 @@ endif
  nnoremap <silent> <C-g> :RgrepAdd<CR><CR><CR><CR>
  set nocp
  set completeopt=menu "去掉提示窗口"
- filetype plugin on
  let OmniCpp_DefaultNamespaces = ["std"] "下面的设置用于当用户预先声明namespace时也能自动补全代码（如使用using std::string）
  let OmniCpp_NamespaceSearch = 1
  let OmniCpp_GlobalScopeSearch = 1
@@ -645,6 +654,26 @@ let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排�
 "let g:LookupFile_TagExpr ='"/home/ganquan/linux-2.6.34-rc4/filenametags"'
 "endif
 
+" LookupFile setting
+function! LookupFile_IgnoreCaseFunc(pattern)
+    let _tags = &tags
+    try
+        let &tags = eval(g:LookupFile_TagExpr)
+        let newpattern = '\c' . a:pattern
+        let tags = taglist(newpattern)
+    catch
+        echohl ErrorMsg | echo "Exception: " . v:exception | echohl NONE
+        return ""
+    finally
+        let &tags = _tags
+    endtry
+
+    " Show the matches for what is typed so far.
+    let files = map(tags, 'v:val["filename"]')
+    return files
+endfunction
+let g:LookupFile_LookupFunc = 'LookupFile_IgnoreCaseFunc'
+
 "---------------------------------------------------
 "智能补全
  Bundle 'supertab'
@@ -696,6 +725,11 @@ endif
 " \bv 左右方式查看   \bs 上下方式查看
 Bundle 'jlanzarotta/bufexplorer'
 " Bundle 'bufexplorer.zip'
+let g:bufExplorerDefaultHelp=0
+let g:bufExplorerShowRelativePath=1
+let g:bufExplorerSortBy = "name"
+map <leader>o :BufExplorer<cr>
+nmap <script> <silent> <S-F7> :BufExplorer<CR>
 
 
 "---------------------------------------------------
@@ -1135,6 +1169,11 @@ nmap <leader>ff :MRU<CR>
 
 " 语法检查 推荐：****
 Bundle 'scrooloose/syntastic'
+" syntastic 配置
+let g:syntastic_check_on_open=1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_wq = 0
+let syntastic_loc_list_height = 5
 
 "---------------------------------------------------
 
@@ -1143,12 +1182,62 @@ Bundle 'scrooloose/syntastic'
 " Bundle "kien/ctrlp.vim"
 " 函数模糊匹配查找(,fu) 推荐：****
 " Bundle 'tacahiroy/ctrlp-funky'
+" nnoremap <Leader>fu :CtrlPFunky<Cr>
+" nnoremap <C-n> :CtrlPFunky<Cr>
+" let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+" let g:ctrlp_custom_ignore = '\v\.(exe|so|dll)$'
+" let g:ctrlp_extensions = ['funky']
+" Ctrlp 和 Ctrlp-funky(,fu)
+if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
+    let g:ctrlp_working_path_mode = 'ra'
+    nnoremap <silent> <D-t> :CtrlP<CR>
+    nnoremap <silent> <D-r> :CtrlPMRU<CR>
+    let g:ctrlp_custom_ignore = {
+                \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+                \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+
+    if executable('ag')
+        let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
+    elseif executable('ack-grep')
+        let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
+    elseif executable('ack')
+        let s:ctrlp_fallback = 'ack %s --nocolor -f'
+        " On Windows use "dir" as fallback command.
+    else
+        let s:ctrlp_fallback = 'find %s -type f'
+    endif
+    if exists("g:ctrlp_user_command")
+        unlet g:ctrlp_user_command
+    endif
+    let g:ctrlp_user_command = {
+                \ 'types': {
+                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                \ },
+                \ 'fallback': s:ctrlp_fallback
+                \ }
+
+    if isdirectory(expand("~/.vim/bundle/ctrlp-funky/"))
+        " CtrlP extensions
+        let g:ctrlp_extensions = ['funky']
+        "funky
+        nnoremap <Leader>fu :CtrlPFunky<Cr>
+    endif
+endif
 " 文件索引树 推荐：*****
 " Bundle "scrooloose/nerdtree"
 " 自动注释 推荐：*****
 " Bundle 'scrooloose/nerdcommenter'
 " 配色主题 推荐：****
-" Bundle "altercation/vim-colors-solarized"
+Bundle "altercation/vim-colors-solarized"
+" 设置主题,UI
+" solarized 主题
+if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+	let g:solarized_termtrans=1
+	let g:solarized_contrast="normal"
+	let g:solarized_visibility="normal"
+	color solarized             " Load a colorscheme
+endif
 " 缩进引导线 推荐：****
 " Bundle "nathanaelkane/vim-indent-guides"
 " 文本同级文字选取，和文本处理 推荐：****
@@ -1188,7 +1277,6 @@ Bundle 'tpope/vim-git'
 " Bundle 'synmark.vim'
 " Bundle 'SQLComplete.vim'
 " Bundle 'Vim-Script-Updater'
-" Bundle 'tacahiroy/ctrlp-funky'
 
 "---------------------------------------------------
 
@@ -1850,6 +1938,14 @@ nmap fk :1,$s/^.*\.//g<cr>
 " 清除后面空格
 nmap fk :1,$s/ *$//g<cr>
 " nmap  <F4> :%s/ *$//g<cr>
-if 1
+if 0
     source ~/.vdotfiles/src/vimrc.unuseful
 endif
+
+" 缩写
+iab idate <c-r>=strftime("%Y-%m-%d")<CR>
+iab itime <c-r>=strftime("%H:%M")<CR>
+iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+
+" set rtp+=xxx/vim "自定义vim目录位置
+
