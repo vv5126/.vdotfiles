@@ -6,7 +6,11 @@
 " :noremap! 插入和命令行模式
 " :inoremap 插入模式
 " :cnoremap 命令行模式
-
+" :h option-list "查看set项
+"
+" let 变量名 = 数值
+" g: ——全局变量（在函数中访问全局变量必须使用该前缀，不加前缀的话则认为是函数内的局部变量）；
+" s: ——变量名只在当前脚本中有效；
 
 
 "html中的js加注释 取消注释
@@ -216,6 +220,24 @@ endfunc
 " => gui section
 """"""""""""""""""""""""""""""
 " for gvim
+" highlight CursorLine   cterm=NONE ctermbg=black guibg=black
+" highlight CursorColumn   cterm=NONE ctermbg=black guibg=black
+"设置隐藏gvim的菜单和工具栏 F2切换
+"  set guioptions-=m
+"  set guioptions-=T
+"  map <silent> <F2> :if &guioptions =~# 'T' <Bar>
+"         \set guioptions-=T <Bar>
+"         \set guioptions-=m <bar>
+"     \else <Bar>
+"         \set guioptions+=T <Bar>
+"         \set guioptions+=m <Bar>
+"     \endif<CR>
+"GUI界面里的字体，默认有抗锯齿
+" set guifont=Inconsolata:h12
+" set guifont=Courier_New:h10:cANSI   " 设置字体
+" set guifont=YaHei\ Consolas\ Hybrid\ 11.5
+" highlight StatusLine guifg=SlateBlue guibg=Yellow
+" highlight StatusLineNC guifg=Gray guibg=White
 set guitablabel=%t
 set go=                     " 不要图形按钮
 set langmenu=zh_CN.UTF-8    "菜单使用的语言

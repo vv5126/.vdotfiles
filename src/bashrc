@@ -119,6 +119,7 @@ alias sl='ls'
 alias du='du -h -d 1'
 alias emacs='emacs -nw'
 alias grep='grep --color -irn --exclude-dir=".git"'
+alias vdiff='vgitdiff ~/.vdotfiles'
 #LD_LIBRARY_PATH=$HOME/project
 #export LD_LIBRARY_PATH
 

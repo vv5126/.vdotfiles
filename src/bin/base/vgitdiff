@@ -1,0 +1,56 @@
+#!/bin/bash
+
+function gitfile_diff(){
+
+tmp_frist_diff=/tmp/vdiff.tmp
+tmp_add=/tmp/git_add
+tmp_rm=/tmp/git_rm
+out=git.diff
+
+[ -s "$tmp_frist_diff" ] && rm $tmp_frist_diff
+[ -f "$tmp_add" ] && rm $tmp_add
+[ -f "$tmp_rm" ] && rm $tmp_rm
+[ -f "$out" ] && rm $out
+
+cd $1
+git diff > $tmp_frist_diff
+cd -
+
+while read line; do
+    [ "${line:0:3}" == "---" -o "${line:0:3}" == "+++" ] && continue
+        [ "${line:0:1}" == "+" ] && echo ${line:1} >> $tmp_add
+        [ "${line:0:1}" == "-" ] && echo ${line:1} >> $tmp_rm
+done < $tmp_frist_diff
+
+while read line_src; do
+        # echo line_src = $line_src
+        got=0
+        while read line_dest; do
+            if [ "$line_dest" == "$line_src" ]; then
+                got=1
+                break
+            fi
+        done < $tmp_rm
+        if [ $got -eq 0 ]; then
+            echo "+ $line_src" >> $out
+        fi
+done < $tmp_add
+
+while read line_src; do
+        # echo line_src = $line_src
+        got=0
+        while read line_dest; do
+            if [ "$line_dest" == "$line_src" ]; then
+                got=1
+                break
+            fi
+        done < $tmp_add
+        if [ $got -eq 0 ]; then
+            echo "- $line_src" >> $out
+        fi
+done < $tmp_rm
+
+}
+
+dir="$1"
+[ -d "$dir" ] && gitfile_diff "$dir"
