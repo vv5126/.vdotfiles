@@ -30,6 +30,9 @@ dot_templat=(
 .gnome2_private
 -----------------------------
 # 确定忽略 #
+.AndroidStudio1.2
+.AndroidStudioPreview2.1
+.gradle
 .screenrc
 .sdcv_history
 .PyCharm40

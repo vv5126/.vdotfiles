@@ -29,6 +29,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
     alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
     alias gbsa='gbs -v build -A mipsel'
+    alias vdiff='vgitdiff ~/.vdotfiles'
     complete -W "push bak baklist cover" gt
     complete -W "*.c rdy cfg tag tagup bak -h" mk
     complete -W "get_status" rp
@@ -36,6 +37,8 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     # export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
     export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
     export ANDROID_JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
+    export VGLD_CRACK_DIR=/data1/home/wgao/tools/bbb
+    export CROSS_COMPILE=mips64el-linux-android-
 }
 
 # 4.10 #
@@ -61,6 +64,8 @@ export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
 }
 
+export PYTHON_LIBRARIES="/usr/lib/python2.7"
+export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"
 
 
 rm .goutputstream* >/dev/null 2>&1

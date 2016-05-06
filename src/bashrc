@@ -113,21 +113,4 @@ if ! shopt -oq posix; then
   fi
 fi
 
-alias ll='ls -AlFh --color'
-alias cp='scp'
-alias sl='ls'
-alias du='du -h -d 1'
-alias emacs='emacs -nw'
-alias grep='grep --color -irn --exclude-dir=".git"'
-alias vdiff='vgitdiff ~/.vdotfiles'
-#LD_LIBRARY_PATH=$HOME/project
-#export LD_LIBRARY_PATH
-
-export  LC_ALL=en_US.UTF-8
-
-export CROSS_COMPILE=mips64el-linux-android-
-export LANG=en_US.utf8
-
 source $HOME/.bin/base/batchExport $HOME/.bin/base/base.conf
-
-# clear
