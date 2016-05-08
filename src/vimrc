@@ -1,21 +1,16 @@
-"必须的设置：
+"必须设置：
 "1+n
 
-"关闭文件类型侦测
- filetype off
-"根据侦测到的不同类型加载对应的插件
- filetype plugin on
-"为特定文件类型载入相关缩进文件
- filetype indent on
-" 开启语法高亮功能
- syntax enable
-" 允许用指定语法高亮配色方案替换默认方案
- syntax on
-" 关闭兼容模式, 不要兼容vi，建议设置，否则会有很多不兼容的问题
- set nocompatible
+ filetype off                       " 关闭文件类型侦测
+ filetype plugin on                 " 根据侦测到的不同类型加载对应的插件
+ filetype indent on                 " 为特定文件类型载入相关缩进文件
+ syntax enable                      " 开启语法高亮功能
+ syntax on                          " 允许用指定语法高亮配色方案替换默认方案
+ set nocompatible                   " 关闭兼容模式, 不要兼容vi，建议设置，否则会有很多不兼容的问题
 
-
-"绝对设置
+"绝对设置:
+ set timeoutlen=500                 " 毫秒计的等待键码或者映射的键序列完成的时间
+ set selection=exclusive            " 对选择区操作不包含光标所在字符
  set lazyredraw                     " 执行宏时不重画
  set splitright                     " 用vsplit新建窗口，让新的放右边
  set splitbelow                     " 用split新建窗口，让新的放下面
@@ -37,10 +32,6 @@
  set fillchars=vert:\ ,stl:\        " 在被分割的窗口间显示空白，便于阅读,stlnc:\(加了这个wm分割兰有\\\\\\\\\\\\\)
  set cmdheight=1                    " 命令行（在状态行下）的高度，默认为1
  set hidden                         " 允许在有未保存的修改时切换缓冲区，此时的修改由 vim 负责保存
-"去除左右两边的滚动条
- set go-=r
- set go-=L
-" No sound on errors
  set noeb                           " 去掉输入错误的提示声音
  set noerrorbells                   " 关闭错误信息响铃
  set novisualbell                   " 关闭使用可视响铃代替呼叫
@@ -51,62 +42,80 @@
  set confirm                        " 退出、写入等有未保存的改动或文件只读时询问
  set ignorecase                     " 搜索时忽略大小写
  set smartcase                      " 设置大小写敏感和聪明感知(小写全搜，大写完全匹配)
+"set shell=/bin/bash
 
-"leader键的功能设置
+"=====================================================
+" leader键的功能设置
+"=====================================================
 "let mapleader        = ";"
 "let maplocalleader   = ";"
  let g:mapleader      = ";"
  let g:maplocalleader = ";"
 
+"=====================================================
+" 设置状态行
+"=====================================================
+" 显示：路径，文件名 总行数 编码 文件格式
+ set statusline=[file:\ %f][dir:\ %{CurDir()}]%=[FORMAT=%{&ff}][TYPE=%Y][%{&encoding}][Line:%l/%L,Column:%c][%p%%]
+"set statusline=\ %r%{Tlist_Get_Tagname_By_Line()}%h\ %w\ %F%m%r%h\ %w\ %w\ %r%h
+"set statusline=\ %{HasPaste()}%<%F[%1*%M%*%n%R%H]
+"set statusline=%F%m%r%h%w\ \ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
+"set statusline=[%n]\ \ ascii=%b,hex=%b%{((&fenc==\"\")?\"\":\"\ \|\ \".&fenc)}\ \|\ %{$USER}\ @\ %{hostname()}\ 
  highlight StatusLine cterm=bold ctermfg=green ctermbg=black
 
-"good map
+"绝对设置 end
+
+"=====================================================
+" MAP
+"=====================================================
+"宏录制相关
+
+"光标所在词搜索
+ nnoremap <leader>f *
+ nnoremap <leader>fa :call SET_ISK()<cr>
+
+"使用<leader>空格来取消搜索高亮
+ nnoremap <silent> <leader><space> :noh<cr>
+
 "esc的映射
  imap jj <esc>
+
 "屏蔽掉讨厌的F1键
  inoremap <F1> <ESC>
  nnoremap <F1> <ESC>
  vnoremap <F1> <ESC>
+
 "去空行
  nnoremap <leader>cb :g/^\s*$/d<cr>
+
 " 没sudo却想保存
  cmap w!! w !sudo tee % >/dev/null
+
  imap <C-a> <HOME>
  imap <C-e> <END>
- nmap -- 5<C-w>-
- nmap ++ 5<C-w>+
- nmap >> 5<C-w>>
- nmap << 5<C-w><
+
 "比较文件
 "nnoremap <C-F2> :vert diffsplit
-"带有如下符号的单词不要被换行分割
-"set iskeyword+=_,$,@,%,#,-
-"set isk+=-                         "将-连接符也设置为单词
-"set iskeyword-=.  " 让'.' 作为单词分割符
-"set iskeyword-=#  " 让'#' 作为单词分割符
-"set iskeyword-=-  " 让'-' 作为单词分割符
+
+
 "Space to command mode.
  nnoremap <space> :
  vnoremap <space> :
+
 "设置鼠标粘贴模式
  nnoremap <leader>b :call SET_MOUSE()<cr>
+
 "插入模式下移动
  inoremap <c-h> <left>
  inoremap <c-j> <down>
  inoremap <c-k> <up>
  inoremap <c-l> <right>
-" Switching between buffers.
- nnoremap <C-h> <C-W>h
- nnoremap <C-j> <C-W>j
- nnoremap <C-k> <C-W>k
- nnoremap <C-l> <C-W>l
-"inoremap <C-h> <Esc><C-W>h
-"inoremap <C-j> <Esc><C-W>j
-"inoremap <C-k> <Esc><C-W>k
-"inoremap <C-l> <Esc><C-W>l
-"set shell=/bin/bash
+
  vmap <C-S-P> dO#endif<Esc>PO#if 0<Esc>
 
+"=====================================================
+" 替换增强
+"=====================================================
 " 不确认、非整词
  nnoremap <Leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
 " 不确认、整词
@@ -116,6 +125,7 @@
 " 确认、整词
  nnoremap <Leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
  nnoremap <Leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+"=====================================================
 
 "=====================================================
 " 切换目录
@@ -130,7 +140,9 @@ function! GET_GIT_DIR()
     echon 'git dir'
 endfunction
 
+"=====================================================
 " 黏贴板
+"=====================================================
 if has('clipboard')
     if has('unnamedplus')
         set clipboard=unnamedplus
@@ -144,41 +156,50 @@ set clipboard+=unnamed
 
 
 
-"绝对设置 end
 
-" 缩写
+"=====================================================
+" 常用缩写
+"=====================================================
+ iab zhushi <c-r>='"====================================================='<cr><cr>" <cr>"=====================================================
 "iab idate <c-r>=strftime("%Y-%m-%d")<CR>
 "iab itime <c-r>=strftime("%H:%M")<CR>
 "iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
- iab zhushi <c-r>='"====================================================='<cr><cr>" <cr>"=====================================================
-
-" 设置在状态行显示的信息
-" 显示：路径，文件名 总行数 编码 文件格式
- set statusline=[file:\ %f][dir:\ %{CurDir()}]%=[FORMAT=%{&ff}][TYPE=%Y][%{&encoding}][Line:%l/%L,Column:%c][%p%%]
-"set statusline=\ %r%{Tlist_Get_Tagname_By_Line()}%h\ %w\ %F%m%r%h\ %w\ %w\ %r%h
-"set statusline=\ %{HasPaste()}%<%F[%1*%M%*%n%R%H]
-"set statusline=%F%m%r%h%w\ \ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
-"set statusline=[%n]\ \ ascii=%b,hex=%b%{((&fenc==\"\")?\"\":\"\ \|\ \".&fenc)}\ \|\ %{$USER}\ @\ %{hostname()}\ 
 
 
- set virtualedit=onemore             " 光标可以移到当行最后一个字符之后
- set wildmode=list:longest,full " 自动补全时，匹配最长子串，列出文件
- set nowb
-" 不要生成swap文件，当buffer被丢弃的时候隐藏它
- set noswapfile                      " 关闭交换文件
+ set virtualedit=onemore            " 光标可以移到当行最后一个字符之后
+ set wildmode=list:longest,full     " 自动补全时，匹配最长子串，列出文件
+
+ set noswapfile                     " 关闭交换文件
 "set nobackup                       " 覆盖文件时不备份
- set backupcopy=yes                  " 设置备份时的行为为覆盖
- set nowritebackup                   " 不写入备份文件
+ set backupcopy=yes                 " 设置备份时的行为为覆盖
+ set nowritebackup                  " 不写入备份文件
 
 "=====================================================
-" 关于buffer的快捷键
+" buffer 设置
 "=====================================================
+" buffer缩放
+ nmap -- 5<C-w>-
+ nmap ++ 5<C-w>+
+ nmap >> 5<C-w>>
+ nmap << 5<C-w><
+
+" Switching between buffers.
+ nnoremap <C-h> <C-W>h
+ nnoremap <C-j> <C-W>j
+ nnoremap <C-k> <C-W>k
+ nnoremap <C-l> <C-W>l
+"inoremap <C-h> <Esc><C-W>h
+"inoremap <C-j> <Esc><C-W>j
+"inoremap <C-k> <Esc><C-W>k
+"inoremap <C-l> <Esc><C-W>l
 
 " 只显示一个buffer
 "nmap <leader>zz <C-w>o
 
  nnoremap <C-RETURN> :bnext<CR>
  nnoremap <C-S-RETURN> :bprevious<CR>
+
+"=====================================================
 
 "=====================================================
 " table 设置
@@ -189,7 +210,7 @@ set clipboard+=unnamed
 "nnoremap <leader>t gt
 "nnoremap <leader>r gT
 
-"新建标签
+" 新建标签
 "map <M-F2> :tabnew<CR>
 "map <M-F3> :tabnew .<CR>
 "map td :tabnew .<cr>
@@ -245,11 +266,12 @@ endif
 let g:vmode_c=0
 
 
+ set colorcolumn=37                 " 彩色显示一列，用以规范代码
 
-if vmode_c == 1
- set nojoinspaces                    " 用J合并两行用一个空格隔开
+if g:vmode_c == 1
+ set nojoinspaces                   " 用J合并两行用一个空格隔开
  set tags=tags;                     " 查找并启用tag
-"set colorcolumn=37                 " 彩色显示一列，用以规范代码
+ set colorcolumn=37                 " 彩色显示一列，用以规范代码
 " 第80列往后加下划线
 "au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
 "清除末尾空格
@@ -261,7 +283,7 @@ if vmode_c == 1
  set foldenable                     " 允许折叠
  setlocal foldlevel=1               " 设置折叠层数为
  set foldclose=all                  " 设置为自动关闭折叠
- set foldmethod=syntax               " 用语法高亮来定义折叠
+ set foldmethod=syntax              " 用语法高亮来定义折叠
 "set foldmethod=manual              " 手动折叠
 "set foldmethod=marker
 " 基于缩进或语法进行代码折叠
@@ -278,11 +300,11 @@ if vmode_c == 1
 "不常用
 "=======================================================
 
-endif "vmode_c"
+endif "g:vmode_c"
 
  set viminfo='10,\"100,:20,%,n~/.viminfo
  set viewoptions=cursor,folds,slash,unix " viminfo 记录的内容
- set viminfo+=! " 保存全局变量
+ set viminfo+=!                     " 保存全局变量
 if has("autocmd")
     augroup vimrcEx
         "清除所有自动命令
@@ -291,7 +313,6 @@ if has("autocmd")
         autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
         " autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")| exe("norm '\"")|else|exe "norm $"|endif|endif
     augroup END
-else
 endif " has("autocmd")
 
 "=====================================================
@@ -304,7 +325,9 @@ endif " has("autocmd")
  let g:solarized_contrast="high"
  let g:solarized_visibility="high"
 
+"=====================================================
 "tab键的设定
+"=====================================================
  set smarttab                       " 在行和段开始处使用制表符
  set tabstop=4                      " 设置编辑时制表符占用空格数
  set shiftwidth=4                   " 设置格式化时制表符占用空格数
@@ -314,68 +337,56 @@ endif " has("autocmd")
 "autocmd FileType c,cpp set expandtab
 "指定文件类型,这样.mak和Makefile文件将都会使用真实tab
 " autocmd FileType Makefile set noexpandtab
+"=====================================================
 
 "highlight ColorColumn ctermbg=black guibg=black
 "highlight LineNr ctermbg=black
 "显示光标当前位置
  set backspace=indent,eol,start     " 这指明在插入模式下在哪里允许 <BS> 删除光标前面的字符。退格键分别可删除缩进，上一行结束，insert之前的字
 
-"set gdefault                       " 行内替换
-
-"以下设置用来是vim正确显示过长的行
- set textwidth=80 "插入文本的最大宽度
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"set selectmode=mouse,key
+"set wildignore=*.bak,*.o,*.e,*~
+"set wildignore+=*.o,*.obj,.git,*.pyc
+"=====================================================
 " 文本格式和排版
- set formatoptions=tcrqn            "控制 Vim 如何对文本进行排版
+"=====================================================
+ set formatoptions=tcrqn            " 控制 Vim 如何对文本进行排版
  set formatoptions+=mM
  set formatoptions+=mB
 "set formatoptions=qrnl
  set fileformats=unix,dos,mac       " 自动识别UNIX格式和MS-DOS格式     参与自动检测的 'fileformat' 的格式
- set fileformat=unix                "以UNIX的换行符格式保存文件，注意是去掉一个^M
-"set fileformat=dos                 "以dos的换行符格式保存文件, 注意是在行尾变为两个^M
+ set fileformat=unix                " 以UNIX的换行符格式保存文件，注意是去掉一个^M
+"set fileformat=dos                 " 以dos的换行符格式保存文件, 注意是在行尾变为两个^M
  nmap <leader>fd :se fileformat=dos<CR>
  nmap <leader>fu :se fileformat=unix<CR>
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"set modelines=0
-"set selection=exclusive
-"set selection=inclusive
-"set selectmode=mouse,key
-"set tm=500
-"set wildignore=*.bak,*.o,*.e,*~
-"set wildignore+=*.o,*.obj,.git,*.pyc
+"以unix格式显示换行符
+"nmap xsm :e ++ff=unix
+"以dos格式显示换行符
+"nmap xsm :e ++ff=dos
+"=====================================================
 
 "代码补全
 "set completeopt=preview,menu
 "set completeopt=longest,menu
 "set completeopt=longest,menuone
 "set autoindent                     " 继承前一行的缩进方式，特别适用于多行注释
- set autoindent " always set autoindenting on "智能缩进，相应的有cindent，官方说autoindent可以支持各种文件的缩进，但是效果会比只支持C/C++cindent效果会差一点，但笔者并没有看出来
-"set cindent " 使用C样式的缩进
-"set cinoptions=:0   "设置 'cindent' 时如何缩进
-"set smartindent "C 程序智能自动缩进
-"set linespace=0                     " 字符间插入的像素行数目
-"set pastetoggle=<F12>               " 指定F12进入黏贴模式，可以正常复制缩进
+ set autoindent                     " always set autoindenting on "智能缩进，相应的有cindent，官方说autoindent可以支持各种文件的缩进，但是效果会比只支持C/C++cindent效果会差一点，但笔者并没有看出来
+"set cindent                        " 使用C样式的缩进
+"set cinoptions=:0                  " 设置 'cindent' 时如何缩进
+"set smartindent                    " C 程序智能自动缩进
+"set linespace=0                    " 字符间插入的像素行数目
+"set pastetoggle=<F12>              " 指定F12进入黏贴模式，可以正常复制缩进
 "set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " 空格等无效字符显示
 "set listchars=tab:>-,trail:-
 "set mousemodel=extend
 "set mousemodel=popup
 "set report=0
-
-"set gcr=a:block-blinkon0            " 禁止光标闪烁
-"set guioptions-=r
-"set guioptions-=l
-
-"set whichwrap=b,s,h,l,<,>,[,]  " 行尾可右移到下行，行首左移到上行,b：退格，s：空格，hl：左右，<>：n/v模式下的左右，[]：i/r模式下的左右
-"让退格，空格，上下箭头遇到行首行尾时自动移到下一行（包括insert模式）
-"set whichwrap=b,s,<,>,[,]
-" 允许backspace和光标键跨越行边界
-"set whichwrap+=h,l
+"set gcr=a:block-blinkon0           " 禁止光标闪烁
+"set whichwrap=b,s,h,l,<,>,[,]      " 行尾可右移到下行，行首左移到上行,b：退格，s：空格，hl：左右，<>：n/v模式下的左右，[]：i/r模式下的左右
+"set whichwrap=b,s,<,>,[,]          " 让退格，空格，上下箭头遇到行首行尾时自动移到下一行（包括insert模式）
+"set whichwrap+=h,l                 " 允许backspace和光标键跨越行边界
 
 
-
-"使用<leader>空格来取消搜索高亮
- nnoremap <silent> <leader><space> :noh<cr>
 
 "使用tab键来代替%进行匹配跳转
 "nnoremap <tab> %
@@ -390,25 +401,20 @@ endif " has("autocmd")
 "nnoremap <leader>ww <c-w>w
 "搜索替换
 "nmap <leader>s :,s///c
-
 "选中状态下 Ctrl+c 复制
 "vmap <C-c> "+y
-
 "取消粘贴缩进
 "nmap <leader>p :set paste<CR>
 "nmap <leader>pp :set nopaste<CR>
 "map <leader>pp :setlocal paste!<cr>
-
-"nmap <leader>w :w!<cr>
-
- map <leader>e :e! ~/.vimrc<cr>
-"自动载入配置文件不需要重启
-"  autocmd! bufwritepost .vimrc source %
- autocmd! bufwritepost .vimrc source ~/.vimrc
-
 " 映射全选+复制 ctrl+a
 "map <C-A> ggVGY
 "map! <C-A> <Esc>ggVGY
+
+ map <leader>e :e! ~/.vimrc<cr>
+"自动载入配置文件不需要重启
+ autocmd! bufwritepost .vimrc source %
+"autocmd! bufwritepost .vimrc source ~/.vimrc
 
 " Bash like keys for the command line
 "cnoremap <C-A> <Home>
@@ -416,8 +422,6 @@ endif " has("autocmd")
 "cnoremap <C-K> <C-U>
 "cnoremap <C-P> <Up>
 "cnoremap <C-N> <Down>
-
-"nmap cc :color <space>
 
 "F6 for uncomment
 "vmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
@@ -524,7 +528,6 @@ endif
 
 "map! <C-Z> <Esc>zzi
 "map! <C-O> <C-Y>,
-
 "imap <C-k> <C-y>,
 "imap <C-t> <C-q><TAB>
 "打开树状文件目录
@@ -535,21 +538,18 @@ endif
 "nmap <F4> :MarksBrowser<CR>
 "nmap <F2> ,mm
 "nmap <F3> ,mh
-
-"以unix格式显示换行符
-"nmap xsm :e ++ff=unix
-"以dos格式显示换行符
-"nmap xsm :e ++ff=dos
-
 "nmap <C-x> :b
 "nmap <C-r> :ConqueTermVSplit bash <cr>
 "nmap <C-P> :ConqueTermSplit bash <cr>
-"nmap ff :1,$s///g
 "nmap <F2> :set ic<cr>/
 "nmap <S-C> :stj <C-R>=expand("<cword>")<CR><CR>
-
 "imap <C-u> <esc>d0i
 "imap <C-k> <esc>d$i  " 与自动补全中的绑定冲突
+"nmap  <F7> :call RunShell("get tags_dir","tag")<cr>
+"nmap  <F9> :call RunShell("Generate tags", "ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .")<cr>
+"nmap <F11> :call RunShell("Generate filename tags", "~/.vim/shell/genfiletags.sh")<cr>
+" 清除前面数字加. exaple 12.aaa-->aaa 不适合代码！！！
+"nmap ff :1,$s///g
 
 " function! HasPaste()
 "     if &paste
@@ -575,16 +575,12 @@ endif
 "     return "e " . cwd
 " endfunc
 
-"nmap  <F7> :call RunShell("get tags_dir","tag")<cr>
-"nmap  <F9> :call RunShell("Generate tags", "ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .")<cr>
-"nmap <F11> :call RunShell("Generate filename tags", "~/.vim/shell/genfiletags.sh")<cr>
-
-" 清除前面数字加. exaple 12.aaa-->aaa 不适合代码！！！
-
 
 "=====================================================
 " 可能用不到的配置
 "=====================================================
+"nmap cc :color <space>
+"nmap <leader>w :w!<cr>
 "map <F3> :cp<cr>
 "map <F4> :cn<cr>
 "set showcmd " 在 Vim 窗口右下角，标尺的右边显示未完成的命令
@@ -607,6 +603,7 @@ endif
 "func! CurrentFileDir(cmd)
 "    return a:cmd . " " . expand("%:p:h") . "/"
 "endfunc
+" set modelines=0                     " set项的检查数量??
 "=====================================================
 " 暂时没有使用
 " 定义快捷键到行首和行尾
@@ -661,12 +658,12 @@ endif
 "if exists('g:autochdir')
 "    autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 "endif
-autocmd InsertLeave * set nocul    " 用浅色高亮当前行
-autocmd InsertEnter * set cul      " 用浅色高亮当前行
+" autocmd InsertLeave * set nocul    " 用浅色高亮当前行
+" autocmd InsertEnter * set cul      " 用浅色高亮当前行
 "set bufhidden=hide
 "set wildmenu                     " vim 自身命令行模式智能补全
 " 插件窗口的宽度，如TagList,NERD_tree等，自己设置
-let s:PlugWinSize = 30
+" let s:PlugWinSize = 30
 "set switchbuf=usetab
 "set autochdir                     " 自动切换当前目录为当前文件所在的目录
 "let g:autochdir = 1
@@ -731,6 +728,18 @@ endfunction
 
 " set magic "改变搜索模式使用的特殊字符
 
+let g:isk_flag=1
+function! SET_ISK()
+    if g:isk_flag == 1
+        set iskeyword+=.,_,$,@,%,#,-         " 含有此字符皆属于单词
+        let g:isk_flag=0
+        echon 'more keyword'
+    else
+        set iskeyword-=.,_,$,@,%,#,-         " 已此为单词分隔符
+        let g:isk_flag=1
+        echon 'less keyword'
+    endif
+endfunction
 
 "===================================================
 " 插件的设置
