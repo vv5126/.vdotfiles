@@ -24,7 +24,9 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 [ $(uname -n) == 'lqchen-0B' ] && {
     PATH=/data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin:$PATH
     PATH=/data1/home/wgao/tools/toolchains/mips64el-linux-android-4.9/bin:$PATH
+    PATH=/data1/home/wgao/tools/toolchains/mipseltools-gcc412-glibc261/bin:$PATH
     PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
+    PATH=/data1/home/wgao/tools/toolchains/clang+llvm/bin:$PATH
     [ -d "$HOME/.bin" ] && PATH="$HOME/.bin/base:$HOME/.bin/work:$PATH"
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
     alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
@@ -38,7 +40,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
     export ANDROID_JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
     export VGLD_CRACK_DIR=/data1/home/wgao/tools/bbb
-    export CROSS_COMPILE=mips64el-linux-android-
+    # export CROSS_COMPILE=mips64el-linux-android-
 }
 
 # 4.10 #

@@ -1,6 +1,6 @@
 
 alias ll='ls -AlFh --color'
-alias cp='scp'
+#alias cp='scp'
 alias sl='ls'
 alias du='du -h -d 1'
 alias grep='grep --color -irn --exclude-dir=".git"'
@@ -8,3 +8,5 @@ alias grep='grep --color -irn --exclude-dir=".git"'
 export  LC_ALL=en_US.UTF-8
 export LANG=en_US.utf8
 
+export PYTHON_LIBRARIES="/usr/lib/python2.7"
+export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"

@@ -9,9 +9,12 @@ solar
 )
 
 surport_os=(
+android_43
 android_44
 android_51
 android_60
 tizen23
 brillo
+buildroot
+NOS
 )

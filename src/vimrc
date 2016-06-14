@@ -9,6 +9,7 @@
  set nocompatible                   " 关闭兼容模式, 不要兼容vi，建议设置，否则会有很多不兼容的问题
 
 "绝对设置:
+ set wildmode=list:longest,full     " 自动补全时，匹配最长子串，列出文件
  set timeoutlen=500                 " 毫秒计的等待键码或者映射的键序列完成的时间
  set selection=exclusive            " 对选择区操作不包含光标所在字符
  set lazyredraw                     " 执行宏时不重画
@@ -17,7 +18,7 @@
 "set undofile                       " 无限undo
  set mouse=a                        " 启动鼠标所有模式，但是右键功能不可用, 可以保证鼠标滚屏在当前屏幕内
  set scrolloff=3                    " 光标移动到buffer的顶部和底部时保持的行距离
- set ttyfast
+ set ttyfast                        " 表明使用的是快速终端连接
  set laststatus=2                   " 启动显示状态行(1),总是显示状态行(2)
  set t_Co=256                       " 设置256色显示
  set linebreak                      " 防止折行时打断单词，将整个词进行折行。
@@ -56,12 +57,29 @@
 " 设置状态行
 "=====================================================
 " 显示：路径，文件名 总行数 编码 文件格式
- set statusline=[file:\ %f][dir:\ %{CurDir()}]%=[FORMAT=%{&ff}][TYPE=%Y][%{&encoding}][Line:%l/%L,Column:%c][%p%%]
-"set statusline=\ %r%{Tlist_Get_Tagname_By_Line()}%h\ %w\ %F%m%r%h\ %w\ %w\ %r%h
-"set statusline=\ %{HasPaste()}%<%F[%1*%M%*%n%R%H]
-"set statusline=%F%m%r%h%w\ \ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
-"set statusline=[%n]\ \ ascii=%b,hex=%b%{((&fenc==\"\")?\"\":\"\ \|\ \".&fenc)}\ \|\ %{$USER}\ @\ %{hostname()}\ 
- highlight StatusLine cterm=bold ctermfg=green ctermbg=black
+ highlight StatusLine cterm=bold ctermfg=gray ctermbg=black
+ highlight LineNr ctermfg=gray ctermbg=black                       " 侧边颜色
+ highlight User1 ctermfg=gray
+ highlight User2 ctermfg=green
+ highlight User3 ctermfg=red
+ highlight User4 ctermfg=yellow
+ highlight User5 ctermfg=black
+ highlight User6 ctermfg=blue
+ set statusline=%*\ %n%*[file:\ %2*%t%r%h%w%*]%3*%m%*[dir:\ %<%2*%{CurDir()}%*]%=\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ %4*[%{&ff}][%{&encoding}]%6*%y%*[Line:%2*%l%*/%2*%L%*,Column:%2*%c%*][%2*%p%%%*]
+"set statusline=%{Tlist_Get_Tagname_By_Line()}
+"set statusline=\ %{HasPaste()}[%M%*%R%H]
+"set statusline=ascii=%b,hex=%b%{((&fenc==\"\")?\"\":\"\ \|\ \".&fenc)}
+function! InsertStatuslineColor(mode)
+    if a:mode == 'i'
+        hi User1 ctermfg=gray ctermbg=blue
+    elseif a:mode == 'r'
+    else
+        hi User1 ctermfg=gray ctermbg=black
+    endif
+endfunction
+
+" au InsertEnter * call InsertStatuslineColor('i')
+" au InsertLeave * hi statusline ctermbg=gray ctermfg=white
 
 "绝对设置 end
 
@@ -69,6 +87,23 @@
 " MAP
 "=====================================================
 "宏录制相关
+" q+<register> 开始记录命令, <register> 指用户自己定义的a-z中的一个寄存器
+" q 完成记录，退出记录
+" 执行这个宏可以用命令：         @a
+" 也可以加上执行次数：           10@a 执行10次
+" 当你执行过一次@a之后，你可以用@@来重复执行@a
+" 修改宏
+" 1、找个空白行
+" 2、使用命令"ap会看到寄存器a中的命令宏像文本一样出现在这一行，然后编辑这一行。编编辑结束后回到行首。
+" 3、然后用"ay$将正确内容写到寄存器a中，最后删除这一行即可。
+" 4、当你需要向命令宏寄存器中增加内容时，可以用命令qA来向a寄存器增加内容，之后输入你想增加的内容，再使用q结束。
+" 保存和传递宏
+" 1 先建立一个宏。如上
+" 2 在任意一个文件的空白位置normal状态下，命令"ap 即可以把宏的内容显示出来。比如说我的宏是："ohello th id<80>kb<80>kb<80>kbis is a a<80>kba<80>kbmaco of vim.^["
+" 3 这段内容保存或传递。
+" 4 使用命令：let @a="ohello th id<80>kb<80>kb<80>kbis is a a<80>kba<80>kbmaco of vim.^[" 或者参考修改宏的第三步。
+" 5 其他人用@a命令就可以使用你制作的宏了。
+" ---------------------------------------------------
 
 "光标所在词搜索
  nnoremap <leader>f *
@@ -78,7 +113,7 @@
  nnoremap <silent> <leader><space> :noh<cr>
 
 "esc的映射
- imap jj <esc>
+ imap ff <esc>
 
 "屏蔽掉讨厌的F1键
  inoremap <F1> <ESC>
@@ -95,7 +130,7 @@
  imap <C-e> <END>
 
 "比较文件
-"nnoremap <C-F2> :vert diffsplit
+nnoremap <leader>df :vert diffsplit 
 
 
 "Space to command mode.
@@ -106,12 +141,17 @@
  nnoremap <leader>b :call SET_MOUSE()<cr>
 
 "插入模式下移动
+"  noremap <S-h> <C-left>
+"  noremap <S-j> <pagedown>
+"  noremap <S-k> <pageup>
+"  noremap <S-l> <C-right>
  inoremap <c-h> <left>
  inoremap <c-j> <down>
  inoremap <c-k> <up>
  inoremap <c-l> <right>
 
- vmap <C-S-P> dO#endif<Esc>PO#if 0<Esc>
+ " 快速屏蔽
+ vmap <Leader>jj dO#endif<Esc>PO#if 0<Esc>
 
 "=====================================================
 " 替换增强
@@ -130,8 +170,8 @@
 "=====================================================
 " 切换目录
 "=====================================================
- nmap <client> <leader>q :execute "cd" expand("%:h")<CR>
- map <leader>te :call GET_GIT_DIR()<cr>
+ noremap <leader>1 :execute "cd" expand("%:h")<CR>
+ noremap <leader>2 :call GET_GIT_DIR()<cr>
 
 function! GET_GIT_DIR()
     let l:dir = system("getdir_git_repo")
@@ -167,10 +207,9 @@ set clipboard+=unnamed
 
 
  set virtualedit=onemore            " 光标可以移到当行最后一个字符之后
- set wildmode=list:longest,full     " 自动补全时，匹配最长子串，列出文件
 
  set noswapfile                     " 关闭交换文件
-"set nobackup                       " 覆盖文件时不备份
+ set nobackup                       " 覆盖文件时不备份
  set backupcopy=yes                 " 设置备份时的行为为覆盖
  set nowritebackup                  " 不写入备份文件
 
@@ -192,12 +231,6 @@ set clipboard+=unnamed
 "inoremap <C-j> <Esc><C-W>j
 "inoremap <C-k> <Esc><C-W>k
 "inoremap <C-l> <Esc><C-W>l
-
-" 只显示一个buffer
-"nmap <leader>zz <C-w>o
-
- nnoremap <C-RETURN> :bnext<CR>
- nnoremap <C-S-RETURN> :bprevious<CR>
 
 "=====================================================
 
@@ -263,22 +296,23 @@ endif
 " 常用vim工作模式
 "=====================================================
 " c\c++ 编辑
-let g:vmode_c=0
+let g:vmode_c=1
 
 
- set colorcolumn=37                 " 彩色显示一列，用以规范代码
 
 if g:vmode_c == 1
  set nojoinspaces                   " 用J合并两行用一个空格隔开
  set tags=tags;                     " 查找并启用tag
- set colorcolumn=37                 " 彩色显示一列，用以规范代码
+"  set colorcolumn=37                 " 彩色显示一列，用以规范代码
 " 第80列往后加下划线
 "au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
 "清除末尾空格
  nmap ds :%s/\s\+$//<cr>
 " 屏蔽代码
  vmap <C-\> dO#endif<Esc>PO#if 0<Esc>
-"支持代码折叠
+"=====================================================
+" 支持代码折叠
+"=====================================================
  set foldlevel=3
  set foldenable                     " 允许折叠
  setlocal foldlevel=1               " 设置折叠层数为
@@ -286,14 +320,14 @@ if g:vmode_c == 1
  set foldmethod=syntax              " 用语法高亮来定义折叠
 "set foldmethod=manual              " 手动折叠
 "set foldmethod=marker
-" 基于缩进或语法进行代码折叠
-"set foldmethod=indent
- set nofoldenable                    " 启动 vim 时关闭折叠代码
- set foldlevel=100                   " 启动vim时不要自动折叠代码
- set foldcolumn=1                    " 设置折叠区域的宽度
-": exec 'cd ~/' . fnameescape('/.vim')
+"set foldmethod=indent              " 基于缩进或语法进行代码折叠
+ set nofoldenable                   " 启动 vim 时关闭折叠代码
+ set foldlevel=100                  " 启动vim时不要自动折叠代码
+ set foldcolumn=1                   " 设置折叠区域的宽度
 " 用<F3>键来开关折叠
  nmap <F3> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+"=======================================================
+": exec 'cd ~/' . fnameescape('/.vim')
  nmap  <F4> :!mk<cr>
  nmap  <S-F4> :!mktag &<cr>
 "=======================================================
@@ -302,6 +336,9 @@ if g:vmode_c == 1
 
 endif "g:vmode_c"
 
+"=====================================================
+" 实现打开同一文件时，vim能够自动记住上一次的位置
+"=====================================================
  set viminfo='10,\"100,:20,%,n~/.viminfo
  set viewoptions=cursor,folds,slash,unix " viminfo 记录的内容
  set viminfo+=!                     " 保存全局变量
@@ -309,9 +346,8 @@ if has("autocmd")
     augroup vimrcEx
         "清除所有自动命令
         au!
-" 实现打开同一文件时，vim能够自动记住上一次的位置
         autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
-        " autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")| exe("norm '\"")|else|exe "norm $"|endif|endif
+        " autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | else | exe "normal $" | endif
     augroup END
 endif " has("autocmd")
 
@@ -335,18 +371,15 @@ endif " has("autocmd")
  set expandtab                      " 用空格代替制表符
 "set noexpandtab                    " 不要用空格代替制表符
 "autocmd FileType c,cpp set expandtab
-"指定文件类型,这样.mak和Makefile文件将都会使用真实tab
-" autocmd FileType Makefile set noexpandtab
+"autocmd FileType Makefile set noexpandtab
 "=====================================================
 
-"highlight ColorColumn ctermbg=black guibg=black
-"highlight LineNr ctermbg=black
 "显示光标当前位置
  set backspace=indent,eol,start     " 这指明在插入模式下在哪里允许 <BS> 删除光标前面的字符。退格键分别可删除缩进，上一行结束，insert之前的字
 
 "set selectmode=mouse,key
-"set wildignore=*.bak,*.o,*.e,*~
-"set wildignore+=*.o,*.obj,.git,*.pyc
+ set wildignore+=*.bak,*.o,*.e,*~
+"set wildignore+=*.obj,.git,*.pyc
 "=====================================================
 " 文本格式和排版
 "=====================================================
@@ -357,8 +390,8 @@ endif " has("autocmd")
  set fileformats=unix,dos,mac       " 自动识别UNIX格式和MS-DOS格式     参与自动检测的 'fileformat' 的格式
  set fileformat=unix                " 以UNIX的换行符格式保存文件，注意是去掉一个^M
 "set fileformat=dos                 " 以dos的换行符格式保存文件, 注意是在行尾变为两个^M
- nmap <leader>fd :se fileformat=dos<CR>
- nmap <leader>fu :se fileformat=unix<CR>
+"nmap <leader>fd :set fileformat=dos<CR>
+"nmap <leader>fu :set fileformat=unix<CR>
 "以unix格式显示换行符
 "nmap xsm :e ++ff=unix
 "以dos格式显示换行符
@@ -369,8 +402,7 @@ endif " has("autocmd")
 "set completeopt=preview,menu
 "set completeopt=longest,menu
 "set completeopt=longest,menuone
-"set autoindent                     " 继承前一行的缩进方式，特别适用于多行注释
- set autoindent                     " always set autoindenting on "智能缩进，相应的有cindent，官方说autoindent可以支持各种文件的缩进，但是效果会比只支持C/C++cindent效果会差一点，但笔者并没有看出来
+ set autoindent                     " 智能缩进，继承前一行的缩进方式，特别适用于多行注释, 相应的有cindent，官方说autoindent可以支持各种文件的缩进，但是效果会比只支持C/C++cindent效果会差一点，但笔者并没有看出来
 "set cindent                        " 使用C样式的缩进
 "set cinoptions=:0                  " 设置 'cindent' 时如何缩进
 "set smartindent                    " C 程序智能自动缩进
@@ -385,8 +417,6 @@ endif " has("autocmd")
 "set whichwrap=b,s,h,l,<,>,[,]      " 行尾可右移到下行，行首左移到上行,b：退格，s：空格，hl：左右，<>：n/v模式下的左右，[]：i/r模式下的左右
 "set whichwrap=b,s,<,>,[,]          " 让退格，空格，上下箭头遇到行首行尾时自动移到下一行（包括insert模式）
 "set whichwrap+=h,l                 " 允许backspace和光标键跨越行边界
-
-
 
 "使用tab键来代替%进行匹配跳转
 "nnoremap <tab> %
@@ -429,9 +459,9 @@ endif " has("autocmd")
 "imap <F6> <ESC>:s=^\(//\)*==g<cr>:noh<cr>
 
 " 设置快捷键将选中文本块复制至系统剪贴板
-"vnoremap <Leader>y "+y
+ vnoremap <Leader>y "+y
 " 设置快捷键将系统剪贴板内容粘贴至 vim
-"nmap <Leader>p "+p
+ nmap <Leader>p "+p
 
 " 处理折叠行的左右移动
 "noremap j gj
@@ -579,6 +609,11 @@ endif
 "=====================================================
 " 可能用不到的配置
 "=====================================================
+" let g:autochdir = 1
+" if exists('g:autochdir')
+"    autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+" endif
+" set autochdir                     " 自动切换当前目录为当前文件所在的目录
 "nmap cc :color <space>
 "nmap <leader>w :w!<cr>
 "map <F3> :cp<cr>
@@ -589,6 +624,7 @@ endif
 "highlight cursorLine cterm=bold ctermfg=green ctermbg=red
 "set cursorcolumn                   "高亮显示当前列
 "highlight cursorColumn cterm=bold ctermfg=green ctermbg=red
+"highlight ColorColumn ctermbg=green ctermfg=green
 "set wrap                           "自动换行
 "set autowrite                     "自动保存
 "set scrolljump=5                    " 光标离开屏幕范围
@@ -639,7 +675,7 @@ endif
 "Remap VIM 0
 "map 0 ^
 "在当前目录查找光标词的所有位置
-"nmap  <F6> :vimgrep /<C-R>=expand("<cword>")<cr>/ **/*.c **/*.h<cr><C-o>:cw<cr>
+" nmap  <F6> :vimgrep /<C-R>=expand("<cword>")<cr>/ **/*.c **/*.h<cr><C-o>:cw<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "map <leader>t2 :setlocal shiftwidth=2<cr>
 "map <leader>t4 :setlocal shiftwidth=4<cr>
@@ -653,20 +689,14 @@ endif
 "autocmd BufEnter * :syntax sync fromstart
 "autocmd WinLeave * lclose
 "autocmd Filetype * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-"autocmd BufRead,BufNewFile ~/buffer iab <buffer> xh1 ===========================================
 "autocmd WinEnter * if &buftype ==#'quickfix' && winnr('$') == 1 | quit |endif
-"if exists('g:autochdir')
-"    autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
-"endif
 " autocmd InsertLeave * set nocul    " 用浅色高亮当前行
 " autocmd InsertEnter * set cul      " 用浅色高亮当前行
 "set bufhidden=hide
 "set wildmenu                     " vim 自身命令行模式智能补全
 " 插件窗口的宽度，如TagList,NERD_tree等，自己设置
 " let s:PlugWinSize = 30
-"set switchbuf=usetab
-"set autochdir                     " 自动切换当前目录为当前文件所在的目录
-"let g:autochdir = 1
+" set switchbuf=usetab
 
 "To hex modle
 let s:hexModle = "N"
@@ -786,7 +816,7 @@ else
 "---------------------------------------------------
 
 "和snipmate 冲突
-if 0
+if 1
  Bundle 'Valloric/YouCompleteMe'
 
 "首先要保证有ycm_client_support.so、ycm_core.so、libclang.so 这三个库.
@@ -795,6 +825,7 @@ if 0
 "# 获取 YCM 的依赖包
 "git submodule update --init --recursive
 "2.mkdir and cd ~/ycm_build
+"here may be need sudo apt-get install python-dev
 "cmake -G "Unix Makefiles" . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp
 "make ycm_support_libs
 
@@ -1561,12 +1592,12 @@ nnoremap <Leader>sp :CtrlSF<CR>
 
 "---------------------------------------------------
 
-if 0 " EasyMotion设置
+if 1 " EasyMotion设置
 Bundle 'easymotion/vim-easymotion'
 " nmap s <Plug>(easymotion-s2)
 nmap t <Plug>(easymotion-t2)
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
+map  ? <Plug>(easymotion-sn)
+omap ? <Plug>(easymotion-tn)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
 map <Leader>l <Plug>(easymotion-lineforward)

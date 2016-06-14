@@ -19,7 +19,7 @@ function quickcd() {
 		[ $1 = "-" ] && { cd $OLDPWD; return; }
 		[ $1 = "clean" ] && { > ~/.cdlist; return; }
 		[ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" >> ~/.cdlist; return; }
-        [ $# -eq 1 -a -f "~/.cdlist" ] && {
+        [ $# -eq 1 -a -f "$HOME/.cdlist" ] && {
 	    	while read line; do
 		    	[ $1 = "${line% *}" ] && { cd ${line#* }; return; }
     		done < ~/.cdlist

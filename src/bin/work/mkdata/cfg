@@ -3,4 +3,5 @@ tizen=t.sh
 uboot=u.sh
 android=a.sh
 buildroot=br.sh
+ucos=uc.sh
 
