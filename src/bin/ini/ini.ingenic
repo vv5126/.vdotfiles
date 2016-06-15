@@ -33,7 +33,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     alias gbsa='gbs -v build -A mipsel'
     alias vdiff='vgitdiff ~/.vdotfiles'
     complete -W "push bak baklist cover" gt
-    complete -W "*.c rdy cfg tag tagup bak -h" mk
+    complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk
     complete -W "get_status" rp
     export VGL_BOOKMARK='/data1/home/wgao/.vdotfiles/src/bookmark/bookmark.html'
     # export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45

@@ -23,7 +23,25 @@
  nmap <leader>fx :set ft=xml<CR>
  nmap <leader>fm :set ft=mako<CR>
 
+" 不好用！
+" :inoremap ) <c-r>=ClosePair(')')<CR>
+" :inoremap } <c-r>=ClosePair('}')<CR>
+" :inoremap ] <c-r>=ClosePair(']')<CR>
+" :inoremap > <c-r>=ClosePair('>')<CR>
+" function! ClosePair(char)
+"     if getline('.')[col('.') - 1] == a:char
+"         return "\<Right>"
+"     else
+"         return a:char
+"     endif
+" endfunction
 
+" :inoremap ( ()<ESC>i
+" :inoremap { {}<ESC>i
+" :inoremap [ []<ESC>i
+" :inoremap < <><ESC>i
+" :inoremap " ""<ESC>i
+" :inoremap ' ''<ESC>i
 
 
 
