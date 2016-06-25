@@ -10,7 +10,7 @@ import sys
 import string
 
 
-cc = ['gcc', 'mips-linux-gnu-gcc']
+cc = ['gcc', 'mips-linux-gnu-gcc', 'mipsel-linux-android-gcc']
 
 def prsfinc(fcontant):
 

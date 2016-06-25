@@ -1806,7 +1806,7 @@ endif
 " Bundle 'Raimondi/delimitMate'
 
 " 快速给词加环绕符号,例如引号
-" Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-surround'
 "
 "---------------------------------------------------
 
@@ -1845,22 +1845,6 @@ if vmode_c
 " let syntastic_loc_list_height = 5
 endif
 "---------------------------------------------------
-
-if 0
-" Address, 给vim增加MRU功能,也就是保留最近打开的文件记录,:MRU打开,q退出,很方便,有过一个支持菜单的类似的插件 不过对于我这样的不用菜单的用户,还是这个命令行的好用一点,因为经常使用,所以我映射到了F2
-" 记录最近打开的文件
-Bundle 'mru.vim'
-" let MRU_File='/tmp/mru_files' "设置默认保存最近打开文件列表的文件，默认$HOME/.vim_mru_files；
-let MRU_Max_Entries = 1000 "设置默认记录的打开文件数量，默认100；
-let MRU_Exclude_Files = '^/tmp/.*|^/var/tmp/.*' "设置默认不包含哪些文件，默认空；
-let MRU_Include_Files = '.c$|.h$' "设置默认只包含哪些文件，默认空；
-let MRU_Window_Height = 15 "设置MRU窗口的高度，默认8；
-let MRU_Use_Current_Window = 1 "设置默认在本窗口打开最近文件列表，而不是新的窗口；
-let MRU_Auto_Close = 0 "设置默认不关闭MRU窗口，默认关闭；
-let MRU_Max_Menu_Entries = 20 "设置MRU窗口默认显示多少条记录，默认10；
-let MRU_Max_Submenu_Entries = 15 "设置MRU窗口默认子菜单显示多少条记录，默认10。如果有太多的记录显示在MRU窗口时，记录会被分割成子菜单，该配置设置子菜单里显示多少条记录；
-nmap <leader>ff :MRU<CR>
-endif
 
 " Bundle 'l9'   "FuzzyFinder底层依耐+
 " FuzzyFinder缓冲器/文件/命令/标签/等浏览器的模糊匹配 +

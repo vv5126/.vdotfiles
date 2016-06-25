@@ -420,3 +420,488 @@ func FormartSrc()
 endfunc
 
 " if filereadable(expand("~/.vimrc.bundles.local"))
+"
+"
+"
+"
+"
+"
+"
+"
+"
+"
+"
+"
+"
+"
+"---------------------------------------------------
+if 0
+"omnicppcomplete会打开一个预览窗口来提示变量定义，如果不想要看到详细的信息的话，在vimrc中这样配置
+ Bundle 'OmniCppComplete'
+ set completeopt=longest,menu
+"搜索字符串，或以递增方式搜索字符串
+ let Grep_Default_Filelist = '*.[chS]'
+ let Grep_Default_Filelist = '*.c *.cpp *.asm'
+ let Grep_Skip_Files = '*tags* *cscope* *.o* *.lib *.a* *.r* *.d*'
+ nnoremap <silent> <C-f> :Rgrep<CR><CR><CR><CR>
+ nnoremap <silent> <C-g> :RgrepAdd<CR><CR><CR><CR>
+ set nocp
+ set completeopt=menu "去掉提示窗口"
+ let OmniCpp_DefaultNamespaces = ["std"] "下面的设置用于当用户预先声明namespace时也能自动补全代码（如使用using std::string）
+ let OmniCpp_NamespaceSearch = 1
+ let OmniCpp_GlobalScopeSearch = 1
+ let OmniCpp_ShowAccess = 1
+ let OmniCpp_ShowPrototypeInAbbr = 1 " 显示函数参数列表
+ let OmniCpp_MayCompleteDot = 1 " 输入 . 后自动补全
+ let OmniCpp_MayCompleteArrow = 1 " 输入 -> 后自动补全
+ let OmniCpp_MayCompleteScope = 1 " 输入 :: 后自动补全
+ let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+ let OmniCpp_SelectFirstItem=2
+" c-j自动补全，当补全菜单打开时，c-j,k上下选择
+" imap <expr> <c-j>      pumvisible()?"\<C-N>":"\<C-X><C-O>"
+" imap <expr> <c-k>      pumvisible()?"\<C-P>":"\<esc>"
+" f:文件名补全，l:行补全，d:字典补全，]:tag补全
+" imap <C-]>             <C-X><C-]>
+" imap <C-F>             <C-X><C-F>
+" imap <C-D>             <C-X><C-D>
+" imap <C-L>             <C-X><C-L>
+ endif
+
+"---------------------------------------------------
+if 0
+if has("cscope")
+ Bundle 'cscope.vim'
+function! ADD_TAGS()
+    call GO_GIT_DIR()
+    if filereadable("cscope.out") " add any database in current directory
+        cs add cscope.out
+    elseif $CSCOPE_DB != "" " else add database pointed to by environment
+        cs add $CSCOPE_DB
+    endif
+    set csverb " 这个必须放在后面,不然windows上找不到cscope.out
+endfunction
+    nmap <leader>sa :cs add cscope.out<cr>
+    set csprg=/usr/bin/cscope
+    set cscopetag
+    set cscopeverbose
+    set cscopequickfix=c-,d-,e-,g-,i-,s-,t-
+    set csto=1
+    set cst
+    set nocsverb
+    call ADD_TAGS()
+
+    " nmap s :cs find s =expand("")   
+    " nmap g :cs find g =expand("")   
+    " nmap c :cs find c =expand("")   
+    " nmap t :cs find t =expand("")   
+    " nmap e :cs find e =expand("")   
+    " nmap f :cs find f =expand("")   
+    " nmap i :cs find i ^=expand("")$
+    " nmap d :cs find d =expand("")   
+    " nmap s :scs find s =expand("")  
+    " nmap g :scs find g =expand("")  
+    " nmap c :scs find c =expand("")  
+    " nmap t :scs find t =expand("")  
+    " nmap e :scs find e =expand("")  
+    " nmap f :scs find f =expand("")  
+    " nmap i :scs find i ^=expand("")$
+    " nmap d :scs find d =expand("")  
+    " nmap s :vert scs find s =expand("")
+    " nmap g :vert scs find g =expand("")
+    " nmap c :vert scs find c =expand("")
+    " nmap t :vert scs find t =expand("")
+    " nmap e :vert scs find e =expand("")
+    " nmap f :vert scs find f =expand("")  
+    " nmap i :vert scs find i ^=expand("")$
+    " nmap d :vert scs find d =expand("")
+"  nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR> :cw<CR>
+"  nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR> :cw<CR>
+"  nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR> :cw<CR>
+"  nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR> :cw<CR>
+"  nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR> :cw<CR>
+"  nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR> :cw<CR>
+"  nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR> :cw<CR>
+"  nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR> :cw<CR>
+
+"nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+"nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+"nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+"nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+"nmap <leader>ss :cs find s <C-R>=expand("<cword>")<cr><cr>
+"nmap <leader>sg :cs find g <C-R>=expand("<cword>")<cr><cr>
+"nmap <leader>sc :cs find c <C-R>=expand("<cword>")<cr><cr>
+"nmap <leader>st :cs find t <C-R>=expand("<cword>")<cr><cr>
+"nmap <leader>se :cs find e <C-R>=expand("<cword>")<cr><cr>
+"nmap <leader>sf :cs find f <C-R>=expand("<cfile>")<cr><cr>
+"nmap <leader>si :cs find i <C-R>=expand("<cfile>")<cr><cr>
+"nmap <leader>sd :cs find d <C-R>=expand("<cword>")<cr><cr>
+
+"nmap <F2>s :cs find s <C-R>=expand("<cword>")<CR><CR>:copen<CR><CR>
+"nmap <F2>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+"nmap <F2>c :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR><CR>
+"nmap <F2>t :cs find t <C-R>=expand("<cword>")<CR><CR>:copen<CR><CR>
+"nmap <F2>e :cs find e <C-R>=expand("<cword>")<CR><CR>:copen<CR><CR>
+"nmap <F2>f :cs find f <C-R>=expand("<cfile>")<CR><CR>:copen<CR><CR>
+"nmap <F2>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>:copen<CR><CR>
+"nmap <F2>d :cs find d <C-R>=expand("<cword>")<CR><CR>:copen<CR><CR>
+
+"Using 'CTRL-spacebar' then a search type makes the vim window
+"split horizontally, with search result displayed in
+"the new window.
+nmap <C-\>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-\>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <C-\>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+
+"Hitting CTRL-space *twice* before the search type does a vertical
+"split instead of a horizontal one
+nmap <C-\><C-\>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\><C-\>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\><C-\>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\><C-\>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\><C-\>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\><C-\>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <C-\><C-\>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+
+"nmap <C-]> :tjump <C-R>=expand("<cword>")<CR><CR>
+""nmap <C-]> :cs find g <C-R>=expand("<cword>")<CR><CR><CR>
+
+" cscope的vim插件,提供快捷键操纵cscope,好东东,如果你在用cscope的话
+"Bundle 'chazy/cscope_maps'
+"Bundle 'cscope_macros.vim'
+
+" 更新ctags和cscope索引
+map <F12> :call Do_CsTag()<cr>
+function! Do_CsTag()
+    call GO_GIT_DIR()
+    let dir = getcwd()
+    "先删除已有的tags和cscope文件，如果存在且无法删除，则报错。
+    if has("cscope")
+        silent! execute "cs kill -1"
+    endif
+    if ( DeleteFile(dir, "tags") ) 
+        return
+    endif
+    if ( DeleteFile(dir, "cscope.files") ) 
+        return
+    endif
+    if ( DeleteFile(dir, "cscope.out") ) 
+        return
+    endif
+    if filereadable("filenametags")
+        if(g:iswindows==1)
+            let fntdeleted=delete(dir."\\"."filenametags")
+        else
+            let fntdeleted=delete("./"."filenametags")
+        endif
+        if(fntdeleted!=0)
+            echohl WarningMsg | echo "Fail to do filename! I cannot delete the filenametags" | echohl None
+            return
+        endif
+    endif
+    if(executable('ctags'))
+        "silent! execute "!ctags -R --langmap=c++:+.inl+.x -h +.inl+.x --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+q --excmd=number ."
+        " silent! execute "!ctags -R --langmap=c++:+.inl+.x -h +.inl+.x --fields=+iaS --extra=+q ."
+        silent! execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
+    endif
+    if(executable('cscope') && has("cscope") )
+        if(g:isWin)
+            silent! execute "!dir /s/b *.c*,*.inl,*.x*,*.h*,*.py,*.java,*.s* >> cscope.files"
+            silent! execute "!dir /s/b *.c,*.cpp,*.h,*.java,*.cs >> cscope.files"
+        else
+            silent! execute "!find . -name '*.[hHcCsS]*' -o -name '*.inl' -o -name '*.[xX]*' -o -name '*.[jJ][aA][vV][aA]' -o -name '*.py' > cscope.files"
+            silent! execute "!find . -iname '*.[ch]' -o -name '*.cpp' > cscope.files"
+        endif
+        silent! execute "!cscope -b"
+        silent! execute "!cscope -Rb"
+        execute "normal :"
+        if filereadable("cscope.out")
+            execute "cs add cscope.out"
+        endif
+    endif
+    " 刷新屏幕
+    silent execute "redraw!"
+    execute "redr!"
+    exec 'cd -'
+endfunction
+
+function! DeleteFile(dir, filename)
+    if filereadable(a:filename)
+        if (g:isWin)
+            let ret = delete(a:dir."\\".a:filename)
+        else
+            let ret = delete("./".a:filename)
+        endif
+        if (ret != 0)
+            echohl WarningMsg | echo "Failed to delete ".a:filename | echohl None
+            return 1
+        else
+            return 0
+        endif
+    endif
+    return 0
+endfunction
+endif
+endif
+"---------------------------------------------------
+if 0
+"plugin - taglist.vim  查看函数列表，需要ctags程序
+ Bundle 'taglist.vim'
+"  nmap  <F2> :TlistToggle<cr>
+"nnoremap <silent><F4> :TlistToggle<CR>
+ let Tlist_Auto_Open = 0                " 默认打开Taglist
+ let Tlist_Auto_Update = 1
+ let Tlist_Compact_Format = 1 " 压缩方式
+ let Tlist_Display_Prototype = 0
+ let Tlist_Enable_Fold_Column = 0    " 不要显示折叠树 (鼠标可以点开)
+ let Tlist_Exit_OnlyWindow = 1          " 如果taglist窗口是最后一个窗口，则退出vim
+"let Tlist_Exist_OnlyWindow = 1 " 如果只有一个buffer，kill窗口也kill掉buffer
+ let Tlist_File_Fold_Auto_Close=1       " 自动折叠当前非编辑文件的方法列表
+"let Tlist_File_Fold_Auto_Close = 0 " 不要关闭其他文件的tags
+ let Tlist_Hightlight_Tag_On_BufEnter = 1
+ let Tlist_Inc_Winwidth = 0 "标签列表窗口显示或隐藏不影响整个gvim窗口大小
+ let Tlist_Process_File_Always = 1 "不是一直实时更新tags，因为没有必要
+ let Tlist_Show_One_File = 1 " 设置tablist插件只显示当前编辑文件的tag内容，而非当前所有打开文件的tag内容
+"let Tlist_Use_Right_Window = 1         " 在右侧窗口中显示taglist窗口
+ let Tlist_WinWidth = 25 " taglist窗口宽度
+ let g:Tlist_Auto_Highlight_Tag=1
+ nmap <silent> <leader>tl :Tlist<cr>
+let Tlist_Sort_Type            = "name"    " 按照名称排序
+let Tlist_Compart_Format       = 1    " 压缩方式
+let Tlist_GainFocus_On_ToggleOpen = 0
+"let Tlist_Close_On_Select = 1
+
+"进行Tlist的设置
+"TlistUpdate可以更新tags
+map <F8> :silent! Tlist<CR>
+let Tlist_Ctags_Cmd='ctags' "因为我们放在环境变量里，所以可以直接执行
+let Tlist_Ctags_Cmd        = '/usr/bin/ctags'
+let Tlist_Show_One_File=1 "让taglist可以同时展示多个文件的函数列表，如果想只有1个，设置为1
+"是否一直处理tags.1:处理;0:不处理
+let Tlist_Inc_Winwidth=0
+endif
+"---------------------------------------------------
+"  Bundle 'snipMate'
+let g:snips_author="ingenic"
+let g:snips_email="ingenic@ingenic.com"
+let g:snips_copyright="SicMicro, Inc"
+
+"---------------------------------------------------
+"---------------------------------------------------
+" 在输入()等需要配对的符号时，自动帮你补全剩余半个
+"Bundle 'AutoClose'
+
+" 自动补全tab触发
+" function! InsertTabWrapper()
+" 	let col = col('.') - 1
+" 	if !col || getline('.')[col - 1] !~ '\k'
+"         return "\<tab>"
+" 	else
+"         return "\<c-p>"
+" 	endif
+" endfunction
+" inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
+" inoremap <S-Tab> <c-n>
+
+" 快捷输入
+" 自动完成括号和引号
+inoremap <leader>1 ()<esc>:let leavechar=")"<cr>i
+inoremap <leader>2 []<esc>:let leavechar="]"<cr>i
+inoremap <leader>3 {}<esc>:let leavechar="}"<cr>i
+inoremap <leader>4 {<esc>o}<esc>:let leavechar="}"<cr>O
+inoremap <leader>q ''<esc>:let leavechar="'"<cr>i
+inoremap <leader>w ""<esc>:let leavechar='"'<cr>i
+
+"---------------------------------------------------
+
+"LUA用的
+" Bundle 'xolox/vim-lua-ftplugin'
+
+"---------------------------------------------------
+"java 插件
+" Bundle 'Javascript-OmniCompletion-with-YUI-and-j'
+" Bundle 'JavaScript-Indent'
+" Bundle 'Better-Javascript-Indentation'
+" Bundle 'jslint.vim'
+" Bundle 'pangloss/vim-javascript'
+"---------------------------------------------------
+" js 推荐：****
+" jsbeautify的设置
+" Bundle '_jsbeautify'
+" nnoremap <leader>_ff :call g:Jsbeautify()<CR>
+"---------------------------------------------------
+" 神级插件，ZenCoding(原名)可以让你以一种神奇而无比爽快的感觉写HTML、CSS
+"  Bundle 'ZenCoding.vim'
+"=====================================================
+" 实现打开同一文件时，vim能够自动记住上一次的位置
+"-----------------------------------------------------
+"  set viminfo='10,\"100,:20,%,n~/.viminfo
+"  set viminfo+=!                     " 保存全局变量
+"  set viewoptions=cursor,folds,slash,unix " viminfo 记录的内容
+" if has("autocmd")
+"     augroup vimrcEx
+"         "清除所有自动命令
+"         au!
+"         autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | else | exe "normal $" | endif
+"     augroup END
+" endif " has("autocmd")
+"=====================================================
+" 在.c/.h之间切换,写代码必备
+ Bundle 'a.vim'
+" A few of quick commands to swtich between source files and header files quickly.
+"
+" :A switches to the header file corresponding to the current file being
+" edited (or vise versa)
+" :AS splits and switches
+" :AV vertical splits and switches
+" :AT new tab and switches
+" :AN cycles through matches
+" :IH switches to file under cursor
+" :IHS splits and switches
+" :IHV vertical splits and switches
+" :IHT new tab and switches
+" :IHN cycles through matches
+" <Leader>ih switches to file under cursor
+" <Leader>is switches to the alternate file of file under cursor (e.g. on
+" <foo.h> switches to foo.cpp)
+" <Leader>ihn cycles through matches
+"
+" E.g. if you are editing foo.c and need to edit foo.h
+" simply execute :A and you will be editting foo.h,
+" to switch back to foo.c execute :A again.
+"
+" Can be configured to support a variety of languages. Builtin support for
+" C, C++ and ADA95
+
+"---------------------------------------------------
+
+"底层的lookupfile的功能支持+
+ Bundle 'genutils'
+
+" lookupfile.vim 使用部分关键字查找文件名
+ Bundle 'lookupfile'
+ nmap  <F5> <Plug>LookupFile<cr>
+nmap <silent> <leader>ff :LookupFile<cr>
+let g:LookupFile_MinPatLength           = 2 "最少输入2个字符才开始查找
+let g:LookupFile_PreserveLastPattern    = 0 "不保存上次查找的字符串
+let g:LookupFile_PreservePatternHistory = 1 "保存查找历史
+let g:LookupFile_AlwaysAcceptFirst      = 1 "回车打开第一个匹配项目
+let g:LookupFile_AllowNewFiles          = 0 "不允许创建不存在的文件
+let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排序
+"let g:LookupFile_TagExpr ='tags'
+
+" LookupFile setting
+function! LookupFile_IgnoreCaseFunc(pattern)
+    let _tags = &tags
+    try
+        let &tags = eval(g:LookupFile_TagExpr)
+        let newpattern = '\c' . a:pattern
+        let tags = taglist(newpattern)
+    catch
+        echohl ErrorMsg | echo "Exception: " . v:exception | echohl NONE
+        return ""
+    finally
+        let &tags = _tags
+    endtry
+
+    " Show the matches for what is typed so far.
+    let files = map(tags, 'v:val["filename"]')
+    return files
+endfunction
+let g:LookupFile_LookupFunc = 'LookupFile_IgnoreCaseFunc'
+
+"---------------------------------------------------
+" 一个对齐的插件,用来排版,面对一堆乱七八糟的代码时,用来对齐代码,功能强大,不过用到的机会不多
+Bundle 'Align'
+" Bundle 'junegunn/vim-easy-align'
+
+"---------------------------------------------------
+" Bundle 'checksyntax'
+
+"---------------------------------------------------
+
+" 保存当前会话
+" Bundle 'xolox/vim-misc'
+" Bundle 'xolox/vim-session'
+
+"---------------------------------------------------
+
+" 利用Google翻译在vim进行翻译的插件
+" Bundle 'jiazhoulvke/googletranslate'
+
+"---------------------------------------------------
+if 0
+" plugin - NeoComplCache.vim    自动补全插件
+let g:AutoComplPop_NotEnableAtStartup = 1
+let g:NeoComplCache_EnableAtStartup = 1
+let g:NeoComplCache_SmartCase = 1
+let g:NeoComplCache_TagsAutoUpdate = 1
+let g:NeoComplCache_EnableInfo = 1
+let g:NeoComplCache_EnableCamelCaseCompletion = 1
+let g:NeoComplCache_MinSyntaxLength = 3
+let g:NeoComplCache_EnableSkipCompletion = 1
+let g:NeoComplCache_SkipInputTime = '0.5'
+let g:NeoComplCache_SnippetsDir = $VIMFILES.'/snippets'
+let g:neocomplcache_enable_at_startup = 1
+" <TAB> completion.
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+" snippets expand key
+imap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
+smap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
+endif
+
+"---------------------------------------------------
+"---------------------------------------------------
+"python 插件
+"if v:version < 704
+"    Bundle 'Pydiction'
+"    Bundle 'Python-mode-klen'
+"endif
+" best for python
+" python_calltips
+"   pydiction       补全提示+
+" let g:pydiction_location = '.vim/pydiction-1.2/complete-dict'
+"   pythoncomplete  vim自带的python补全提示
+"   VimPdb          调试Python程序+
+" Bundle 'pyflakes' "Python代码检查+
+" Bundle 'pytest'
+" Bundle 'pep8'
+" Bundle 'pyclewn'
+"djang
+" Bundle 'django_templates.vim'
+" Bundle 'Django-Projects'
+" Bundle 'djangojump'
+" Bundle 'hdima/python-syntax'
+" Bundle 'hynek/vim-python-pep8-indent'
+"---------------------------------------------------
+"---------------------------------------------------
+if 0
+" 添加doxygen注释
+" DoxygenToolkit.vim
+" plugin - DoxygenToolkit.vim  由注释生成文档，并且能够快速生成函数标准注释
+let g:DoxygenToolkit_authorName="Asins - asinsimple AT gmail DOT com"
+let g:DoxygenToolkit_briefTag_funcName="yes"
+map <leader>da :DoxAuthor<CR>
+map <leader>df :Dox<CR>
+map <leader>db :DoxBlock<CR>
+map <leader>dc a /*  */<LEFT><LEFT><LEFT>
+
+map fg : Dox<cr>
+let g:DoxygenToolkit_authorName="Anders"
+let g:DoxygenToolkit_licenseTag="My own license\<enter>"
+let g:DoxygenToolkit_undocTag="DOXIGEN_SKIP_BLOCK"
+let g:DoxygenToolkit_briefTag_pre = "@brief\t"
+let g:DoxygenToolkit_paramTag_pre = "@param\t"
+let g:DoxygenToolkit_returnTag = "@return\t"
+let g:DoxygenToolkit_briefTag_funcName = "no"
+let g:DoxygenToolkit_maxFunctionProtoLines = 30
+endif
