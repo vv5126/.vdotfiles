@@ -42,23 +42,23 @@ function init(){
 
 
 [ "$#" -ge 1 ] && {
-	case "$1" in
-	'init')
-		init
-		;;
-	'c')
-		make distclean
-		;;
-    'ycm_conf')
-	    source .project_info
-        make clean
-		make $board_config -n -j32 > .tmp 2>&1
-        ycmadd .tmp
-        rm .tmp
-        ;;
-	*)
-		;;
-	esac
+        case "$1" in
+        'init')
+                init
+                ;;
+        'c')
+                make distclean
+                ;;
+        'ycm_conf')
+                source .project_info
+                make clean
+                make $board_config -n -j32 > .tmp 2>&1
+                ycmadd .tmp
+                rm .tmp
+                ;;
+        *)
+                ;;
+        esac
 } || {
 	mk
 }

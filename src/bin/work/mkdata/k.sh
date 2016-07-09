@@ -145,6 +145,12 @@ function make_i() {
 	'c')
 		make distclean
 		;;
+        'ycm_conf')
+                make clean
+                make uImage -n -j32 > .tmp 2>&1
+                ycmadd .tmp
+                rm .tmp
+                ;;
 	*)
 		;;
 	esac

@@ -69,6 +69,7 @@ def file_pretreatment(x):
 
 def add_new(x,y):
     cur_path = os.getcwd()
+    y = string.replace(y,'"','')
     if os.path.isdir(cur_path + '/' +y):
         if y not in x:
             x.append(y)

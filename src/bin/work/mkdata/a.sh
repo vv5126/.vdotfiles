@@ -11,9 +11,11 @@ function mk() {
 	'init')
 		;;
 	'c')
-		make clean	
+		make clean
 		;;
 	*)
 		;;
 	esac
+} || {
+	mk
 }

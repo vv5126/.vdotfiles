@@ -905,3 +905,7 @@ let g:DoxygenToolkit_returnTag = "@return\t"
 let g:DoxygenToolkit_briefTag_funcName = "no"
 let g:DoxygenToolkit_maxFunctionProtoLines = 30
 endif
+
+        nmap <leader>p :set paste<CR>
+        nmap <leader>pp :set nopaste<CR>
+        map <leader>pp :setlocal paste!<cr>

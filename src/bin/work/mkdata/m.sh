@@ -10,9 +10,17 @@ function mk() {
 	'init')
 		;;
 	'c')
-		make clean	
+		make clean
 		;;
+        'ycm_conf')
+                make clean
+                make -n -j32 > .tmp 2>&1
+                ycmadd .tmp
+                rm .tmp
+                ;;
 	*)
 		;;
 	esac
+} || {
+	mk
 }

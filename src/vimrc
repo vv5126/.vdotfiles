@@ -207,6 +207,7 @@ set clipboard+=unnamed
 " 常用缩写
 "=====================================================
  iab zhushi <c-r>='"====================================================='<cr><cr>" <cr>"=====================================================
+ iab wgao <c-r>='printf("wgao (%d %s) %d %s\n", __LINE__, __func__, 0, "");'<cr>
 "iab idate <c-r>=strftime("%Y-%m-%d")<CR>
 "iab itime <c-r>=strftime("%H:%M")<CR>
 "iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
@@ -386,9 +387,9 @@ endif " has("autocmd")
 "tab键的设定
 "-----------------------------------------------------
  set smarttab                       " 在行和段开始处使用制表符
- set tabstop=4                      " 设置编辑时制表符占用空格数
- set shiftwidth=4                   " 设置格式化时制表符占用空格数
- set softtabstop=4                  " 让 vim 把连续数量的空格视为一个制表符, 使得按退格键时可以一次删掉 4 个空格
+ set tabstop=8                      " 设置编辑时制表符占用空格数
+ set shiftwidth=8                   " 设置格式化时制表符占用空格数
+ set softtabstop=8                  " 让 vim 把连续数量的空格视为一个制表符, 使得按退格键时可以一次删掉 8 个空格
  set expandtab                      " 用空格代替制表符
 "set noexpandtab                    " 不要用空格代替制表符
 "autocmd FileType c,cpp set expandtab
@@ -689,6 +690,15 @@ function! Replace(confirm, wholeword, replace)
     execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
 endfunction
 "---------------------------------------------------
+nnoremap <leader>mq :call ADD_H()<cr>
+
+function! ADD_H()
+    let l:filename = substitute(toupper(expand("%:t")), '\.', "_", "g")
+	call append(0,"#ifndef __".l:filename."__")
+	call append(1,"#define __".l:filename."__")
+	call append(2,"")
+    call append('$',"#endif")
+endfunction
 
 function! SET_MOUSE()
     if &mouse == 'a'
@@ -1459,7 +1469,7 @@ let g:LookupFile_LookupFunc = 'LookupFile_IgnoreCaseFunc'
 
 "---------------------------------------------------
 "智能补全
-"  Bundle 'supertab'
+ Bundle 'supertab'
 " Bundle 'mbbill/code_complete'
 "---------------------------------------------------
 " 给vim增加IDE的功能,提供目录浏览和buffer浏览功能,因为显示器太小,感觉太占空间,所以单独使用bufexplorer,而且现在vim7的netrw功能也够强大,所以感觉比较鸡肋,而且貌似很久没有更新,所以基本不用
@@ -2134,13 +2144,16 @@ Bundle 'tpope/vim-git'
 " Bundle 'tohtml.vim'
 " Bundle 'matchparen.vim'
 " Bundle 'xml.vim'
-" Bundle 'vimwiki.vim'
 " Bundle 'zipPlugin.vim'
 " Bundle 'vimballPlugin.vim'
 " Bundle 'cuteErrorMarker.vim'
 " Bundle 'kevinw/pyflakes-vim'
 " Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
 "---------------------------------------------------
+"  Bundle 'ianva/vim-youdao-translater'
+"  vnoremap <silent> <C-T> :<C-u>Ydv<CR>
+"  nnoremap <silent> <C-T> :<C-u>Ydc<CR>
+"  noremap <leader>yd :<C-u>Yde<CR>
 
 
 endif "插件的设置 end"
