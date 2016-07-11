@@ -238,6 +238,7 @@
         nnoremap <C-j> <C-W>j
         nnoremap <C-k> <C-W>k
         nnoremap <C-l> <C-W>l
+        nnoremap <C-x> <c-w>\|<c-w>_
         "inoremap <C-h> <Esc><C-W>h
         "inoremap <C-j> <Esc><C-W>j
         "inoremap <C-k> <Esc><C-W>k
@@ -742,23 +743,9 @@ if vmode_c
 " let syntastic_loc_list_height = 5
 endif
 "---------------------------------------------------
-"---------------------------------------------------
-" 配色主题 推荐：****
-"Bundle "altercation/vim-colors-solarized"
-" 设置主题,UI
-" solarized 主题
-if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
-	" let g:solarized_termtrans=1
-	" let g:solarized_contrast="normal"
-	" let g:solarized_visibility="normal"
-	" colorscheme solarized             " Load a colorscheme
-endif
-
-"---------------------------------------------------
 " 保存vim编辑信息，比如最后的位置 推荐：****
 " Bundle "vim-scripts/restore_view.vim"
 
-"---------------------------------------------------
 "------------------------------------------------
 " 重复了
 " nnoremap <Leader>fu :CtrlPFunky<Cr>
@@ -819,16 +806,6 @@ endif
 
 " 正在处理的一些设置 映射　{
 
-        ": exec 'cd ~/' . fnameescape('/.vim')
-
-        " Bundle 'tomasr/molokai'
-        " colorscheme molokai
-        " let g:molokai_original=1
-        " let g:solarized_termtrans=1
-        " let g:solarized_termcolors=256
-        " let g:solarized_contrast="high"
-        " let g:solarized_visibility="high"
-
         " 文本格式和排版
         " set formatoptions=tcrqn            " 控制 Vim 如何对文本进行排版
         " set formatoptions+=mM
@@ -841,15 +818,9 @@ endif
         "set mousemodel=extend
         "set mousemodel=popup
         "set magic "改变搜索模式使用的特殊字符
-
-        "set grepprg=/bin/grep\ -nH  "":grep" 使用的程序
-        "let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
-        "let g:SuperTabRetainCompletionType=2
-        "let g:SuperTabDefaultCompletionType="<C-X><C-O>"
-
         " set autoread                       " 设置当文件被改动时自动载入
-
         "set display=lastline                "长行显示，解决@@@@的问题
+
         " autocmd BufEnter * :syntax sync fromstart
         " autocmd WinLeave * lclose
         " autocmd WinEnter * if &buftype ==#'quickfix' && winnr('$') == 1 | quit |endif
@@ -888,19 +859,6 @@ endif
         " Do :help cope if you are unsure what cope is. It's super useful!
         map <leader>t1 :botright cope<cr>
 
-        " 设置tag和window间快速跳转
-        let g:easyWindows = 1
-        if exists('g:easyWindows')
-                " 向上
-                map <C-J> <C-W>j<C-W>_
-                " 向下
-                map <C-K> <C-W>k<C-W>_
-                " 向右
-                map <C-L> <C-W>l<C-W>_
-                " 向左
-                map <C-H> <C-W>h<C-W>_
-        endif
-
         " nmap <leader>t1 :marks<CR>
         " nmap <leader>t1 :MarksBrowser<CR>
         " nmap <leader>t1 :ConqueTermVSplit bash <cr>
@@ -911,43 +869,32 @@ endif
         "使用,v来选择刚刚复制的段落，这样可以用来缩进
         "nnoremap <leader>v v`]
 
-        "F6 for uncomment
-        vmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
-        nmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
-        imap <F6> <ESC>:s=^\(//\)*==g<cr>:noh<cr>
-
-        nnoremap <F2> :tabnew<CR>
         nnoremap <S-q> :tabprevious<CR>
         nnoremap <S-w> :tabnext<CR>
-        nnoremap te :tabedit
+        nnoremap te :tabedit 
         nnoremap tc :tabclose<cr>
         nnoremap tm :tabmove 
-
-        " 在文件名上按gf时，在新的tab中打开
         map gf :tabnew <cfile><cr>
 
-        "=====================================================
-        " window 设置
-        "=====================================================
-        "使用,w来垂直分割窗口，这样可以同时查看多个文件,如果想水平分割则<c-w>s
-        "nnoremap <leader>w <c-w>v<c-w>l
-        "nnoremap <leader>wc <c-w>c
-        "nnoremap <leader>ww <c-w>w
-
         "插入模式下移动
-        "  noremap <S-h> <C-left>
-        "  noremap <S-j> <pagedown>
-        "  noremap <S-k> <pageup>
-        "  noremap <S-l> <C-right>
         inoremap <c-h> <left>
         inoremap <c-j> <down>
         inoremap <c-k> <up>
         inoremap <c-l> <right>
         inoremap <C-a> <HOME>
         inoremap <C-e> <END>
-
         "=====================================================
         " 意义不大
+        "set grepprg=/bin/grep\ -nH  "":grep" 使用的程序
+        "let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
+        "let g:SuperTabRetainCompletionType=2
+        "let g:SuperTabDefaultCompletionType="<C-X><C-O>"
+
+        "F6 for uncomment
+        " vmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
+        " nmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
+        " imap <F6> <ESC>:s=^\(//\)*==g<cr>:noh<cr>
+
         " nnoremap <tab> %
         " vnoremap <tab> %
 
@@ -957,7 +904,6 @@ endif
         " cnoremap <C-K> <C-U>
         " cnoremap <C-P> <Up>
         " cnoremap <C-N> <Down>
-
 " }
 
 " 剩余的bundles {
@@ -1024,7 +970,6 @@ Bundle 'sjas/csExplorer'
 "---------------------------------------------------
     " vim帮助中文版
     "  Bundle 'vimcdoc'
-    "Bundle 'altercation/vim-colors-solarized'   " Solarized: 非常流行的配色。
     "Bundle 'EnhancedCommentify' " 多文本类型的快捷comment/uncomment, 据说NERD Commenter 更好一些
     "Bundle 'manpageview'        " 在Vim中查看Manpage，有语法高亮
     "Bundle 'VCScommand'         " 支持多种版本管理器
@@ -1360,8 +1305,6 @@ endfunction
         "删除行尾的一个^M
         " nmap dm :%s/\r\+$//e<cr>:set ff=unix<cr>
         "---------------------------------------------------
-        " nmap <leader>fd :set fileformat=dos<CR>
-        " nmap <leader>fu :set fileformat=unix<CR>
         "以unix格式显示换行符
         " nmap xsm :e ++ff=unix
         "以dos格式显示换行符
