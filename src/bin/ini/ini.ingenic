@@ -48,6 +48,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
     PATH=/pdev/chains/mipsel-linux-android-4.7/bin:$PATH
     PATH=/pdev/chains/mips-2012.09/bin:$PATH
+    [ -d "$HOME/.bin" ] && PATH="$HOME/.bin/base:$HOME/.bin/work:$PATH"
 }
 
 # 4.150 #

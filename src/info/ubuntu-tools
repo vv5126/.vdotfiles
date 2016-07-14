@@ -58,3 +58,22 @@ cifs-utils
 samba-client
 
 
+*-----------*
+vncserver
+apt-get install vnc4server gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
+vncserver :1
+cat > vim .vnc/xstartup << EOF
+#!/bin/sh
+export XKL_XMODMAP_DISABLE=1
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+gnome-panel &
+gnome-settings-daemon &
+metacity &
+nautilus &
+gnome-terminal &
+EOF
+
+vncserver -kill :1
+vncserver :1
+*-----------*

@@ -171,6 +171,7 @@
         set lazyredraw                     " 执行宏时不重画
         set ttyfast                        " 表明使用的是快速终端连接
         set linebreak                      " 防止折行时打断单词，将整个词进行折行。
+        set display=lastline                "长行显示，解决@@@@的问题
         set numberwidth=4                  " 行号栏的宽度
         set fillchars=vert:\ ,stl:\        " 在被分割的窗口间显示空白，便于阅读,stlnc:\(加了这个wm分割兰有\\\\\\\\\\\\\)
         set cmdheight=1                    " 命令行（在状态行下）的高度，默认为1
@@ -189,7 +190,10 @@
         set mousehide                      " 输入文件时隐藏鼠标
         set matchtime=0
         set selectmode=mouse,key
+        set bufhidden=hide
         set wildignore+=*.bak,*.o,*.e,*~,*.obj,.git,*.pyc
+        set autoread                       " 设置当文件被改动时自动载入
+        set completeopt=preview,longest,menuone "代码补全
         "set rtp+=xxx/vim                   " 自定义vim目录位置
         "好用的复制、粘贴
         vmap <C-c> "+y
@@ -311,6 +315,14 @@
         "esc的映射
         imap jj <esc>
 
+        "插入模式下移动
+        inoremap <c-h> <c-left>
+        inoremap <c-j> <left>
+        inoremap <c-k> <right>
+        inoremap <c-l> <c-right>
+        inoremap <C-a> <HOME>
+        inoremap <C-e> <END>
+
         "去空行
         nnoremap <leader>db :g/^\s*$/d<cr>
 
@@ -321,12 +333,50 @@
         nnoremap <leader>dd :s/[ \t]\{2,}//g<cr>:noh<cr>
         vnoremap <leader>dd :s/[ \t]\{2,}//g<cr>:noh<cr>
 
+        "设置tab宽度
+        map <leader>t2 :setlocal shiftwidth=2<cr>
+        map <leader>t4 :setlocal shiftwidth=4<cr>
+        map <leader>t8 :setlocal shiftwidth=8<cr>
+
+        " Bash like keys for the command line
+        cnoremap <C-A> <Home>
+        cnoremap <C-E> <End>
+        cnoremap <C-K> <C-U>
+        cnoremap <C-P> <Up>
+        cnoremap <C-N> <Down>
+
+        " 为选中代码加括号啥的
+        vnoremap 1 <esc>`>a)<esc>`<i(<esc>
+        vnoremap 2 <esc>`>a]<esc>`<i[<esc>
+        vnoremap 3 <esc>`>a}<esc>`<i{<esc>
+        vnoremap 4 <esc>`>a"<esc>`<i"<esc>
+        vnoremap 5 <esc>`>a'<esc>`<i'<esc>
+
         "比较文件
         nnoremap <leader>df :vert diffsplit 
         nnoremap <leader>dff :diffoff<cr>
 
+        "Tabel
+        nnoremap <S-q> :tabprevious<CR>
+        nnoremap <S-w> :tabnext<CR>
+        nnoremap te :tabedit 
+        nnoremap tm :tabmove 
+        map <leader>1 1gt
+        map <leader>2 2gt
+        map <leader>3 3gt
+
+        "函数内排版
+        nmap = =a{
+        " }
+
+        " highlight cursorLine cterm=bold ctermfg=green ctermbg=black
+        " highlight cursorColumn cterm=bold ctermfg=green ctermbg=black
+
         "设置鼠标粘贴模式
         nnoremap <leader>mo :call SET_MOUSE()<cr>
+
+        "使用,v来选择刚刚复制的段落，这样可以用来缩进
+        " nnoremap <leader>v v`]
 
         " 清除前面数字加. exaple 12.aaa-->aaa 不适合代码！！！
         " nnoremap ff :1,$s///g
@@ -348,6 +398,11 @@
         map <leader>e :e! ~/.vimrc<cr>
         "自动载入配置文件不需要重启
         autocmd! bufwritepost .vimrc source %
+        "=====================================================
+        autocmd WinEnter * if &buftype ==#'quickfix' && winnr('$') == 1 | quit |endif
+        "=====================================================
+        autocmd BufEnter * :syntax sync fromstart
+        autocmd WinLeave * lclose
         "=====================================================
 
 
@@ -386,6 +441,7 @@
         "---------------------------------------------------
 
 
+        "set magic "改变搜索模式使用的特殊字符
         function! SET_MOUSE()
             if &mouse == 'a'
                 set mouse=
@@ -804,111 +860,12 @@ endif
 "---------------------------------------------------
 " }
 
-" 正在处理的一些设置 映射　{
-
-        " 文本格式和排版
-        " set formatoptions=tcrqn            " 控制 Vim 如何对文本进行排版
-        " set formatoptions+=mM
-        " set formatoptions+=mB
-        "set formatoptions+=l
-        set fileformats=unix,dos,mac       " 自动识别UNIX格式和MS-DOS格式     参与自动检测的 'fileformat' 的格式
-        set fileformat=unix                " 以UNIX的换行符格式保存文件，注意是去掉一个^M
-        "set fileformat=dos                 " 以dos的换行符格式保存文件, 注意是在行尾变为两个^M
-
-        "set mousemodel=extend
-        "set mousemodel=popup
-        "set magic "改变搜索模式使用的特殊字符
-        " set autoread                       " 设置当文件被改动时自动载入
-        "set display=lastline                "长行显示，解决@@@@的问题
-
-        " autocmd BufEnter * :syntax sync fromstart
-        " autocmd WinLeave * lclose
-        " autocmd WinEnter * if &buftype ==#'quickfix' && winnr('$') == 1 | quit |endif
-
-        " autocmd InsertLeave * set nocul    " 用浅色高亮当前行
-        " autocmd InsertEnter * set cul      " 用浅色高亮当前行
-        " highlight cursorLine cterm=bold ctermfg=green ctermbg=red
-        " highlight cursorColumn cterm=bold ctermfg=green ctermbg=red
-
-        "set bufhidden=hide
-        "set switchbuf=usetab
-
-        "代码补全
-        " set completeopt=preview,menu
-        " set completeopt=longest,menu
-        " set completeopt=longest,menuone
-        " set cindent                        " 使用C样式的缩进
-        " set cinoptions=:0                  " 设置 'cindent' 时如何缩进
-        " set smartindent                    " C 程序智能自动缩进
-        " set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " 空格等无效字符显示
-        " set listchars=tab:>-,trail:-
-        " set report=0
-        " set gcr=a:block-blinkon0           " 禁止光标闪烁
-
-        map <leader>t2 :setlocal shiftwidth=2<cr>
-        map <leader>t4 :setlocal shiftwidth=4<cr>
-        map <leader>t8 :setlocal shiftwidth=8<cr>
-
-        " 为选中代码加括号啥的
-        vnoremap $1 <esc>`>a)<esc>`<i(<esc>
-        vnoremap $2 <esc>`>a]<esc>`<i[<esc>
-        vnoremap $3 <esc>`>a}<esc>`<i{<esc>
-        vnoremap $$ <esc>`>a"<esc>`<i"<esc>
-        vnoremap $q <esc>`>a'<esc>`<i'<esc>
-
-        " Do :help cope if you are unsure what cope is. It's super useful!
-        map <leader>t1 :botright cope<cr>
-
-        " nmap <leader>t1 :marks<CR>
-        " nmap <leader>t1 :MarksBrowser<CR>
-        " nmap <leader>t1 :ConqueTermVSplit bash <cr>
-        " nmap <leader>t1 :ConqueTermSplit bash <cr>
-        " nmap <leader>t1 :stj <C-R>=expand("<cword>")<CR><CR>
-        " nmap <leader>t1 :call RunShell("Generate tags", "ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .")<cr>
-
-        "使用,v来选择刚刚复制的段落，这样可以用来缩进
-        "nnoremap <leader>v v`]
-
-        nnoremap <S-q> :tabprevious<CR>
-        nnoremap <S-w> :tabnext<CR>
-        nnoremap te :tabedit 
-        nnoremap tc :tabclose<cr>
-        nnoremap tm :tabmove 
-        map gf :tabnew <cfile><cr>
-
-        "插入模式下移动
-        inoremap <c-h> <left>
-        inoremap <c-j> <down>
-        inoremap <c-k> <up>
-        inoremap <c-l> <right>
-        inoremap <C-a> <HOME>
-        inoremap <C-e> <END>
-        "=====================================================
-        " 意义不大
-        "set grepprg=/bin/grep\ -nH  "":grep" 使用的程序
-        "let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
-        "let g:SuperTabRetainCompletionType=2
-        "let g:SuperTabDefaultCompletionType="<C-X><C-O>"
-
-        "F6 for uncomment
-        " vmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
-        " nmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
-        " imap <F6> <ESC>:s=^\(//\)*==g<cr>:noh<cr>
-
-        " nnoremap <tab> %
-        " vnoremap <tab> %
-
-        " Bash like keys for the command line
-        " cnoremap <C-A> <Home>
-        " cnoremap <C-E> <End>
-        " cnoremap <C-K> <C-U>
-        " cnoremap <C-P> <Up>
-        " cnoremap <C-N> <Down>
-" }
-
 " 剩余的bundles {
 "---------------------------------------------------
 "  Bundle 'jeaye/color_coded'
+"---------------------------------------------------
+"  Bundle 'kassio/neoterm'
+"  Bundle 'wincent/terminus'
 "---------------------------------------------------
  Bundle 'rdnetto/YCM-Generator'
 " 需要将clang+llvm加入到PATH中
@@ -1356,5 +1313,34 @@ endfunction
         " inoremap <F1> <ESC>
         " nnoremap <F1> <ESC>
         " vnoremap <F1> <ESC>
+        "---------------------------------------------------
+        " 意义不大
+        "set grepprg=/bin/grep\ -nH  "":grep" 使用的程序
+        "let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
+        "let g:SuperTabRetainCompletionType=2
+        "let g:SuperTabDefaultCompletionType="<C-X><C-O>"
+        "---------------------------------------------------
+        "F6 for uncomment
+        " vmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
+        " nmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
+        " imap <F6> <ESC>:s=^\(//\)*==g<cr>:noh<cr>
+        "---------------------------------------------------
+        " set mousemodel=extend
+        " set mousemodel=popup
+        " set switchbuf=usetab
+        "---------------------------------------------------
+        " set formatoptions=lq            " 控制 Vim 如何对文本进行排版
+        " set formatoptions=tcrn2bmMB1j
+        " set formatoptions+=mM             "自动对中文换行
+        " set cindent                        " 使用C样式的缩进
+        " set cinoptions=:0                  " 设置 'cindent' 时如何缩进
+        " set smartindent                    " C 程序智能自动缩进
+        "---------------------------------------------------
+        " Do :help cope if you are unsure what cope is. It's super useful!
+        " map <leader>t1 :botright cope<cr>
+        "---------------------------------------------------
+        " set fileformats=unix,dos,mac       " 自动识别UNIX格式和MS-DOS格式
+        " set fileformat=unix                " 以UNIX的换行符格式保存文件，注意是去掉一个^M
+        " set fileformat=dos                 " 以dos的换行符格式保存文件, 注意是在行尾变为两个^M
         "---------------------------------------------------
 " }
