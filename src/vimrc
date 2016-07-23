@@ -74,8 +74,7 @@
  highlight User5 ctermfg=black
  highlight User6 ctermfg=blue
  highlight User7 ctermbg=black
- set statusline=%7*\ %*[file:\ %2*%t%r%h%w%*]%3*%m%*[dir:\ %<%2*%{CurDir()}%*]%=\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ %4*[%{&ff}][%{&encoding}]%6*%y%*[Line:%2*%l%*/%2*%L%*,Column:%2*%c%*][%2*%p%%%*]
-"set statusline=\ %{HasPaste()}\ ascii=%b
+ set statusline=%7*\ %3*%{Checkmail()}%{HasPaste()}%*[file:\ %2*%t%r%h%w%*]%3*%m%*[dir:\ %<%2*%{CurDir()}%*]%=\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ %4*[%{&ff}][%{&encoding}]%6*%y%*[Line:%2*%l%*/%2*%L%*,Column:%2*%c%*][%2*%p%%%*]
 function! InsertStatuslineColor(mode)
     if a:mode == 'i'
         hi User7 ctermbg=red
@@ -243,7 +242,7 @@ set clipboard+=unnamed
  nnoremap <S-w> :tabnext<CR>
  nnoremap te :tabedit
  nnoremap tc :tabclose<cr>
- nnoremap tm :tabmove 
+ nnoremap tm :call Delmail()<cr>
 
 " 在文件名上按gf时，在新的tab中打开
  map gf :tabnew <cfile><cr>
@@ -450,7 +449,7 @@ endif " has("autocmd")
 "选中状态下 Ctrl+c 复制
 "vmap <C-c> "+y
 "取消粘贴缩进
-"nmap <leader>p :set paste<CR>
+" nmap <leader>p :set paste<CR>
 "nmap <leader>pp :set nopaste<CR>
 "map <leader>pp :setlocal paste!<cr>
 
@@ -544,14 +543,24 @@ endif " has("autocmd")
 "nmap <F11> :call RunShell("Generate filename tags", "~/.vim/shell/genfiletags.sh")<cr>
 " 清除前面数字加. exaple 12.aaa-->aaa 不适合代码！！！
 "nmap ff :1,$s///g
+function! Delmail()
+        let ret = delete("/data1/home/wgao/.local/v/new_email")
+endfunction
 
-" function! HasPaste()
-"     if &paste
-"         return 'PASTE MODE  '
-"     else
-"         return ''
-"     endif
-" endfunction
+function! Checkmail()
+        if filereadable("/data1/home/wgao/.local/v/new_email") " add any database in current directory
+                return 'mail!'
+        else
+                return ' '
+endfunction
+
+function! HasPaste()
+    if &paste
+        return '[PASTE MODE]'
+    else
+        return ''
+    endif
+endfunction
 "
 " 构思一些模式，进行分类，能放在插件中最好"
 

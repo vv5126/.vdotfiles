@@ -95,6 +95,7 @@ def main(x):
     file_pretreatment(x)
 
     file_in = open(x)
+    file_tag = open('.tagfile','w')
 
     while 1:
         lines = file_in.readlines(100000)
@@ -105,9 +106,12 @@ def main(x):
             tmp = line[0:line.find(' ')]
             tmp = tmp[tmp.rfind('/')+1:]
             if tmp in cc:
+                line = line.strip('\n')
                 line = line.split(' ')
                 getnext = 0
                 for n in line:
+                    if n[-2:] == '.c' and os.path.isfile(n):
+                        file_tag.write(n + '\n')
                     if n == '-I' or n == '-i':
                         getnext = 1
                         continue
@@ -116,6 +120,7 @@ def main(x):
                     if getnext == 1:
                         getnext = 0
                         add_new(table,n)
+
     file_in.close()
 
     if not os.path.isfile(ycm_ext_ffpath):
@@ -128,6 +133,9 @@ def main(x):
         return
 
     table = "\n".join(table)
+    file_tag.writelines(table)
+    file_tag.close()
+
     newins = prsfinc(table)
     if newins is '':
         print 'wft.process return val'

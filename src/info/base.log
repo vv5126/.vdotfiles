@@ -6,6 +6,8 @@ xmodmap /home/user/.Xmodmap
 2.add to local /etc/crontab:
 */30 *    * * *   user    /bin/tmsync
 */10 *    * * *   user    /home/user/.bin/local/check-new-mail
+service crond restart
+service crond status
 
 3.add to local /etc/sudoers:    sudo visudo
 sudo chgrp root vsudoer

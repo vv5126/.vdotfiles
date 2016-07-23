@@ -25,7 +25,7 @@ password = asd123456
 
 [destination]
 type = Maildir
-path = ~/.getmail/maildir/
+path = $dir/
 user = user
 
 [options]

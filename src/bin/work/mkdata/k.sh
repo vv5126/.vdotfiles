@@ -42,6 +42,12 @@ function mk() {
 			scp $the_image $target_dir/$new_target_name
 		}
 		;;
+	'NOS')
+		[ "$needclean" = "1" ] && make clean
+		[ -f "$the_image" ] && rm $the_image
+                make uImage -j32
+		vcp $the_image 
+		;;
 	*)
 		;;
 	esac
@@ -145,11 +151,14 @@ function make_i() {
 	'c')
 		make distclean
 		;;
+	't')
+                [ -f '.tagfile' ] && ctags -L .tagfile || echo failed!
+		;;
         'ycm_conf')
                 make clean
                 make uImage -n -j32 > .tmp 2>&1
                 ycmadd .tmp
-                rm .tmp
+                # rm .tmp
                 ;;
 	*)
 		;;
