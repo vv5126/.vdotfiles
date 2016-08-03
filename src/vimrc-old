@@ -1,0 +1,340 @@
+可用的快捷键
+<F2><F3><F4><F7><F8><F9>
+必须设置：
+1+n
+filetype plugin on                 " 根据侦测到的不同类型加载对应的插件
+filetype indent on                 " 为特定文件类型载入相关缩进文件
+syntax on                          " 允许用指定语法高亮配色方案替换默认方案
+set nocompatible                   " 关闭兼容模式, 不要兼容vi，建议设置，否则会有很多不兼容的问题
+绝对设置:
+set wildmode=list:longest,full     " 自动补全时，匹配最长子串，列出文件
+set splitright                     " 用vsplit新建窗口，让新的放右边
+set splitbelow                     " 用split新建窗口，让新的放下面
+set mouse=a                        " 启动鼠标所有模式，但是右键功能不可用, 可以保证鼠标滚屏在当前屏幕内
+set scrolloff=3                    " 光标移动到buffer的顶部和底部时保持的行距离
+set laststatus=2                   " 启动显示状态行(1),总是显示状态行(2)
+set t_Co=256                       " 设置256色显示
+set history=300                    " history文件中需要记录的行数
+set background=dark                " 背景使用黑色
+set number                         " 开启行号显示
+set ruler                          " 显示标尺
+set showmatch                      " 高亮显示匹配的括号
+set incsearch                      " 输入搜索内容时就显示搜索结果
+set hlsearch                       " 搜索时高亮显示被找到的文本
+set hidden                         " 允许在有未保存的修改时切换缓冲区，此时的修改由 vim 负责保存
+set cursorline                     " 高亮显示当前行
+set nowrap                         " 禁止自动换行
+set ignorecase                     " 搜索时忽略大小写
+set smartcase                      " 设置大小写敏感和聪明感知(小写全搜，大写完全匹配)
+set virtualedit=onemore            " 光标可以移到当行最后一个字符之后
+leader键的功能设置
+设置状态行
+显示：路径，文件名 总行数 编码 文件格式
+set statusline=%7* %3*%{Checkmail()}%{HasPaste()}%*[file: %2*%t%r%h%w%*]%3*%m%*[dir: %<%2*%{CurDir()}%*]%=                    %4*[%{&ff}][%{&encoding}]%6*%y%*[Line:%2*%l%*/%2*%L%*,Column:%2*%c%*][%2*%p%%%*]
+绝对设置 end
+MAP
+
+nmap <leader>ds :%s/s+$//<cr>
+没sudo却想保存
+cmap w!! w !sudo tee % >/dev/null
+diffoff
+noremap <S-h> <C-left>
+noremap <S-j> <pagedown>
+noremap <S-k> <pageup>
+noremap <S-l> <C-right>
+inoremap <c-h> <left>
+inoremap <c-j> <down>
+inoremap <c-k> <up>
+inoremap <c-l> <right>
+nnoremap <Leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+黏贴板
+if has('clipboard')
+if has('unnamedplus')
+set clipboard=unnamedplus
+set clipboard=unnamed
+set clipboard+=unnamed
+iab wgao <c-r>='printf("wgao (%d %s) %d %sn", __LINE__, __func__, 0, "");'<cr>
+iab idate <c-r>=strftime("%Y-%m-%d")<CR>
+iab itime <c-r>=strftime("%H:%M")<CR>
+table 设置
+nnoremap <F2> :tabnew<CR>
+nnoremap tc :tabclose<cr>
+nnoremap tm :call Delmail()<cr>
+在文件名上按gf时，在新的tab中打开
+map gf :tabnew <cfile><cr>
+window 设置
+使用,w来垂直分割窗口，这样可以同时查看多个文件,如果想水平分割则<c-w>s
+nnoremap <leader>w <c-w>v<c-w>l
+nnoremap <leader>wc <c-w>c
+nnoremap <leader>ww <c-w>w
+以下列出了和语言编码的相关的设置：
+环境变量 LANG（使用的语言）；
+环境变量 LC_CTYPE（使用的内部编码）；
+Vim 选项 encoding(enc)（Vim 的内部编码）；不管文件的编码如何，不管如何显示和输入， Vim 内部使用的编码是 UTF-8；这是国际化支持的基础。
+Vim 选项 termencoding(tenc)（Vim 在与屏幕/键盘交互时使用的编码）；
+Vim 选项 fileencoding(fenc)（Vim 当前编辑的文件在存储时的编码）；
+Vim 选项 fileencodings(fencs)（Vim 打开文件时的尝试使用的编码）；
+Vim 选项 ambiwidth（对“不明宽度”字符的处理方式；Vim 6.1.455 后引入）。
+set nojoinspaces                   " 用J合并两行用一个空格隔开
+set tags=tags;                     " 查找并启用tag
+
+set foldlevel=3
+setlocal foldlevel=1               " 设置折叠层数为
+set foldmethod=marker
+set nofoldenable                   " 启动 vim 时关闭折叠代码
+set foldlevel=100
+set foldcolumn=1                   " 设置折叠区域的宽度
+
+不常用
+: exec 'cd ~/' . fnameescape('/.vim')
+
+配色方案
+
+better color
+Bundle 'tomasr/molokai'
+let g:molokai_original=1
+colorscheme molokai
+terminal下面的背景问题
+let g:solarized_termtrans=1
+let g:solarized_termcolors=256
+let g:solarized_contrast="high"
+let g:solarized_visibility="high"
+tab键的设定
+
+set softtabstop=8                  " 让 vim 把连续数量的空格视为一个制表符, 使得按退格键时可以一次删掉 8 个空格
+autocmd FileType Makefile set noexpandtab
+set backspace=indent,eol,start     " 这指明在插入模式下在哪里允许 <BS> 删除光标前面的字符。退格键分别可删除缩进，上一行结束，insert之前的字
+set wildignore+=*.bak,*.o,*.e,*~
+set wildignore+=*.obj,.git,*.pyc
+文本格式和排版
+set formatoptions=tcrqn            " 控制 Vim 如何对文本进行排版
+set formatoptions+=mM
+set formatoptions+=mB
+set formatoptions=qrnl
+set fileformats=unix,dos,mac       " 自动识别UNIX格式和MS-DOS格式     参与自动检测的 'fileformat' 的格式
+nmap <leader>fd :set fileformat=dos<CR>
+nmap <leader>fu :set fileformat=unix<CR>
+代码补全
+set completeopt=preview,menu
+set completeopt=longest,menuone
+set autoindent                     " 智能缩进，继承前一行的缩进方式，特别适用于多行注释, 相应的有cindent，官方说autoindent可以支持各种文件的缩进，但是效果会比只支持C/C++cindent效果会差一点，但笔者并没有看出来
+set linespace=0                    " 字符间插入的像素行数目
+set pastetoggle=<F12>              " 指定F12进入黏贴模式，可以正常复制缩进
+set listchars=tab:› ,trail:•,extends:#,nbsp:. " 空格等无效字符显示
+set listchars=tab:>-,trail:-
+set report=0
+set gcr=a:block-blinkon0           " 禁止光标闪烁
+set whichwrap=b,s,h,l,<,>,[,]      " 行尾可右移到下行，行首左移到上行,b：退格，s：空格，hl：左右，<>：n/v模式下的左右，[]：i/r模式下的左右
+set whichwrap=b,s,<,>,[,]          " 让退格，空格，上下箭头遇到行首行尾时自动移到下一行（包括insert模式）
+set whichwrap+=h,l                 " 允许backspace和光标键跨越行边界
+使用tab键来代替%进行匹配跳转
+nnoremap <tab> %
+vnoremap <tab> %
+搜索替换
+nmap <leader>s :,s///c
+选中状态下 Ctrl+c 复制
+取消粘贴缩进
+
+选中状态下 Ctrl+c 复制
+map <C-v> "*pa
+=> Parenthesis/bracket expanding
+vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+vnoremap $$ <esc>`>a"<esc>`<i"<esc>
+vnoremap $q <esc>`>a'<esc>`<i'<esc>
+map <leader>cc :botright cope<cr>
+nmap <F10> :call HLUDSync()<cr>
+nmap <leader>gs :GetScripts<cr>
+设置tag和window间快速跳转
+let g:easyWindows = 1
+if exists('g:easyWindows')
+向上
+map <C-J> <C-W>j<C-W>_
+向下
+map <C-K> <C-W>k<C-W>_
+向右
+map <C-L> <C-W>l<C-W>_
+向左
+map <C-H> <C-W>h<C-W>_
+map! <C-Z> <Esc>zzi
+map! <C-O> <C-Y>,
+imap <C-k> <C-y>,
+imap <C-t> <C-q><TAB>
+打开树状文件目录
+map <C-F3> be
+nmap  cc
+vmap  cc
+nmap <F9> :marks<CR>
+nmap <F4> :MarksBrowser<CR>
+nmap <C-r> :ConqueTermVSplit bash <cr>
+nmap <C-P> :ConqueTermSplit bash <cr>
+nmap <F2> :set ic<cr>/
+nmap <S-C> :stj <C-R>=expand("<cword>")<CR><CR>
+nmap  <F7> :call RunShell("get tags_dir","tag")<cr>
+nmap  <F9> :call RunShell("Generate tags", "ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .")<cr>
+nmap <F11> :call RunShell("Generate filename tags", "~/.vim/shell/genfiletags.sh")<cr>
+nmap ff :1,$s///g
+function! Delmail()
+let ret = delete("/data1/home/wgao/.local/v/new_email")
+function! Checkmail()
+if filereadable("/data1/home/wgao/.local/v/new_email") " add any database in current directory
+return 'mail!'
+return ' '
+全屏开/关快捷键
+map <silent> <F11> :call ToggleFullscreen()<CR>
+启动 vim 时自动全屏
+autocmd VimEnter * call ToggleFullscreen()
+将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
+fun! ToggleFullscreen()
+call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
+endf
+可能用不到的配置
+nmap cc :color <space>
+nmap <leader>w :w!<cr>
+set matchtime=5                    " 匹配括号高亮的时间（单位是十分之一秒）
+set nowrapscan              " 禁止在搜索到文件两端时重新搜索
+highlight cursorLine cterm=bold ctermfg=green ctermbg=red
+set cursorcolumn                   "高亮显示当前列
+highlight cursorColumn cterm=bold ctermfg=green ctermbg=red
+highlight ColorColumn ctermbg=green ctermfg=green
+set wrap                           "自动换行
+set autowrite                      "自动保存
+set scrolljump=5                   " 光标离开屏幕范围
+set shortmess=atI"                 " 关闭欢迎页面
+set backup                         "覆盖文件时保留备份文件
+修改vim的正则表达
+nnoremap / /v
+vnoremap / /v
+set modelines=0                   " set项的检查数量??
+暂时没有使用
+Tab configuration
+map <leader>nn :n <cr>
+set helplang=cn                    " 显示中文帮助
+初始窗口的宽度
+set columns=135
+初始窗口的高度
+set lines=50
+初始窗口的位置
+winpos 620 45
+匹配括号的规则，增加针对html的<>
+set matchpairs=(:),{:},[:],<:>
+nmap <A-j> mz:m+<cr>`z
+nmap  <F6> :vimgrep /<C-R>=expand("<cword>")<cr>/ **/*.c **/*.h<cr><C-o>:cw<cr>
+map <leader>t8 :setlocal shiftwidth=4<cr>
+noremap <Leader>ff :%s/
+$//g<cr>:%s/
+/ /g<cr>
+autocmd Filetype * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+autocmd InsertLeave * set nocul    " 用浅色高亮当前行
+autocmd InsertEnter * set cul      " 用浅色高亮当前行
+set wildmenu                     " vim 自身命令行模式智能补全
+插件窗口的宽度，如TagList,NERD_tree等，自己设置
+let s:PlugWinSize = 30
+good function
+
+插件的设置
+echo "use "git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle""
+nmap <S-F6> :BundleSearch<cr>
+Indent Guides设置
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+let Vundle manage Vundle
+required!
+Bundle 'gmarik/vundle'
+
+good good
+
+光标多行编辑 <C-n> <C-x> <C-p> 推荐：****
+Bundle 'terryma/vim-multiple-cursors'
+
+Bundle 'easymotion/vim-easymotion'
+
+
+Bundle 'godlygeek/tabular'
+nmap <Leader>a& :Tabularize /&<CR>
+vmap <Leader>a& :Tabularize /&<CR>
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a: :Tabularize /:<CR>
+vmap <Leader>a: :Tabularize /:<CR>
+nmap <Leader>a:: :Tabularize /:zs<CR>
+vmap <Leader>a:: :Tabularize /:zs<CR>
+nmap <Leader>a, :Tabularize /,<CR>
+vmap <Leader>a, :Tabularize /,<CR>
+nmap <Leader>a,, :Tabularize /,zs<CR>
+vmap <Leader>a,, :Tabularize /,zs<CR>
+nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+
+和snipmate 冲突
+Bundle 'neocomplcache'
+if 1    " NerdTree的设置 并且相对行号显示
+Bundle "scrooloose/nerdtree"
+:ERDtree 打开NERD_tree         :NERDtreeClose    关闭NERD_tree
+let g:c_syntax_for_h=1
+nmap <leader>nt :NERDTreeFind<CR>
+imap <F3> <ESC>:NERDTreeToggle<CR>
+let NERDTreeKeepTreeInNewTab=1
+let NERDTreeShowBookmarks=1
+let NERDTreeShowHidden=1
+let NERDTreeIgnore=['.pyc', '~$', '.swo$', '.swp$', '.git', '.hg', '.svn', '.bzr']
+let g:NERDTreeQuitOnOpen=1
+let NERDTreeChDirMode=0
+let NERDTreeMouseMode=2
+let g:nerdtree_tabs_open_on_gui_startup=0
+
+let col = col('.') - 1
+if !col || getline('.')[col - 1] !~ 'k'
+return "<tab>"
+return "<c-p>"
+
+Bundle 'Lokaltog/vim-powerline'
+
+一些插件依赖的库函数
+let newpattern = 'c' . a:pattern
+
+在两端加上、修改、删除匹配的符号如（）
+Bundle 'vim-surround'
+Bundle 'altercation/vim-colors-solarized'   " Solarized: 非常流行的配色。
+Bundle 'surround'           " 用来加括号，引号，前后缀等等，写XML很有用（特别是配合repeat）
+if you use https://github.com/Valloric/YouCompleteMe.
+
+给选中的文字加上引号,支持( { [ < ' " `,选中后,加上你想要添加的符号,比如选中abc后,(,得到(abc)
+
+配色主题 推荐：****
+Bundle "altercation/vim-colors-solarized"
+设置主题,UI
+solarized 主题
+if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+" let g:solarized_termtrans=1
+" let g:solarized_contrast="normal"
+" let g:solarized_visibility="normal"
+" colorscheme solarized             " Load a colorscheme
+
+unused
+漂亮的括号 感觉意义不大
+Bundle 'kien/rainbow_parentheses.vim'
+Bundle 'tpope/vim-markdown'
+自动生成HTML/CSS代码背景,编辑html.
+Bundle 'mattn/emmet-vim'
+单词完成，没用它
+word_complete.vim
+great for latex
+latex-suite
+同时选择多个区域
+Bundle 'voithos/vim-multiselect'
+Bundle 'yssource/python.vim'
+Bundle 'python_match.vim'
+Bundle 'pythoncomplete'
+Bundle 'elzr/vim-json'
+Bundle 'groenewege/vim-less'
+Bundle 'briancollins/vim-jst'
+
+Bundle 'vimballPlugin.vim'
+Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
+Bundle 'ianva/vim-youdao-translater'
+vnoremap <silent> <C-T> :<C-u>Ydv<CR>
+nnoremap <silent> <C-T> :<C-u>Ydc<CR>
+noremap <leader>yd :<C-u>Yde<CR>
+endif "插件的设置 end"

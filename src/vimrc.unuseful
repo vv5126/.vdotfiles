@@ -909,3 +909,19 @@ endif
         nmap <leader>p :set paste<CR>
         nmap <leader>pp :set nopaste<CR>
         map <leader>pp :setlocal paste!<cr>
+
+ nnoremap <leader>gg :call ADD_YCM_CONF()<cr>
+function! ADD_YCM_CONF()
+    let c = inputlist(['select one:',"1.c","2.py"])
+    echo "\n"
+    if c == 1
+        let l:dir = system("getdir_git_repo")
+        let l:dir = matchstr(l:dir, '/.*')
+        exec 'cd' l:dir
+        call system("cp ~/.vim/ycm_conf/ycm_extra_conf_c.py ./.ycm_extra_conf.py")
+        echon "OK."
+        exec 'cd -'
+    elseif c == 2
+        echon c
+    endif
+endfunction
