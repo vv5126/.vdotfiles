@@ -6,6 +6,10 @@ dorado_v21
 mercury_v02
 newton2
 solar
+halley2
+yak1
+slt_x1500
+other
 )
 
 surport_os=(
@@ -13,6 +17,8 @@ android_43
 android_44
 android_51
 android_60
+android_70
+ucos
 tizen23
 brillo
 buildroot

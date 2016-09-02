@@ -328,8 +328,12 @@
         nnoremap <leader>ds :%s/\s\+$//<cr>
 
         "清除选中行中所有空格
-        nnoremap <leader>dd :s/[ \t]\{2,}//g<cr>:noh<cr>
-        vnoremap <leader>dd :s/[ \t]\{2,}//g<cr>:noh<cr>
+        nnoremap <leader>dd :s/[ \t]\{1,}//g<cr>:noh<cr>
+        vnoremap <leader>dd :s/[ \t]\{1,}//g<cr>:noh<cr>
+
+        "清除选中行中空格,保留一个
+        nnoremap <leader>d1 :s/[ \t]\{1,}/ /g<cr>:noh<cr>
+        vnoremap <leader>d1 :s/[ \t]\{1,}/ /g<cr>:noh<cr>
 
         "设置tab宽度
         map <leader>t2 :setlocal shiftwidth=2<cr>
@@ -409,6 +413,7 @@
     " vmode C {
         if g:vmode_c == 1
 
+            autocmd BufRead *.h set filetype=c
             " -------------------------------------------------
             " set colorcolumn=37                 " 彩色显示一列，用以规范代码
             " highlight ColorColumn ctermbg=green ctermfg=black
@@ -426,7 +431,8 @@
             nmap  <F4> :!mk<cr>
             nmap  <S-F4> :!mk ycm_conf &<cr>
             " -------------------------------------------------
-            iab wgao1 <c-r>='printk("wgao (l:%d, f:%s, F:%s, p:%d) %d %s\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
+            " iab wgao1 <c-r>='printk("wgao (l:%d, f:%s, F:%s, p:%d) %d %s\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
+            iab wgao1 <c-r>='printk("wgao (l:%d, f:%s, F:%s) %d %s\n", __LINE__, __func__, __FILE__, 0, "");'<cr>
             iab wgao2 <c-r>='printf("wgao (l:%d, f:%s, F:%s, p:%d) %d %s\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
             " -------------------------------------------------
             nnoremap <leader>mq :call ADD_H()<cr>
@@ -439,6 +445,7 @@
                     call append('$',"#endif")
             endfunction
             " -------------------------------------------------
+            map <leader>b :vs! ~/.vim/buffer<cr>
 
         endif "g:vmode_c"
 

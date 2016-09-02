@@ -1,0 +1,25 @@
+#!/bin/bash
+
+mtosector() {
+        local val
+        ((val=$1*1024*1024/512))
+        echo $val
+}
+
+ktosector() {
+        local val
+        ((val=$1*1024/512))
+        echo $val
+}
+
+[ $# -eq 1 ] && {
+        if [ ${1:0-1} == 'm' ]; then
+                mtosector ${1:0:0-1}
+        elif [ ${1:0-1} == 'k' ]; then
+                ktosector ${1:0:0-1}
+        else
+                echo need end with m or k.
+        fi
+} || {
+        echo need para!
+}

@@ -6,6 +6,7 @@ APP_DIR=${APP_DIR%\/*}
 function make_git_push_file() {
 	local file
 	local mark
+        local branch
 	> git-push.sh
 	chmod +x git-push.sh
 	git status -s | {
@@ -30,9 +31,16 @@ function make_git_push_file() {
 	echo -e >> git-push.sh
 	echo git commit -m "\"xxx\"" >> git-push.sh
 
-	local branch=`git branch | awk '{print $2}'`
 	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $1}'`
-	echo git push $warehouse $branch:refs/for/refs/heads/$branch >> git-push.sh
+        git branch -a | {
+                while read line; do
+                        [[ "$line" =~ "->" ]] && {
+                                branch=${line##*-> }
+                                branch=${branch##*/}
+	                        echo git push $warehouse HEAD:refs/for/refs/heads/$branch >> git-push.sh
+                        }
+                done
+        }
 }
 
 function git_bak_list() {

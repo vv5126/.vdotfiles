@@ -6,7 +6,6 @@ import os
 import cStringIO
 import re
 import sys
-import string
 
 
 cc = ['gcc', 'mips-linux-gnu-gcc', 'mipsel-linux-android-gcc']
@@ -66,22 +65,10 @@ def file_pretreatment(x):
     with open(x,'w') as f:
         f.write(s2)
 
-def add_new(x,y):
-    cur_path = os.getcwd()
-    y = string.replace(y,'"','')
-    if os.path.isdir(cur_path + '/' +y):
-        if y not in x:
-            x.append(y)
-    elif os.path.isdir(y):
-        y = y[len(cur_path)+1:]
-        if y not in x:
-            x.append(y)
-
 def main(x):
     ycm_ext_ffpath = os.path.expanduser('~') + '/.vim/ycm_conf/ycm_extra_conf_c.py'
     dstfname = ".ycm_extra_conf.py"
     cur_path = os.getcwd()
-    table = []
 
     if cur_path.strip() == '':
         print 'wtf.'
@@ -94,31 +81,25 @@ def main(x):
     file_pretreatment(x)
 
     file_in = open(x)
-    file_tag = open('.tagfile','w')
 
-    while 1:
-        lines = file_in.readlines(100000)
-        if not lines:
-            break
-        for line in lines:
-            line = line.strip(' ')
-            tmp = line[0:line.find(' ')]
-            tmp = tmp[tmp.rfind('/')+1:]
-            if tmp in cc:
-                line = line.strip('\n')
-                line = line.split(' ')
-                getnext = 0
-                for n in line:
-                    if n[-2:] == '.c' and os.path.isfile(n):
-                        file_tag.write(n + '\n')
-                    if n == '-I' or n == '-i':
-                        getnext = 1
-                        continue
-                    if n[0:2] == '-I' or n[0:2] == '-i':
-                        add_new(table,n[2:])
-                    if getnext == 1:
-                        getnext = 0
-                        add_new(table,n)
+    lines = file_in.read()
+
+            # line = line.strip(' ')
+            # tmp = line[0:line.find(' ')]
+            # tmp = tmp[tmp.rfind('/')+1:]
+            # if tmp in cc:
+            #     line = line.strip('\n')
+            #     line = line.split(' ')
+            #     getnext = 0
+            #     for n in line:
+            #         if n == '-I' or n == '-i':
+            #             getnext = 1
+            #             continue
+            #         if n[0:2] == '-I' or n[0:2] == '-i':
+            #             table_add_filter(table_h,n[2:])
+            #         if getnext == 1:
+            #             getnext = 0
+            #             table_add_filter(table_h,n)
 
     file_in.close()
 
@@ -131,11 +112,7 @@ def main(x):
         print why
         return
 
-    table = "\n".join(table)
-    file_tag.writelines(table)
-    file_tag.close()
-
-    newins = prsfinc(table)
+    newins = prsfinc(lines)
     if newins is '':
         print 'wft.process return val'
         return
