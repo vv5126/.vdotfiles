@@ -43,6 +43,11 @@
 " :inoremap " ""<ESC>i
 " :inoremap ' ''<ESC>i
 
+"屏蔽掉讨厌的F1键
+" inoremap <F1> <ESC>
+" nnoremap <F1> <ESC>
+" vnoremap <F1> <ESC>
+" -------------------------------------------------
 
 
 """"""""""""""""""""""""""""""
@@ -733,11 +738,15 @@ inoremap <leader>w ""<esc>:let leavechar='"'<cr>i
 " Bundle 'Better-Javascript-Indentation'
 " Bundle 'jslint.vim'
 " Bundle 'pangloss/vim-javascript'
+" coffee-scrpit support
+" Bundle 'kchmck/vim-coffee-script'
 "---------------------------------------------------
 " js 推荐：****
 " jsbeautify的设置
 " Bundle '_jsbeautify'
 " nnoremap <leader>_ff :call g:Jsbeautify()<CR>
+" Bundle 'JSON.vim'
+" Bundle 'jQuery'
 "---------------------------------------------------
 " 神级插件，ZenCoding(原名)可以让你以一种神奇而无比爽快的感觉写HTML、CSS
 "  Bundle 'ZenCoding.vim'
@@ -882,6 +891,7 @@ endif
 " Bundle 'djangojump'
 " Bundle 'hdima/python-syntax'
 " Bundle 'hynek/vim-python-pep8-indent'
+" Bundle 'kevinw/pyflakes-vim'
 "---------------------------------------------------
 "---------------------------------------------------
 if 0
