@@ -77,3 +77,12 @@ EOF
 vncserver -kill :1
 vncserver :1
 *-----------*
+ftp
+sudo apt-get install vsftpd
+in /etc/vsftpd.conf:
+        anonymous_enable=NO
+        local_root=/home/linuxidc/公共的/FTP共享文件
+        local_enable=YES
+
+sudo service vsftpd restart
+*-----------*

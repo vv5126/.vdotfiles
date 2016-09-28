@@ -1,0 +1,26 @@
+#!/bin/bash
+
+[ $# != 1 ] && exit
+
+host=user@192.168.4.150
+
+cd_repo
+
+str_in=${1##*/system/}
+file=${str_in##*/}
+[ -d "./cts" ] && dir=/system/${str_in%/*} || dir=/${str_in%/*}
+# for android
+
+# echo $dir
+# echo $file
+
+scp $1 $host:~ > /dev/null
+
+local_dir=$(ssh $host "pwd")
+ssh $host "$local_dir/.vdotfiles/src/bin/local/adb remount" > /dev/null 2>&1
+ssh $host "$local_dir/.vdotfiles/src/bin/local/adb push $local_dir/$file $dir" > /dev/null 2>&1
+ssh $host "$local_dir/.vdotfiles/src/bin/local/adb shell sync" > /dev/null 2>&1
+
+[ $? == 0 ] && echo done
+
+cd - > /dev/null

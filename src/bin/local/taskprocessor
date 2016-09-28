@@ -1,0 +1,24 @@
+#!/bin/bash
+
+function deal(){
+    [ -z "$tasktype" ] && return 1
+
+    case "$tasktype" in
+        notify)
+            notify-send $title
+            ;;
+        sendmail)
+            $HOME/.bin/local/sendmail "$title" "$body"
+            ;;
+        execute)
+            $execute
+            ;;
+        *)
+            ;;
+    esac
+}
+
+[ $# -eq 1 ] && {
+    source "$1"
+    (deal)
+}

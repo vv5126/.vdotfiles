@@ -1,31 +1,15 @@
 #!/bin/bash
 
 VGL_NOTIFY=/tmp/.vpipe
-tmp_execute=/tmp/tmp
+decode=/home/user/.bin/local/taskprocessor
+tasklist=/tmp/vtask
 
 [ ! -w "$VGL_NOTIFY" ] && mknod "$VGL_NOTIFY" pipe
 
-function deal(){
-    source $tmp_execute
-    [ -z "$msg" ] && return 1
-
-    case "$msg" in
-        notify)
-            notify-send $str
-            ;;
-        sendmail)
-            $HOME/.bin/local/sendmail "$title" "$body"
-            ;;
-        *)
-            ;;
-    esac
-}
-
 while true; do
     str=$(cat $VGL_NOTIFY)
-    echo -e "#!/bin/bash\n$str" > $tmp_execute
-    chmod +x $tmp_execute
-    (deal)
+    echo -e "#!/bin/bash\n$str" > $tasklist
+    $decode $tasklist
 done
 
 exit 0

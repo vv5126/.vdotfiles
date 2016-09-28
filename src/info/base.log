@@ -3,11 +3,12 @@ vpipedaemon
 gnome-panel
 xmodmap /home/user/.Xmodmap
 
-2.add to local /etc/crontab:
+2.add to local crontab:
+crontab -e
 */30 *    * * *   user    /bin/tmsync
 */10 *    * * *   user    /home/user/.bin/local/check-new-mail
-service crond restart
-service crond status
+sudo service cron restart
+sudo service cron status
 
 3.add to local /etc/sudoers:    sudo visudo
 sudo chgrp root vsudoer

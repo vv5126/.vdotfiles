@@ -1,3 +1,7 @@
+
+echo mem > /sys/power/state
+
+
 http://192.168.1.59/Citrix/XenApp/site/default.aspx
 kernel
 

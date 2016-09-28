@@ -40,9 +40,15 @@ vim_init() {
     # vim -u      "$HOME/.vimrc" "+set nomore" "+BundleInstall!" "+BundleClean" "+qall"
 }
 
+be_sudoer() {
+    [ ! -f '/etc/sudoers.d/vsudoer' ] && ln -s /home/user/.bin/local/vsudoer /etc/sudoers.d/vsudoer
+    chown root /etc/sudoers.d/vsudoer
+    chgrp root /etc/sudoers.d/vsudoer
+}
 
 #======================== MAIN
 
+# be_sudoer
 generate_link
 vim_init
 echo " done!"

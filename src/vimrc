@@ -67,7 +67,7 @@
     map <leader>il :IndentLinesToggle<CR>
     " -------------------------------------------------
     " 显示git diff的插件
-    " Bundle 'airblade/vim-gitgutter'
+    Bundle 'airblade/vim-gitgutter'
     " Bundle 'mhinz/vim-signify'
     " -------------------------------------------------
     " 有道翻译，可惜只能英文到中文
@@ -370,6 +370,8 @@
         "函数内排版
         nmap = =a{
         " }
+
+        nmap <Leader>tl <Plug>GitGutterPreviewHunk
 
         " highlight cursorLine cterm=bold ctermfg=green ctermbg=black
         " highlight cursorColumn cterm=bold ctermfg=green ctermbg=black
@@ -972,7 +974,7 @@ endif
 "Bundle 'bash-support.vim'
 " -------------------------------------------------
 " 结构化数据变成漂亮的表
-Bundle 'Stormherz/tablify'
+" Bundle 'Stormherz/tablify'
 " -------------------------------------------------
 "自动排版，可以少打很多空格
 " Bundle 'ywgx/auto.vim'
@@ -1002,8 +1004,9 @@ Bundle 'Shougo/unite.vim'
 " 最大化当前buffer
 Bundle 'ZoomWin'
 " -------------------------------------------------
-" Bundle 'l9'   "FuzzyFinder底层依耐+
-" Bundle 'amjith/fuzzyfinder'
+"FuzzyFinder底层依耐+
+" Bundle 'l9'
+" Bundle 'junegunn/fzf'
 " FuzzyFinder缓冲器/文件/命令/标签/等浏览器的模糊匹配 +
 " electbuf.vim相比，它少了对多个buf的批量选择和处理
 " mru.vim -> fuzzyfinder.vim:FuzzyFinderMruFile
@@ -1077,9 +1080,6 @@ Bundle 'ZoomWin'
 " -------------------------------------------------
 " 一些插件用到的一些库函数
 " cecutil.vim
-" -------------------------------------------------
-" 画图
-" Bundle 'sketch.vim'
 " -------------------------------------------------
 " netrw清理工具，经常升级netrw的话，用来删除老版本
 " netrwclean.vim

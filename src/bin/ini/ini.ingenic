@@ -63,6 +63,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 	PATH="$HOME/.bin/local:$PATH"
 	# source ~/.bin/local/vlogin
     alias VB='VirtualBox --startvm $HOME/.VirtualBox/xp/xp.vbox &'
+    alias sm=thunderbird -compose
 } || {
 # java jdk
 ${JAVA_HOME:=/usr/lib/jvm/java}
