@@ -17,7 +17,7 @@ export VGLD_LOCALCLIPBOARD=$HOME/.local/.clipboard/local
 export VGL_LOCAL_USER='ingenic-wgao'
 export VGLD_INI=$HOME/.bin/ini
 export VGLD_LIB=$HOME/.bin/lib
-export VGL_ASD_FILE="$WORK_SERVER_MAIN":/home/wgao/.bin/work/.asd
+export VGL_ASD_FILE="$WORK_SERVER_MAIN":"$HOME"/.bin/work/.asd
 export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 
 # 4.15 #
@@ -48,7 +48,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 }
 
 # 4.10 #
-[ $(uname -n) == 'soft-4' ] && {
+[ $(uname -n) == 'sw' ] && {
     PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
     PATH=/pdev/chains/mipsel-linux-android-4.7/bin:$PATH
     PATH=/pdev/chains/mips-2012.09/bin:$PATH

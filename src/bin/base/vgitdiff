@@ -9,6 +9,8 @@ out_add=git.diff.add
 out_rm=git.diff.rm
 
 [ -s "$tmp_frist_diff" ] && rm $tmp_frist_diff
+[ -f "$tmp_add--" ] && rm $tmp_add--
+[ -f "$tmp_rm--" ] && rm $tmp_rm--
 [ -f "$tmp_add-" ] && rm $tmp_add-
 [ -f "$tmp_rm-" ] && rm $tmp_rm-
 [ -f "$tmp_add" ] && rm $tmp_add
@@ -22,12 +24,14 @@ cd - > /dev/null
 
 while read line; do
     [ "${line:0:3}" == "---" -o "${line:0:3}" == "+++" ] && continue
-        [ "${line:0:1}" == "+" ] && echo ${line:1} >> $tmp_add-
-        [ "${line:0:1}" == "-" ] && echo ${line:1} >> $tmp_rm-
+        [ "${line:0:1}" == "+" ] && echo ${line:1} >> $tmp_add--
+        [ "${line:0:1}" == "-" ] && echo ${line:1} >> $tmp_rm--
 done < $tmp_frist_diff
 
-cat $tmp_add- | grep -oP '[^" ].*' - > $tmp_add
-cat $tmp_rm- | grep -oP '[^" ].*' - > $tmp_rm
+cat $tmp_add-- | grep -oP '[^" ].*' - > $tmp_add-
+cat $tmp_add- | grep -oP '[^# ].*' - > $tmp_add
+cat $tmp_rm-- | grep -oP '[^" ].*' - > $tmp_rm-
+cat $tmp_rm- | grep -oP '[^# ].*' - > $tmp_rm
 
 while read line_src; do
         # echo line_src = $line_src

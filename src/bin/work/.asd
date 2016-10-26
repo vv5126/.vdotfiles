@@ -18,6 +18,10 @@ ssh -X fpga@192.168.4.13
 
 tftp 0x80600000 192.168.4.13:fpga/user/wgao/fpga/t10_lcd/f-Image; bootm 0x80600000
 tftp 0x80600000 192.168.4.13:fpga/user/wgao/uImage; bootm 0x80600000
+tftp 0x80800000 user/wgao/uImage; bootm 0x80800000
+
+set bootargs 'console=ttyS2,115200n8 mem=32M@0x0 loglevel=7 ip=192.168.4.254:192.168.4.1:192.168.4.1:255.255.255.0 rootdelay=2 nfsroot=192.168.4.13:user/bliu/root_ok rw'
+tftpboot 0x80800000 user/wgao/uImage;bootm 0x80800000
 ----------------------
 --------------------------------------------------------------
 confprosh

@@ -9,6 +9,8 @@ solar
 halley2
 yak1
 slt_x1500
+aw808
+mensa
 other
 )
 
@@ -22,5 +24,6 @@ ucos
 tizen23
 brillo
 buildroot
+manhattan
 NOS
 )

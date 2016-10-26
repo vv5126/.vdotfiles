@@ -7,4 +7,5 @@ src/bin/base/.vcp_conf
 src/bin/work/gawk
 src/vim/buffer
 src/vim/ycm_conf/ycm_extra_conf_c.pyc
-src/vim/session/
+src/bin/lib/lib.python/
+src/vim/sessions/

@@ -424,7 +424,9 @@
             "au BufWinEnter * let w:m2=matchadd('Underlined', '\%>' . 80 . 'v.\+', -1)
             " -------------------------------------------------
             " 屏蔽代码
-            vmap <Leader>jj dO#endif<Esc>PO#if 0<Esc>
+            vmap <Leader>j0 dO#endif<Esc>PO#if 0<Esc>
+	    " 调试
+            vmap <Leader>jd dO#endif<Esc>PO#ifdef DEBUG<Esc>
             " -------------------------------------------------
             "切换到函数头或尾
             nmap <tab> [[
@@ -437,14 +439,14 @@
             iab wgao1 <c-r>='printk("wgao (l:%d, f:%s, F:%s) %d %s\n", __LINE__, __func__, __FILE__, 0, "");'<cr>
             iab wgao2 <c-r>='printf("wgao (l:%d, f:%s, F:%s, p:%d) %d %s\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
             " -------------------------------------------------
-            nnoremap <leader>mq :call ADD_H()<cr>
+            nnoremap <leader>ah :call ADD_H()<cr>
 
             function! ADD_H()
                     let l:filename = substitute(toupper(expand("%:t")), '\.', "_", "g")
                     call append(0,"#ifndef __".l:filename."__")
                     call append(1,"#define __".l:filename."__")
                     call append(2,"")
-                    call append('$',"#endif")
+                    call append('$',"#endif /* __".l:filename."__ */")
             endfunction
             " -------------------------------------------------
             map <leader>b :vs! ~/.vim/buffer<cr>

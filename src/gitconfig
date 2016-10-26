@@ -7,6 +7,8 @@
 
 [push]
 	default = tracking
+[pull]
+  default = tracking
 
 [core]
 	    editor = vim
@@ -46,8 +48,12 @@
 	br = branch
 	co = checkout
 	ci = commit
+        l = log
 	last = log -1
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	lg1 = log --pretty=oneline --abbrev-commit
-	st = status
+	s = status
+        st = status
 	unstage = reset HEAD
+        d = diff
+        dd = diff --cache

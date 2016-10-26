@@ -5,6 +5,8 @@ function make_info_file(){
 	echo 							>> .project_info
 	echo '# [base]' 				>> .project_info
 	echo 							>> .project_info
+	echo "customer=$customer" 			>> .project_info
+	echo 							>> .project_info
 	echo "forOS=$forOS" 			>> .project_info
 	echo 							>> .project_info
 	echo "forBOARD=$forBOARD" 		>> .project_info
@@ -14,6 +16,8 @@ function make_info_file(){
 	echo "the_image=$the_image"		>> .project_info
 	echo 							>> .project_info
 	echo "lcd_name=$lcd_name"		>> .project_info
+	echo 							>> .project_info
+	echo "board_config=$board_config" 	>> .project_info
 	echo 							>> .project_info
 	echo '# [opt]'					>> .project_info
 	echo 							>> .project_info
@@ -40,8 +44,6 @@ function make_info_file(){
 	echo "git_remote=$git_remote" 	>> .project_info
 	echo 							>> .project_info
 	echo "git_branch=$git_branch" 	>> .project_info
-	echo 							>> .project_info
-	echo "board_config=$board_config" 	>> .project_info
 
 	case "$project_name" in
 		'kernel'*)

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VGL_NOTIFY=/tmp/.notify_pipe
+VGL_NOTIFY=/tmp/.vpipe
 
 getmail_dir="/home/user/.getmail"
 dir="$getmail_dir/maildir"
@@ -33,11 +33,14 @@ read_all = False
 delete = False
 EOF
 
-getmail --rcfile=getmailrc
+getmail -v --rcfile=getmailrc
 
 rm "$rc"
 
 l_fileCount=`ls "$check_dir" | wc -l`
 echo "fileCount: ${l_fileCount}"
 
-[ "$l_fileCount" -gt "0" ] && echo "收到新邮件!" > "$VGL_NOTIFY"
+tmp='tasktype=notify\n'
+tmp=$tmp'title=收到新邮件!'
+
+[ "$l_fileCount" -gt "0" ] && echo "$tmp" > "$VGL_NOTIFY"

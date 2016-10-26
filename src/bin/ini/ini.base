@@ -2,6 +2,9 @@
 alias ll='ls -AlFh --color'
 #alias cp='scp'
 alias sl='ls'
+alias LS='ls'
+alias SL='ls'
+alias ax='chmod +x'
 alias du='du -h -d 1'
 alias grep='grep --color -rn --exclude-dir=".git"'
 
@@ -10,4 +13,5 @@ export LANG=en_US.utf8
 
 export PYTHON_LIBRARIES="/usr/lib/python2.7"
 export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"
+export PYTHONPATH=$PYTHONPATH:$HOME/.bin/lib/lib.python
 export EDITOR=/usr/bin/vim

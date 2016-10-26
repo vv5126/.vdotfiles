@@ -33,6 +33,14 @@ mkfontdir
 fc-cache -vf
 rm ~/.vim/bundle/vim-powerline/*.cache
 
+6.Ubuntu取消自动更新命令
+vi /etc/apt/apt.conf.d/50unattended-upgrades
+Unattended-Upgrade::Allowed-Origins 全注释
+vi /etc/apt/apt.conf.d/10periodic
+APT::Periodic::Update-Package-Lists "1"; //显示更新包列表 0表示停用设置
+APT::Periodic::Download-Upgradeable-Packages "1"; //下载更新包 0表示停用设置
+APT::Periodic::AutocleanInterval "7"; // 7日自动删除
+APT::Periodic::Unattended-Upgrade "1"; //启用自动更新 0表示停用自动更新
 
 
 
