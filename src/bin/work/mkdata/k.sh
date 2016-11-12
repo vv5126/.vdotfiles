@@ -40,7 +40,7 @@ function mk() {
                     scp $the_image $target_dir/$new_target_name
 		}
 		;;
-	'NOS')
+	*)
 		make uImage -j32 && {
                         new_target_name=$target_name
                         [ "$addtime" = "1" ] && new_target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
@@ -51,8 +51,6 @@ function mk() {
                         scp $the_image $target_dir/$new_target_name
 		        # vcp $the_image 
 		}
-		;;
-	*)
 		;;
 	esac
 }
@@ -68,10 +66,14 @@ function init(){
 		[ -f "arch/mips/configs/$tmp" ] && { cp arch/mips/configs/$tmp .config; board_config=$tmp; } || return 1
 	fi
 
-	# tmp=$(user_select 'what Version' '3.10' '3.08')
-	# [ $? = 0 ] && project_type='kernel'$tmp
-	git_remote=$(git remote -v | head -2 | tail -1 | awk '{print $2}')
-	git_branch=$(git branch | grep '*' | awk '{print $2}')
+	git_remote="$(git remote -v | head -2 | tail -1 | awk '{print $2}')"
+
+	git_branch="$(git branch | grep '*' | awk '{print $2}')"
+        if [[ "$git_branch" =~ '(' ]]; then
+            tmp=$(git branch -a | grep -o '\->.*$')
+            git_branch=${tmp##*/}
+        fi
+
 	while read line; do
 		[[ $line =~ "Kernel Configuration" ]] && project_type="kernel$(echo "$line" | cut -d " " -f 3)"
 		[[ "$line" =~ "CONFIG_BOARD_NAME" ]] && forBOARD=${line##*=}
@@ -88,7 +90,16 @@ function init(){
 	target_name='$project_type-$forBOARD-$forOS'
 
 	tmp=$(user_select 'what OS' "${surport_os[@]}")
-	[ $? = 0 ] && forOS=$tmp
+        [ $tmp -ne '0' ] && forOS=$tmp || forOS='none'
+
+	case $project_type in
+	'kernel3.0.8')
+		the_image=arch/mips/boot/compressed/uImage
+		;;
+	'kernel3.10.14')
+		the_image=arch/mips/boot/uImage
+		;;
+	esac
 
 	case $forOS in
 	'android'*)
@@ -259,14 +270,14 @@ function new_gcc_filter() {
 
     # rm .tmp_h
 
-    [ -n "$file_c" ] && echo $file_c > file_tag
-    [ -n "$file_s" ] && echo $file_s >> file_tag
-    [ -n "$file_h" ] && echo $file_h >> file_tag
+    [ -n "$file_c" ] && echo $file_c > .tagfile
+    [ -n "$file_s" ] && echo $file_s >> .tagfile
+    [ -n "$file_h" ] && echo $file_h >> .tagfile
 
     echo $file_include > file_include
     # echo $file_h >> file_include
 
-    sed -i 's/ /\n/g' file_tag
+    sed -i 's/ /\n/g' .tagfile
     sed -i 's/ /\n/g' file_include
 }
 

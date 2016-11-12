@@ -39,8 +39,9 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
     alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
     alias gbsa='gbs -v build -A mipsel'
-    alias vdiff='vgitdiff ~/.vdotfiles'
+    alias vdiff='vgitdiff ~/.vdotfiles; meld git.diff.add git.diff.rm'
     complete -W "push bak baklist cover" gt
+    complete -W "diff bak" vhtml
     complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk
     complete -W "get_status" rp
     export VGL_BOOKMARK='/data1/home/wgao/.vdotfiles/src/bookmark/bookmark.html'

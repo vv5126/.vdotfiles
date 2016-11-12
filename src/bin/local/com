@@ -1,3 +1,33 @@
 #!/bin/bash
 
-sudo minicom ttyUSB0 -w -c on || sudo minicom ttyUSB1 -w -c on
+ttys=$(ls -l /dev/serial/by-id | grep -o 'tty.*$')
+
+baudrate='
+115200
+57600
+'
+
+b_num=0
+brate=115200
+
+[ $# -eq 2 ] && b_num=$2
+
+count=0
+for b in ${baudrate[@]}; do
+    [ "$b_num" == "$count" ] && brate=$b
+    count=$((count+1))
+done
+
+count=-1
+for tty in ${ttys[@]}; do
+    count=$((count+1))
+done
+
+for tty in ${ttys[@]}; do
+    if [ $# -eq 0 ]; then
+        [ $count -eq 0 ] && { sudo minicom -D /dev/$tty -w -b $brate -c on; exit; }
+    else
+        [ "$1" == "$count" ] && { sudo minicom -D /dev/$tty -w -b $brate -c on; exit; }
+    fi
+    count=$((count-1))
+done

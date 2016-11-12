@@ -2,12 +2,16 @@
 
 CLONER_LINK="$HOME/.local/cloner_link"
 
+[ $# -eq 1 ] && select=$1
+
 cd ~
 
-cloner_file=$(ls ~/ -at1 | grep .cloner- | head -1 &2>/dev/null)
+# cloner_file=$(ls ~/ -at1 | grep .cloner- | head -1 &2>/dev/null)
+cloner_file=$(ls ~/ -al | grep ^d - | awk '{print $9}' | grep cloner- - | head -$select | tail -1 &2>/dev/null)
 
-[ ! -f "$CLONER_LINK" ] && ln -s $HOME/$cloner_file/cloner $CLONER_LINK
+ln -sf $HOME/$cloner_file/cloner $CLONER_LINK
 
 cd $cloner_file
 
+# sudo ./cloner
 sudo $CLONER_LINK

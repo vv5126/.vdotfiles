@@ -5,6 +5,24 @@
 # 2.check kernel version.
 # 3.
 
+function guess_obj()
+{
+        source $1
+        # kernel
+        [ -d "arch" -a -d "kernel" ] && { echo $kernel; return; }
+        # uboot
+        [ -d "arch" -a -d "spl" ] && { echo $uboot; return; }
+
+        # if [ -d ".git" ]; then
+        # fi
+
+        if [ -d ".repo" ]; then
+                cd .repo/manifests
+        # manhattan
+                [ -n "$(git remote -v | grep -io 'manhattan')" ] && { echo $manhattan; return; }
+        fi
+}
+
 function checkver()
 {
         [ -f 'Makefile' ] && {
@@ -15,10 +33,14 @@ function checkver()
 
 function mkinit()
 {
-	DEST=$(showlist_with_value "$VGLD_MKDATA/cfg" "what project type do you want init")
-	[ $? = 0 ] && { [ ! -f ".$DEST" ] && cp "$VGLD_MKDATA/$DEST" ".$DEST"; } || return 1
-	./".$DEST" init
-	[ $? = 0 ] && return 0 || return 1
+        DEST=$(guess_obj "$VGLD_MKDATA/cfg")
+        [ -z "$DEST" ] && DEST=$(showlist_with_value "$VGLD_MKDATA/cfg" "what project type do you want init")
+	if [ ! -f ".$DEST" ]; then
+                cp "$VGLD_MKDATA/$DEST" ".$DEST"
+                ./".$DEST" init
+        else
+                return 1
+        fi
 }
 
 function mkmain() {
