@@ -1,5 +1,6 @@
 *-----------*
 base:
+pip
 git
 zsh
 powerline
@@ -16,6 +17,10 @@ baiduyun:
 https://github.com/LiuLang/bcloud
 clang
 kolourpaint
+
+pip for python3.5
+wget https://bootstrap.pypa.io/get-pip.py
+python3.5 get-pip.py
 
 *-----------*
 wine
@@ -55,6 +60,7 @@ libssl-dev
 
 mount windows dir: need
 cifs-utils
+samba
 samba-client
 
 

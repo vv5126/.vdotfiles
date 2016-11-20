@@ -66,11 +66,24 @@ function do_get() {
 
 #main
 
-do_get "$SOFT_DIR/基本不升级"
-do_get "$SOFT_DIR/常用升级"
+NUM=0
+if [ $# -gt 0 ];then
+	NUM=$1
+fi
 
-get_app
+if [ $NUM -eq 1 ] || [ $# -eq 0 ]; then
+	echo bak app ......
+	do_get "$SOFT_DIR/基本不升级"
+	do_get "$SOFT_DIR/常用升级"
+	get_app
+	rm old
+fi
 
-rm old
+if [ $NUM -eq 2 ] || [ $# -eq 0 ]; then
+	echo bak note ......
+	DATE=$(date +%Y-%m-%d_%H-%M)
+	cd /storage/sdcard0/
+	zip -rq /storage/sdcard1/备份/note\(${DATE}\).zip fiinote/ fiinote_3rdparty/
+fi
 
 exit
