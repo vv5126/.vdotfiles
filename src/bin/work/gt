@@ -119,6 +119,25 @@ if [ -n "$PROJECT_DIR_NAME" -a $# -gt 0 ];then
 	elif [ $1 == "cover" ]; then
 		[ $# -eq 2 ] && git_cover $PROJECT_DIR $2
 	fi
+        if [ -d ".repo" ]; then
+                case "$1" in
+                        'br')
+                                repo branch
+                                ;;
+                        'st')
+                                repo status
+                                ;;
+                        'tag')
+                                cd .repo/manifests
+                                git tag
+                                ;;
+                        *)
+                                repo "$@"
+                                ;;
+                esac
+        elif [ -d ".git" ]; then
+                git "$@"
+        fi
 fi
 
 exit

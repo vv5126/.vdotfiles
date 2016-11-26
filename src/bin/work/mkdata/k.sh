@@ -2,6 +2,8 @@
 
 . ~/.bin/ini/ini.work
 
+debug=0
+
 function mk() {
     local new_target_name=
     local build_bootimage_tar=${VGL_BUILD_BOOTIMAGE##*\/}
@@ -90,7 +92,8 @@ function init(){
 	target_name='$project_type-$forBOARD-$forOS'
 
 	tmp=$(user_select 'what OS' "${surport_os[@]}")
-        [ $tmp -ne '0' ] && forOS=$tmp || forOS='none'
+        # [ $tmp -ne '0' ] && forOS=$tmp || forOS='none'
+        forOS="${tmp:=none}"
 
 	case $project_type in
 	'kernel3.0.8')
@@ -206,7 +209,7 @@ function new_gcc_filter() {
                 if [ -f "$i" ]; then
                     [[ "$file_s" =~ "$i" ]] || file_s="$file_s $i"
                 else
-                    echo $i >> ttttt
+                    [ "$debug" -eq 1 ] && echo $i >> ttttt
                 fi
             fi
 
@@ -214,7 +217,7 @@ function new_gcc_filter() {
                 if [ -f "$i" ]; then
                     [[ "$file_c" =~ "$i" ]] || { file_c="$file_c $i"; line_c="$line_c $i"; }
                 else
-                    echo $i >> ttttt
+                    [ "$debug" -eq 1 ] && echo $i >> ttttt
                 fi
             fi
 
@@ -223,7 +226,7 @@ function new_gcc_filter() {
                     [[ "$file_h" =~ "$i" ]] || file_h="$file_h $i"
                     line_h="$line_h $i"
                 else
-                    echo $i >> ttttt
+                    [ "$debug" -eq 1 ] && echo $i >> ttttt
                 fi
             fi
 
@@ -233,7 +236,7 @@ function new_gcc_filter() {
                     [[ "$file_include" =~ "$i" ]] || file_include="$file_include $i"
                     line_include="$line_include $i"
                 else
-                    echo $i >> ttttt
+                    [ "$debug" -eq 1 ] && echo $i >> ttttt
                 fi
             fi
         done
@@ -312,8 +315,8 @@ function new_gcc_filter() {
         'ycm_conf')
                 make clean
                 make uImage -n -j32 > .tmp 2>&1
-                cp .tmp ttt
-                # cp ttt .tmp
+                [ "$debug" -eq 1 ] && cp .tmp ttt
+                # [ "$debug" -eq 1 ] && cp ttt .tmp
                 mk_gcc_file .tmp
                 new_gcc_filter .tmp
                 # mk_h_file .tmp

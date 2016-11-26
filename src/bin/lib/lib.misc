@@ -21,10 +21,24 @@ function read_key() {
 
 nicemount() { (echo "DEVICE PATH TYPE FLAGS" && mount | awk '$2=$4="";1') | column -t; }
 
+function ls_file()
+{
+    local level=$1
+    find . -maxdepth $level -type f | sed 's/^\.\///g' >&1
+}
+
+function ls_dir()
+{
+    local level=$1
+    find . -maxdepth $level -type d | sed '1d;s/^\.\///g' >&1
+}
+
 ############# will export ##############
 
 export -f mem
 export -f read_key
 export -f nicemount
+export -f ls_file
+export -f ls_dir
 
 ########### will export end ############

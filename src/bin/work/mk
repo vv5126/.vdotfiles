@@ -3,7 +3,7 @@
 # feature #
 # 1 add make system.
 # 2.check kernel version.
-# 3.
+# 3.add creat new project.
 
 function guess_obj()
 {
@@ -43,14 +43,38 @@ function mkinit()
         fi
 }
 
+function mkn()
+{
+        cd $HOME/hub
+        [ 'x'$(cat .working_state) == 'x1' ] && { echo 'project syncing! Please wait little time~' >&2; exit; }
+        ls_dir 1 > .project_dir_have
+        echo 
+        echo -n 'How about this project:  >>> '
+        read summary
+        DEST=$(showlist_with_value ".project_dir_have" "Please chosen one project:")
+        # cat .project_dir_have
+        cd - 1>/dev/null
+	if [ -n "$DEST" ]; then
+                # echo $DEST
+                # echo $summary
+                mkdir $summary
+                echo "copying ......"
+                cp -arpdl $HOME/hub/$DEST $summary
+                cd $summary/$DEST && mk
+        fi
+}
+
 function mkmain() {
-        # goto project root directory
+        # goto project root directory if possible.
 	local PROJECT_TYPE=$(getdir_git_repo | awk '{print $1}')
 	local PROJECT_DIR=$(getdir_git_repo | awk '{print $2}')
 	[ -n "$PROJECT_TYPE" -a -n "$PROJECT_DIR" ] && cd $PROJECT_DIR
 
         # check kernel version.
         [ $# -eq 1 ] && [ $1 == 'v' ] && { checkver; return 0; }
+
+        # make new project
+        [ $# -eq 1 ] && [ $1 == 'n' ] && { mkn; return 0; }
 
         # project init a make system.
 	if [ ! -f ".project_info" ]; then
@@ -69,7 +93,7 @@ function mkmain() {
 	done < "$VGLD_MKDATA/cfg"
 
 	if [ -n "value" ]; then
-		echo "this's maybe a $key project" >&2
+		# echo "this's maybe a $key project" >&2
 		./$value $@
 		return 0
 	else

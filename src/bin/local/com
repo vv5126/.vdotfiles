@@ -1,6 +1,7 @@
 #!/bin/bash
 
-ttys=$(ls -l /dev/serial/by-id | grep -o 'tty.*$')
+ttys=$(ls -l /dev/serial/by-id 2>/dev/null | tac | grep -o 'tty.*$')
+[ -z "$ttys" ] && { echo "no uart!"; exit; }
 
 baudrate='
 115200
@@ -18,16 +19,14 @@ for b in ${baudrate[@]}; do
     count=$((count+1))
 done
 
-count=-1
-for tty in ${ttys[@]}; do
-    count=$((count+1))
-done
+count=0
 
 for tty in ${ttys[@]}; do
     if [ $# -eq 0 ]; then
-        [ $count -eq 0 ] && { sudo minicom -D /dev/$tty -w -b $brate -c on; exit; }
+        sudo minicom -D /dev/$tty -w -b $brate -c on 2>/dev/null
+        [ $? -eq 0 ] && exit
     else
         [ "$1" == "$count" ] && { sudo minicom -D /dev/$tty -w -b $brate -c on; exit; }
     fi
-    count=$((count-1))
+    count=$((count+1))
 done

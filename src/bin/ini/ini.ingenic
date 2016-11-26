@@ -33,7 +33,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     PATH=/data1/home/wgao/tools/toolchains/mips64el-linux-android-4.9/bin:$PATH
     PATH=/data1/home/wgao/tools/toolchains/mipseltools-gcc412-glibc261/bin:$PATH
     PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
-    # export CROSS_COMPILE=mips64el-linux-android-
+    # export CROSS_COMPILE=mips64el-linux-android- # for android
 
     [ -d "$HOME/.bin" ] && PATH="$HOME/.bin/base:$HOME/.bin/work:$PATH"
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'

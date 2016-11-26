@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# sync the hub codes
+
+list='
+kernel-3.0.8
+kernel-3.10.14
+manhattan-for-halley2
+manhattan-for-phoenix
+'
+rootdir="$HOME/hub"
+
+sync_git() {
+	git_remote=$(git remote)
+	git_branch=$(git branch | grep '*' | awk '{print $2}')
+        git pull $git_remote $git_branch
+        [ $? -eq 0 ] && echo "done" >> $rootdir/sync.log || echo "fail" >> $rootdir/sync.log
+}
+sync_repo() {
+    repo sync
+    [ $? -eq 0 ] && echo "done" >> $rootdir/sync.log || echo "fail" >> $rootdir/sync.log
+}
+
+echo 1 > $rootdir/.working_state
+
+for line in ${list[@]}; do
+    echo -n "$(date) pulling $line ...... " >> $rootdir/sync.log
+    if [ -d "$rootdir/$line" ]; then
+        cd "$rootdir/$line"
+        [ -d '.git' ] && sync_git
+        [ -d '.repo' ] && sync_repo
+    fi
+done
+echo 0 > $rootdir/.working_state
