@@ -1,8 +1,24 @@
 #!/bin/bash
 
+source ~/.bin/lib/lib.work
+source ~/.bin/lib/lib.misc
+
 APP_DIR=$(which $0)
 APP_DIR=${APP_DIR%\/*}
 
+function git_push() {
+        local branch
+	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $1}'`
+        git branch -a | {
+                while read line; do
+                        [[ "$line" =~ "->" ]] && {
+                                branch=${line##*-> }
+                                branch=${branch##*/}
+	                        git push $warehouse HEAD:refs/for/refs/heads/$branch
+                        }
+                done
+        }
+}
 function make_git_push_file() {
 	local file
 	local mark
@@ -67,62 +83,95 @@ function git_cover() {
 }
 
 function git_bak() {
-	local BAKDIR=''
-	local FILE=''
-	local DIR_T=''
-	local LINE=''
-	local NUM=0
 
-	BAKDIR=${1%\/*}/git_bak/${1##*\/}/${1##*\/}_$(date +%Y%m%d_%H-%M)
-	[ $# -eq 2 ] && BAKDIR=$BAKDIR-$2 || BAKDIR=$BAKDIR-no-up-git-push-file
+        cd_proj
 
-	echo baking......
+	local bakdir="$1"
+	local file=''
+	local dir_t=''
+	local line=''
+	local num=0
 
-	[ $# -eq 2 ] && make_git_push_file $1
-	if [ -d "$BAKDIR" ]; then
-		rm $BAKDIR/ -rf
-		rm $BAKDIR.tar.gz
-		echo rm $BAKDIR
+        echo "baking project: $PWD"
+        echo -n "to $bakdir ...... "
+
+	if [ -d "$bakdir" ]; then
+                rm $bakdir -rf
 	fi
-	mkdir -p $BAKDIR
-	while read LINE; do
-		if [[ "$LINE" =~ "git add" ]]; then
-			FILE=${LINE##* }
+        mkdir -p "$bakdir"
 
-			[[ "$FILE" =~ "/" ]] && {
-				DIR_T=${FILE%/*} && mkdir -p $BAKDIR/$DIR_T/
-				[ ${FILE:0-1} = "/" ] && cp -rf $1/$FILE/* $BAKDIR/$DIR_T/ || cp $1/$FILE $BAKDIR/$DIR_T/
-			} || {
-				cp $1/$FILE $BAKDIR/
-			}
-			NUM=$[$NUM+1]
-		fi
-	done < "$1/git-push.sh"
-	cd ${BAKDIR%\/*}
-	FILE=${BAKDIR##*\/}
-	tar -Pzcf $FILE.tar.gz $FILE
-	echo cp $NUM "files finished"
+        git status -s > .tmp-git-bak
+        while read line; do
+                sign="$(get_segment_from_line "$line" 1 1)"
+                file="$(get_segment_from_line "$line" 2 2)"
+                case x"$sign" in
+                        "x??" | "xM")
+                                [[ "$file" =~ "/" ]] && {
+                                        dir_t=${file%/*} && mkdir -p $bakdir/$dir_t
+                                        [ ${file:0-1} = "/" ] && cp -rf $file/* $bakdir/$dir_t/ || cp $file $bakdir/$dir_t
+                                } || {
+                                        cp $file $bakdir
+                                }
+			        num=$[$num+1]
+                        ;;
+                        "xD")
+                        ;;
+                esac
+        done < .tmp-git-bak
+        rm .tmp-git-bak
+
+        echo "cp $num files, finished!"
+
 }
 
-PROJECT_DIR_NAME=`getdir_git_repo | awk '{print $1}'`
-PROJECT_DIR=`getdir_git_repo | awk '{print $2}'`
+project_uncare=(
+external/
+)
 
-cd $PROJECT_DIR
+function skip_check() {
+        for i in ${project_uncare[@]}; do
+                [[ "$line" =~ "$i" ]] && { echo 1; return; }
+        done
+        echo 0
+}
 
-if [ -n "$PROJECT_DIR_NAME" -a $# -gt 0 ];then
-	if [ $1 == "push" ]; then
-		make_git_push_file $PROJECT_DIR
-	elif [ $1 == "bak" ]; then
-		[ $# -eq 2 ] && git_bak $PROJECT_DIR $2 || git_bak $PROJECT_DIR
-	elif [ $1 == "baklist" ]; then
-		git_bak_list $PROJECT_DIR
-	elif [ $1 == "cover" ]; then
-		[ $# -eq 2 ] && git_cover $PROJECT_DIR $2
-	fi
+function repo_bak() {
+        local bak_dir="$1"
+        local proj_dir="$PWD"
+        local proj_dir_name="${proj_dir##*/}"
+        local subproj_dir=
+        repo status > ~/.tmp/gt-tmp
+        while read line; do
+                if [ "${line%% *}" == 'project' ]; then
+                        if [ $(skip_check "$line") -eq 0 ]; then
+                                line=${line#* }
+                                subproj_dir=${line%% *}
+                                cd $proj_dir/$subproj_dir
+                                git_bak "$bak_dir/$proj_dir_name/$subproj_dir"
+                        fi
+                fi
+        done < ~/.tmp/gt-tmp
+        rm ~/.tmp/gt-tmp
+        # tar -Pzcf "$bak_dir.tar.gz" "$bak_dir"
+}
+
+cd_proj
+
+if [ $# -gt 0 ];then
         if [ -d ".repo" ]; then
                 case "$1" in
+                        'bak')
+                                source .project_info
+                                [ -n "$customer" ] && repo_bak "/data1/home/wgao/work/project-bak/$customer" "mode0" || echo customer is empty!
+                                ;;
+                        'co')
+                                repo forall -c "git checkout ."
+                                ;;
                         'br')
                                 repo branch
+                                ;;
+                        'rst')
+                                [ $# -eq 2 ] && repo forall -c "git reset --hard $2"
                                 ;;
                         'st')
                                 repo status
@@ -136,7 +185,28 @@ if [ -n "$PROJECT_DIR_NAME" -a $# -gt 0 ];then
                                 ;;
                 esac
         elif [ -d ".git" ]; then
-                git "$@"
+                case "$1" in
+                        'push')
+		                git_push
+                                ;;
+                        'baklist')
+		                git_bak_list $PWD
+                                ;;
+                        'cover')
+		                [ $# -eq 2 ] && git_cover $PWD $2
+                                ;;
+                        'tag')
+                                git tag | head -n 50
+                                ;;
+                        'bak')
+                                BAKDIR=${PWD%\/*}/git_bak/${PWD##*\/}/${PWD##*\/}_$(date +%Y%m%d_%H-%M)
+                                [ $# -eq 2 ] && BAKDIR=$BAKDIR-$2 || BAKDIR=$BAKDIR-no-up-git-push-file
+                                git_bak $BAKDIR
+                                ;;
+                        *)
+                                git "$@"
+                                ;;
+                esac
         fi
 fi
 

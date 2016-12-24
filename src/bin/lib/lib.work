@@ -72,7 +72,7 @@ function svi(){
 
 function getdir(){
 	local TARGET=$1
-	local PROJECT_DIR=
+	local PROJECT_DIR=''
 	local BASE_DIR=~/
 	local DIR=$PWD
 
@@ -80,7 +80,7 @@ function getdir(){
 		[ -f "$DIR/$TARGET" -o -d "$DIR/$TARGET" ] && { PROJECT_DIR=$DIR; break; } || PROJECT_DIR=
 		DIR=${DIR%\/*}
 	done
-	echo "$PROJECT_DIR"
+	[ -n "$PROJECT_DIR" ] && echo "$PROJECT_DIR"
 }
 
 function vcd(){
@@ -91,6 +91,14 @@ function vcd(){
 	[ -z "$1" ] && { TARGET=$(getdir .git); [ -z "$TARGET" ] && TARGET=$(getdir .repo); }
 	[ -z "$TARGET" -a -n "$1" ] && { TARGET=$[${#1}+1]; TARGET=$(seq -s "../" $TARGET); TARGET=${TARGET//[0-9]/}; }
 	[ -n $TARGET ] && cd $TARGET
+}
+
+function cd_proj(){
+	local TARGET=
+	TARGET=$(getdir .git)
+	[ -n "$TARGET" ] && { cd $TARGET; return; }
+	TARGET=$(getdir .repo)
+	[ -n "$TARGET" ] && { cd $TARGET; return; }
 }
 
 function cd_repo(){
@@ -227,6 +235,7 @@ export -f getdir
 export -f vcd
 alias ..='vcd'
 
+export -f cd_proj
 export -f cd_repo
 alias ...='cd_repo'
 

@@ -99,4 +99,4 @@ if ! shopt -oq posix; then
   fi
 fi
 
-source $HOME/.bin/base/batchExport $HOME/.bin/base/base.conf
+source $HOME/.bin/base/batchExport

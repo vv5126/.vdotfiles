@@ -2,7 +2,7 @@
 " vim: set filetype=vim sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 " }
 
-" spf13 {
+" spf13 before {
     set nocompatible        " Must be first line
     set shell=/bin/sh
     "===============================================================================+
@@ -33,7 +33,7 @@
 
 " }
 
-" spf13 {
+" spf13 vundle {
     "===============================================================================+
     if ! isdirectory($HOME."/.vim/bundle/vundle")
         echo "you should setup vundle frist!"
@@ -79,7 +79,9 @@
     " Bundle 'DrawIt'
     " -------------------------------------------------
     " 让书签可视化的插件
-    Bundle 'kshenoy/vim-signature'
+    " Bundle 'kshenoy/vim-signature'
+    " -------------------------------------------------
+    Bundle 'gko/vim-coloresque'
     " -------------------------------------------------
     " 加注释用 *****
     " Bundle 'SirVer/ultisnips'
@@ -89,7 +91,7 @@
     " let g:UltiSnipsJumpBackwardTrigger="<c-b>"
     " -------------------------------------------------
     " 允许你在 Vim中按等号、冒号、表格等来对齐文本
-    " Bundle 'Tabular'
+    " 'Tabular'
     " ex: :TAb /=
     " -------------------------------------------------
     " 同时高亮多个单词
@@ -126,21 +128,24 @@
     " repeat 支持使用.来重复执行一些插件的命令（如speeddating, surround等)
     " Bundle 'repeat.vim'
     " -------------------------------------------------
+    " 'jiangmiao/auto-pairs'
     " 给选中的文字加上引号`,选中后,\加上你想要添加的符号,比如选中abc后,\(,得到(abc)
-    " Bundle 'jiangmiao/auto-pairs'
     " Bundle 'Raimondi/delimitMate'
-
-    " 快速给词加环绕符号,例如引号
-    " Bundle 'tpope/vim-surround'
     " -------------------------------------------------
     " 可以在vim和tmux的任何组合间无缝切换
     " Bundle 'christoomey/vim-tmux-navigator'
     " -------------------------------------------------
-    " 文件模糊匹配查找 推荐：****
-    "Bundle 'ctrlpvim/ctrlp.vim'
-
-    " 函数模糊匹配查找(,fu) 推荐：****
-    "Bundle 'tacahiroy/ctrlp-funky'
+    " -------------------------------------------------
+    " VimDevIcons - Add Icons to Your Plugins
+    Bundle 'ryanoasis/vim-devicons'
+    " -------------------------------------------------
+    " vim帮助中文版
+    Bundle 'becaning/vimdoccn'
+    " -------------------------------------------------
+    " 查看和自动识别文件的编码格式
+    Bundle 'mbbill/fencview'
+    let g:fencview_autodetect=1
+    " -------------------------------------------------
     " -------------------------------------------------
     " -------------------------------------------------
     " -------------------------------------------------
@@ -558,7 +563,6 @@ endif
 
 if 1 " EasyMotion设置
     if isdirectory(expand("~/.vim/bundle/vim-easymotion"))
-        " nmap s <Plug>(easymotion-s2)
         " nmap t <Plug>(easymotion-t2)
         map  ? <Plug>(easymotion-sn)
         omap ? <Plug>(easymotion-tn)
@@ -582,9 +586,6 @@ if 1 " EasyMotion设置
         nmap s <Plug>(easymotion-s2)
         " Turn on case insensitive feature
         let g:EasyMotion_smartcase = 1
-        " JK motions: Line motions
-        " map <Leader>j <Plug>(easymotion-j)
-        " map <Leader>k <Plug>(easymotion-k)
     endif
 endif
 
@@ -690,9 +691,6 @@ if vmode_c
 endif
 " -------------------------------------------------
 if 0
-" 自动注释 推荐：*****
-Bundle 'scrooloose/nerdcommenter'
-
 "对NERD_commenter的设置
 " 功能强大的代码注释工具,用来注释或者取消注释,支持很多语言,可以对文本块操作,最常用到的快捷键是\c<space>
 " plugin - NERD_commenter.vim   注释代码用的，
@@ -725,7 +723,7 @@ endif
 "  let g:Powerline_symbols = 'fancy'
 
 " -------------------------------------------------
-"Bundle 'majutsushi/tagbar'
+" 'majutsushi/tagbar'
 " let tagbar_ctags_bin=ctags
 " 设置 tagbar 子窗口的位置出现在主编辑区的左边 
 let tagbar_left=1 
@@ -771,40 +769,31 @@ let g:tagbar_type_cpp = {
 \ }
 
 " -------------------------------------------------
-" 状态栏效果 推荐：***
 " 'vim-airline'
-" let g:airline_theme="dark"
-" let g:airline_powerline_fonts = 1
-" let g:airline#extensions#tabline#buffer_nr_show = 1
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#left_sep = ' '
-" let g:airline#extensions#tabline#left_alt_sep = '|'
-" if !exists('g:airline_symbols')
-"       let g:airline_symbols = {}
-"   endif
-"   let g:airline_symbols.space = "\ua0"
+let g:airline_theme="dark"
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+if !exists('g:airline_symbols')
+      let g:airline_symbols = {}
+  endif
+  let g:airline_symbols.space = "\ua0"
 
 " -------------------------------------------------
 if vmode_c
-" 语法检查 推荐：****
-" Bundle 'scrooloose/syntastic'
-" syntastic 配置
+" 'scrooloose/syntastic 语法检查'
 "  let g:syntastic_check_on_open=0
 " let g:syntastic_auto_loc_list = 1
 "  let g:syntastic_check_on_wq = 0
 " let syntastic_loc_list_height = 5
 endif
-" -------------------------------------------------
-" 保存vim编辑信息，比如最后的位置 推荐：****
-" Bundle "vim-scripts/restore_view.vim"
-
 " ------------------------------------------------
 " 重复了
-" nnoremap <Leader>fu :CtrlPFunky<Cr>
 " nnoremap <C-n> :CtrlPFunky<Cr>
 " let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 " let g:ctrlp_custom_ignore = '\v\.(exe|so|dll)$'
-" let g:ctrlp_extensions = ['funky']
 " ------------------------------------------------
 
 " Ctrlp 和 Ctrlp-funky(,fu)
@@ -846,8 +835,6 @@ if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
 endif
 
 " -------------------------------------------------
-" vim帮助中文版
- Bundle 'becaning/vimdoccn'
 " -------------------------------------------------
 " 列出当前打开的buffer,可以很容易的切换到和删除选定的buffer,必备插件之一
 " \be 全屏方式查看全部打开的文件列表
@@ -871,10 +858,7 @@ map <Leader>bl :MBEToggle<cr>
 map <C-Tab> :MBEbn<cr>
 map <C-S-Tab> :MBEbp<cr>
 
-" Bundle 'bufexplorer.zip'
 " -------------------------------------------------
-" VimDevIcons - Add Icons to Your Plugins
- Bundle 'ryanoasis/vim-devicons'
 " -------------------------------------------------
 " vim中打开终端的功能+
 " Bundle 'Shougo/vimshell.vim'
@@ -882,9 +866,6 @@ map <C-S-Tab> :MBEbp<cr>
 " -------------------------------------------------
 " color theme浏览插件,列出所有的vim color theme到一个列表中,选中后按回车即可应用
 " Bundle 'sjas/csExplorer'
-" -------------------------------------------------
-" 最大化当前panel.
-" Bundle 'troydm/zoomwintab.vim'
 " -------------------------------------------------
 " -------------------------------------------------
 " -------------------------------------------------
@@ -895,6 +876,10 @@ map <C-S-Tab> :MBEbp<cr>
 " 剩余的bundles {
 " -------------------------------------------------
 "  seems good
+" -------------------------------------------------
+" 最大化当前panel.
+" Bundle 'troydm/zoomwintab.vim'
+Bundle 'ZoomWin'
 " -------------------------------------------------
 "  Bundle 'jeaye/color_coded'
 "  let g:color_coded_enabled = 1
@@ -907,9 +892,6 @@ map <C-S-Tab> :MBEbp<cr>
 " 需要将clang+llvm加入到PATH中
 "nnoremap <leader>hf :YcmGenerateConfig<CR>
 " -------------------------------------------------
-" 查看和自动识别文件的编码格式
- Bundle 'mbbill/fencview'
- let g:fencview_autodetect=1
 " -------------------------------------------------
 "requires Vim to be compiled with Ruby support
 "Bundle 'wincent/command-t'
@@ -917,12 +899,6 @@ map <C-S-Tab> :MBEbp<cr>
 "noremap <leader>j :CommandT<cr>
 "noremap <leader>y :CommandTFlush<cr>
 " -------------------------------------------------
-
-
-
-
-
-
 " Bundle 'ervandew/supertab'
 " -------------------------------------------------
 "智能补全
@@ -966,7 +942,7 @@ map <F7> :FufTag<cr>
 map <C-F7> :FufTaggedFile<cr>
 " -------------------------------------------------
 " 扩展了vim的%功能,让%可以匹配的,不再仅仅是括号,支持多种语言.必备插件之一
-"Bundle 'matchit.zip'
+" 'matchit.zip'
 " % 正向匹配      g% 反向匹配
 " [% 定位块首     ]% 定位块尾
 " -------------------------------------------------
@@ -1006,8 +982,11 @@ Bundle 'Shougo/unite.vim'
 " Bundle 'osyo-manga/unite-quickfix'
 " Bundle 'tsukkee/unite-tag'
 " -------------------------------------------------
-" 最大化当前buffer
-Bundle 'ZoomWin'
+Bundle 'haya14busa/incsearch.vim'
+map /  <Plug>(incsearch-forward)
+" -------------------------------------------------
+Bundle 'will133/vim-dirdiff'
+let g:DirDiffExcludes = "CVS,*.class,*.exe,.*.swp, .*.cmd, *.o, .git"
 " -------------------------------------------------
 "FuzzyFinder底层依耐+
 " Bundle 'l9'

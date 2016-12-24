@@ -1,26 +1,36 @@
 #!/bin/bash
 
-[ $# != 1 ] && exit
-
 host=user@192.168.4.150
 
-cd_repo
+function push_to_board() {
+    local src=$1
+    local dst=$2
+    local file=${src##*/}
+    local local_home=$(ssh $host "pwd")
 
-str_in=${1##*/system/}
-file=${str_in##*/}
-[ -d "./cts" ] && dir=/system/${str_in%/*} || dir=/${str_in%/*}
-# for android
+    # scp $1 $host:~ > /dev/null
+    scp $src $host:/tmp > /dev/null
 
-# echo $dir
-# echo $file
+    ssh $host "$local_home/.vdotfiles/src/bin/local/adb remount" > /dev/null 2>&1
+    # ssh $host "$local_home/.vdotfiles/src/bin/local/adb push $local_home/$file $dst" > /dev/null 2>&1
+    ssh $host "$local_home/.vdotfiles/src/bin/local/adb push /tmp/$file $dst" > /dev/null 2>&1
+    ssh $host "$local_home/.vdotfiles/src/bin/local/adb shell sync" > /dev/null 2>&1
+    ssh $host "rm /tmp/$file" > /dev/null 2>&1
+}
 
-scp $1 $host:~ > /dev/null
 
-local_dir=$(ssh $host "pwd")
-ssh $host "$local_dir/.vdotfiles/src/bin/local/adb remount" > /dev/null 2>&1
-ssh $host "$local_dir/.vdotfiles/src/bin/local/adb push $local_dir/$file $dir" > /dev/null 2>&1
-ssh $host "$local_dir/.vdotfiles/src/bin/local/adb shell sync" > /dev/null 2>&1
+[ $# -eq 0 -o $# -gt 2 ] && exit
 
-[ $? == 0 ] && echo done
+if [ $# -eq 1 ]; then
+    if [[ "$1" =~ 'system' ]]; then
+        file="$(getdir .repo)/$1"
+        dir="/${1##*/system/}"
+        [ -d "./cts" ] && dir="/system/${dir%/*}" # for android
 
-cd - > /dev/null
+        push_to_board "$file" "$dir"
+        [ $? == 0 ] && echo done
+    fi
+elif [ $# -eq 2 ]; then
+    push_to_board "$1" "$2"
+    [ $? == 0 ] && echo done
+fi

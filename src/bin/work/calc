@@ -4,19 +4,29 @@ in=$1
 
 function ctof(){
         if [ $out -ge 1000000000 ]; then
-                c=$(echo "scale=2; $out/1000000000" | bc)
-                echo $c GHZ
+                f=$(echo "scale=2; $out/1000000000" | bc)
+                echo $f GHZ
         elif [ $out -ge 1000000 ]; then
-                c=$(echo "scale=2; $out/1000000" | bc)
-                echo $c MHZ
+                f=$(echo "scale=2; $out/1000000" | bc)
+                echo $f MHZ
         elif [ $out -ge 1000 ]; then
-                c=$(echo "scale=2; $out/1000" | bc)
-                echo $c KHZ
+                f=$(echo "scale=2; $out/1000" | bc)
+                echo $f KHZ
         fi
         exit
 }
 
 function ftoc(){
+        if [ $out -ge 1000000000 ]; then
+                c=$(echo "scale=2; $out/1000000000" | bc)
+                echo $c ns
+        elif [ $out -ge 1000000 ]; then
+                c=$(echo "scale=2; $out/1000000" | bc)
+                echo $c us
+        elif [ $out -ge 1000 ]; then
+                c=$(echo "scale=2; $out/1000" | bc)
+                echo $c ms
+        fi
         exit
 }
 
@@ -48,18 +58,21 @@ case "${in:0-3}" in
                 in=${in%%khz}
                 expr $in + 0 &>/dev/null
                 [ $? -eq 0 ] && out=$((1000000/$in))
+                echo 1
                 ftoc
                 ;;
         'mhz')
                 in=${in%%mhz}
                 expr $in + 0 &>/dev/null
                 [ $? -eq 0 ] && out=$((1000/$in))
+                echo 1
                 ftoc
                 ;;
         'ghz')
                 in=${in%%ghz}
                 expr $in + 0 &>/dev/null
                 [ $? -eq 0 ] && out=$((1/$in))
+                echo 1
                 ftoc
                 ;;
         *)

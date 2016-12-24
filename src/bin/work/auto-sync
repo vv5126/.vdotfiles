@@ -11,12 +11,14 @@ manhattan-for-phoenix
 rootdir="$HOME/hub"
 
 sync_git() {
-	git_remote=$(git remote)
-	git_branch=$(git branch | grep '*' | awk '{print $2}')
-        git pull $git_remote $git_branch
-        [ $? -eq 0 ] && echo "done" >> $rootdir/sync.log || echo "fail" >> $rootdir/sync.log
+    git_remote=$(git remote)
+    git_branch=$(git branch | grep '*' | awk '{print $2}')
+    git checkout .
+    git pull $git_remote $git_branch
+    [ $? -eq 0 ] && echo "done" >> $rootdir/sync.log || echo "fail" >> $rootdir/sync.log
 }
 sync_repo() {
+    repo forall -c "git checkout ."
     repo sync
     [ $? -eq 0 ] && echo "done" >> $rootdir/sync.log || echo "fail" >> $rootdir/sync.log
 }
