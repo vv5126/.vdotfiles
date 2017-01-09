@@ -607,6 +607,7 @@ if 1 "YouCompleteMe
 " 1. 获取 YCM 的依赖包
 "    cd ~/.vim/bundle/YouCompleteMe/
 "    git submodule update --init --recursive
+"    保证安装好cmake
 " 2. ./install.py --clang-completer
 " 3. done
 " 如果失败就使用下面的方法

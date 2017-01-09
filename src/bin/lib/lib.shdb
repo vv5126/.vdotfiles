@@ -1,0 +1,82 @@
+# shell文本数据库操作
+# shdb_add shdb_name $para
+# para: -a add; -g get the key line; -d delete;
+
+source ~/.bin/lib/lib.misc
+source ~/.bin/lib/lib.base
+
+function shdb_getline() {
+        local tmp
+        tmp=$(grep "$2" "$1" -n)
+        [ $? -eq 0 ] && { echo ${tmp%%:*}; return 0; }
+        return -1
+}
+
+function shdb_add() {
+    local line=
+    local notes=
+    local line_num=
+    local key=
+    local key_line_num=
+    local shdb="$1"
+    local str="$2"
+    [ $# -eq 3 ] && line_num=$3
+
+    echo "$str" | while read line; do
+        [ "${line:0:1}" == '#' ] && { notes="$notes$line\n"; continue; }
+        if [[ "$line" =~ '=' ]]; then
+            key="${line%%=*}"
+            key_line_num=$(shdb_getline "$shdb" "$key")
+            if [ -z $key_line_num ]; then
+                [ -n "$line_num" ] && sed "$line_num i$notes$line\n" -i $shdb || sed "$ a$notes$line\n" -i $shdb
+                notes=''
+            else
+                # sed "$key_line_num c\\\n$notes$line\n" $shdb
+                sed "$key_line_num c$notes$line\n" -i $shdb
+                notes=''
+            fi
+        fi
+    done
+    return 0
+}
+
+function shdb_del() {
+    local shdb="$1"
+    local str="$2"
+    local line=
+
+    echo "$str" | while read line; do
+        sed "/^$line/d" -i $shdb
+    done
+    return 0
+}
+
+function shdb() {
+    [ $# -eq 0 ] && { echo "need param"; exit; }
+
+    shdb="$1"
+
+    if [ ! -f "$shdb" ]; then
+        [[ "$shdb" =~ '/' ]] && mkdir -p "${shdb%%/*}"
+        touch $shdb
+    fi
+
+    str="$(get_param '-a' "$@")" # add
+    if [ $? -gt 0 -a $? -lt 100 ]; then
+        line=$(get_param '-l' $@)
+        if [ $? -gt 0 -a $? -lt 100 ]; then
+            shdb_add "$shdb" "$str" "$line"
+            exit $?
+        else
+            shdb_add "$shdb" "$str"
+            exit $?
+        fi
+    fi
+
+    str="$(get_param '-g' "$@")" # get the line
+    [ $? -gt 0 -a $? -lt 100 ] && { shdb_getline "$shdb" "$str"; exit $?; }
+
+    str="$(get_param '-d' "$@")" # del
+    [ $? -gt 0 -a $? -lt 100 ] && { shdb_del "$shdb" "$str"; exit $?; }
+
+}

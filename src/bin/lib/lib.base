@@ -1,6 +1,7 @@
 #!/bin/bash
 
 function quickcd() {
+        local tmp
 	if [ "$#" -eq 0 ]; then
                 local try_old_dir="$(history | tail -n 2 | head -1)"
                 try_old_dir="${try_old_dir##* }"
@@ -20,10 +21,11 @@ function quickcd() {
                 [ $1 = "clean" ] && { > ~/.cdlist; return; }
                 [ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" >> ~/.cdlist; return; }
                 [ $# -eq 1 -a -f "$HOME/.cdlist" ] && {
-                while read line; do
-                        [ $1 = "${line% *}" ] && { cd ${line#* }; return; }
-                done < ~/.cdlist
-        }
+                        while read line; do
+                                [ $1 = "${line% *}" ] && { cd ${line#* }; return; }
+                        done < ~/.cdlist
+                }
+                tmp="$(find -maxdepth 1 -type d -name "$1*")"; [ $? -eq 0 -a -d "$tmp" ] && { cd "$tmp"; return; }
 	fi
 }
 

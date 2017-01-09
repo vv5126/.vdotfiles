@@ -22,7 +22,7 @@ function get_param() {
         # 不支持参数带空格哦
         # 参数必须以'-'开始，且只能是一个字母，好像数字也行
 
-        [ $# -lt 2 ] && exit;
+        [ $# -lt 2 ] && return -1;
 
         local got=0
         local success=0
@@ -51,7 +51,7 @@ function get_param() {
                 fi
         done
 
-        [ -n "$para" ] && echo $para
+        [ -n "$para" ] && echo "$para"
         [ $success -eq 0 ] && return -1 || return $param_num
 }
 
