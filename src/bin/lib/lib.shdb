@@ -5,35 +5,181 @@
 source ~/.bin/lib/lib.misc
 source ~/.bin/lib/lib.base
 
-function shdb_getline() {
+debug=0
+
+# function shdb_format() {
+#
+# }
+
+function get_session_start() {
+        local file="$1"
+        local session_name="$2"
+        local session_line=''
+
+        session_line="$(sed -n "/^# \["$session_name"/=" "$file")"
+        [ -z "$session_line" ] && echo 'new_session' || echo $session_line
+}
+
+function get_session_end() {
+        local file="$1"
+        local session_name="$2"
+        local session_line_start="$(get_session_start "$file" "$session_name")"
+        local session_lines="$(sed -n '/^# \[/=' "$file")"
+        local got_line=0
         local tmp
-        tmp=$(grep "$2" "$1" -n)
-        [ $? -eq 0 ] && { echo ${tmp%%:*}; return 0; }
-        return -1
+
+        for tmp in ${session_lines[@]}; do
+            [ "$got_line" -eq 1 ] && { echo $(($tmp-1)); return 0; }
+            [ "$session_line_start" == "$tmp" ] && got_line=1
+        done
+        echo "$(wc -l $file | awk '{print $1}')"
+        return 0
+}
+
+function get_session_context {
+    local file="$1"
+    local session_name="$2"
+    local session_start_location=$(get_session_start "$file" "$session_name")
+    local session_end_location=$(get_session_end "$file" "$session_name")
+    echo "$(sed -n ""$session_start_location","$session_end_location"p" $file)"
+}
+
+function get_key_location {
+        local file="$1"
+        local session_name="$2"
+        local key_name="$3"
+        local key_lines="$(sed -n "/$key_name\=/=" "$file")"
+        local session_start_location=$(get_session_start "$file" "$session_name")
+        local session_end_location=$(get_session_end "$file" "$session_name")
+        local tmp
+        local ret=''
+
+        for tmp in $key_lines; do
+            if [ "$tmp" -gt "$session_start_location" -a "$tmp" -lt "$session_end_location" ]; then
+                ret="$ret $tmp"
+            fi
+        done
+        echo "${ret:1}"
+}
+
+function get_key_frist_location {
+        local file="$1"
+        local session_name="$2"
+        local key_name="$3"
+        local lines="$(get_key_location $file $session_name $key_name)"
+        [ -n "$lines" ] && echo "${lines%% *}"
+}
+
+function get_key_last_location {
+        local file="$1"
+        local session_name="$2"
+        local key_name="$3"
+        local lines="$(get_key_location $file $session_name $key_name)"
+        [ -n "$lines" ] && echo "${lines##* }"
 }
 
 function shdb_add() {
-    local line=
-    local notes=
+    local current_line=0
+    local lines=0
+
+    local session_name=''
+    local new_session_buffer=''
+    local old_session_buffer=''
+    local session_start_location=0
+
+    local line=""
+    local session_end_location=0
+    local notes=""
     local line_num=
     local key=
+    local num=0
     local key_line_num=
     local shdb="$1"
     local str="$2"
     [ $# -eq 3 ] && line_num=$3
 
+    lines="$(echo "$str" | tr -cd '\n' | wc -c)"
+
     echo "$str" | while read line; do
-        [ "${line:0:1}" == '#' ] && { notes="$notes$line\n"; continue; }
-        if [[ "$line" =~ '=' ]]; then
-            key="${line%%=*}"
-            key_line_num=$(shdb_getline "$shdb" "$key")
-            if [ -z $key_line_num ]; then
-                [ -n "$line_num" ] && sed "$line_num i$notes$line\n" -i $shdb || sed "$ a$notes$line\n" -i $shdb
-                notes=''
+
+        ((current_line+=1))
+
+        [ "$line" == "" -a "$current_line" == 1 ] && continue
+
+        if [ "${line:0:3}" == '# [' ]; then
+            session_name="${line##*\[}"
+            session_name="${session_name%%\]*}"
+            session_start_location=$(get_session_start "$shdb" "$session_name")
+            session_end_location=$(get_session_end "$shdb" "$session_name")
+            debug session_name "$session_name" , start $session_start_location, end $session_end_location.
+
+            if [ -n "$new_session_buffer" ]; then
+                sed "$session_end_location i$new_session_buffer" -i $shdb
+                new_session_buffer=''
+            fi
+
+            if [ "$session_start_location" == "new_session" ]; then
+                new_session_buffer="$line\n"
+            fi
+        else
+            if [ "$session_start_location" == "new_session" ]; then
+                [ "$line" == "" ] && new_session_buffer="$new_session_buffer\n" || new_session_buffer="$new_session_buffer$line\n"
             else
-                # sed "$key_line_num c\\\n$notes$line\n" $shdb
-                sed "$key_line_num c$notes$line\n" -i $shdb
-                notes=''
+                if [[ ("$line" =~ '=') && (! "$line" =~ ' =') && (! "$line" =~ '= ') ]]; then
+                    session_end_location=$(get_session_end "$shdb" "$session_name")
+                    debug "key $line"
+                    key_name="${line%%=*}"
+                    key_name="${key_name##* }"
+                    key_value="${line##*=}"
+
+                    if [ -n "$(get_key_location "$shdb" "$session_name" "$key_name")" ]; then
+                        # had key
+                        local key_frist_location="$(get_key_frist_location "$shdb" "$session_name" "$key_name")"
+                        local key_last_location="$(get_key_last_location "$shdb" "$session_name" "$key_name")"
+
+                        if [[ "$(get_session_context $shdb $session_name)" =~ "$key_name=$key_value" ]]; then
+                            sed "$session_start_location,$session_end_location s/$key_name=$key_value/$line/" -i $shdb
+                        else
+                            if [ ${line:0:1} != '#' ]; then
+                                # annotation all key
+                                sed "$session_start_location,$session_end_location s/^$key_name=/# $key_name=/" -i $shdb
+                                sed ""$key_last_location" "a$line"" -i $shdb
+                            else
+                                sed ""$key_frist_location" "i$line"" -i $shdb
+                            fi
+                        fi
+
+                        if [ -n "$old_session_buffer" ]; then
+                            # debug old_session_buffer = $old_session_buffer
+                            sed "$key_frist_location i$old_session_buffer" -i $shdb
+                        fi
+                        # if [ -n "$(sed -n ""$session_start_location","$session_end_location"p" $shdb | grep ^${line%%=*}= -)" ]; then
+                        #     sed "$session_start_location,$session_end_location s/${line%%=*}=.*/$old_session_buffer$line/" -i $shdb
+                        # fi
+                    else
+                        debug new key
+                        sed "$session_end_location a$old_session_buffer$line\n" -i $shdb
+                    fi
+                    old_session_buffer=''
+                else
+                    debug unkey $line
+                    if [ -n "$old_session_buffer" ]; then
+                        if [ -n "$line" ]; then
+                            old_session_buffer="$old_session_buffer\n$line"
+                        else
+                            old_session_buffer="$old_session_buffer\n"
+                        fi
+                    elif [ -n "$line" ]; then
+                            old_session_buffer="$line"
+                    fi
+                fi
+            fi
+        fi
+
+        if [ "$current_line" -eq "$lines" ]; then
+            if [ -n "$new_session_buffer" ]; then
+                sed "$ a$new_session_buffer" -i $shdb
+                new_session_buffer=''
             fi
         fi
     done
@@ -74,7 +220,7 @@ function shdb() {
     fi
 
     str="$(get_param '-g' "$@")" # get the line
-    [ $? -gt 0 -a $? -lt 100 ] && { shdb_getline "$shdb" "$str"; exit $?; }
+    [ $? -gt 0 -a $? -lt 100 ] && { get_session_start "$shdb" "$str"; exit $?; }
 
     str="$(get_param '-d' "$@")" # del
     [ $? -gt 0 -a $? -lt 100 ] && { shdb_del "$shdb" "$str"; exit $?; }

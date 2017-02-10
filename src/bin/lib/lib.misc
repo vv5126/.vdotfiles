@@ -100,6 +100,13 @@ function ls_dir()
     find . -maxdepth $level -type d | sed '1d;s/^\.\///g' >&1
 }
 
+function debug()
+{
+    if [ "$debug" == '1' ]; then
+        echo $* >&2
+    fi
+}
+
 ############# will export ##############
 
 export -f get_script_dir
