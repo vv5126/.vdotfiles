@@ -9,15 +9,18 @@ APP_DIR=${APP_DIR%\/*}
 function git_push() {
         local branch
 	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $1}'`
-        git branch -a | {
-                while read line; do
-                        [[ "$line" =~ "->" ]] && {
-                                branch=${line##*-> }
-                                branch=${branch##*/}
-	                        git push $warehouse HEAD:refs/for/refs/heads/$branch
-                        }
-                done
-        }
+        branch="$(git branch | sed -n '/^\*/p')"
+        if [[ "$branch" =~ '(' ]]; then
+                branch="$(git branch -a | sed -n '/->/p')"
+                branch=${branch##*-> }
+                branch=${branch##*/}
+                git push $warehouse HEAD:refs/for/refs/heads/$branch
+        else
+                branch=${branch##* }
+                branch=${branch##*/}
+                git push $warehouse HEAD:refs/for/refs/heads/$branch
+        fi
+
 }
 function make_git_push_file() {
 	local file

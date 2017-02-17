@@ -1,52 +1,117 @@
 #!/bin/bash
 
+. ~/.bin/ini/ini.work
+. ~/.bin/lib/lib.work
+. ~/.bin/lib/lib.shdb
 
-function mk() {
+debug=1
 
-	source .project_info
-	case "$forOS" in
-	*)
-		[ "$addtime" = "1" ] && target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
-		[ -n "$note" ] && target_name=$target_name-$note
-		target_name=$target_name.img
-		[ "$needclean" = "1" ] && make distclean
-		[ -f $the_image ] && rm $the_image
-		make $board_config -j32 > .tmp && {
-			echo the out img: $target_dir/$target_name >&2
-			smkdir $target_dir
-			scp $the_image $target_dir/$target_name
-		}
-		;;
-	esac
+function get_repo_dir() {
+    repo_info=''
+    local repo_dir="$(getdir .repo)"
+    [ -n "$repo_dir" -a -f "$repo_dir/.project_info" ] && repo_info="$repo_dir/.project_info"
+}
+
+function make_info_file(){
+        local file=$1
+        local str="
+	# [base]
+
+	summary=
+
+	customer=$customer
+
+	forOS=$forOS
+
+	forBOARD=$forBOARD
+
+	project_type='uboot'
+
+	the_image=$the_image
+
+	board_config=$board_config
+
+	# [opt]
+
+	needclean=$needclean
+
+	addtime=$addtime
+
+	note=$note
+
+	# [out]
+
+	target_dir=$target_dir
+
+	target_name=$target_name
+
+	# [unuse]
+
+	repositories_type='git'
+
+	git_remote=$git_remote
+
+	git_branch=$git_branch
+        "
+        shdb -f "$file" -a "$str"
+}
+
+function mkmain() {
+
+        [ -f ".project_info" ] && source .project_info
+        [ "$addtime" = "1" ] && target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
+        [ -n "$note" ] && target_name=$target_name-$note
+        target_name=$target_name.img
+        [ "$needclean" = "1" ] && make distclean
+        [ -f $the_image ] && rm $the_image
+        make $board_config -j32 > .tmp && {
+            echo the out img: $target_dir/$target_name >&2
+            smkdir $target_dir
+            scp $the_image $target_dir/$target_name
+        }
 }
 
 
 function init(){
 	local tmp=
 
-	project_type='uboot'
-	git_remote=$(git remote -v | head -2 | tail -1 | awk '{print $2}')
-	git_branch=$(git branch | grep '*' | awk '{print $2}')
+        get_repo_dir
+
+        [ -n "$repo_info" ] && source $repo_info
+
+        if [ -n "$uboot_config" ]; then
+            board_config=$uboot_config
+            the_image="$uboot_image"
+        fi
+
+        if [ -z "$forOS" ]; then
+	    tmp=$(user_select 'what OS' "${surport_os[@]}")
+            forOS="${tmp:=none}"
+
+            case $forOS in
+                'android'*)
+                    the_image=
+                    ;;
+                'tizen'*)
+                    the_image=u-boot-with-spl.bin
+                    ;;
+                'buildroot'*)
+                    the_image=
+                    ;;
+            esac
+        fi
+
+	git_remote="$(git remote -v | head -2 | tail -1 | awk '{print $2}')"
+	git_branch="$(git branch | grep '*' | awk '{print $2}')"
+        if [[ "$git_branch" =~ '(' ]]; then
+            tmp=$(git branch -a | grep -o '\->.*$')
+            git_branch=${tmp##*/}
+        fi
+
 	target_dir='$VGL_BOARDS/$forBOARD_$forOS-imgs'
-	target_name='$project_type-$forBOARD-$forOS-$board_config'
+	target_name='$uboot-$forBOARD-$forOS-$board_config'
 
-	tmp=$(user_select 'what OS' tizen23 tizen30 android51 android44)
-	[ $? = 0 ] && forOS=$tmp
-
-	case $forOS in
-	'android'*)
-		the_image=
-		;;
-	'tizen'*)
-		the_image=u-boot-with-spl.bin
-		;;
-	'buildroot'*)
-		the_image=
-		;;
-	esac
-
-	repositories_type='git'
-	make_info_file
+	make_info_file ".project_info"
 	return 0
 }
 
@@ -113,5 +178,7 @@ function mk_gcc_file() {
 		;;
 	esac
 } || {
-	mk
+	mkmain
 }
+
+shdb_format ".project_info" &

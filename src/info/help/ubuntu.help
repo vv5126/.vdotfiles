@@ -1,0 +1,57 @@
+
+# ======================================================== #
+[ base ]
+git
+zsh
+powerline
+tmux
+screen
+teamviewer
+xrdp
+xdotool
+clang
+kolourpaint
+  ----------------------------
+sogoupinyin:
+wget -O sogoupinyin64 http://pinyin.sogou.com/linux/download.php?f=linux&bit=64
+wget -O sogoupinyin32 http://pinyin.sogou.com/linux/download.php?f=linux&bit=32
+  ----------------------------
+getmail4
+music: cmus
+baiduyun: https://github.com/LiuLang/bcloud
+# ======================================================== #
+[ python ]
+pip
+pip for python3.5
+wget https://bootstrap.pypa.io/get-pip.py
+python3.5 get-pip.py
+# ======================================================== #
+dia
+beep
+wine
+  ----------------------------
+[ game ]
+nethack
+  ----------------------------
+# ======================================================== #
+aircrack
+    ├── aircrack-ng-1.2-rc4.tar.gz
+    └── wpa2pjzd.tar.bz2
+=need:
+libnl-3-dev
+libnl-genl-3-dev
+libssl-dev
+
+# ======================================================== #
+mount windows dir: need
+cifs-utils
+samba
+samba-client
+# ======================================================== #
+外置显卡 分辨率配置
+xrandr --newmode "1280x960_60.00"  101.25  1280 1360 1488 1696  960 963 967 996 -hsync +vsync
+xrandr --addmode DVI-1-0 "1280x960_60.00"
+# ======================================================== #
+# ======================================================== #
+# ======================================================== #
+# ======================================================== #

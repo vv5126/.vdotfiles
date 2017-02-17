@@ -7,6 +7,7 @@ function push_to_board() {
     local dst=$2
     local file=${src##*/}
     local local_home=$(ssh $host "pwd")
+    local ret=0
 
     # scp $1 $host:~ > /dev/null
     scp $src $host:/tmp > /dev/null
@@ -14,8 +15,10 @@ function push_to_board() {
     ssh $host "$local_home/.vdotfiles/src/bin/local/adb remount" > /dev/null 2>&1
     # ssh $host "$local_home/.vdotfiles/src/bin/local/adb push $local_home/$file $dst" > /dev/null 2>&1
     ssh $host "$local_home/.vdotfiles/src/bin/local/adb push /tmp/$file $dst" > /dev/null 2>&1
+    [ $? -eq 0 ] && ret=0 || ret=1
     ssh $host "$local_home/.vdotfiles/src/bin/local/adb shell sync" > /dev/null 2>&1
     ssh $host "rm /tmp/$file" > /dev/null 2>&1
+    return $ret
 }
 
 
@@ -28,9 +31,9 @@ if [ $# -eq 1 ]; then
         [ -d "./cts" ] && dir="/system/${dir%/*}" # for android
 
         push_to_board "$file" "$dir"
-        [ $? == 0 ] && echo done
+        [ $? == 0 ] && echo done! || echo fail!
     fi
 elif [ $# -eq 2 ]; then
     push_to_board "$1" "$2"
-    [ $? == 0 ] && echo done
+    [ $? == 0 ] && echo done! || echo fail!
 fi

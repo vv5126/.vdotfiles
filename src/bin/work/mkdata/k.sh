@@ -1,14 +1,74 @@
 #!/bin/bash
 
 . ~/.bin/ini/ini.work
+. ~/.bin/lib/lib.work
+. ~/.bin/lib/lib.shdb
 
-debug=0
+debug=1
 
-function mk() {
+function get_repo_dir() {
+    repo_info=''
+    local repo_dir="$(getdir .repo)"
+    [ -n "$repo_dir" -a -f "$repo_dir/.project_info" ] && repo_info="$repo_dir/.project_info"
+}
+
+function make_info_file(){
+        local file=$1
+        local str="
+	# [base]
+
+	summary=
+
+	customer=$customer
+
+	forOS=$forOS
+
+	forBOARD=$forBOARD
+
+	project_type=$project_type
+
+	the_image=$the_image
+
+	lcd_name=$lcd_name
+
+	board_config=$board_config
+
+	# [opt]
+
+	needclean=$needclean
+
+	addtime=$addtime
+
+	note=$note
+
+	# [out]
+
+	target_dir=$target_dir
+
+	target_name=$target_name
+
+	# [unuse]
+
+	repositories_type='git'
+
+	git_remote=$git_remote
+
+	git_branch=$git_branch
+        "
+        shdb -f "$file" -a "$str"
+}
+
+
+function mkmain() {
     local new_target_name=
     local build_bootimage_tar=${VGL_BUILD_BOOTIMAGE##*\/}
     local build_bootimage_dir=${build_bootimage_tar%%.*}
-	source .project_info
+
+    # [ ! -f ".project_info" -a -n "$repo_info" ] && source $repo_info
+    # [ -f ".project_info" ] && source .project_info
+    # [ "$use_repo" -eq 1 -a -n "$repo_info" ] && source $repo_info
+    # the_image=$KERNEL_IMAGE_PATH/$KERNEL_TARGET_IMAGE
+
         [ "$needclean" = "1" ] && make clean
         [ -f "$the_image" ] && rm $the_image
 	case "$forOS" in
@@ -44,6 +104,11 @@ function mk() {
 		;;
 	*)
 		make uImage -j32 && {
+                    if [ -n "$the_img_dir" ]; then
+			echo -e "\n  the out img: $the_img_dir" >&2
+			smkdir $the_img_dir
+                        scp $the_image $the_img_dir
+                    else
                         new_target_name=$target_name
                         [ "$addtime" = "1" ] && new_target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
                         [ -n "$note" ] && new_target_name=$new_target_name-$note
@@ -51,7 +116,7 @@ function mk() {
 			echo -e "\n  the out img: $target_dir/$new_target_name" >&2
 			smkdir $target_dir
                         scp $the_image $target_dir/$new_target_name
-		        # vcp $the_image 
+                    fi
 		}
 		;;
 	esac
@@ -61,63 +126,73 @@ function mk() {
 function init(){
 	local tmp=
 
-	if [ ! -f ".config" ]; then
+        get_repo_dir
+
+        [ -n "$repo_info" ] && source $repo_info
+
+        if [ -n "$kernel_config" ]; then
+           board_config=$kernel_config
+           the_image="$kernel_image"
+           make $kernel_config
+        elif [ ! -f ".config" ]; then
 		ls arch/mips/configs
 		echo -en "\n  please select a config  >>> ">&2
 		read tmp
 		[ -f "arch/mips/configs/$tmp" ] && { cp arch/mips/configs/$tmp .config; board_config=$tmp; } || return 1
 	fi
 
-	git_remote="$(git remote -v | head -2 | tail -1 | awk '{print $2}')"
+        if [ -f ".config" ]; then
+            forBOARD="$(sed -n '/CONFIG_BOARD_NAME/{s/.*=//;p;}' .config)"
+            while read line; do
+                [[ $line =~ "Kernel Configuration" ]] && project_type="kernel$(echo "$line" | cut -d " " -f 3)"
+                # [[ "$line" =~ "CONFIG_BOARD_NAME" ]] && forBOARD=${line##*=}
+                if [[ "$line" =~ "CONFIG_LCD_" ]] && [ "${line:0-1}" = "y" ]; then
+                    [[ "$line" =~ "CONFIG_LCD_CLASS_DEVICE" ]] || {
+                        tmp=${line#*CONFIG_LCD_}
+                        lcd_name=${tmp%=*}
+                        break
+                    }
+                fi
+            done < ".config"
+        fi
 
+        if [ -z "$forOS" ]; then
+	    tmp=$(user_select 'what OS' "${surport_os[@]}")
+            forOS="${tmp:=none}"
+
+            case $project_type in
+                'kernel3.0.8')
+                    the_image=arch/mips/boot/compressed/uImage
+                    ;;
+                'kernel3.10.14')
+                    the_image=arch/mips/boot/uImage
+                    ;;
+            esac
+
+            case $forOS in
+                'android'*)
+                    the_image=arch/mips/boot/zcompressed/zImage
+                    ;;
+                'tizen'*)
+                    the_image=arch/mips/boot/uImage
+                    ;;
+                'buildroot'*)
+                    the_image=
+                    ;;
+            esac
+        fi
+
+	git_remote="$(git remote -v | head -2 | tail -1 | awk '{print $2}')"
 	git_branch="$(git branch | grep '*' | awk '{print $2}')"
         if [[ "$git_branch" =~ '(' ]]; then
             tmp=$(git branch -a | grep -o '\->.*$')
             git_branch=${tmp##*/}
         fi
 
-	while read line; do
-		[[ $line =~ "Kernel Configuration" ]] && project_type="kernel$(echo "$line" | cut -d " " -f 3)"
-		[[ "$line" =~ "CONFIG_BOARD_NAME" ]] && forBOARD=${line##*=}
-		[[ "$line" =~ "CONFIG_PRODUCT_NAME" ]] && platfrom_name=${line##*=}
-		if [[ "$line" =~ "CONFIG_LCD_" ]] && [ "${line:0-1}" = "y" ]; then
-			[[ "$line" =~ "CONFIG_LCD_CLASS_DEVICE" ]] || {
-				tmp=${line#*CONFIG_LCD_}
-				lcd_name=${tmp%=*}
-				break
-			}
-		fi
-	done < ".config"
-	target_dir='$VGL_BOARDS/$forBOARD-$forOS-imgs'
 	target_name='$project_type-$forBOARD-$forOS'
+        [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/$id/$forBOARD-$forOS-imgs'
 
-	tmp=$(user_select 'what OS' "${surport_os[@]}")
-        # [ $tmp -ne '0' ] && forOS=$tmp || forOS='none'
-        forOS="${tmp:=none}"
-
-	case $project_type in
-	'kernel3.0.8')
-		the_image=arch/mips/boot/compressed/uImage
-		;;
-	'kernel3.10.14')
-		the_image=arch/mips/boot/uImage
-		;;
-	esac
-
-	case $forOS in
-	'android'*)
-		the_image=arch/mips/boot/zcompressed/zImage
-		;;
-	'tizen'*)
-		the_image=arch/mips/boot/uImage
-		;;
-	'buildroot'*)
-		the_image=
-		;;
-	esac
-
-	repositories_type='git'
-	make_info_file
+	make_info_file ".project_info"
 	return 0
 }
 
@@ -209,7 +284,7 @@ function new_gcc_filter() {
                 if [ -f "$i" ]; then
                     [[ "$file_s" =~ "$i" ]] || file_s="$file_s $i"
                 else
-                    [ "$debug" -eq 1 ] && echo $i >> ttttt
+                    debug echo ttttt
                 fi
             fi
 
@@ -217,7 +292,7 @@ function new_gcc_filter() {
                 if [ -f "$i" ]; then
                     [[ "$file_c" =~ "$i" ]] || { file_c="$file_c $i"; line_c="$line_c $i"; }
                 else
-                    [ "$debug" -eq 1 ] && echo $i >> ttttt
+                    debug echo ttttt
                 fi
             fi
 
@@ -226,7 +301,7 @@ function new_gcc_filter() {
                     [[ "$file_h" =~ "$i" ]] || file_h="$file_h $i"
                     line_h="$line_h $i"
                 else
-                    [ "$debug" -eq 1 ] && echo $i >> ttttt
+                    debug echo ttttt
                 fi
             fi
 
@@ -236,7 +311,7 @@ function new_gcc_filter() {
                     [[ "$file_include" =~ "$i" ]] || file_include="$file_include $i"
                     line_include="$line_include $i"
                 else
-                    [ "$debug" -eq 1 ] && echo $i >> ttttt
+                    debug echo ttttt
                 fi
             fi
         done
@@ -315,8 +390,8 @@ function new_gcc_filter() {
         'ycm_conf')
                 make clean
                 make uImage -n -j32 > .tmp 2>&1
-                [ "$debug" -eq 1 ] && cp .tmp ttt
-                # [ "$debug" -eq 1 ] && cp ttt .tmp
+                debug cp .tmp ttt
+                debug cp ttt .tmp
                 mk_gcc_file .tmp
                 new_gcc_filter .tmp
                 # mk_h_file .tmp
@@ -328,5 +403,7 @@ function new_gcc_filter() {
 		;;
 	esac
 } || {
-	mk
+	mkmain
 }
+
+shdb_format ".project_info" &

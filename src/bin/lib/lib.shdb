@@ -7,9 +7,31 @@ source ~/.bin/lib/lib.base
 
 debug=0
 
-# function shdb_format() {
-#
-# }
+function key_name() {
+    local tmp
+    tmp="${1%%=*}"
+    echo "${tmp##* }"
+}
+
+function shdb_format() {
+    local file="$1"
+    local line_num=''
+    local num=0
+    local buf1='buf1'
+    local buf2='buf2'
+    local buf3='buf3'
+
+    sed 's/[^\ ]*=[^\ ]*/&\n/g' -i $file #有=即换行
+    sed -nr 'H;${g;s/\n{3,}/\n\n/g;p;q}' -i $file # 去多换行
+    # sed -nr '/[^\ ]=[^\ ]/{x;/[^ ]=[^ ]/a\n;}' test
+
+    while read line; do
+        ((num+=1))
+        buf3="$buf2"; buf2="$buf1"; buf1="$line"
+        [ -z "$(key_name "$buf2")" -a "$(key_name "$buf1")" == "$(key_name "$buf3")" ] && sed "$((num-=1))d" -i $file
+    done < $file
+    sed -e '1d' -e '$d' -i $file
+}
 
 function get_session_start() {
         local file="$1"
@@ -111,7 +133,7 @@ function shdb_add() {
             session_name="${session_name%%\]*}"
             session_start_location=$(get_session_start "$shdb" "$session_name")
             session_end_location=$(get_session_end "$shdb" "$session_name")
-            debug session_name "$session_name" , start $session_start_location, end $session_end_location.
+            debug echo session_name "$session_name" , start $session_start_location, end $session_end_location.
 
             if [ -n "$new_session_buffer" ]; then
                 sed "$session_end_location i$new_session_buffer" -i $shdb
@@ -127,7 +149,7 @@ function shdb_add() {
             else
                 if [[ ("$line" =~ '=') && (! "$line" =~ ' =') && (! "$line" =~ '= ') ]]; then
                     session_end_location=$(get_session_end "$shdb" "$session_name")
-                    debug "key $line"
+                    debug echo "key $line"
                     key_name="${line%%=*}"
                     key_name="${key_name##* }"
                     key_value="${line##*=}"
@@ -150,19 +172,19 @@ function shdb_add() {
                         fi
 
                         if [ -n "$old_session_buffer" ]; then
-                            # debug old_session_buffer = $old_session_buffer
+                            # debug echo old_session_buffer = $old_session_buffer
                             sed "$key_frist_location i$old_session_buffer" -i $shdb
                         fi
                         # if [ -n "$(sed -n ""$session_start_location","$session_end_location"p" $shdb | grep ^${line%%=*}= -)" ]; then
                         #     sed "$session_start_location,$session_end_location s/${line%%=*}=.*/$old_session_buffer$line/" -i $shdb
                         # fi
                     else
-                        debug new key
+                        debug echo new key
                         sed "$session_end_location a$old_session_buffer$line\n" -i $shdb
                     fi
                     old_session_buffer=''
                 else
-                    debug unkey $line
+                    debug echo unkey $line
                     if [ -n "$old_session_buffer" ]; then
                         if [ -n "$line" ]; then
                             old_session_buffer="$old_session_buffer\n$line"
@@ -177,6 +199,10 @@ function shdb_add() {
         fi
 
         if [ "$current_line" -eq "$lines" ]; then
+            if [ -n "$old_session_buffer" ]; then
+                sed "$ a$old_session_buffer" -i $shdb
+                old_session_buffer=''
+            fi
             if [ -n "$new_session_buffer" ]; then
                 sed "$ a$new_session_buffer" -i $shdb
                 new_session_buffer=''
@@ -187,24 +213,31 @@ function shdb_add() {
 }
 
 function shdb_del() {
-    local shdb="$1"
-    local str="$2"
+    local file="$1"
+    local session_name="$2"
+    local key="$3"
     local line=
+    local session_start_location=$(get_session_start "$file" "$session_name")
+    local session_end_location=$(get_session_end "$file" "$session_name")
 
-    echo "$str" | while read line; do
-        sed "/^$line/d" -i $shdb
-    done
+    if [ $# -eq 2 ]; then
+       [ "$session_start_location" != "new_session" ] && sed "$session_start_location,$session_end_location d" -i $file
+    else
+        sed "$session_start_location,$session_end_location {/$key=/d}" -i $file
+    fi
+    shdb_format $file
+
     return 0
 }
 
 function shdb() {
-    [ $# -eq 0 ] && { echo "need param"; exit; }
+    [ $# -eq 0 ] && { echo "need param"; return -1; }
 
-    shdb="$1"
+    shdb="$(get_param '-f' "$@")" # file
 
     if [ ! -f "$shdb" ]; then
         [[ "$shdb" =~ '/' ]] && mkdir -p "${shdb%%/*}"
-        touch $shdb
+        echo "" > $shdb
     fi
 
     str="$(get_param '-a' "$@")" # add
@@ -212,17 +245,17 @@ function shdb() {
         line=$(get_param '-l' $@)
         if [ $? -gt 0 -a $? -lt 100 ]; then
             shdb_add "$shdb" "$str" "$line"
-            exit $?
+         return $?
         else
             shdb_add "$shdb" "$str"
-            exit $?
+         return $?
         fi
     fi
 
     str="$(get_param '-g' "$@")" # get the line
-    [ $? -gt 0 -a $? -lt 100 ] && { get_session_start "$shdb" "$str"; exit $?; }
+    [ $? -gt 0 -a $? -lt 100 ] && { get_session_start "$shdb" "$str"; return $?; }
 
     str="$(get_param '-d' "$@")" # del
-    [ $? -gt 0 -a $? -lt 100 ] && { shdb_del "$shdb" "$str"; exit $?; }
+    [ $? -gt 0 -a $? -lt 100 ] && { shdb_del "$shdb" $str; return $?; }
 
 }
