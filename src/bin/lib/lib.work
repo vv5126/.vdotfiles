@@ -1,5 +1,25 @@
 #!/bin/bash
 
+source ~/.bin/lib/lib.list
+
+function get_project_base_info(){
+        local task_type_list="
+                fix_bug
+                add_new
+                customer
+        "
+        local customer_list="$(cd $HOME/work/customer; ls_dir 1)"
+
+        task_type=$(user_select 'project type is' "$task_type_list")
+
+        if [ "$task_type" == 'customer' ]; then
+                customer="$(user_select 'have we got the customer ??' "$customer_list" 1)"
+        fi
+
+        echo -n "what\'s the feature:  >>> "
+        read feature
+        feature="$feature"_"$(date +%Y%m%d_%H%M)"
+}
 
 function svi(){
 	if [ $# -ne 0 ]; then

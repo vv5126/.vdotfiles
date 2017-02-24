@@ -11,9 +11,11 @@ function make_info_file() {
         local str="
 	# [base]
 
-	summary=
+        task_type=$task_type
 
 	customer=$customer
+
+	feature=$feature
 
 	forOS=manhattan
 
@@ -68,6 +70,18 @@ function mkmain() {
 
 
 function init() {
+        get_project_base_info
+        local project_target_dir="$HOME/work/$task_type/$customer"
+        local bool
+
+        [ "$project_target_dir" != "$PWD" ] && {
+            bool=$(get_input " Do you want move the project to \"$project_target_dir\"?\n please say \e[40;33m Yes\033[0m or \033[40;32m No\033[0m.")
+            if [ "$bool" == 'y' ]; then
+                mkdir -p "$project_target_dir"
+                mv "$PWD" "$project_target_dir/$feature" && cd "$project_target_dir/$feature"
+                echo the project has move to "$project_target_dir/$feature"
+            fi
+        }
 
         source build/envsetup.sh
         lunch

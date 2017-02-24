@@ -1,5 +1,13 @@
 #!/bin/bash
 
+function get_input(){
+    local input
+    echo -en "$1 >>> " >&2
+    read input
+    [ -n "$input" ] && echo "$input"
+}
+
+
 #showlist file title
 function showlist(){
 	local NUM=0
@@ -115,9 +123,10 @@ function user_select() {
 	local NO=0
 	local DEST=
 	local value=
-	local info=$1
+	local info="$1"
+        local custom="$([ $# -eq 3 ] && echo $3)" # 是否允许自定义 1,0
 
-	shift
+        set "$2"
 	echo >&2
 	NO=1
 	for value in $@; do
@@ -137,8 +146,11 @@ function user_select() {
 			fi
 			NO=$[$NO+1]
 		done
+	        [ -n "$DEST" ] && { echo $DEST; return 0; }
+        elif [ "$custom" == '1' ]; then
+            echo "$NUM"
+            return -1
 	fi
-	[ -n "$DEST" ] && echo $DEST
 }
 
 function showlist_with_tab(){

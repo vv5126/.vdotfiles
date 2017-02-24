@@ -77,7 +77,22 @@ function init(){
 
         get_repo_dir
 
-        [ -n "$repo_info" ] && source $repo_info
+        if [ -n "$repo_info" ]; then
+            source $repo_info
+        else
+            get_project_base_info
+            local project_target_dir="$HOME/work/$task_type/$customer"
+            local bool
+
+            [ "$project_target_dir" != "$PWD" ] && {
+                bool=$(get_input " Do you want move the project to \"$project_target_dir\"?\n please say \e[40;33m Yes\033[0m or \033[40;32m No\033[0m.")
+                if [ "$bool" == 'y' ]; then
+                    mkdir -p "$project_target_dir"
+                    mv "$PWD" "$project_target_dir/uboot_$feature" && cd "$project_target_dir/uboot_$feature"
+                    echo the project has move to "$project_target_dir/uboot_$feature"
+                fi
+            }
+        fi
 
         if [ -n "$uboot_config" ]; then
             board_config=$uboot_config

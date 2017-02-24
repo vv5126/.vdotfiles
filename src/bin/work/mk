@@ -48,22 +48,19 @@ function mkinit()
 
 function mkn()
 {
-        cd $HOME/hub
-        [ 'x'$(cat .working_state) == 'x1' ] && { echo 'project syncing! Please wait little time~' >&2; exit; }
-        ls_dir 1 > .project_dir_have
-        echo 
-        echo -n 'How about this project:  >>> '
-        read summary
-        DEST=$(showlist_with_value ".project_dir_have" "Please chosen one project:")
-        # cat .project_dir_have
-        cd - 1>/dev/null
+	local tmp=
+
+        [ 'x'$(cat $HOME/hub/.working_state) == 'x1' ] && { echo 'project syncing! Please wait little time~' >&2; exit; }
+
+        (cd $HOME/hub; ls_dir 1 > .project_dir_have)
+
+        DEST=$(showlist_with_value "$HOME/hub/.project_dir_have" "Please chosen one project:")
 	if [ -n "$DEST" ]; then
-                # echo $DEST
-                # echo $summary
-                mkdir $summary
-                echo "copying ......"
-                cp -arpdl $HOME/hub/$DEST $summary
-                cd $summary/$DEST && mk
+                tmp=$DEST\_$(date +%Y%m%d_%H%M)
+                echo -n "copying ......"
+                cp -arpdl $HOME/hub/$DEST $tmp
+                echo " done."
+                cd $tmp && mk
         fi
 }
 
