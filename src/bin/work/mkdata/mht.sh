@@ -64,7 +64,7 @@ function mkmain() {
         make && {
             echo -e "\n  the out img dir: $target_dir" >&2
             smkdir "$target_dir"
-            scp "$the_img_dir" "$target_dir"
+            scp -r "$the_img_dir" "$target_dir"
         }
 }
 
@@ -73,15 +73,6 @@ function init() {
         get_project_base_info
         local project_target_dir="$HOME/work/$task_type/$customer"
         local bool
-
-        [ "$project_target_dir" != "$PWD" ] && {
-            bool=$(get_input " Do you want move the project to \"$project_target_dir\"?\n please say \e[40;33m Yes\033[0m or \033[40;32m No\033[0m.")
-            if [ "$bool" == 'y' ]; then
-                mkdir -p "$project_target_dir"
-                mv "$PWD" "$project_target_dir/$feature" && cd "$project_target_dir/$feature"
-                echo the project has move to "$project_target_dir/$feature"
-            fi
-        }
 
         source build/envsetup.sh
         lunch
@@ -98,13 +89,22 @@ function init() {
 	git_branch=$(cd .repo/manifests; git branch | grep '*' | awk '{print $2}')
         real_br="$(cd .repo/manifests; git branch -a | grep '\->' -)"
 
-        the_img_dir=out/product/$forBOARD
-	target_dir='$VGL_BOARDS/$forBOARD-$forOS-imgs'
+        the_img_dir=out/product/$forBOARD/image
+        [ -n "$customer" ] && target_dir='$VGL_BOARDS/$task_type/$customer/$feature' || target_dir='$VGL_BOARDS/$task_type/$feature'
 
 	make_info_file ".project_info"
 
         # (cd kernel; source mk)
         # (cd u-boot; source mk)
+
+        [ "$project_target_dir" != "$PWD" ] && {
+            bool=$(get_input " Do you want move the project to \"$project_target_dir\"?\n please say \e[40;33m Yes\033[0m or \033[40;32m No\033[0m.")
+            if [ "$bool" == 'y' ]; then
+                mkdir -p "$project_target_dir"
+                mv "$PWD" "$project_target_dir/$feature" && cd "$project_target_dir/$feature"
+                echo the project has move to "$project_target_dir/$feature" >&2
+            fi
+        }
 
 	return 0
 }

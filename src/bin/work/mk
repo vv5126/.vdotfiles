@@ -50,15 +50,15 @@ function mkn()
 {
 	local tmp=
 
-        [ 'x'$(cat $HOME/hub/.working_state) == 'x1' ] && { echo 'project syncing! Please wait little time~' >&2; exit; }
+        [ 'x'$(cat $HOME/work/hub/.working_state) == 'x1' ] && { echo 'project syncing! Please wait little time~' >&2; exit; }
 
-        (cd $HOME/hub; ls_dir 1 > .project_dir_have)
+        (cd $HOME/work/hub; ls_dir 1 > .project_dir_have)
 
-        DEST=$(showlist_with_value "$HOME/hub/.project_dir_have" "Please chosen one project:")
+        DEST=$(showlist_with_value "$HOME/work/hub/.project_dir_have" "Please chosen one project:")
 	if [ -n "$DEST" ]; then
                 tmp=$DEST\_$(date +%Y%m%d_%H%M)
                 echo -n "copying ......"
-                cp -arpdl $HOME/hub/$DEST $tmp
+                cp -arpdl $HOME/work/hub/$DEST $tmp
                 echo " done."
                 cd $tmp && mk
         fi

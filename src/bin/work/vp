@@ -2,6 +2,23 @@
 
 host=user@192.168.4.150
 
+function install_apk() {
+    local src=$1
+    local file=${src##*/}
+    local local_home=$(ssh $host "pwd")
+    local ret=0
+
+    scp $src $host:/tmp > /dev/null
+
+    ssh $host "$local_home/.vdotfiles/src/bin/local/adb remount" > /dev/null 2>&1
+    ssh $host "$local_home/.vdotfiles/src/bin/local/adb install -r /tmp/$file" > /dev/null 2>&1
+    [ $? -eq 0 ] && ret=0 || ret=1
+    ssh $host "$local_home/.vdotfiles/src/bin/local/adb shell sync" > /dev/null 2>&1
+    ssh $host "rm /tmp/$file" > /dev/null 2>&1
+    return $ret
+
+}
+
 function push_to_board() {
     local src=$1
     local dst=$2
@@ -25,10 +42,17 @@ function push_to_board() {
 [ $# -eq 0 -o $# -gt 2 ] && exit
 
 if [ $# -eq 1 ]; then
-    if [[ "$1" =~ 'system' ]]; then
+    if [ "${1:0-4}" == '.apk' ]; then
+        if [ -f "$1" ]; then
+            install_apk "$PWD/$1"
+        else
+            file="$(getdir .repo)/$1"
+            install_apk "$file"
+        fi
+    elif [[ "$1" =~ 'system' ]]; then
         file="$(getdir .repo)/$1"
         dir="/${1##*/system/}"
-        [ -d "./cts" ] && dir="/system/${dir%/*}" # for android
+        dir="/system/${dir%/*}" # for android
 
         push_to_board "$file" "$dir"
         [ $? == 0 ] && echo done! || echo fail!

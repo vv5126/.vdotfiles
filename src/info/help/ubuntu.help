@@ -1,5 +1,4 @@
 
-# ======================================================== #
 [ base ]
 git
 zsh
@@ -7,51 +6,104 @@ powerline
 tmux
 screen
 teamviewer
-xrdp
 xdotool
 clang
 kolourpaint
-  ----------------------------
-sogoupinyin:
-wget -O sogoupinyin64 http://pinyin.sogou.com/linux/download.php?f=linux&bit=64
-wget -O sogoupinyin32 http://pinyin.sogou.com/linux/download.php?f=linux&bit=32
-  ----------------------------
 getmail4
 music: cmus
 baiduyun: https://github.com/LiuLang/bcloud
-# ======================================================== #
+
+sogoupinyin:
+wget -O sogoupinyin64 http://pinyin.sogou.com/linux/download.php?f=linux&bit=64
+wget -O sogoupinyin32 http://pinyin.sogou.com/linux/download.php?f=linux&bit=32
+
 [ python ]
 pip
 pip for python3.5
 wget https://bootstrap.pypa.io/get-pip.py
 python3.5 get-pip.py
-# ======================================================== #
-dia
-beep
-wine
-  ----------------------------
+
+[ 远程桌面 ]
+xrdp
+vncserver:
+apt-get install vnc4server gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
+vncserver :1
+cat > vim .vnc/xstartup << EOF
+#!/bin/sh
+export XKL_XMODMAP_DISABLE=1
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+gnome-panel &
+gnome-settings-daemon &
+metacity &
+nautilus &
+gnome-terminal &
+EOF
+
+vncserver -kill :1
+vncserver :1
+
+[ ftp ]
+sudo apt-get install vsftpd
+in /etc/vsftpd.conf:
+        anonymous_enable=NO
+        local_root=/home/linuxidc/公共的/FTP共享文件
+        local_enable=YES
+
+sudo service vsftpd restart
+
+[ tftp ]
+1.安装tftp-server
+sudo apt-get install tftpd-hpa
+sudo apt-get install tftp-hpa（如果不需要客户端可以不安装）
+2.配置TFTP服务器
+sudo vim /etc/default/tftpd-hpa
+将原来的内容改为:
+TFTP_USERNAME="tftp"
+TFTP_ADDRESS="0.0.0.0:69"
+TFTP_DIRECTORY="tftp根目录" #服务器目录,需要设置权限为777,chomd 777
+TFTP_OPTIONS="-l -c -s"
+3.重新启动TFTP服务
+sudo service tftpd-hpa restart
+
 [ game ]
 nethack
-  ----------------------------
-# ======================================================== #
-aircrack
-    ├── aircrack-ng-1.2-rc4.tar.gz
-    └── wpa2pjzd.tar.bz2
-=need:
+
+[ aircrack ]
+aircrack-ng
+wpa2pjzd.tar.bz2
+
+rely on:
 libnl-3-dev
 libnl-genl-3-dev
 libssl-dev
 
-# ======================================================== #
-mount windows dir: need
+[ mount windows dir ]
 cifs-utils
 samba
 samba-client
-# ======================================================== #
-外置显卡 分辨率配置
+
+[ displaylink usb外置显卡 分辨率配置 ]
 xrandr --newmode "1280x960_60.00"  101.25  1280 1360 1488 1696  960 963 967 996 -hsync +vsync
 xrandr --addmode DVI-1-0 "1280x960_60.00"
-# ======================================================== #
-# ======================================================== #
-# ======================================================== #
-# ======================================================== #
+
+[ remount ]
+mount -o remount,rw /xxx
+
+[ unused ]
+dia
+beep
+wine
+dialog_1.2-20130928-1_i386.deb
+fetchmail_6.3.26-1_i386.deb
+iptux_0.6.1-1_i386.deb
+mtd-utils
+liblzo2-2_2.06-1.2ubuntu1.1_i386.deb
+mtd-utils_1.5.0-1_i386.deb
+mutt
+oneko_1.2.sakura.6-9_i386.deb
+AX88772C_772B_772A_760_772_178_LINUX_DRIVER_v4.17.1_Source.tar.gz
+rtl8188eu-master.zip
+LightTableLinux.tar.gz
+pycharm-professional-4.5.4.tar.gz
+shc-3.8.9.tgz

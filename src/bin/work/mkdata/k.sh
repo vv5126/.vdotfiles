@@ -67,7 +67,7 @@ function mkmain() {
     local build_bootimage_dir=${build_bootimage_tar%%.*}
 
     # [ ! -f ".project_info" -a -n "$repo_info" ] && source $repo_info
-    # [ -f ".project_info" ] && source .project_info
+    [ -f ".project_info" ] && source .project_info
     # [ "$use_repo" -eq 1 -a -n "$repo_info" ] && source $repo_info
     # the_image=$KERNEL_IMAGE_PATH/$KERNEL_TARGET_IMAGE
 
@@ -207,7 +207,7 @@ function init(){
         fi
 
 	target_name='$project_type-$forBOARD-$forOS'
-        [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/$id/$forBOARD-$forOS-imgs'
+        [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/$task_type/${customer:+$customer/}$forBOARD-$forOS-imgs'
 
 	make_info_file ".project_info"
 	return 0

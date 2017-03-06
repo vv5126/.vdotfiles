@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.bin/lib/lib.list
+
 function gitfile_diff(){
 
 tmp_frist_diff=/tmp/vdiff.tmp
@@ -63,6 +65,15 @@ while read line_src; do
         fi
 done < $tmp_rm
 
+}
+
+[ $# -eq 0 ] && {
+        str="
+        command:_vgitdiff_\"dstdir\"
+        then_will_create_two_file:_git.diff.add_and_git.diff.rm_.
+        "
+        show_message "$str"
+        exit
 }
 
 dir="$1"

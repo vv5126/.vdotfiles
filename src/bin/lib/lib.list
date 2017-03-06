@@ -1,5 +1,27 @@
 #!/bin/bash
 
+function show_message(){
+    local max=0
+    for i in $1; do
+        ((${#i} > $max)) && ((max=${#i}))
+    done
+
+    kuang=$(printf "%-"$(($max+4))"s" "*")
+
+    echo -e "\e[40;33m"${kuang// /*}"\033[0m"
+    for i in $1; do
+        if [ $(($max-${#i})) -eq 0 ]; then
+            echo -e "\e[40;33m"'*' "${i//_/ }" '*'"\033[0m"
+        else
+            end=$(printf "%-"$(($max-${#i}))"s" " ")
+            echo -e "\e[40;33m"'*' "${i//_/ }" "${end// / }"'*'"\033[0m"
+        fi
+    done
+    echo -e "\e[40;33m"${kuang// /*}"\033[0m"
+}
+
+
+
 function get_input(){
     local input
     echo -en "$1 >>> " >&2

