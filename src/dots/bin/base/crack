@@ -4,16 +4,19 @@ dir=${1:-~/tools/bbb}
 
 cd $dir
 
-cpu_num=20
+cpu_num=30
 
 cap_dir="caps"
 oldcap_dir="$cap_dir/old_caps"
 dict_dir="dicts"
 out_dir="out"
 aircrack=$VGLD_CRACK_DIR/make
+fail_dir="$oldcap_dir/fail"
+done_dir="$oldcap_dir/done"
 
 smkdir $cap_dir
-smkdir $oldcap_dir
+smkdir $fail_dir
+smkdir $done_dir
 smkdir $dict_dir
 smkdir $out_dir
 
@@ -40,18 +43,20 @@ function send(){
 }
 
 for cap in $caps; do
-    for dict in $dicts; do
-        ap_name=$($aircrack $cap | head -6 | tail -1 | awk '{print $3}')
-        ap_mac=$($aircrack $cap | head -6 | tail -1 | awk '{print $2}')
-        ap_mac=${ap_mac//:/-}
-        wanted=$out_dir/"$ap_mac"_"$ap_name".txt
-        mv $cap "$cap_dir"/"$ap_mac"_"$ap_name".cap && cap="$cap_dir"/"$ap_mac"_"$ap_name".cap
+    ap_name=$($aircrack $cap | head -6 | tail -1 | awk '{print $3}')
+    ap_mac=$($aircrack $cap | head -6 | tail -1 | awk '{print $2}')
+    ap_mac=${ap_mac//:/-}
+    wanted=$out_dir/"$ap_mac"_"$ap_name".txt
+    mv $cap "$cap_dir"/"$ap_mac"_"$ap_name".cap && cap="$cap_dir"/"$ap_mac"_"$ap_name".cap
 
+    for dict in $dicts; do
         echo \( $(date +%d\ %H:%M) \) working on $ap_name use $dict ......
         $aircrack $cap -p $cpu_num -w $dict -l $wanted > /dev/null
-        [ -f "$wanted" ] && { echo crack one done!; mv $cap $oldcap_dir; break; }
+        [ -f "$wanted" ] && { echo crack one done!; mv $cap $done_dir; break; }
 
         [ "$(date +%H)" -eq '7' ] && exit
     done
+    [ -f "$cap" ] && { echo crack one fail!; mv $cap $fail_dir; }
+
     echo sleep 1m && sleep 1m
 done

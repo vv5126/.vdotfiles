@@ -1,5 +1,27 @@
 #!/bin/bash
 
+#check clean var.
+function check_var() {
+    local quit var
+
+    quit=${2:+1}
+    for val in $@; do
+        eval var=\$"$val"
+        if [ -z $var ]; then
+            echo "some vars doesn't unset!!!" >&2
+            [ 'x'$quit == 'x' ] && return 2 || exit 2
+        fi
+    done
+    return 0
+}
+
+#clean same lines in one file.
+function clean_duplicate_lines() {
+    [ $# -eq 1 ] && {
+        cp $1 .clean_dup && cat .clean_dup | sort | uniq > $1
+    }
+}
+
 # xxx line separator from to
 function get_segment_from_line() {
         line="$1"

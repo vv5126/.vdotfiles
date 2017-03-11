@@ -81,6 +81,7 @@ function mkmain() {
                 scp $VGL_BUILD_BOOTIMAGE .
                 tar -xf $build_bootimage_tar && rm $build_bootimage_tar
             }
+            (
 		    cd $build_bootimage_dir
 		    bash m.sh && {
                         new_target_name=$target_name
@@ -90,7 +91,8 @@ function mkmain() {
                         echo -e "\n  the out img: $target_dir/$new_target_name" >&2
                         smkdir $target_dir
                         scp "out/$target_name" $target_dir/$new_target_name
-            }
+                    }
+                    )
 		fi
 		;;
 	'tizen'*)
@@ -126,6 +128,8 @@ function mkmain() {
 
 
 function init(){
+        trap "rm -f .k.sh .project_info; exit 2" 1 2 3 15
+
 	local tmp=
 
         get_repo_dir

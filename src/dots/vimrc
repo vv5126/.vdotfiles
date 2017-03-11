@@ -1,10 +1,7 @@
-" design by wgao {
-" vim: set filetype=vim sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
-" }
+" design by wgao. {{
 
-" spf13 before {
+" spf13 before. {
     set nocompatible        " Must be first line
-    set shell=/bin/sh
     "===============================================================================+
     source ~/.vim/bundle/spf13-vim/.vimrc.before
     "===============================================================================+
@@ -15,25 +12,9 @@
     " let g:spf13_bundle_groups=['general', 'writing', 'programming', 'python', 'misc',]
     let g:spf13_bundle_groups=['general', 'writing', 'programming', 'youcompleteme', 'python', 'misc',]
 
-    "=================================================
-    " 常用vim工作模式
-    " -------------------------------------------------
-    " c\c++ 编辑
-    let g:vmode_c=1
-    " python 编辑
-    let g:vmode_py=0
-    "=================================================
-    "外部库,借用Bundle,下载完成即可注释.
-    " -------------------------------------------------
-    " Bundle 'robbyrussell/oh-my-zsh.git'
-    " Bundle 'gpakosz/.tmux.git'
-    " Bundle 'erikw/tmux-powerline.git'
-    "=================================================
-
-
 " }
 
-" spf13 vundle {
+" spf13 vundle. {
     "===============================================================================+
     if ! isdirectory($HOME."/.vim/bundle/vundle")
         echo "you should setup vundle frist!"
@@ -44,6 +25,16 @@
 
 " add my bundles here. {
 
+    "==================================================
+    "外部库,借用Bundle.
+    " -------------------------------------------------
+    if ! isdirectory(expand("~/.vim/bundle/oh-my-zsh"))
+        Bundle 'robbyrussell/oh-my-zsh.git'
+        Bundle 'gpakosz/.tmux.git'
+        Bundle 'erikw/tmux-powerline.git'
+    endif
+    "==================================================
+
     " Brief help
     " :BundleList          - list configured bundles
     " :BundleInstall(!)    - install(update) bundles
@@ -53,8 +44,31 @@
     " 刷新插件
     nmap <F6> :BundleInstall<cr>
     " 更新插件
-    nmap <S-F6> :BundleInstall!<cr>
+    nmap <S-F6> :BundleList<cr>
 
+    " -------------------------------------------------
+    "  has been integrate into spf13.
+    " -------------------------------
+    " 允许你在 Vim中按等号、冒号、表格等来对齐文本
+    " 'Tabular'
+    " ex: :TAb /=
+    " -------------------------------
+    " 可视化的方式能将相同缩进的代码关联起来
+    " 'nathanaelkane/vim-indent-guides'
+    " 快捷键 i 开/关缩进可视化
+    " :nmap <silent> <Leader>i <Plug>IndentGuidesToggle
+    " -------------------------------------------------
+    " -------------------------------
+    " -------------------------------
+    " -------------------------------
+    " -------------------------------
+    " -------------------------------------------------
+    " VimDevIcons - Add Icons to Your Plugins
+    Bundle 'ryanoasis/vim-devicons'
+    " -------------------------------------------------
+    " 查看和自动识别文件的编码格式
+    Bundle 'mbbill/fencview'
+    let g:fencview_autodetect=1
     " -------------------------------------------------
     " 支持分支的 undo
     Bundle 'sjl/gundo.vim'
@@ -68,12 +82,31 @@
     " -------------------------------------------------
     " 显示git diff的插件
     Bundle 'airblade/vim-gitgutter'
-    " Bundle 'mhinz/vim-signify'
     " -------------------------------------------------
     Bundle 'vv5126/wim'
     " -------------------------------------------------
+    " vim帮助中文版
+    Bundle 'becaning/vimdoccn'
+    " -------------------------------------------------
+if 0
     " 注释代码用
     Bundle 'tomtom/tcomment_vim'
+"对NERD_commenter的设置
+" [count],cc 光标以下count行逐行添加注释(7,cc)
+" [count],cu 光标以下count行逐行取消注释(7,cu)
+" [count],cm 光标以下count行尝试添加块注释(7,cm)
+" ,cA 在行尾插入 /* */,并且进入插入模式。 这个命令方便写注释。
+" 注：count参数可选，无则默认为选中行或当前行
+ let NERDSpaceDelims=5       " 让注释符与语句之间留一个空格
+ let NERDCompactSexyComs=1   " 多行注释时样子更好看
+ let NERDShutUp=1
+" 支持单行和多行的选择，//格式
+" Toggle单行注释/“性感”注释/注释到行尾/取消注释
+map <leader>cc ,c<space>
+map <leader>cs ,cs
+map cu ;cu
+map cs ;c$
+endif
     " -------------------------------------------------
     " 在vim里画图
     " Bundle 'DrawIt'
@@ -81,22 +114,11 @@
     " 让书签可视化的插件
     " Bundle 'kshenoy/vim-signature'
     " -------------------------------------------------
+    " show color, like red yellow #066
     Bundle 'gko/vim-coloresque'
     " -------------------------------------------------
-    " 加注释用 *****
-    " Bundle 'SirVer/ultisnips'
-    " Trigger configuration. Do not use <tab>
-    " let g:UltiSnipsExpandTrigger="<c-j>"
-    " let g:UltiSnipsJumpForwardTrigger="<c-j>"
-    " let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-    " -------------------------------------------------
-    " 允许你在 Vim中按等号、冒号、表格等来对齐文本
-    " 'Tabular'
-    " ex: :TAb /=
-    " -------------------------------------------------
-    " 同时高亮多个单词
+    " 同时高亮多个单词 usage
     Bundle 'Mark--Karkat'
-    " plugin - mark.vim 给各种tags标记不同的颜色，便于观看调式的插件。
     " <leader>m  mark or unmark the word under (or before) the cursor
     " <leader>r  manually input a regular expression. 用于搜索.
     " <leader>n  clear this mark (i.e. the mark under the cursor), or clear all highlighted marks .
@@ -106,20 +128,6 @@
     " 日历插件,有了它,用vim来写日记很方便
     " Bundle 'itchyny/calendar.vim'
     " let g:calendar_frame = 'default'
-    " -------------------------------------------------
-    " 可视化的方式能将相同缩进的代码关联起来
-    " Bundle 'nathanaelkane/vim-indent-guides'
-    " 随 vim 自启动
-    " let g:indent_guides_enable_on_vim_startup=1
-    " 从第二层开始可视化显示缩进
-    " let g:indent_guides_start_level=2
-    " 色块宽度
-    "  let g:indent_guides_guide_size=1
-    " 快捷键 i 开/关缩进可视化
-    " :nmap <silent> <Leader>i <Plug>IndentGuidesToggle
-    " -------------------------------------------------
-    " Fugitive: Git 集成，强烈推荐！Plugin 'tpope/vim-fugitive'
-    " Bundle 'fugitive.vim'
     " -------------------------------------------------
     " 任务列表的插件 —— TaskList.vim，方便管理项目中的 TODO、FIXME 等标签.
     " Bundle 'TaskList.vim'
@@ -136,16 +144,6 @@
     " Bundle 'christoomey/vim-tmux-navigator'
     " -------------------------------------------------
     " -------------------------------------------------
-    " VimDevIcons - Add Icons to Your Plugins
-    Bundle 'ryanoasis/vim-devicons'
-    " -------------------------------------------------
-    " vim帮助中文版
-    Bundle 'becaning/vimdoccn'
-    " -------------------------------------------------
-    " 查看和自动识别文件的编码格式
-    Bundle 'mbbill/fencview'
-    let g:fencview_autodetect=1
-    " -------------------------------------------------
     " -------------------------------------------------
     " -------------------------------------------------
     " -------------------------------------------------
@@ -153,7 +151,7 @@
     " -------------------------------------------------
 " }
 
-" spf13 {
+" spf13. {
     "===============================================================================+
     endif
     source ~/.vim/bundle/spf13-vim/.vimrc
@@ -210,7 +208,7 @@
         " set softtabstop=8                  " 让 vim 把连续数量的空格视为一个制表符, 使得按退格键时可以一次删掉 4 个空格
         " set expandtab                      " 用空格代替制表符
         " set noexpandtab                    " 不要用空格代替制表符
-        " autocmd FileType c,cpp set expandtab
+        autocmd FileType sh setlocal shiftwidth=4
         "=====================================================
         " 处理折叠行的左右移动
         noremap j gj
@@ -220,8 +218,8 @@
         " 支持代码折叠
         " -------------------------------------------------
         set foldlevel=1               " 设置折叠层数为
-        set foldenable                     " 允许折叠
-        set foldclose=all                  " 设置为自动关闭折叠
+        " set foldenable                     " 允许折叠
+        " set foldclose=all                  " 设置为自动关闭折叠
         " set foldmethod=syntax              " 用语法高亮来定义折叠
         " set foldmethod=manual              " 手动折叠
         set foldmethod=marker              " 依标志折叠
@@ -238,6 +236,8 @@
         nmap ++ 5<C-w>+
         nmap >> 5<C-w>>
         nmap << 5<C-w><
+        "===================================================
+        nnoremap <C-]> g]
         "===================================================
 
         " Switching between buffers.
@@ -332,14 +332,6 @@
         "清除末尾空格
         nnoremap <leader>ds :%s/\s\+$//<cr>
 
-        "清除选中行中所有空格
-        nnoremap <leader>dd :s/[ \t]\{1,}//g<cr>:noh<cr>
-        vnoremap <leader>dd :s/[ \t]\{1,}//g<cr>:noh<cr>
-
-        "清除选中行中空格,保留一个
-        nnoremap <leader>d1 :s/[ \t]\{1,}/ /g<cr>:noh<cr>
-        vnoremap <leader>d1 :s/[ \t]\{1,}/ /g<cr>:noh<cr>
-
         "设置tab宽度
         map <leader>t2 :setlocal shiftwidth=2<cr>
         map <leader>t4 :setlocal shiftwidth=4<cr>
@@ -371,10 +363,6 @@
         map <leader>1 1gt
         map <leader>2 2gt
         map <leader>3 3gt
-
-        "函数内排版
-        nmap = =a{
-        " }
 
         nmap <Leader>tl <Plug>GitGutterPreviewHunk
 
@@ -413,14 +401,14 @@
         autocmd BufEnter * :syntax sync fromstart
         autocmd WinLeave * lclose
         "=====================================================
-
-
     " }
 
     " vmode C {
-        if g:vmode_c == 1
+        if &filetype == 'c'
 
+            " autocmd FileType c,cpp set expandtab
             autocmd BufRead *.h set filetype=c
+	    autocmd FileType c,cpp setlocal shiftwidth=8
             " -------------------------------------------------
             " set colorcolumn=37                 " 彩色显示一列，用以规范代码
             " highlight ColorColumn ctermbg=green ctermfg=black
@@ -457,7 +445,7 @@
             " -------------------------------------------------
             map <leader>b :vs! ~/.vim/buffer<cr>
 
-        endif "g:vmode_c"
+        endif
 
     " }
 
@@ -531,7 +519,7 @@
         endfunction
     " }
 
-    " MAP {
+    " 宏 {
         "宏录制相关
         " q+<register> 开始记录命令, <register> 指用户自己定义的a-z中的一个寄存器
         " q 完成记录，退出记录
@@ -553,7 +541,7 @@
 
 " my plugin config {
 
-if isdirectory(expand("~/.vim/bundle/vim-multiple-cursors"))
+if 1 && isdirectory(expand("~/.vim/bundle/vim-multiple-cursors"))
     let g:multi_cursor_next_key='<C-n>'
     let g:multi_cursor_prev_key='<C-p>'
     let g:multi_cursor_skip_key='<C-x>'
@@ -562,32 +550,31 @@ endif
 
 " -------------------------------------------------
 
-if 1 " EasyMotion设置
-    if isdirectory(expand("~/.vim/bundle/vim-easymotion"))
-        " nmap t <Plug>(easymotion-t2)
-        map  ? <Plug>(easymotion-sn)
-        omap ? <Plug>(easymotion-tn)
-        " map  n <Plug>(easymotion-next)
-        " map  N <Plug>(easymotion-prev)
-        map <Leader>l <Plug>(easymotion-lineforward)
-        map <Leader>j <Plug>(easymotion-j)
-        map <Leader>k <Plug>(easymotion-k)
-        map <Leader>h <Plug>(easymotion-linebackward)
-        let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
+" EasyMotion设置
+if 1 && isdirectory(expand("~/.vim/bundle/vim-easymotion"))
+    " nmap t <Plug>(easymotion-t2)
+    map  ? <Plug>(easymotion-sn)
+    omap ? <Plug>(easymotion-tn)
+    " map  n <Plug>(easymotion-next)
+    " map  N <Plug>(easymotion-prev)
+    map <Leader>l <Plug>(easymotion-lineforward)
+    map <Leader>j <Plug>(easymotion-j)
+    map <Leader>k <Plug>(easymotion-k)
+    map <Leader>h <Plug>(easymotion-linebackward)
+    let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
-        let g:EasyMotion_do_mapping = 0 " Disable default mappings
-        " Bi-directional find motion
-        " Jump to anywhere you want with minimal keystrokes, with just one key
-        " binding.
-        " `s{char}{label}`
-        nmap s <Plug>(easymotion-s)
-        " or
-        " `s{char}{char}{label}`
-        " Need one more keystroke, but on average, it may be more comfortable.
-        nmap s <Plug>(easymotion-s2)
-        " Turn on case insensitive feature
-        let g:EasyMotion_smartcase = 1
-    endif
+    let g:EasyMotion_do_mapping = 0 " Disable default mappings
+    " Bi-directional find motion
+    " Jump to anywhere you want with minimal keystrokes, with just one key
+    " binding.
+    " `s{char}{label}`
+    nmap s <Plug>(easymotion-s)
+    " or
+    " `s{char}{char}{label}`
+    " Need one more keystroke, but on average, it may be more comfortable.
+    nmap s <Plug>(easymotion-s2)
+    " Turn on case insensitive feature
+    let g:EasyMotion_smartcase = 1
 endif
 
 " -------------------------------------------------
@@ -601,14 +588,15 @@ endif
 
 " -------------------------------------------------
 
-if 1 "YouCompleteMe
+"YouCompleteMe
+if 1 && isdirectory(expand("~/.vim/bundle/YouCompleteMe"))
 
 "**
 " 首次使用步骤:
 " 1. 获取 YCM 的依赖包
 "    cd ~/.vim/bundle/YouCompleteMe/
 "    git submodule update --init --recursive
-"    保证安装好cmake
+"    follow the README.md 保证安装好cmake
 " 2. ./install.py --clang-completer
 " 3. done
 " 如果失败就使用下面的方法
@@ -652,9 +640,12 @@ let g:ycm_seed_identifiers_with_syntax=0
 " 收集所有词条
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 
- let g:ycm_auto_trigger = 1
+let g:ycm_auto_trigger = 1
 " let g:ycm_semantic_triggers = {}
 " let g:ycm_semantic_triggers.c = ['->', '.', ' ', '(', '[', '&']
+
+" let g:ycm_register_as_syntastic_checker = 0
+let g:syntastic_enable_highlighting = 0
 
 
 " nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
@@ -665,9 +656,7 @@ nmap <F3> :YcmDiags<CR>
 endif
 
 " -------------------------------------------------
-if vmode_c
-    if 0    " NerdTree的设置
-        " 文件索引树 推荐：*****
+if 0    " NerdTree的设置
         " plugin - NERD_tree.vim 以树状方式浏览系统中的文件和目录
         " :NERDtree 打开NERD_tree         :NERDtreeClose    关闭NERD_tree
         " o 打开关闭文件或者目录         t 在标签页中打开
@@ -676,65 +665,32 @@ if vmode_c
         " K 到第一个节点                 J 到最后一个节点
         " u 打开上层目录                 m 显示文件系统菜单（添加、删除、移动操作）
         " r 递归刷新当前目录             R 递归刷新当前根目录
-        "当打开vim且没有文件时自动打开NERDTree
-        " autocmd vimenter * if !argc() | NERDTree | endif
-        " 只剩 NERDTree时自动关闭
-        autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
-        nmap <leader>nb :NERDTree<cr>:set rnu<cr>
-        "nmap <F3> :NERDTreeToggle<cr>
         let NERDTreeShowFiles=1
-        let NERDTreeIgnore=['\.$','\~$']
         let NERDTreeShowLineNumbers=1
-        "let NERDTreeWinPos=1
-        let g:NERDTreeWinPos="right"
-        let g:NERDTreeWinSize=25
-    endif
 endif
 " -------------------------------------------------
-if 0
-"对NERD_commenter的设置
-" 功能强大的代码注释工具,用来注释或者取消注释,支持很多语言,可以对文本块操作,最常用到的快捷键是\c<space>
-" plugin - NERD_commenter.vim   注释代码用的，
-" [count],cc 光标以下count行逐行添加注释(7,cc)
-" [count],cu 光标以下count行逐行取消注释(7,cu)
-" [count],cm 光标以下count行尝试添加块注释(7,cm)
-" ,cA 在行尾插入 /* */,并且进入插入模式。 这个命令方便写注释。
-" 注：count参数可选，无则默认为选中行或当前行
- let NERDSpaceDelims=1       " 让注释符与语句之间留一个空格
- let NERDCompactSexyComs=1   " 多行注释时样子更好看
- let NERDShutUp=1
-" 支持单行和多行的选择，//格式
-"  map <C-h> ,c<space>
-" NERD_commenter.vim
-" Toggle单行注释/“性感”注释/注释到行尾/取消注释
-map <leader>cc ,c<space>
-map <leader>cs ,cs
-map cu ;cu
-map cs ;c$
-endif
-" -------------------------------------------------
-"  'Lokaltog/vim-powerline'
-" " mkfontscale
-" " mkfontdir
-" " fc-cache -vf
-" " rm ~/.vim/bundle/vim-powerline/*.cache
-" " https://github.com/eugeii/consolas-powerline-vim.git
-" " https://github.com/powerline/fonts.git
-"  set guifont=PowerlineSymbols\ for\ Powerline
-"  let g:Powerline_symbols = 'fancy'
+" 'Lokaltog/vim-powerline'
+" mkfontscale
+" mkfontdir
+" fc-cache -vf
+" rm ~/.vim/bundle/vim-powerline/*.cache
+" https://github.com/eugeii/consolas-powerline-vim.git
+" https://github.com/powerline/fonts.git
+" set guifont=PowerlineSymbols\ for\ Powerline
+" let g:Powerline_symbols = 'fancy'
 
 " -------------------------------------------------
 " 'majutsushi/tagbar'
 " let tagbar_ctags_bin=ctags
-" 设置 tagbar 子窗口的位置出现在主编辑区的左边 
-let tagbar_left=1 
-" 设置显示／隐藏标签列表子窗口的快捷键。速记：tag list 
-" nnoremap <Leader>tl :TagbarToggle<CR> 
+" 设置 tagbar 子窗口的位置出现在主编辑区的左边
+let tagbar_left=1
+" 设置显示／隐藏标签列表子窗口的快捷键。
+" nnoremap <Leader>tl :TagbarToggle<CR>
 nmap tb :Tagbar<cr>
-" 设置标签子窗口的宽度 
-let tagbar_width=32 
-" tagbar 子窗口中不显示冗余帮助信息 
+" 设置标签子窗口的宽度
+let tagbar_width=32
+" tagbar 子窗口中不显示冗余帮助信息
 let g:tagbar_compact=1
 " 设置 ctags 对哪些代码元素生成标签
 let g:tagbar_type_cpp = {
@@ -784,7 +740,7 @@ if !exists('g:airline_symbols')
   let g:airline_symbols.space = "\ua0"
 
 " -------------------------------------------------
-if vmode_c
+if &filetype == 'c'
 " 'scrooloose/syntastic 语法检查'
 "  let g:syntastic_check_on_open=0
 " let g:syntastic_auto_loc_list = 1
@@ -930,18 +886,18 @@ let g:EasyGrepIgnoreCase = 1 " not ignorecase:0
 let g:EasyGrepFilesToExclude = "*.bak, *~, cscope.*, *.a, *.o, *.pyc, *.bak"
 " -------------------------------------------------
 " Syntax highlighting for GLib, Gtk+, Xlib, Gimp, Gstreamer, and more. 
-Bundle 'gtk-vim-syntax'
+" Bundle 'gtk-vim-syntax'
 " -------------------------------------------------
 " 工程内查找与替换+
 Bundle 'grep.vim'
 " -------------------------------------------------
-try
-    call fuf#defineLaunchCommand('FufCWD', 'file', 'fnamemodify(getcwd(), ''%:p:h'')')
-    map <leader>t :FufCWD **/<CR>
-catch
-endtry
-map <F7> :FufTag<cr>
-map <C-F7> :FufTaggedFile<cr>
+" try
+"     call fuf#defineLaunchCommand('FufCWD', 'file', 'fnamemodify(getcwd(), ''%:p:h'')')
+"     map <leader>t :FufCWD **/<CR>
+" catch
+" endtry
+" map <F7> :FufTag<cr>
+" map <C-F7> :FufTaggedFile<cr>
 " -------------------------------------------------
 " 扩展了vim的%功能,让%可以匹配的,不再仅仅是括号,支持多种语言.必备插件之一
 " 'matchit.zip'
@@ -1109,8 +1065,7 @@ endif
 " -------------------------------------------------
 " }
 
-
-" 构思一些模式，进行分类，能放在插件中最好"
+" 构思一些模式，进行分类，能放在插件中最好" {
 
 "To hex modle
 let s:hexModle = "N"
@@ -1265,4 +1220,18 @@ endfunction
         let g:lt_quickfix_list_toggle_map = '<leader>qq'
         let g:lt_height = 10
         " -------------------------------------------------
+" }
+" }
+
+" yingxiang paiban {
+        "函数内排版
+        nmap = =a{
+
+        "清除选中行中所有空格
+        nnoremap <leader>dd :s/[ \t]\{1,}//g<cr>:noh<cr>
+        vnoremap <leader>dd :s/[ \t]\{1,}//g<cr>:noh<cr>
+
+        "清除选中行中空格,保留一个
+        nnoremap <leader>d1 :s/[ \t]\{1,}/ /g<cr>:noh<cr>
+        vnoremap <leader>d1 :s/[ \t]\{1,}/ /g<cr>:noh<cr>
 " }

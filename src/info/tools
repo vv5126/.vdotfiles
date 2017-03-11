@@ -1,0 +1,83 @@
+vim: set filetype=bash sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
+
+#!/bin/bash
+
+some_git_clone='
+
+https://github.com/eugeii/consolas-powerline-vim.git
+https://github.com/powerline/fonts.git
+https://github.com/Yufeikang/bcloud
+
+'
+
+some_wget='
+wget -O sogoupinyin64 http://pinyin.sogou.com/linux/download.php?f=linux&bit=64
+wget -O sogoupinyin32 http://pinyin.sogou.com/linux/download.php?f=linux&bit=32
+'
+
+some_apt_install='
+
+git
+zsh
+powerline
+tmux
+screen
+teamviewer
+xdotool
+clang
+
+# xrdp
+vnc4server
+gnome-panel
+gnome-settings-daemon
+metacity
+nautilus
+gnome-terminal
+
+# [ ftp ]
+vsftpd
+
+# [ aircrack ]
+aircrack-ng
+
+# [ samba ]
+cifs-utils
+samba
+samba-client
+
+'
+
+#tools-end
+###########################
+
+sudo apt-get update
+sudo apt-get upgrade
+
+echo "$some_git_clone"  > .tools_git
+echo "$some_wget"       > .tools_wget
+echo "$some_apt_install" > .tools_apt
+echo > .tools_fail
+
+while read line; do
+ if [ "${line:1}" != '#' ]; then
+    echo git clone "$line"
+    [ $? -ne 0 ] && echo "$line" >> .tools_fail
+ fi
+done < .tools_git
+
+while read line; do
+ if [ "${line:1}" != '#' ]; then
+    echo wget -O "$line"
+    [ $? -ne 0 ] && echo "$line" >> .tools_fail
+ fi
+done < .tools_wget
+
+while read line; do
+ if [ "${line:1}" != '#' ]; then
+    echo sudo apt install "$line"
+    [ $? -ne 0 ] && echo "$line" >> .tools_fail
+ fi
+done < .tools_apt
+
+
+rm .tools_apt .tools_git .tools_get

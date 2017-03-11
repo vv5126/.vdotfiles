@@ -11,7 +11,14 @@ clang
 kolourpaint
 getmail4
 music: cmus
-baiduyun: https://github.com/LiuLang/bcloud
+lxde
+
+baiduyun: https://github.com/Yufeikang/bcloud
+sudo apt-get install python3-dev
+sudo pip3.5 install cssselect
+sudo pip3.5 install pycrypto
+sudo pip3.5 install keyring
+sudo pip3.5 install pyinotify
 
 sogoupinyin:
 wget -O sogoupinyin64 http://pinyin.sogou.com/linux/download.php?f=linux&bit=64
@@ -21,7 +28,7 @@ wget -O sogoupinyin32 http://pinyin.sogou.com/linux/download.php?f=linux&bit=32
 pip
 pip for python3.5
 wget https://bootstrap.pypa.io/get-pip.py
-python3.5 get-pip.py
+sudo python3.5 get-pip.py
 
 [ 远程桌面 ]
 xrdp
@@ -72,6 +79,8 @@ nethack
 [ aircrack ]
 aircrack-ng
 wpa2pjzd.tar.bz2
+sudo apt install gksu
+
 
 rely on:
 libnl-3-dev

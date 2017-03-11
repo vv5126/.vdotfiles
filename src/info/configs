@@ -27,7 +27,7 @@ vi /etc/selinux/config
 change 'SELINUX=enforcing' to 'SELINUX=disabled'
 
 5.font setup
-add fonts to ~/.fonts
+add fonts to ~/.local/share/fonts
 mkfontscale
 mkfontdir
 fc-cache -vf
@@ -42,13 +42,6 @@ APT::Periodic::Download-Upgradeable-Packages "1"; //下载更新包 0表示停�
 APT::Periodic::AutocleanInterval "7"; // 7日自动删除
 APT::Periodic::Unattended-Upgrade "1"; //启用自动更新 0表示停用自动更新
 
-外置显卡 分辨率配置
+7.外置显卡 分辨率配置
 xrandr --newmode "1280x960_60.00"  101.25  1280 1360 1488 1696  960 963 967 996 -hsync +vsync
 xrandr --addmode DVI-1-0 "1280x960_60.00"
-
-
-清理本地电脑
-清理服务器
-清理windows服务器
-清理邮件
-整理收藏夹 为知
