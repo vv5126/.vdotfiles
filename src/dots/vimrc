@@ -196,6 +196,7 @@
         set wildignore+=*.bak,*.o,*.e,*~,*.obj,.git,*.pyc
         set autoread                       " 设置当文件被改动时自动载入
         set completeopt=preview,longest,menuone "代码补全
+        " :help digraph-table 特殊字符表
         " set rtp+=xxx/vim                   " 自定义vim目录位置
         " 好用的复制、粘贴
         vmap <C-c> "+y
