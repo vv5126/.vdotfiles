@@ -127,6 +127,12 @@ function debug()
     [ "$debug" == '1' ] && $*
 }
 
+# 从格式化输出里提取一列
+function col()
+{
+      awk -v col=$1 '{print $col}'
+}
+
 ############# will export ##############
 
 export -f get_script_dir

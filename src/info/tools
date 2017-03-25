@@ -1,83 +1,162 @@
-vim: set filetype=bash sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
-
 #!/bin/bash
 
-some_git_clone='
+# 1:apt | 2:wget | 3:pip3 | 4:git clone | 5:parent | 6:python3.5 | 7:gdebi |
 
-https://github.com/eugeii/consolas-powerline-vim.git
-https://github.com/powerline/fonts.git
-https://github.com/Yufeikang/bcloud
-
+base='
+1 git
+1 zsh
+1 powerline
+1 tmux
+1 screen
+1 teamviewer
+1 xdotool
+1 clang
+1 gdebi
+1 pip
+5 pip3
+'
+ftp='
+1 vsftpd
 '
 
-some_wget='
-wget -O sogoupinyin64 http://pinyin.sogou.com/linux/download.php?f=linux&bit=64
-wget -O sogoupinyin32 http://pinyin.sogou.com/linux/download.php?f=linux&bit=32
+pip3='
+2 https://bootstrap.pypa.io/get-pip.py
+6 get-pip.py
 '
 
-some_apt_install='
-
-git
-zsh
-powerline
-tmux
-screen
-teamviewer
-xdotool
-clang
-
-# xrdp
-vnc4server
-gnome-panel
-gnome-settings-daemon
-metacity
-nautilus
-gnome-terminal
-
-# [ ftp ]
-vsftpd
-
-# [ aircrack ]
-aircrack-ng
-
-# [ samba ]
-cifs-utils
-samba
-samba-client
-
+sogoupinyin='
+2 sogoupinyin64-http://pinyin.sogou.com/linux/download.php?f=linux&bit=64
+2 sogoupinyin32-http://pinyin.sogou.com/linux/download.php?f=linux&bit=32
 '
 
-#tools-end
+samba='
+1 cifs-utils
+1 samba
+1 samba-client
+'
+
+game='
+1 nethack
+'
+
+tftp_server='
+1 tftpd-hpa
+# 1 tftp-hpa
+'
+
+xrdp='
+1 vnc4server
+1 gnome-panel
+1 gnome-settings-daemon
+1 metacity
+1 nautilus
+1 gnome-terminal
+'
+
+baiduyun='
+2 https://github.com/Yufeikang/bcloud
+1 python3-dev
+3 cssselect
+3 pycrypto
+3 keyring
+3 pyinotify
+'
+
+# ---------------------------------------------------------
+# good
+# ---------------------------------------------------------
+
+aircrack='
+1 aircrack-ng
+# wpa2pjzd.tar.bz2
+1 gksu
+# rely on:
+1 libnl-3-dev
+1 libnl-genl-3-dev
+1 libssl-dev
+'
+
+unused='
+# 2 https://github.com/eugeii/consolas-powerline-vim.git
+# 2 https://github.com/powerline/fonts.git
+1 kolourpaint
+1 getmail4
+# music
+1 cmus
+1 lxde
+1 dia
+1 beep
+1 wine
+dialog_1.2-20130928-1_i386.deb
+fetchmail_6.3.26-1_i386.deb
+iptux_0.6.1-1_i386.deb
+mtd-utils
+liblzo2-2_2.06-1.2ubuntu1.1_i386.deb
+mtd-utils_1.5.0-1_i386.deb
+1 mutt
+oneko_1.2.sakura.6-9_i386.deb
+AX88772C_772B_772A_760_772_178_LINUX_DRIVER_v4.17.1_Source.tar.gz
+rtl8188eu-master.zip
+LightTableLinux.tar.gz
+pycharm-professional-4.5.4.tar.gz
+shc-3.8.9.tgz
+'
+
 ###########################
 
-sudo apt-get update
-sudo apt-get upgrade
+function do_install() {
+    case "$1" in
+        '1')
+            echo sudo apt install "$2"
+            ;;
+        '2')
+            local target="${2%%-*}"
+            local url="${2#*-}"
+            echo wget -O "$target" "$url"
+            ;;
+        '3')
+            echo sudo pip3.5 install "$2"
+            ;;
+        '4')
+            echo git clone "$2"
+            ;;
+        '5')
+            install "$2"
+            ;;
+        '6')
+            sudo python3.5 "$2"
+            ;;
+        '7')
+            sudo gdebi "$2"
+            ;;
 
-echo "$some_git_clone"  > .tools_git
-echo "$some_wget"       > .tools_wget
-echo "$some_apt_install" > .tools_apt
-echo > .tools_fail
+    esac
+}
 
-while read line; do
- if [ "${line:1}" != '#' ]; then
-    echo git clone "$line"
-    [ $? -ne 0 ] && echo "$line" >> .tools_fail
- fi
-done < .tools_git
+function install() {
+    local skip=0 i even odd even_odd=0
+    for i in $@; do
+        [ $i == '#' ] && { skip=1; continue; }
 
-while read line; do
- if [ "${line:1}" != '#' ]; then
-    echo wget -O "$line"
-    [ $? -ne 0 ] && echo "$line" >> .tools_fail
- fi
-done < .tools_wget
+        even_odd=$(((even_odd+1)%2))
 
-while read line; do
- if [ "${line:1}" != '#' ]; then
-    echo sudo apt install "$line"
-    [ $? -ne 0 ] && echo "$line" >> .tools_fail
- fi
-done < .tools_apt
+        expr $i + 0 &>/dev/null
+        if [ $? -eq 0 -a $even_odd = 1 ]; then
+            [ $skip -eq 1 ] && continue
+            even=$i
+        elif [ $even_odd = 0 ]; then
+            [ $skip -eq 1 ] && { skip=0; continue; }
+            odd="$i"
+            do_install "$even" "$odd"
+        else
+            even_odd=0
+            [ $skip -eq 1 ] && { skip=0; continue; }
+            sub="$(eval echo "\$$i")"
+            [ -n "$sub" ] && install "$sub"
+        fi
+    done
+}
 
-
-rm .tools_apt .tools_git .tools_get
+# sudo apt-get update
+# sudo apt-get upgrade
+install "# xrdp base baiduyun"

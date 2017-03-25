@@ -1,12 +1,19 @@
 ﻿/* vim 需求 */
+vim 配置
+b buffer
+注释
+排版
+d qingli
+高亮
 vim加入切换单词命名
 任意方式对齐
 自动排版
 注释代码
 添加自定义注释
-miniwep
+好用的IDE 这个只能自己配了
 
 /* 其它需求 */
+miniwep
 整理为知
 清理本地电脑
 清理服务器
@@ -14,12 +21,7 @@ miniwep
 清理邮件
 整理收藏夹 为知
 
+目标
+整理sh到dot
+整理git到dot
 
-
-vim peizhi
-b buffer
-zhushi
-paiban
-d qingli
-gaoliang
-好用的IDE
