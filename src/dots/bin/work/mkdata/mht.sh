@@ -17,8 +17,6 @@ function make_info_file() {
 
 	feature=$feature
 
-	forOS=manhattan
-
 	forBOARD=$forBOARD
 
 	project_type=$project_type
@@ -70,6 +68,8 @@ function mkmain() {
 
 
 function init() {
+        trap "rm -f .mht.sh .project_info; exit 2" 1 2 3 15
+
         get_project_base_info
         local project_target_dir="$HOME/work/$task_type/$customer"
         local bool
@@ -89,7 +89,7 @@ function init() {
 	git_branch=$(cd .repo/manifests; git branch | grep '*' | awk '{print $2}')
         real_br="$(cd .repo/manifests; git branch -a | grep '\->' -)"
 
-        the_img_dir=out/product/$forBOARD/image
+        the_img_dir=out/product/${forBOARD:+$forBOARD/}image
         [ -n "$customer" ] && target_dir='$VGL_BOARDS/$task_type/$customer/$feature' || target_dir='$VGL_BOARDS/$task_type/$feature'
 
 	make_info_file ".project_info"

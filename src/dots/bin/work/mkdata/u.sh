@@ -1,5 +1,6 @@
 #!/bin/bash
 
+. ~/.bin/lib/lib.misc
 . ~/.bin/ini/ini.work
 . ~/.bin/lib/lib.work
 . ~/.bin/lib/lib.shdb
@@ -17,13 +18,15 @@ function make_info_file(){
         local str="
 	# [base]
 
-	summary=
+        task_type=$task_type
 
 	customer=$customer
 
+	feature=$feature
+
 	forOS=$forOS
 
-	forBOARD=$forBOARD
+	# forBOARD=$forBOARD
 
 	project_type='uboot'
 
@@ -73,6 +76,8 @@ function mkmain() {
 
 
 function init(){
+        trap "rm -f .u.sh .project_info; exit 2" 1 2 3 15
+
 	local tmp=
 
         get_repo_dir
@@ -99,32 +104,38 @@ function init(){
             the_image="$uboot_image"
         fi
 
-        if [ -z "$forOS" ]; then
-	    tmp=$(user_select 'what OS' "${surport_os[@]}")
             forOS="${tmp:=none}"
 
-            case $forOS in
-                'android'*)
-                    the_image=
-                    ;;
-                'tizen'*)
-                    the_image=u-boot-with-spl.bin
-                    ;;
-                'buildroot'*)
-                    the_image=
-                    ;;
-            esac
-        fi
+            echo -en "\n tall me the cfg is  >>> ">&2
+            read cfg
+	    grep "$cfg" boards.cfg | awk '{print $1}'
 
-	git_remote="$(git remote -v | head -2 | tail -1 | awk '{print $2}')"
+            echo -en "\n which one?  >>> ">&2
+            read cfg
+
+            data="$(grep "$cfg" boards.cfg | awk '{print $7}')"
+            board_config=$cfg
+
+            if [[ "$data" =~ "GPT_CREATOR" ]]; then
+                    the_image=u-boot-with-spl-mbr-gpt.bin
+            elif [[ "$data" =~ "MBR_CREATOR" ]]; then
+                    the_image=u-boot-with-spl-mbr.bin
+            else
+                    the_image=u-boot-with-spl.bin
+            fi
+
+	# git_remote="$(git remote -v | head -2 | tail -1 | awk '{print $2}')"
 	git_branch="$(git branch | grep '*' | awk '{print $2}')"
         if [[ "$git_branch" =~ '(' ]]; then
             tmp=$(git branch -a | grep -o '\->.*$')
             git_branch=${tmp##*/}
         fi
 
-	target_dir='$VGL_BOARDS/$forBOARD_$forOS-imgs'
-	target_name='$uboot-$forBOARD-$forOS-$board_config'
+        check_var "git_remote"
+
+	needclean=1
+	target_name='$project_type-$board_config'
+        [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/$task_type/${customer:+$customer/}${feature:+$feature-}imgs'
 
 	make_info_file ".project_info"
 	return 0
