@@ -338,3 +338,13 @@ vnoremap <silent> <C-T> :<C-u>Ydv<CR>
 nnoremap <silent> <C-T> :<C-u>Ydc<CR>
 noremap <leader>yd :<C-u>Yde<CR>
 endif "插件的设置 end"
+
+
+nnoremap <leader>cb :g/^\s*$/d<cr>
+nmap ds :%s/\s\+$//<cr>
+set listchars=tab:›\ ,trail:• ,extends:#,nbsp:. " 空格等无效字符显示
+nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+vnoremap $e <esc>`>a"<esc>`<i"<esc>
+imap<C-u><esc>d0i
+imap   <C-k> <esc>d$i " 与自动补全中的绑定冲突
+Bundle 'tComment'

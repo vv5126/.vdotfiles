@@ -2,6 +2,22 @@
 
 source ~/.bin/lib/lib.list
 
+function guess_obj()
+{
+        # kernel
+        [ -d "arch" -a -d "kernel" ] && { echo "kernel"; return; }
+        # uboot
+        [ -d "arch" -a -d "spl" ] && { echo "uboot"; return; }
+
+        if [ -d ".repo" ]; then
+                cd .repo/manifests
+        # manhattan
+                [ -n "$(git remote -v | grep -io 'manhattan')" ] && { echo "manhattan"; return; }
+        # android
+                [ -n "$(git remote -v | grep -io 'mipsia/platform')" ] && { echo "android"; return; }
+        fi
+}
+
 function get_project_base_info(){
         local task_type_list="
                 fix_bug

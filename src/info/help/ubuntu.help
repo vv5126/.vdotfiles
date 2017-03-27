@@ -21,7 +21,7 @@ wget -O sogoupinyin32 http://pinyin.sogou.com/linux/download.php?f=linux&bit=32
 pip
 pip for python3.5
 wget https://bootstrap.pypa.io/get-pip.py
-python3.5 get-pip.py
+sudo python3.5 get-pip.py
 
 [ 远程桌面 ]
 xrdp
