@@ -11,32 +11,36 @@ function ccd(){
 }
 
 function quickcd() {
-        local tmp
-	if [ "$#" -eq 0 ]; then
-                local try_old_dir="$(history | tail -n 2 | head -1)"
-                try_old_dir="${try_old_dir##* }"
-                [ "${try_old_dir:0:1}" == '~' ] && try_old_dir="$HOME${try_old_dir:1}"
-                if [ -d "$try_old_dir" ]; then
-                        cd "$try_old_dir"
-                else
-                        cd ~
-                fi
+    alias cd='cd'
+    local tmp
+    for i in 1; do
+        if [ "$#" -eq 0 ]; then
+            local try_old_dir="$(history | tail -n 2 | head -1)"
+            try_old_dir="${try_old_dir##* }"
+            [ "${try_old_dir:0:1}" == '~' ] && try_old_dir="$HOME${try_old_dir:1}"
+            if [ -d "$try_old_dir" ]; then
+                cd "$try_old_dir"
+            else
+                cd ~
+            fi
         elif [ -d "$1" ]; then
-                cd $1
+            cd $1
         else
-                [ -d "${1%\/*}" ] && { cd "${1%\/*}"; return; }
-                [[ "$1" =~ ":~" ]] && { cd $HOME"${1##*:~}"; return; }
-                [[ "$1" =~ ":" ]] && { cd "${1##*:}"; return; }
-                [ $1 = "-" ] && { cd $OLDPWD; return; }
-                [ $1 = "clean" ] && { > ~/.cdlist; return; }
-                [ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" >> ~/.cdlist; return; }
-                [ $# -eq 1 -a -f "$HOME/.cdlist" ] && {
-                        while read line; do
-                                [ $1 = "${line% *}" ] && { cd ${line#* }; return; }
-                        done < ~/.cdlist
-                }
-                tmp="$(find -maxdepth 1 -type d -name "$1*")"; [ $? -eq 0 -a -d "$tmp" ] && { cd "$tmp"; return; }
-	fi
+            [ -d "${1%\/*}" ] && { cd "${1%\/*}"; continue; }
+            [[ "$1" =~ ":~" ]] && { cd $HOME"${1##*:~}"; continue; }
+            [[ "$1" =~ ":" ]] && { cd "${1##*:}"; continue; }
+            [ $1 = "-" ] && { cd $OLDPWD; continue; }
+            [ $1 = "clean" ] && { > ~/.cdlist; continue; }
+            [ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" >> ~/.cdlist; continue; }
+            [ $# -eq 1 -a -f "$HOME/.cdlist" ] && {
+            while read line; do
+                [ $1 = "${line% *}" ] && { cd ${line#* }; continue; }
+                done < ~/.cdlist
+            }
+            tmp="$(find -maxdepth 1 -type d -name "$1*")"; [ $? -eq 0 -a -d "$tmp" ] && { cd "$tmp"; continue; }
+        fi
+    done
+    alias cd='quickcd'
 }
 
 
@@ -96,5 +100,7 @@ export -f is_local
 export -f smkdir
 export -f srm
 export -f smv
+
+alias cd='quickcd'
 
 ########### will export end ############

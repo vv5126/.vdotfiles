@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source ~/.bin/lib/lib.work
+source ~/.bin/lib/lib.misc
+
 host=user@192.168.4.150
 
 function install_apk() {
@@ -10,10 +13,10 @@ function install_apk() {
 
     scp $src $host:/tmp > /dev/null
 
-    ssh $host "$local_home/.vdotfiles/src/bin/local/adb remount" > /dev/null 2>&1
-    ssh $host "$local_home/.vdotfiles/src/bin/local/adb install -r /tmp/$file" > /dev/null 2>&1
+    ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb remount" > /dev/null 2>&1
+    ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb install -r /tmp/$file" > /dev/null 2>&1
     [ $? -eq 0 ] && ret=0 || ret=1
-    ssh $host "$local_home/.vdotfiles/src/bin/local/adb shell sync" > /dev/null 2>&1
+    ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb shell sync" > /dev/null 2>&1
     ssh $host "rm /tmp/$file" > /dev/null 2>&1
     return $ret
 
@@ -26,14 +29,12 @@ function push_to_board() {
     local local_home=$(ssh $host "pwd")
     local ret=0
 
-    # scp $1 $host:~ > /dev/null
-    scp $src $host:/tmp > /dev/null
+    scp -r $src $host:/tmp > /dev/null
 
-    ssh $host "$local_home/.vdotfiles/src/bin/local/adb remount" > /dev/null 2>&1
-    # ssh $host "$local_home/.vdotfiles/src/bin/local/adb push $local_home/$file $dst" > /dev/null 2>&1
-    ssh $host "$local_home/.vdotfiles/src/bin/local/adb push /tmp/$file $dst" > /dev/null 2>&1
-    [ $? -eq 0 ] && ret=0 || ret=1
-    ssh $host "$local_home/.vdotfiles/src/bin/local/adb shell sync" > /dev/null 2>&1
+    ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb remount" > /dev/null 2>&1
+    ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb push /tmp/$file $dst" > /dev/null 2>&1
+    [ $? -eq 0 ] && ret=0 || { ret=1; ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb push /tmp/$file $dst"; }
+    ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb shell sync" > /dev/null 2>&1
     ssh $host "rm /tmp/$file" > /dev/null 2>&1
     return $ret
 }
@@ -41,23 +42,41 @@ function push_to_board() {
 
 [ $# -eq 0 -o $# -gt 2 ] && exit
 
-if [ $# -eq 1 ]; then
-    if [ "${1:0-4}" == '.apk' ]; then
-        if [ -f "$1" ]; then
-            install_apk "$PWD/$1"
-        else
-            file="$(getdir .repo)/$1"
-            install_apk "$file"
-        fi
-    elif [[ "$1" =~ 'system' ]]; then
+if [ -d "$1" ]; then
+    file="$1"
+elif [ -d "$(getdir .repo)/$1" ]; then
         file="$(getdir .repo)/$1"
-        dir="/${1##*/system/}"
-        dir="/system/${dir%/*}" # for android
-
-        push_to_board "$file" "$dir"
-        [ $? == 0 ] && echo done! || echo fail!
-    fi
-elif [ $# -eq 2 ]; then
-    push_to_board "$1" "$2"
-    [ $? == 0 ] && echo done! || echo fail!
+elif [ -f "$1" ]; then
+    file="$1"
+elif [ -f "$(getdir .repo)/$1" ]; then
+        file="$(getdir .repo)/$1"
 fi
+
+if [ $# -eq 2 ]; then
+    dir="$2"
+else
+    if [[ "$file" =~ 'system' ]]; then
+        cd_proj
+        case "$(guess_obj)" in
+            'android')
+                dir="/system/${dir%/*}"
+                ;;
+            *)
+                dir="/${1##*/system/}"
+                dir="${dir%/*}"
+                ;;
+        esac
+    fi
+fi
+
+[ -z "$file" -o -z "$dir" ] && { echo miss things; exit 255; }
+
+if [ "${file:0-4}" == '.apk' ]; then
+    install_apk "$file"
+else
+    push_to_board "$file" "$dir"
+fi
+[ $? == 0 ] && echo done! || { debug=1; echo fail!; }
+
+debug echo file = $file
+debug echo dir = $dir

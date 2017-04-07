@@ -1,5 +1,7 @@
 #!/bin/bash
 
+alias rm='rm'
+
 function dump_tree() {
 	local size="`echo $1 | awk '{print $1}'`"
 	local file="`echo $1 | awk '{print $2}'`"
@@ -43,3 +45,5 @@ function dump_tree() {
 [ $# -eq 1 ] && [ $1 = "." -o $1 = "*" ] && exit
 
 rm -rf $@
+
+alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'

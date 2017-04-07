@@ -341,3 +341,13 @@ endif "插件的设置 end"
 " vim: set filetype=vim sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 " 当打开vim且没有文件时自动打开NERDTree
 " autocmd vimenter * if !argc() | NERDTree | endif
+
+
+nnoremap <leader>cb :g/^\s*$/d<cr>
+nmap ds :%s/\s\+$//<cr>
+set listchars=tab:›\ ,trail:• ,extends:#,nbsp:. " 空格等无效字符显示
+nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+vnoremap $e <esc>`>a"<esc>`<i"<esc>
+imap<C-u><esc>d0i
+imap   <C-k> <esc>d$i " 与自动补全中的绑定冲突
+Bundle 'tComment'

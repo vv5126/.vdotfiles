@@ -44,6 +44,12 @@ APT::Periodic::Download-Upgradeable-Packages "1"; //下载更新包 0表示停�
 APT::Periodic::AutocleanInterval "7"; // 7日自动删除
 APT::Periodic::Unattended-Upgrade "1"; //启用自动更新 0表示停用自动更新
 
+[ python ]
+pip
+pip for python3.5
+wget https://bootstrap.pypa.io/get-pip.py
+sudo python3.5 get-pip.py
+
 [ 远程桌面 ]
 install xrdp
 vncserver :1

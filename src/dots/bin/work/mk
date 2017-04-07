@@ -8,7 +8,7 @@
 source ~/.bin/lib/lib.work
 source ~/.bin/lib/lib.misc
 
-function guess_obj()
+function try_get_obj()
 {
         source $1
         # kernel
@@ -36,7 +36,7 @@ function checkver()
 
 function mkinit()
 {
-        DEST=$(guess_obj "$VGLD_MKDATA/cfg")
+        DEST=$(try_get_obj "$VGLD_MKDATA/cfg")
         [ -z "$DEST" ] && DEST=$(showlist_with_value "$VGLD_MKDATA/cfg" "what project type do you want init")
 	if [ ! -f ".$DEST" ]; then
                 cp "$VGLD_MKDATA/$DEST" ".$DEST"

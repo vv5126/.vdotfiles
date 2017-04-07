@@ -401,6 +401,12 @@ endif
         autocmd BufEnter * :syntax sync fromstart
         autocmd WinLeave * lclose
         "=====================================================
+        map <C-]> g]
+        " gd 代替 *
+        " g] 代替 C-]
+        "=====================================================
+
+
     " }
 
     " vmode C {
@@ -639,6 +645,8 @@ let g:ycm_cache_omnifunc=0
 let g:ycm_seed_identifiers_with_syntax=0
 " 收集所有词条
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
+" 关闭语法检查
+let g:ycm_register_as_syntastic_checker = 0
 
 let g:ycm_auto_trigger = 1
 " let g:ycm_semantic_triggers = {}
