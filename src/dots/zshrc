@@ -7,9 +7,10 @@
 # ZSH_THEME="Soliah"
 # ZSH_THEME="crunch"
 # ZSH_THEME="alanpeabody"
+ZSH_THEME="w"
 # ZSH_THEME="miloshadzic"
 # ZSH_THEME="dpoggi"
-# ZSH_THEME="sammy'
+# ZSH_THEME="sammy"
 # ZSH_THEME="superjarin"
 # ZSH_THEME="kardan"
 # ZSH_THEME="crcandy"
@@ -141,7 +142,7 @@
 # ZSH_THEME="imajes"
 # ZSH_THEME="gallois"
 # ZSH_THEME="trapd00r"
-ZSH_THEME="aussiegeek"
+# ZSH_THEME="aussiegeek"
 # ZSH_THEME="frisk"
 #
 

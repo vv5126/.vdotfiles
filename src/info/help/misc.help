@@ -1,0 +1,43 @@
+
+#################################################
+A.6 连接Git和SVN
+Git to SVN Bridge
+
+Git可以读取Subversion版本库中的数据，并把本地修改发送回Subversion版本库。这是Git区别于其他版本控制工具的必杀技之一。相关详细介绍请参见第10章“迁移到Git”（第131页）。
+克隆SVN版本库的全部内容
+ git svn clone <svn repository>
+
+克隆具有标准结构的SVN版本库
+下面命令适用于克隆标准结构的SVN数据库，也就是说，主干命名为trunk，其他分支都存放于branches目录下，标签都存放于tags目录下。
+ git svn clone -s <svn repository>
+
+克隆非标准结构的SVN版本库
+ git svn clone -T <trunk path> \
+2 ]! W9 t7 X4 N) D; H# n( g4 I/ H
+-b <branch path> \
++ q- e& |5 k& n$ C1 }1 e
+-t <tag path> \
+7 v. |9 `& `9 g, _* a
+
+< svn repository>
+克隆具有标准结构的SVN版本库中的某个版本（比如第2321版）
+ git svn clone -s -r 2321
+
+克隆具有标准结构的SVN版本库，并对SVN中的分支添加前缀
+ git svn clone -s --prefix svn/ <svn repository>
+
+从上游SVN版本库中获得更新的内容，并依此在本地Git版本库中变基本地分支
+ git svn rebase
+
+把修改变化推回上游SVN版本库
+ git svn dcommit
+
+列出所有将推入上游SVN版本库的提交
+ git svn dcommit -n
+
+显示SVN历史记录
+ git svn log
+
+显示文件中各个部分的SVN的修改者及相关提交信息
+ git svn blame <some file>
+#################################################

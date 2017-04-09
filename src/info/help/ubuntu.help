@@ -2,7 +2,11 @@
 gnome-session-properties
 vpipedaemon
 gnome-panel
-xmodmap /home/user/.Xmodmap
+
+[ 改capslock->ctrl ]
+1. sudo vim /etc/default/keyboard 修改下面这一行：XKBOPTIONS="ctrl:nocaps" # "ctrl:swapcaps"
+2. sudo dpkg-reconfigure keyboard-configuration 出现如下图像（全部选默认的)
+unused: xmodmap /home/user/.Xmodmap
 
 [ add to local crontab ]
 crontab -e

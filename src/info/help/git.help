@@ -1,431 +1,397 @@
-附上几个常用的但又不常见的 git 小技巧：
+#################################################
+1. 基础
+2. 远程库
+3. 技巧
+补丁
+
+#################################################
+OK
+#################################################
+1. 创建
+git init
+     在本地新建一个repo,进入一个项目目录,执行git init,会初始化一个repo,并在当前文件夹下创建一个.git文件夹.
+
+git clone <some repository>
+     获取一个url对应的远程Git repo, 创建一个local copy.
+     一般的格式是git clone [url].
+     clone下来的repo会以url最后一个斜线后面的名称命名,创建一个文件夹,如果想要指定特定的名称,可以git clone [url] newname指定.
 
 复制代码仓库：
 git clone --bare /var/www/html/myrepo.git
 
-Git 后悔药，覆盖最后一次修改：
-git add . git commit --amend git push origin master -f
+克隆远程版本库，但只下载其中最近200个提交的历史记录
+ git clone --depth 200 <some repository>
+#################################################
 
-Git 放弃本地修改：
-git checkout .
-
-Git 销毁最后一次提交：
-git reset --hard HEAD^ git push -f origin HEAD^:master
-
-打包时候嵌入版本号：
-git rev-parse HEAD > version.txt
-
-Repo和Git 版本管理常用命令
-
-A.1安装和初始化
-在使用Git之前，须要先进行配置。在使用一个新的版本库之前，须要先初始化。本节介绍与Git设置和初始化相关的命令。
-
-配置全局用户名和电子邮件地址
-prompt> git config --global user.name "Your Name"
-prompt> git config --global user.email "wuhua0904@126.com"
-为特定的版本库配置用户名和电子邮件地址
-
-注意：你可以为每个版本库单独设置用户名和邮件地址。这使得用户可在不同项目中使用不同的用户名和/或不同的邮件地址。
-
-prompt> cd /path/to/repo
-prompt> git config user.name "Your Name"
-prompt> git config user.email wuhua0904@126.com
+#################################################
+2. 配置文件：.gitconfig
+让Git显示颜色，会让命令输出看起来更醒目：
+git config --global color.ui true
 
 在命令行中使用不同颜色显示不同内容
-prompt> git config --global color.ui "auto"
+git config --global color.ui "auto"
 
-初始化新版本库
-prompt> mkdir /path/to/repo:
-prompt> cd /path/to/repo
-prompt> git init
-Initialized empty Git repository in /path/to/repo/.git/
-prompt>
-... create file(s) for first commit ...
-prompt> git add
-prompt> git commit -m 'initial import'
-Created initial commit bdebe5c: initial import.
+配置别名 [alias]项
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.br branch
+git config --global alias.unstage 'reset HEAD'
+以后st就表示status：co表示checkout，ci表示commit，br表示branch：
+加上--global是针对当前用户起作用的，不加只针对当前的仓库起作用。每个仓库的Git配置文件都放在.git/config文件中。
 
-1 files changed, 1 insertions(+), 0 deletions(-)
+配置全局用户名和电子邮件地址
+git config --global user.name "Your Name"
+git config --global user.email "email@example.com"
 
-create mode 100644 <some file>
+为特定的版本库配置用户名和电子邮件地址
+注意：你可以为每个版本库单独设置用户名和邮件地址。这使得用户可在不同项目中使用不同的用户名和/或不同的邮件地址。
+cd /path/to/repo
+git config user.name "Your Name"
+git config user.email "email@example.com"
 
-克隆版本库
-prompt> git clone <repository url
-Initialize repo/.git
-Initialized empty Git repository in /work/<remote repository>/.git/
+设置一些默认的全局变量，对所有工程代码有效
+git config --global push.default tracking     这样后续git push 后面不用带参数
+#################################################
 
-将目录中的内容纳入Git版本控制
-prompt> cd /path/to/existing/directory
-prompt> git init
-Initialized empty Git repository in /path/to/existing/directory/.git
-prompt> git add .
-prompt> git commit -m "initial import of some project"
+#################################################
+git clean
+     git clean是从工作目录中移除没有track的文件.
+     通常的参数是git clean -df:
+     -d表示同时移除目录,-f表示force,因为在git的配置文件中, clean.requireForce=true,如果不加-f,clean将会拒绝执行.
 
-在本地版本库中设置远程版本库的别名
-... from within the repository directory ...
-prompt> git remote add <remote repository> <repository url>
+git mv
+     git rm - - cached orig; mv orig new; git add new
 
+git stash
+     git stash 将会把当前目录和index中的所有改动(但不包括未track的文件)压入一个栈,然后留给你一个clean的工作状态,即处于上一次最新提交处.
+     git stash list会显示这个栈的list.
+     git stash apply 取出stash中的上一个项目(stash@{n}),并且应用于当前的工作目录.
+     git stash pop 在应用stash中项目的同时想要删除它.
 
-A.2 日常操作
-Normal Usage
+     删除stash中的项目:
+     git stash drop: 删除栈顶,也可指定参数删除指定的一个项目.
+     git stash clear: 删除所有项目.
+#################################################
 
-本节列出Git日常操作命令，对应于第4章“添加与提交：Git基础”（第41页）。
-
-添加新文件或暂存已有文件上的改动，然后提交
-prompt> git add <some file>
-prompt> git commit -m "<some message>"
-
+#################################################
+OK END
+#################################################
+2. 添加
 暂存已有文件上的部分修改
-注意：[...]表示可选参数。
 
-prompt> git add -p [<some file> [<some file> [and so on]]]"
+git add <file> 添加文件，可反复多次使用
+git add
+     在提交之前,Git有一个暂存区(staging area),可以放入新添加的文件或者加入新的改动. commit时提交的改动是上一次加入到staging area中的改动,而不是我们disk上的改动.
+     git add .
+     会递归地添加当前工作目录中的所有文件.
+
+ git add -p [<some file> [<some file> [and so on]]]"
 选择要提交的文本块……
 
 使用交互方式添加文件
-prompt> git add -i
+ git add -i
 
 暂存已纳入Git版本控制之下的文件的修改
-prompt> git add -u [<some path> [<some path>]]
+ git add -u [<some path> [<some path>]]
 
-提交已纳入Git版本控制之下的文件的所有修改# s"
-prompt> git commit -m "<some message>" -a;
+#################################################
+合并
+#################################################
+回退
+#################################################
+推送
+把修改变化从本地分支推入远程版本库
+ git push <remote repository> <local branch>:<remote branch>
 
-清除工作目录树中的修改
-prompt> git checkout HEAD <some file> [<some file>]
+把修改变化从本地分支推入远程版本库中同名分支
+ git push <remote repository> <local branch>
 
-取消已暂存但尚未提交的修改的暂存标识
-prompt> git reset HEAD <some file> [<some file>]
+把修改变化从本地新建分支推入远程版本库
+ git push <remote repository> <local branch>
 
-修复上一次提交中的问题
+把修改变化推入别名为“origin”的远程版本库
+当远程版本库中已有同名分支时，这个命令会推入本地分支到远程版本库对应的分支中。
+如果远程版本库中尚无同名分支，则须使用git push <repository name> <local branch>。
 
-改动相关文件，并暂存……
-prompt> git commit -m "<some message>" --amend
+在远程版本库中删除分支
+ git push <remote repository> :<remote branch>
 
-修复上一次提交中的问题，并复用上次的提交注释
-prompt> git commit -C HEAD --amend
+#################################################
+分析
 
-
-A.3 分支
+#################################################
+分支
 Branches
-分支是Git的强项之一。本节介绍关于分支的各个命令。详细内容见第5章“理解和使用分支”（第55页）。
+
+基于远程分支创建本地分支
+ git branch <new branch> <remote branch>
+
+基于远程标签创建本地分支
+ git branch <new branch> <remote tag>
 
 列出本地分支
-prompt> git branch
+ git branch
+
 列出远程分支
-prompt> git branch -r
+ git branch -r
 
 列出所有分支
-prompt> git branch -a
+ git branch -a
 
 基于当前分支（的末梢）创建新分支
-prompt> git branch <new branch>
+ git branch <new branch>
 
 检出另一条分支
-prompt> git checkout <some branch>
+ git checkout <some branch>
 
 基于当前分支创建新分支，同时检出该分支
-prompt> git checkout -b <new branch
+ git checkout -b <new branch
 
 基于另一个起点，创建新分支
 你可以从版本库中的任何一个版本开始创建新分支。这个起始点可以用一条已有的分支名称、一个提交名称，或者一个标签名称来表
-prompt> git branch <new branch> <start point>
+ git branch <new branch> <start point>
 
 创建同名新分支，覆盖已有分支
-prompt> git branch -f <some existing branch> [<start point>]
+ git branch -f <some existing branch> [<start point>]
 
 移动或重命名分支
 只有当<new branch>不存在时
-prompt> git checkout -m <existing branch name> <new branch name>
+ git checkout -m <existing branch name> <new branch name>
 
 如果<new branch>已存在，就覆盖它
-prompt> git checkout -M <existing branch name> <new branch name>
+ git checkout -M <existing branch name> <new branch name>
+
+git  checkout
+git checkout <commit> [--] <paths>
+1.<commit>是可选项,如果省略则相当于从暂存区进行检出.和reset命令大不相同:重置的默认值是HEAD,而检出的默认值是暂存区.
+2.因此重置一般用于重置暂存区(除非使用--hard,否则不重置工作区),而检出命令主要是覆盖工作区(如果<commit>不省略,也会替换暂存区中相应的文件).
+3.该命令不会改变HEAD的头指针,主要用于指定版本文件覆盖工作区中对应的文件.如果省略<commit>,则会用暂存区的文件覆盖工作区的文件,否则用指定提交中的文件覆盖暂存区和工作区中的对应文件.
+
+git checkout <branch>
+1.会改变HEAD头指针.之所以后面的参数写作<branch>,是因为只有HEAD切换到一个分支才可以对提交进行跟踪,否则仍然会进入"分离头指针"的状态.在"分离头指针"的状态下的提交并不能被引用关联到,从而可能丢失.所以该命令主要作用是切换分支.
+2.如果省略<branch>则相当于对工作区进行状态检查.
+
+实例:
+git checkout branch
+检出branch分支,更新HEAD以指向branch分支,以及用branch指向的树更新暂存区和工作区.
+
+git checkout
+汇总显示工作区,暂存区与HEAD的差异
+
+git checkout HEAD
+同上
+
+git checkout -- filename
+用暂存区中的filename文件来覆盖工作区中的filename文件.相当于取消自上次执行git add filename以来(如果执行过)的本地修改
+
+git checkout branch -- filename
+维持HEAD的指向不变.用branch所指向的提交中的filename替换暂存区和工作区中相应的文件.会将暂存区和工作区中的filename直接覆盖
+
+git checkout -- .或者git checkout .
+会取消本地所有修改,相当于用暂存区的所有文件直接覆盖本地文件.
 
 把另一条分支合并到当前分支
-prompt> git merge <some branch>
+ git merge <some branch>
 
 合并，但不提交
-prompt> git merge --no-commit <some branch>
+ git merge --no-commit <some branch>
 
 拣选合并，并且提交
-prompt> git cherry-pick <commit name>
+ git cherry-pick <commit name>
 
 拣选合并，但不提交
-prompt> git cherry-pick -n <commit name>
+ git cherry-pick -n <commit name>
 
 把一条分支上的内容压合到另一条分支（上的一个提交）
-prompt> git merge --squash <some branch>
+ git merge --squash <some branch>
 
 删除分支
 仅当欲删除的分支已合并到当前分支时
-prompt> git branch -d <branch to delete>
+ git branch -d <branch to delete>
 
 不论欲删除的分支是否已合并到当前分支
-prompt> git branch -D <branch to delete>
+ git branch -D <branch to delete>
+
+查看分支：git branch
+
+创建分支：git branch name
+
+切换分支：git checkout name
+
+创建+切换分支：git checkout -b name
+
+合并某分支到当前分支：git merge name
+
+删除分支：git branch -d name
+
+在 当前分支下，要把dev分支的内容合并
+
+git merge dev
+当Git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。
 
 
-A.4 历史
+#################################################
+历史
 History
 
-这些命令用来显示版本库的历史信息，包括代码曾在哪里、谁在何时做了什么、修改的内容及其统计信息。详见第6章“查询Git历史记录”（第71页）。
-显示全部历史记录
-prompt> git log
-
-显示版本历史，以及版本间的内容差异
-prompt> git log -p
-
-只显示最近一个提交
-prompt> git log -1
-
-显示最近的20个提交，以及版本间的内容差异
-prompt> git log -20 -p
-
-显示最近6小时的提交
-prompt> git log --since="6 hours"
-
-显示两天之前的提交
-prompt> git log --before="2 days"
+git log --stat 显示每次提交修改的文件
+git log -p      显示每次提交间的diff
+git log 命令显示从最近到最远的提交日志
+git log -1 只显示最近一个提交
+git log -20 -p 显示最近的20个提交，以及版本间的内容差异
+git log --oneline --number: 每条log只显示一行,显示number条.
+git log --oneline --graph:可以图形化地表示出分支合并历史.
+git log branchname可以显示特定分支的log.
+git log --oneline branch1 ^branch2,可以查看在分支1,却不在分支2中的提交.^表示排除这个分支(Window下可能要给^branch2加上引号).
+git log --decorate会显示出tag信息.
+git log --author=[author name] 可以指定作者的提交历史.
+git log --since --before --until --after 根据提交时间筛选log.
+git log --since="6 hours" 显示最近6小时的提交
+git log --before="2 days" 显示两天之前的提交
+--no-merges可以将merge的commits排除在外.
+git log --grep 根据commit信息过滤log: git log --grep=keywords
+默认情况下, git log --grep --author是OR的关系,即满足一条即被返回,如果你想让它们是AND的关系,可以加上--all-match的option.
+git log -S: filter by introduced diff.
+比如: git log -SmethodName (注意S和后面的词之间没有等号分隔).
+git log -p: show patch introduced at each commit.
+每一个提交都是一个快照(snapshot),Git会把每次提交的diff计算出来,作为一个patch显示给你看.
+另一种方法是git show [SHA].
+git log --stat: show diffstat of changes introduced at each commit.
+同样是用来看改动的相对信息的,--stat比-p的输出更简单一些.
 
 显示比HEAD（当前检出分支的末梢）早3个提交的那个提交
-prompt> git log -1 HEAD
+git log -1 HEAD^
 或者……
-prompt> git log -1 HEAD
+git log -1 HEAD^^
 或者……
-prompt> git log -1 HEAD
+git log -1 HEAD^^^
 
 显示两个版本之间的提交
 下面命令中的<start point>和<end point>可以是一个提交名称、分支名称、标签名称，或者它们的混合。
-prompt> git log <start point>...<end point>
+git log <start point>...<end point>
 
-显示历史，每个提交显示一行，包括提交注释的第一行
-prompt> git log --pretty=oneline
-
-显示改动行数统计
-prompt> git log --stat
-
-显示改动文件的名称和状态
-prompt> git log --name-status
-
-显示当前工作目录树和暂存区间的差别
-prompt> git diff
-
-显示暂存区和版本库间的差别
-prompt> git diff --cached
-
-显示工作目录树和版本库间的差别
-prompt> git diff HEAD
-
+git log --pretty=oneline 显示历史，每个提交显示一行，包括提交注释的第一行
+git log --stat 显示改动行数统计
+git log --name-status 显示改动文件的名称和状态
+git diff 显示当前工作目录树和暂存区间的差别
+git diff --cached 显示暂存区和版本库间的差别
+git diff HEAD 显示工作目录树和版本库间的差别
 显示工作目录树与版本库中某次提交版本之间的差别
 <start point>可以是一个提交名称、分支名称或标签名称。
-prompt> git diff <start point>
-
-显示版本库中两个版本之间的差别
-prompt> git diff <start point> <end point>
-
-显示差别的相关统计
-prompt> git diff --stat <start point> [<end point>]
-
-显示文件中各个部分的修改者及相关提交信息
-prompt> git blame <some file>
-
-显示文件中各个部分的修改者及相关提交信息，包括在该文件中复制、粘贴和移动内容等方面的情况。
-prompt> git blame -M <some file>
-
-显示文件中各部分的修改者及相关提交信息，包括在文件间移动内容方面的情况
-prompt> git blame -C -C <some file>
-
-显示历史时，显示复制和粘贴信息
-prompt> git log -C -C -p -1 <some point>
+git diff <start point>
+git diff <start point> <end point> 显示版本库中两个版本之间的差别
+git diff --stat <start point> [<end point>] 显示差别的相关统计
+git blame       每次修改的详细信息
+git blame <some file> 显示文件中各个部分的修改者及相关提交信息
+git blame -M <some file> 显示文件中各个部分的修改者及相关提交信息，包括在该文件中复制、粘贴和移动内容等方面的情况。
+git blame -C -C <some file> 显示文件中各部分的修改者及相关提交信息，包括在文件间移动内容方面的情况
+git log -C -C -p -1 <some point> 显示历史时，显示复制和粘贴信息
+git log --graph命令可以看到分支合并图。
 
 
+#################################################
+patch的使用
 
-A.5 远程版本库
-Remote Repositories
+1使用git format-patch生成所需要的patch:
+当前分支所有超前master的提交：
+git format-patch -M master
+某次提交以后的所有patch:
+git format-patch 4e16                --4e16指的是commit名
+从根到指定提交的所有patch:
+git format-patch                          --root 4e16
+某两次提交之间的所有patch:
+git format-patch 365a..4e16      --365a和4e16分别对应两次提交的名称
+某次提交（含）之前的几次提交：
+git format-patch –n 07fe             --n指patch数，07fe对应提交的名称
+故，单次提交即为：
+git format-patch -1 07fe
+git format-patch生成的补丁文件默认从1开始顺序编号，并使用对应提交信息中的第一行作为文件名。如果使用了-- numbered-files选项，则文件名只有编号，不包含提交信息；如果指定了--stdout选项，可指定输出位置，如当所有patch输出到一个文件；可指定-o <dir>指定patch的存放目录；
+创建patch。
+    git format-patch -1
+    或者 :
+     git format-patch alex^..alex
 
-开发人员之间通过远程版本库来共享工作成果，相互协作。本节介绍关于这些操作的命令，详见第7章“与远程版本库协作”（第91页）。
-
-克隆远程版本库
-prompt> git clone <some repository>
-
-克隆远程版本库，但只下载其中最近200个提交的历史记录
-prompt> git clone --depth 200 <some repository>
-
-在本地版本库中设置远程版本库的别名
-prompt> git remote add <remote repository> <repository url>
-
-显示远程分支
-prompt> git branch -r
-
-基于远程分支创建本地分支
-prompt> git branch <new branch> <remote branch>
-
-基于远程标签创建本地分支
-prompt> git branch <new branch> <remote tag>
-
-从别名为“origin”的远程版本库中取来修改变化，但不合并到本地分支
-prompt> git fetch
-
-从任意的远程版本库中取来修改变化，但不合并到本地分支
-prompt> git fetch <remote repository>
-
-从任意的远程版本库中取来修改变化，并合并到当前检出的本地分支
-prompt> git pull <remote repository>
-
-从别名为“origin”的远程版本库中取来修改变化，并合并到当前检出的本地分支
-prompt> git pull
-
-把修改变化从本地分支推入远程版本库
-prompt> git push <remote repository> <local branch>:<remote branch>
-
-把修改变化从本地分支推入远程版本库中同名分支
-prompt> git push <remote repository> <local branch>
-
-把修改变化从本地新建分支推入远程版本库
-prompt> git push <remote repository> <local branch>
-
-把修改变化推入别名为“origin”的远程版本库
-当远程版本库中已有同名分支时，这个命令会推入本地分支到远程版本库对应的分支中。如果远程版本库中尚无同名分支，则须使用git push <repository name> <local branch>。
-prompt> git push
-
-在远程版本库中删除分支
-prompt> git push <remote repository> :<remote branch>
-
-在本地版本库中删除所有远程版本库中已不存在的分支
-prompt> git remote prune <remote repository>
-
-在本地版本库中删除某个远程版本库的简称，以及该远程版本库相关的分支
-prompt> git remote rm <remote repository>
-
-A.6 连接Git和SVN
-Git to SVN Bridge
-
-Git可以读取Subversion版本库中的数据，并把本地修改发送回Subversion版本库。这是Git区别于其他版本控制工具的必杀技之一。相关详细介绍请参见第10章“迁移到Git”（第131页）。
-克隆SVN版本库的全部内容
-prompt> git svn clone <svn repository>
-
-克隆具有标准结构的SVN版本库
-下面命令适用于克隆标准结构的SVN数据库，也就是说，主干命名为trunk，其他分支都存放于branches目录下，标签都存放于tags目录下。
-prompt> git svn clone -s <svn repository>
-
-克隆非标准结构的SVN版本库
-prompt> git svn clone -T <trunk path> \
-2 ]! W9 t7 X4 N) D; H# n( g4 I/ H
--b <branch path> \
-+ q- e& |5 k& n$ C1 }1 e
--t <tag path> \
-7 v. |9 `& `9 g, _* a
-
-< svn repository>
-克隆具有标准结构的SVN版本库中的某个版本（比如第2321版）
-prompt> git svn clone -s -r 2321
-
-克隆具有标准结构的SVN版本库，并对SVN中的分支添加前缀
-prompt> git svn clone -s --prefix svn/ <svn repository>
-
-从上游SVN版本库中获得更新的内容，并依此在本地Git版本库中变基本地分支
-prompt> git svn rebase
-
-把修改变化推回上游SVN版本库
-prompt> git svn dcommit
-
-列出所有将推入上游SVN版本库的提交
-prompt> git svn dcommit -n
-
-显示SVN历史记录
-prompt> git svn log
-
-显示文件中各个部分的SVN的修改者及相关提交信息
-prompt> git svn blame <some file>
+2应用patch：
+先检查patch文件：git apply --stat newpatch.patch
+检查能否应用成功：git apply --check  newpatch.patch
+打补丁：git am --signoff < newpatch.patch
+(使用-s或--signoff选项，可以commit信息中加入Signed-off-by信息)
 
 
-转载二则：
-1. 服务器版本下载：
+比如，一个典型的git am失败，可能是这样的：
+$ git am PATCH
+Applying: PACTH DESCRIPTION
+error: patch failed: file.c:137
+error: file.c: patch does not apply
+error: patch failed: Makefile:24
+error: libavfilter/Makefile: patch does not apply
+Patch failed at 0001 PATCH DESCRIPTION
+When you have resolved this problem run "git am --resolved".
+If you would prefer to skip this patch, instead run "git am --skip".
+To restore the original branch and stop patching run "git am --abort".
+正如你所见，如果冲突发生，git只是输出上述信息，然后就停下来。一个小冲突会导致整个patch都不会被集成。
+处理这种问题的最简单方法是先使用 git am --abort，然后手动的添加此patch, patch -p1 < PATCH，手动解决掉代码冲突，最后使用 git commit -a 提交代码。但是这样做有个问题就是你会失去PATCH中原本包含的commit信息（比如From，Date，Subject，Signed-off-by等）。应该有一种更聪明的方法。
+在 .git/rebase-apply 目录下，存放着相应的补丁文件，名字是“0001” （在更新的git版本中，存放补丁文件的目录名有所改变，这里使用的git版本是 1.7.4.1）。
+事实上，你可以使用 git apply 命令打patch（git apply 是git中的patch命令）。如同使用 patch -p1 命令时一样，然后手动解决代码冲突（检视生成的 .rej 文件，与冲突文件比较，修改冲突内容，并最终把文件加入到index中）：
+$ git apply PATCH --reject
+$ edit edit edit
+（译注：根据.rej文件手动解决所有冲突）
+$ git add FIXED_FILES
+$ git am --resolved
+git am 并不改变index，你需要使用 git apply --reject 打patch（保存在 .git/rebase-apply），手动解决代码冲突，（译注：使用 git status 列出所有涉及文件），把所有文件（不仅仅是引起冲突的文件）添加到（git add）index，最后告诉 git am 你已经解决（--resolved）了问题。这样做的好处是你不需要重新编辑commit信息。而且，如果你正在打的是一系列patch（就是说你在打的是多个patch，比如 git am *.patch）你不需要使用 git am --abort，然后又 git am。
 
-repo init -u git@192.168.1.11:i700t_60501010/platform/manifest.git -b froyo_almond -m M76XXTSNCJNLYA60501010.xml
-repo sync
-repo forall -c git checkout --track origin/i700t_60501010 -b [你的本地分支]
-或者：
-git clone git@192.168.1.11:6120_gingerbread/Arm9-6120.git
-git checkout --track origin/arm9_6120 -b [你的本地分支名]
+这篇文章主要介绍一下git-am 和 format-patch 的使用。 因为在git使用当中，会有很多时候别人（供应商或者其他的开发人员）发过来一系列的patch，这些patch通常的是类似这样的名字：
 
-2. 服务器新加仓库同步：
-请按如下步骤取得Lanucher_wpon的代码：
-1：~> cd I700T/.repo/manifest
-2: I700T/.repo/manifest> git pull --rebase
-3: I700T/.repo/manifest> cd ../..
-4: I700T> repo sync platform/packages/apps/Launcher_wpon
-5：I700T> cd packages/apps/Launcher_wpon
-6：I700T/packages/apps/Launcher_wpon>
-7:git checkout --track origin/froyo_almond -b [你的本地分支]
+0001--JFFS2-community-fix-with-not-use-OOB.patch 0002--Community-patch-for-Fix-mount-error-in.patch 0003--partial-low-interrupt-latency-mode-for-ARM113.patch 0004--for-the-global-I-cache-invalidation-ARM11.patch 0005--1-arm-Add-more-cache-memory-types-macr.patch 0006--2-Port-imx-3.3.0-release-to-2.6.28.patch 0007--3-Add-MX25-support.patch 0008--Move-asm-arch-headers-to-linux-inc-dir.patch 0009--1-regulator-allow-search-by-regulator.patch
+里面包含了提交的日志，作者，日期等信息。你想做的是把这些patch引入到你的代码库中，最好是也可以把日志也引入进来， 方便以后维护用。传统的打patch方式是
 
-3. 上传本地修改到服务器
-repo forall -c git pull --rebase        和服务器同步（要上传代码前，一般先进行此操作）
-git add .    或git add 文件名            添加当前仓库修改的文件
-git commit -m "..."                       在引号中添加你的修改记录
-git push origin  本地分支名:froyo_almond       上传本地修改的代码
+patch -p1 < 0001--JFFS2-community-fix-with-not-use-OOB.patch
+这样来打patch，但是这样会把这些有用的信息丢失。由于这些patch显然是用git format-patch来生成的，所以用git的工具应该就可以很好的做好。git-am 就是作这件事情。
 
-4. 设置一些默认的全局变量，对所有工程代码有效
-git config --global user.name yourmail
-git config --global user.email yourmail
-git config --global push.default tracking     这样后续git push 后面不用带参数
+在使用git-am之前， 你要首先git am –abort 一次，来放弃掉以前的am信息，这样才可以进行一次全新的am。
+不然会遇到这样的错误。
+                .git/rebase-apply still exists but mbox given.
 
-5.查看修改记录
-git log                       本地仓库修改记录
-repo forall -c git log --since="2011-04-19" --until="2011-04-21"   按条件查看工程所有仓库修改记录
-repo status                查看工程中所有仓库的修改状态（包括文件位置）
-git status                   查看仓库修改状态
+git-am 可以一次合并一个文件，或者一个目录下所有的patch，或者你的邮箱目录下的patch.
 
-6. 分支相关
-git branch                 查看本地branch
-git branch -r              查看远程branch
-git branch -a              查看所有branch
-git branch -D  (-d)  （branch name）    删除branch
-cat .git/config      可以查看本地branch一些信息
+下面举两个例子：
+你现在有一个code base： small-src, 你的patch文件放在~/patch/0001-trival-patch.patch
+cd small-src git-am ~/patch/0001-trival-patch.patch
+如果成功patch上去， 你就可以去喝杯茶了。如果失败了， git 会提示错误， 比如：
 
-7. 修改恢复相关
-git checkout filename1  filename2  ...           取消本地修改，和服务器同步
-git stash
-git stash apply          先stash本地修改，然后执行git pull --rebase同步，最后再APPLY恢复自己的修改
-git reset --soft head_commit  恢复到最后一次commit,保持代码修改
-git reset --hard commit    恢复到指定一次commit,放弃之前所有修改
-#回退a.py这个文件的版本到上一个版本
-git reset HEAD^ a.py
-git reset commitNO filename
+error: patch failed: android/mediascanner.cpp:452 error: android/mediascanner.cpp: patch does not apply
+这样你就需要先看看patch， 然后改改错误的这个文件，让这个patch能够patch上去。
+你有一堆patch， 名字是上面提到的那一堆patch， 你把他们放在~/patch-set/目录下（路径随意）
 
-8. 本地某仓库出问题了，不好闹腾时，删除之，并重新同步跟踪
-project_folder/vendor/qcom$ rm -rf proprietary/                         进到相应目录，删除之
-project_folde$ repo sync platform/vendor/qcom/proprietary       重新repo sync,后面路径名称可查看：
-                                                                                                 gedit .repo/manifest.xml
-git branch -a    ----列举所有BRANCH
-git branch -D 700_arm11_server
-git branch -D 700_arm11_server_wifi  --删掉所有本地branch
-git checkout --track origin/froyo_almond -b 700_arm11_server   然后track远程branch，重新创建本地分支
+cd opencore git am ~/patch-set/*.patch
+(这里git就会按照文件名的顺序一次am这些patch）如果一切顺利， 你所有的patch都OK了， 你又Lucky了。不过不顺利的时候十有八九，如果git am中间遇到了patch,am就会停到打这个patch的地方， 告诉你是哪个patch打不上去。
 
-9.tag的使用
-git tag [tag_name] [version]，在对应版本上（一般用change的SHA1），创建tag
-git tag -l 列出当前tag
-git tag -d [tag_name] 删除tag
-有了tag以后，可以使用git checkout [tag_name] -b [branch_name]来检出对应tag时刻的代码。也可以用tag name来实现diff等功能。
+比如我现在有一个文件file,有两个patch.
+file 的内容是
 
-10. patch的使用
-git diff filename1 filename2 ...                  修改位置对比，查看源码
-git diff > xxx.patch                                  将修改的地方打成一个patch
-git apply xxx.patch                                  将patch打上
+the text more text
+两个patch分别是：
 
-11. 后续有用到的命令继续添加
-git revert 是撤销某次提交。git reset –hard，才是退回到以前的版本
-git reset --soft commitNum      保存代码修改的reset，但这个时候无法使用git diff 进行比较修改的文件，必须：
-git reset filename filename     这样就可以git diff查看
-git diff ffd98b291e0caa6c33575c1ef465eae661ce40c9 b8e7b00c02b95b320f14b625663fdecf2d63e74c 查看某两个版本之间的差异
-git diff ffd98b291e0caa6c33575c1ef465eae661ce40c9:filename b8e7b00c02b95b320f14b625663fdecf2d63e74c:filename 查看某两个版本的某个文件之间的差异
-  Git 命令别名
-$ git config –global alias.co checkout // co将会成为checkout的别名
-$ git config –global alias.br branch
-$ git config –global alias.ci commit
-$ git config –global alias.st status
-$ git config –global user.name “username”
-$ git config –global user.email username@mail.com
+0001-add-line.patch:
 
-转载三则：
+From 8869ccbced494e05738090afa5a54f2a261df0f Mon Sep 1700:00:00 2001 From: abc abc@abc-desktop.(none) Date: Thu, 22 Apr 2010 13:04:34 +0800 Subject: [PATCH 1/2] add line --- file | 2 ++ 1 files changed, 2 insertions(+), 0 deletions(-) diff --git a/file b/file index 067780e..685f0fa 100644 --- a/file +++ b/file @@ -3,3 +3,5 @@ file: some text more text + +add line -- 1.6.3.3
+0002-change-line.patch:
+
+From f756e1b3a87c216b7e0afea9d15badd033171578 Mon Sep 17 00:00:00 2001 From: abc abc@abc-desktop.(none) Date: Thu, 22 Apr 2010 13:05:19 +0800 Subject: [PATCH 2/2] change line --- file | 2 +- 1 files changed, 1 insertions(+), 1 deletions(-) diff --git a/file b/file index 685f0fa..7af7852 100644 --- a/file file: -some text +Change line text more text -- 1.6.3.3
+运行
+git am *.patch
+
+来merge这些patch， 报错， Patch failed at 0001 add line这样我们看0001这个patch,原来patch需要的是some text, 而file里面是the text, 所以我们用编辑器把这行改成some text,
+
+vi file git apply 0001-add-line.patch git add file git am --resolved
+在解决完冲突以后， 比如用git add来让git知道你已经解决完冲突了。
+
+如果你发现这个冲突是无法解决的， 要撤销整个am的东西。 可以运行git am –abort，
+如果你想只是忽略这一个patch，可以运行git am –skip来跳过这个patch.
+
+#################################################
+repo
 下载 repo 的地址: http://android.git.kernel.org/repo ，可以用 wgethttp://android.git.kernel.org/repo 或者 curl http://android.git.kernel.org/repo >~/bin/repo  来下载 repo , chmod a+x ~/bin/repo
 用repo sync 在抓去 android source code 的时候，会经常出现一些错误导致 repo sync 中断，每次都要手动开始。 可以用如下的命令，来自动重复：   $?=1;   while [ $? -ne 0 ] ; do  repo sync ; done
  repo help [ command ] , 显示command 的详细的帮助信息内容
@@ -451,48 +417,19 @@ repo init -u git://android.git.kernel.org/platform/manifest.git -b release-1.0
 对每一个 project 运行 command 命令
 11. repo status
 显示 project 的状态
+repo forall -c git log --since="2011-04-19" --until="2011-04-21"   按条件查看工程所有仓库修改记录
+repo status                查看工程中所有仓库的修改状态（包括文件位置）
 
+#################################################
 
-
-Git常用命令总结
-git init
-     在本地新建一个repo,进入一个项目目录,执行git init,会初始化一个repo,并在当前文件夹下创建一个.git文件夹.
-
-git clone
-     获取一个url对应的远程Git repo, 创建一个local copy.
-     一般的格式是git clone [url].
-     clone下来的repo会以url最后一个斜线后面的名称命名,创建一个文件夹,如果想要指定特定的名称,可以git clone [url] newname指定.
-
+git status 工作区状态
 git status
      查询repo的状态.
      git status -s: -s表示short, -s的输出标记会有两列,第一列是对staging区域而言,第二列是对working目录而言.
-
-git log
-     show commit history of a branch.
-     git log --oneline --number: 每条log只显示一行,显示number条.
-     git log --oneline --graph:可以图形化地表示出分支合并历史.
-     git log branchname可以显示特定分支的log.
-     git log --oneline branch1 ^branch2,可以查看在分支1,却不在分支2中的提交.^表示排除这个分支(Window下可能要给^branch2加上引号).
-     git log --decorate会显示出tag信息.
-     git log --author=[author name] 可以指定作者的提交历史.
-     git log --since --before --until --after 根据提交时间筛选log.
-     --no-merges可以将merge的commits排除在外.
-     git log --grep 根据commit信息过滤log: git log --grep=keywords
-     默认情况下, git log --grep --author是OR的关系,即满足一条即被返回,如果你想让它们是AND的关系,可以加上--all-match的option.
-     git log -S: filter by introduced diff.
-     比如: git log -SmethodName (注意S和后面的词之间没有等号分隔).
-     git log -p: show patch introduced at each commit.
-     每一个提交都是一个快照(snapshot),Git会把每次提交的diff计算出来,作为一个patch显示给你看.
-     另一种方法是git show [SHA].
-     git log --stat: show diffstat of changes introduced at each commit.
-     同样是用来看改动的相对信息的,--stat比-p的输出更简单一些.
-
-git add
-     在提交之前,Git有一个暂存区(staging area),可以放入新添加的文件或者加入新的改动. commit时提交的改动是上一次加入到staging area中的改动,而不是我们disk上的改动.
-     git add .
-     会递归地添加当前工作目录中的所有文件.
+git status                   查看仓库修改状态
 
 git diff
+git diff 可以查看修改内容
      不加参数的git diff:
      show diff of unstaged changes.
      此命令比较的是工作目录中当前文件和暂存区域快照之间的差异,也就是修改之后还没有暂存起来的变化内容.
@@ -524,6 +461,7 @@ git commit
      git commit --amend 增补提交. 会使用与当前提交节点相同的父节点进行一次新的提交,旧的提交将会被取消.
 
 git reset
+HEAD表示当前版本，git reset --hard HEAD^ 版本号没必要写全，前几位就可以了，Git会自动去找。
      undo changes and commits.
      这里的HEAD关键字指的是当前分支最末梢最新的一个提交.也就是版本库中该分支上的最新版本.
      git reset HEAD: unstage files from index and reset pointer to HEAD
@@ -542,431 +480,6 @@ git reset
      git reset --hard id.是将git的HEAD变了,文件也变了.
      按改动范围排序如下:
      soft (commit) < mixed (commit + add) < hard (commit + add + local working)
-
-git revert
-     反转撤销提交.只要把出错的提交(commit)的名字(reference)作为参数传给命令就可以了.
-     git revert HEAD: 撤销最近的一个提交.
-     git revert会创建一个反向的新提交,可以通过参数-n来告诉Git先不要提交.
-
-git rm
-     git rm file: 从staging区移除文件,同时也移除出工作目录.
-     git rm --cached: 从staging区移除文件,但留在工作目录中.
-     git rm --cached从功能上等同于git reset HEAD,清除了缓存区,但不动工作目录树.
-
-git clean
-     git clean是从工作目录中移除没有track的文件.
-     通常的参数是git clean -df:
-     -d表示同时移除目录,-f表示force,因为在git的配置文件中, clean.requireForce=true,如果不加-f,clean将会拒绝执行.
-
-git mv
-     git rm - - cached orig; mv orig new; git add new
-
-git stash
-     把当前的改动压入一个栈.
-     git stash将会把当前目录和index中的所有改动(但不包括未track的文件)压入一个栈,然后留给你一个clean的工作状态,即处于上一次最新提交处.
-     git stash list会显示这个栈的list.
-     git stash apply:取出stash中的上一个项目(stash@{0}),并且应用于当前的工作目录.
-     也可以指定别的项目,比如git stash apply stash@{1}.
-     如果你在应用stash中项目的同时想要删除它,可以用git stash pop
-
-     删除stash中的项目:
-     git stash drop: 删除上一个,也可指定参数删除指定的一个项目.
-     git stash clear: 删除所有项目.
-
-git branch
-     git branch可以用来列出分支,创建分支和删除分支.
-     git branch -v可以看见每一个分支的最后一次提交.
-     git branch: 列出本地所有分支,当前分支会被星号标示出.
-     git branch (branchname): 创建一个新的分支(当你用这种方式创建分支的时候,分支是基于你的上一次提交建立的).
-     git branch -d (branchname): 删除一个分支.
-     删除remote的分支:
-     git push (remote-name) :(branch-name): delete a remote branch.
-     这个是因为完整的命令形式是:
-     git push remote-name local-branch:remote-branch
-     而这里local-branch的部分为空,就意味着删除了remote-branch
-
-git checkout
-　　git checkout (branchname)   切换到一个分支.
-     git checkout -b (branchname): 创建并切换到新的分支.
-     这个命令是将git branch newbranch和git checkout newbranch合在一起的结果.
-     checkout还有另一个作用:替换本地改动:
-     git checkout --<filename>
-     此命令会使用HEAD中的最新内容替换掉你的工作目录中的文件.已添加到暂存区的改动以及新文件都不会受到影响.
-     注意:git checkout filename会删除该文件中所有没有暂存和提交的改动,这个操作是不可逆的.
-
-git merge
-     把一个分支merge进当前的分支.
-     git merge [alias]/[branch]
-     把远程分支merge到当前分支.
-
-     如果出现冲突,需要手动修改,可以用git mergetool.
-     解决冲突的时候可以用到git diff,解决完之后用git add添加,即表示冲突已经被resolved.
-
-git tag
-     tag a point in history as import.
-     会在一个提交上建立永久性的书签,通常是发布一个release版本或者ship了什么东西之后加tag.
-     比如: git tag v1.0
-     git tag -a v1.0, -a参数会允许你添加一些信息,即make an annotated tag.
-     当你运行git tag -a命令的时候,Git会打开一个编辑器让你输入tag信息.
-
-     我们可以利用commit SHA来给一个过去的提交打tag:
-     git tag -a v0.9 XXXX
-
-     push的时候是不包含tag的,如果想包含,可以在push时加上--tags参数.
-     fetch的时候,branch HEAD可以reach的tags是自动被fetch下来的, tags that aren’t reachable from branch heads will be skipped.如果想确保所有的tags都被包含进来,需要加上--tags选项.
-
-git remote
-     list, add and delete remote repository aliases.
-     因为不需要每次都用完整的url,所以Git为每一个remote repo的url都建立一个别名,然后用git remote来管理这个list.
-     git remote: 列出remote aliases.
-     如果你clone一个project,Git会自动将原来的url添加进来,别名就叫做:origin.
-     git remote -v:可以看见每一个别名对应的实际url.
-     git remote add [alias] [url]: 添加一个新的remote repo.
-     git remote rm [alias]: 删除一个存在的remote alias.
-     git remote rename [old-alias] [new-alias]: 重命名.
-     git remote set-url [alias] [url]:更新url. 可以加上—push和fetch参数,为同一个别名set不同的存取地址.
-
-git fetch
-     download new branches and data from a remote repository.
-     可以git fetch [alias]取某一个远程repo,也可以git fetch --all取到全部repo
-     fetch将会取到所有你本地没有的数据,所有取下来的分支可以被叫做remote branches,它们和本地分支一样(可以看diff,log等,也可以merge到其他分支),但是Git不允许你checkout到它们.
-
-git pull
-     fetch from a remote repo and try to merge into the current branch.
-     pull == fetch + merge FETCH_HEAD
-     git pull会首先执行git fetch,然后执行git merge,把取来的分支的head merge到当前分支.这个merge操作会产生一个新的commit.
-     如果使用--rebase参数,它会执行git rebase来取代原来的git merge.
-
-
-git rebase
-     --rebase不会产生合并的提交,它会将本地的所有提交临时保存为补丁(patch),放在”.git/rebase”目录中,然后将当前分支更新到最新的分支尖端,最后把保存的补丁应用到分支上.
-     rebase的过程中,也许会出现冲突,Git会停止rebase并让你解决冲突,在解决完冲突之后,用git add去更新这些内容,然后无需执行commit,只需要:
-     git rebase --continue就会继续打余下的补丁.
-     git rebase --abort将会终止rebase,当前分支将会回到rebase之前的状态.
-
-git push
-     push your new branches and data to a remote repository.
-     git push [alias] [branch]
-     将会把当前分支merge到alias上的[branch]分支.如果分支已经存在,将会更新,如果不存在,将会添加这个分支.
-     如果有多个人向同一个remote repo push代码, Git会首先在你试图push的分支上运行git log,检查它的历史中是否能看到server上的branch现在的tip,如果本地历史中不能看到server的tip,说明本地的代码不是最新的,Git会拒绝你的push,让你先fetch,merge,之后再push,这样就保证了所有人的改动都会被考虑进来.
-
-git reflog
-     git reflog是对reflog进行管理的命令,reflog是git用来记录引用变化的一种机制,比如记录分支的变化或者是HEAD引用的变化.
-     当git reflog不指定引用的时候,默认列出HEAD的reflog.
-     HEAD@{0}代表HEAD当前的值,HEAD@{3}代表HEAD在3次变化之前的值.
-     git会将变化记录到HEAD对应的reflog文件中,其路径为.git/logs/HEAD, 分支的reflog文件都放在.git/logs/refs目录下的子目录中.
-
-
-特殊符号:
-     ^代表父提交,当一个提交有多个父提交时,可以通过在^后面跟上一个数字,表示第几个父提交: ^相当于^1.
-     ~<n>相当于连续的<n>个^.
-
-
-
-
-
-
-
-
-基础命令
-用户设置
-
-$ git config --global user.name "Your Name"$ git config --global user.email "email@example.com"
-初始化仓库
-
-$ git init
-Initialized empty Git repository in /Users/learngit/.git/
-把文件添加到仓库
-
-git add filename
-把文件提交到仓库
-
-git commit -m "comment message"
-初始化一个Git仓库，使用git init命令。
-
-添加文件到Git仓库，分两步：
-
-第一步，使用命令git add ，注意，可反复多次使用，添加多个文件；
-
-第二步，使用命令git commit，完成。
-
-运行git status命令看看结果
-
-git status
-但如果能看看具体修改了什么内容
-
-git diff filename
-要随时掌握工作区的状态，使用git status命令。
-
-如果git status告诉你有文件被修改过，用git diff可以查看修改内容
-
-版本控制系统肯定有某个命令可以告诉我们历史记录，在Git中，我们用git log命令查看
-
-git log
-
-git log --pretty=oneline
-首先，Git必须知道当前版本是哪个版本，在Git中，用HEAD表示当前版本，也就是最新的提交,上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100.
-
-git reset --hard HEAD^git reset --hard 3628164
-Git提供了一个命令git reflog用来查看历史
-
-git reflog
-HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id。
-
-穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
-
-要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
-
-工作区（Working Directory）：就是你在电脑里能看到的目录，比如我的learngit文件夹就是一个工作区。
-
-版本库（Repository）：工作区有一个隐藏目录“.git”，这个不算工作区，而是Git的版本库。
-
-Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
-
-前面讲了我们把文件往Git版本库里添加的时候，是分两步执行的：
-
-第一步是用“git add”把文件添加进去，实际上就是把文件修改添加到暂存区；
-
-第二步是用“git commit”提交更改，实际上就是把暂存区的所有内容提交到当前分支。
-
-
-
-git checkout -- file可以丢弃工作区的修改
-
-git checkout -- filename
-git checkout -- file命令中的“--”很重要，没有“--”，就变成了“创建一个新分支”的命令.
-
-
-
-用命令git reset HEAD file可以把暂存区的修改撤销掉（unstage），重新放回工作区
-
-git reset HEAD  filename
-git reset命令既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用HEAD时，表示最新的版本。
-
-
-
-场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
-
-场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。
-
-
-
-确实要从版本库中删除该文件，那就用命令git rm删掉，并且commit
-
-git rm test.txt
-
-git commit -m "remove test.txt"
-另一种情况是删错了，因为版本库里还有呢，所以可以很轻松地把误删的文件恢复到最新版本
-
-git checkout -- test.txt
-git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。
-
-命令git rm用于删除一个文件。如果一个文件已经被提交到版本库，那么你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失最近一次提交后你修改的内容。
-
-
-
-远程仓库
-要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
-
-关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
-
-此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
-
-
-
-用命令git clone克隆一个本地库
-
-//Git本身的源代码你既可以用 git:// 协议来访问：git clone  git://git.kernel.org/pub/scm/git/git.git//也可以通过http 协议来访问:git clone http://www.kernel.org/pub/scm/git/git.git
-git 分支
-查看分支：git branch
-
-创建分支：git branch name
-
-切换分支：git checkout name
-
-创建+切换分支：git checkout -b name
-
-合并某分支到当前分支：git merge name
-
-删除分支：git branch -d name
-
-
-
-在 当前分支下，要把dev分支的内容合并
-
-git merge dev
-当Git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。
-
-用git log --graph命令可以看到分支合并图。
-
-
-
-在实际开发中，我们应该按照几个基本原则进行分支管理：
-
-首先，master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活；
-
-那在哪干活呢？干活都在dev分支上，也就是说，dev分支是不稳定的，到某个时候，比如1.0版本发布时，再把dev分支合并到master上，在master分支发布1.0版本；
-
-你和你的小伙伴们每个人都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了。
-
-
-
-Git还提供了一个stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作：
-
-git stash
-现在，用git status查看工作区，就是干净的（除非有没有被Git管理的文件），因此可以放心地创建分支来修复bug。
-
-首先确定要在哪个分支上修复bug，假定需要在master分支上修复，就从master创建临时分支：
-
-//转换到master分支git checkout master//创建并转换到的名字为 issue-101 的分支git checkout -b issue-101
-
-
-查看存储的工作 用git stash list
-
-git stash list
-工作现场还在，Git把stash内容存在某个地方了，但是需要恢复一下，有两个办法：
-
-一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
-
-另一种方式是用git stash pop，恢复的同时把stash内容也删了：
-
-
-
-修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除；
-
-当手头工作没有完成时，先把工作现场git stash一下，然后去修复bug，修复后，再git stash pop，回到工作现场.
-
-
-
-如果要丢弃一个没有被合并过的分支，可以通过git branch -D name强行删除。
-
-
-
-当你从远程仓库克隆时，实际上Git自动把本地的master分支和远程的master分支对应起来了，并且，远程仓库的默认名称是origin。
-
-要查看远程库的信息，用git remote或者用git remote -v显示更详细的信息：
-
-git remote
-
-git remote -v
-推送分支
-推送分支，就是把该分支上的所有本地提交推送到远程库。推送时，要指定本地分支，这样，Git就会把该分支推送到远程库对应的远程分支上.
-
-git push origin master//如果要推送其他分支，比如dev，就改成git push origin dev
-但是，并不是一定要把本地分支往远程推送，那么，哪些分支需要推送，哪些不需要呢？
-
-master分支是主分支，因此要时刻与远程同步；
-
-dev分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步；
-
-bug分支只用于在本地修复bug，就没必要推到远程了，除非老板要看看你每周到底修复了几个bug；
-
-feature分支是否推到远程，取决于你是否和你的小伙伴合作在上面开发。
-
-总之，就是在Git中，分支完全可以在本地自己藏着玩，是否推送，视你的心情而定！
-
-
-
-抓取分支
-多人协作时，大家都会往master和dev分支上推送各自的修改。
-
-现在，模拟一个你的小伙伴，可以在另一台电脑（注意要把SSH Key添加到GitHub）或者同一台电脑的另一个目录下克隆：
-
-git clone git://git.kernel.org/pub/scm/git/git.git
-指定本地dev分支与远程origin/dev分支的链接
-
-git branch --set-upstream dev origin/dev
-
-git pull
-因此，多人协作的工作模式通常是这样：
-
-首先，可以试图用git push origin branch-name推送自己的修改；
-
-如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
-
-如果合并有冲突，则解决冲突，并在本地提交；
-
-没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
-
-如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream branch-name origin/branch-name。
-
-这就是多人协作的工作模式，一旦熟悉了，就非常简单。
-
-
-
-查看远程库信息，使用git remote -v；
-
-本地新建的分支如果不推送到远程，对其他人就是不可见的；
-
-从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
-
-在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
-
-建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
-
-从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
-
- tag 标签
-命令git tag name就可以打一个新标签，可以用命令git tag查看所有标签
-
-复制代码
-//新建标签git tag v1.0//给commit id 为25656e2的历史版本打标签git tag v1.0  25656e2//查看标签git tag
-复制代码
-用git show tagname查看标签信息
-
-git show v1.0
-命令git tag name用于新建一个标签，默认为HEAD，也可以指定一个commit id；
-
--a tagname -m "blablabla..."可以指定标签信息；
-
--s tagname -m "blablabla..."可以用PGP签名标签；
-
-命令git tag可以查看所有标签；
-
-推送某个标签到远程，使用命令git push origin tagname，或者，一次性推送全部尚未推送到远程的本地标签
-
-git push origin v1.0git push origin --tags
-删除标签
-
-分两步，1、删除本地；2、删除远程。
-
-//删除本地git tag -d v0.9//删除远程git push origin :refs/tags/v0.9
-命令git push origin tagname可以推送一个本地标签；
-
-命令git push origin --tags可以推送全部未推送过的本地标签；
-
-命令git tag -d tagname可以删除一个本地标签；
-
-命令git push origin :refs/tags/tagname可以删除一个远程标签。
-
-ignore 文件
-
-不需要从头写.gitignore文件，GitHub已经为我们准备了各种配置文件，只需要组合一下就可以使用了。所有配置文件可以直接在线浏览：https://github.com/github/gitignore
-
-忽略文件的原则是：
-
-忽略操作系统自动生成的文件，比如缩略图等；
-忽略编译生成的中间文件、可执行文件等，也就是如果一个文件是通过另一个文件自动生成的，那自动生成的文件就没必要放进版本库，比如Java编译产生的.class文件；
-忽略你自己的带有敏感信息的配置文件，比如存放口令的配置文件。
-配置别名
-
-如果敲git st就表示git status
-
-git config --global alias.st status
-git config --global alias.co checkout
-git config --global alias.ci commit
-git config --global alias.br branch
-git config --global alias.unstage 'reset HEAD'
-
-
-git log --stat 显示每次提交修改的文件
-git log -p      显示每次提交间的diff
-git blame       每次修改的详细信息
-
-
-
-git reset和git checkout
-
 git reset
 
 git reset --hard <commit>:
@@ -1008,45 +521,385 @@ git reset --mixed HEAD^
 git reset --hard HEAD^
 彻底撤销最近的提交.引用回退到前一次,而且工作区和暂存区都会回退到上一次提交的状态.自上一次以来的提交全部丢失.
 
---------------------------------------------------------------------------------------------------------------------------------------
 
-git  checkout
-git checkout <commit> [--] <paths>
-1.<commit>是可选项,如果省略则相当于从暂存区进行检出.和reset命令大不相同:重置的默认值是HEAD,而检出的默认值是暂存区.
-2.因此重置一般用于重置暂存区(除非使用--hard,否则不重置工作区),而检出命令主要是覆盖工作区(如果<commit>不省略,也会替换暂存区中相应的文件).
-3.该命令不会改变HEAD的头指针,主要用于指定版本文件覆盖工作区中对应的文件.如果省略<commit>,则会用暂存区的文件覆盖工作区的文件,否则用指定提交中的文件覆盖暂存区和工作区中的对应文件.
+git revert
+git revert 是撤销某次提交。git reset –hard，才是退回到以前的版本
+     反转撤销提交.只要把出错的提交(commit)的名字(reference)作为参数传给命令就可以了.
+     git revert HEAD: 撤销最近的一个提交.
+     git revert会创建一个反向的新提交,可以通过参数-n来告诉Git先不要提交.
 
-git checkout <branch>
-1.会改变HEAD头指针.之所以后面的参数写作<branch>,是因为只有HEAD切换到一个分支才可以对提交进行跟踪,否则仍然会进入"分离头指针"的状态.在"分离头指针"的状态下的提交并不能被引用关联到,从而可能丢失.所以该命令主要作用是切换分支.
-2.如果省略<branch>则相当于对工作区进行状态检查.
+git rm
+命令git rm用于删除一个文件。如果一个文件已经被提交到版本库，那么你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失最近一次提交后你修改的内容。
+使用 git rm 命令即可，有两种选择,
+一种是 git rm --cached "文件路径"，不删除物理文件，仅将该文件从缓存中删除；
+一种是 git rm --f "文件路径"，不仅将该文件从缓存中删除，还会将物理文件删除（不会回收到垃圾桶）。
 
-实例:
-git checkout branch
-检出branch分支,更新HEAD以指向branch分支,以及用branch指向的树更新暂存区和工作区.
+     git rm file: 从staging区移除文件,同时也移除出工作目录.
+     git rm --cached: 从staging区移除文件,但留在工作目录中.
+     git rm --cached从功能上等同于git reset HEAD,清除了缓存区,但不动工作目录树.
+
+首先确定要在哪个分支上修复bug，假定需要在master分支上修复，就从master创建临时分支：
+转换到master分支
+git checkout master
+创建并转换到的名字为 issue-101 的分支
+git checkout -b issue-101
+修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除；
+切换到待做修改工作的分支，
+新建debug临时分支(git checkout -b)，
+合并分支（git merge），
+删除临时分支（git branch -d），
+
+git branch
+     git branch可以用来列出分支,创建分支和删除分支.
+     git branch -v可以看见每一个分支的最后一次提交.
+     git branch: 列出本地所有分支,当前分支会被星号标示出.
+     git branch (branchname): 创建一个新的分支(当你用这种方式创建分支的时候,分支是基于你的上一次提交建立的).
+     git branch -d (branchname): 删除一个分支.
+     删除remote的分支:
+     git push (remote-name) :(branch-name): delete a remote branch.
+     这个是因为完整的命令形式是:
+     git push remote-name local-branch:remote-branch
+     而这里local-branch的部分为空,就意味着删除了remote-branch
+6. 分支相关
+git branch                 查看本地branch
+git branch -r              查看远程branch
+git branch -a              查看所有branch
+git branch -D  (-d)  （branch name）    删除branch
+cat .git/config      可以查看本地branch一些信息
+
 
 git checkout
-汇总显示工作区,暂存区与HEAD的差异
+　　git checkout (branchname)   切换到一个分支.
+     git checkout -b (branchname): 创建并切换到新的分支.
+     这个命令是将git branch newbranch和git checkout newbranch合在一起的结果.
+     checkout还有另一个作用:替换本地改动:
+     git checkout --<filename>
+     此命令会使用HEAD中的最新内容替换掉你的工作目录中的文件.已添加到暂存区的改动以及新文件都不会受到影响.
+     注意:git checkout filename会删除该文件中所有没有暂存和提交的改动,这个操作是不可逆的.
 
-git checkout HEAD
-同上
+git merge
+     把一个分支merge进当前的分支.
+     git merge [alias]/[branch]
+     把远程分支merge到当前分支.
 
+     如果出现冲突,需要手动修改,可以用git mergetool.
+     解决冲突的时候可以用到git diff,解决完之后用git add添加,即表示冲突已经被resolved.
+git merge --no-ff -m "merge with no-ff" dev
+合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
+
+git tag
+     tag a point in history as import.
+     会在一个提交上建立永久性的书签,通常是发布一个release版本或者ship了什么东西之后加tag.
+     比如: git tag v1.0
+     git tag -a v1.0, -a参数会允许你添加一些信息,即make an annotated tag.
+     当你运行git tag -a命令的时候,Git会打开一个编辑器让你输入tag信息.
+
+     我们可以利用commit SHA来给一个过去的提交打tag:
+     git tag -a v0.9 XXXX
+
+     push的时候是不包含tag的,如果想包含,可以在push时加上--tags参数.
+     fetch的时候,branch HEAD可以reach的tags是自动被fetch下来的, tags that aren’t reachable from branch heads will be skipped.如果想确保所有的tags都被包含进来,需要加上--tags选项.
+标签
+Git的标签虽然是版本库的快照，但其实它就是指向某个commit的指针（跟分支很像对不对？但是分支可以移动，标签不能移动），所以，创建和删除标签都是瞬间完成的。
+
+git tag <name>就可以打一个新标签，对某次提交打tag:git tag v0.9 6224937
+还可以创建带有说明的标签，用-a指定标签名，-m指定说明文字：$ git tag -a v0.1 -m "version 0.1" 3628164
+还可以通过-s用私钥签名一个标签：$ git tag -s v0.2 -m "version 0.2" fec145a，签名采用PGP签名，如果没有安装GnuPG，或者没有gpg密钥对，就会报错。
+git tag查看所有标签
+git show <tagname>查看标签信息
+git push origin <tagname>可以推送一个本地标签
+git push origin --tags可以推送全部未推送过的本地标签
+git tag -d <tagname>可以删除一个本地标签
+git push origin :refs/tags/<tagname>可以删除一个远程标签
+
+
+要查看远程库的信息，用git remote：或者，用git remote -v显示更详细的信息：可以显示抓取和推送的origin的地址。如果没有推送权限，就看不到push的地址。
+git remote
+     list, add and delete remote repository aliases.
+     因为不需要每次都用完整的url,所以Git为每一个remote repo的url都建立一个别名,然后用git remote来管理这个list.
+     git remote: 列出remote aliases.
+     如果你clone一个project,Git会自动将原来的url添加进来,别名就叫做:origin.
+     git remote -v:可以看见每一个别名对应的实际url.
+     git remote add [alias] [url]: 添加一个新的remote repo.
+     git remote rm [alias]: 删除一个存在的remote alias.
+     git remote rename [old-alias] [new-alias]: 重命名.
+     git remote set-url [alias] [url]:更新url. 可以加上—push和fetch参数,为同一个别名set不同的存取地址.
+
+git fetch
+     download new branches and data from a remote repository.
+     可以git fetch [alias]取某一个远程repo,也可以git fetch --all取到全部repo
+     fetch将会取到所有你本地没有的数据,所有取下来的分支可以被叫做remote branches,它们和本地分支一样(可以看diff,log等,也可以merge到其他分支),但是Git不允许你checkout到它们.
+
+git pull
+     fetch from a remote repo and try to merge into the current branch.
+     pull == fetch + merge FETCH_HEAD
+     git pull会首先执行git fetch,然后执行git merge,把取来的分支的head merge到当前分支.这个merge操作会产生一个新的commit.
+     如果使用--rebase参数,它会执行git rebase来取代原来的git merge.
+
+
+git rebase
+     --rebase不会产生合并的提交,它会将本地的所有提交临时保存为补丁(patch),放在”.git/rebase”目录中,然后将当前分支更新到最新的分支尖端,最后把保存的补丁应用到分支上.
+     rebase的过程中,也许会出现冲突,Git会停止rebase并让你解决冲突,在解决完冲突之后,用git add去更新这些内容,然后无需执行commit,只需要:
+     git rebase --continue就会继续打余下的补丁.
+     git rebase --abort将会终止rebase,当前分支将会回到rebase之前的状态.
+
+git push
+     push your new branches and data to a remote repository.
+     git push [alias] [branch]
+     将会把当前分支merge到alias上的[branch]分支.如果分支已经存在,将会更新,如果不存在,将会添加这个分支.
+     如果有多个人向同一个remote repo push代码, Git会首先在你试图push的分支上运行git log,检查它的历史中是否能看到server上的branch现在的tip,如果本地历史中不能看到server的tip,说明本地的代码不是最新的,Git会拒绝你的push,让你先fetch,merge,之后再push,这样就保证了所有人的改动都会被考虑进来.
+
+git reflog
+     git reflog用来记录你的每一次命令
+     git reflog是对reflog进行管理的命令,reflog是git用来记录引用变化的一种机制,比如记录分支的变化或者是HEAD引用的变化.
+     当git reflog不指定引用的时候,默认列出HEAD的reflog.
+     HEAD@{0}代表HEAD当前的值,HEAD@{3}代表HEAD在3次变化之前的值.
+     git会将变化记录到HEAD对应的reflog文件中,其路径为.git/logs/HEAD, 分支的reflog文件都放在.git/logs/refs目录下的子目录中.
+
+HEAD指向的版本就是当前版本，即你当前的工作区所用的分支，因此，Git允许我们在版本的历史之间穿梭(类似于修改二级指针内容)，使用命令git reset --hard commit_id。
+穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
+要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
+
+
+#################################################
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+git 小技巧：
+
+Git 后悔药，覆盖最后一次修改：
+git add . git commit --amend git push origin master -f
+
+Git 放弃本地修改：
+git checkout .
+
+Git 销毁最后一次提交：
+git reset --hard HEAD^ git push -f origin HEAD^:master
+
+打包时候嵌入版本号：
+git rev-parse HEAD > version.txt
+
+在本地版本库中设置远程版本库的别名
+ git remote add <remote repository> <repository url>
+
+提交已纳入Git版本控制之下的文件的所有修改# s"
+ git commit -m "<some message>" -a;
+
+清除工作目录树中的修改
+ git checkout HEAD <some file> [<some file>]
+
+取消已暂存但尚未提交的修改的暂存标识
+ git reset HEAD <some file> [<some file>]
+
+修复上一次提交中的问题
+
+改动相关文件，并暂存……
+ git commit -m "<some message>" --amend
+
+修复上一次提交中的问题，并复用上次的提交注释
+ git commit -C HEAD --amend
+
+A.5 远程版本库
+Remote Repositories
+
+在本地版本库中设置远程版本库的别名
+ git remote add <remote repository> <repository url>
+
+从别名为“origin”的远程版本库中取来修改变化，但不合并到本地分支
+ git fetch
+
+从任意的远程版本库中取来修改变化，但不合并到本地分支
+ git fetch <remote repository>
+
+从任意的远程版本库中取来修改变化，并合并到当前检出的本地分支
+ git pull <remote repository>
+
+从别名为“origin”的远程版本库中取来修改变化，并合并到当前检出的本地分支
+ git pull
+
+在本地版本库中删除所有远程版本库中已不存在的分支
+ git remote prune <remote repository>
+
+在本地版本库中删除某个远程版本库的简称，以及该远程版本库相关的分支
+ git remote rm <remote repository>
+
+1. 服务器版本下载：
+
+repo init -u git@192.168.1.11:i700t_60501010/platform/manifest.git -b froyo_almond -m M76XXTSNCJNLYA60501010.xml
+repo sync
+repo forall -c git checkout --track origin/i700t_60501010 -b [你的本地分支]
+或者：
+git clone git@192.168.1.11:6120_gingerbread/Arm9-6120.git
+git checkout --track origin/arm9_6120 -b [你的本地分支名]
+
+2. 服务器新加仓库同步：
+请按如下步骤取得Lanucher_wpon的代码：
+1：~> cd I700T/.repo/manifest
+2: I700T/.repo/manifest> git pull --rebase
+3: I700T/.repo/manifest> cd ../..
+4: I700T> repo sync platform/packages/apps/Launcher_wpon
+5：I700T> cd packages/apps/Launcher_wpon
+6：I700T/packages/apps/Launcher_wpon>
+7:git checkout --track origin/froyo_almond -b [你的本地分支]
+
+3. 上传本地修改到服务器
+repo forall -c git pull --rebase        和服务器同步（要上传代码前，一般先进行此操作）
+git add .    或git add 文件名            添加当前仓库修改的文件
+git commit -m "..."                       在引号中添加你的修改记录
+git push origin  本地分支名:froyo_almond       上传本地修改的代码
+
+7. 修改恢复相关
+git checkout filename1  filename2  ...           取消本地修改，和服务器同步
+git reset --soft head_commit  恢复到最后一次commit,保持代码修改
+git reset --hard commit    恢复到指定一次commit,放弃之前所有修改
+#回退a.py这个文件的版本到上一个版本
+git reset HEAD^ a.py
+git reset commitNO filename
+
+8. 本地某仓库出问题了，不好闹腾时，删除之，并重新同步跟踪
+project_folder/vendor/qcom$ rm -rf proprietary/                         进到相应目录，删除之
+project_folde$ repo sync platform/vendor/qcom/proprietary       重新repo sync,后面路径名称可查看：
+                                                                                                 gedit .repo/manifest.xml
+git branch -a    ----列举所有BRANCH
+git branch -D 700_arm11_server
+git branch -D 700_arm11_server_wifi  --删掉所有本地branch
+git checkout --track origin/froyo_almond -b 700_arm11_server   然后track远程branch，重新创建本地分支
+
+10. patch的使用
+git diff filename1 filename2 ...                  修改位置对比，查看源码
+git diff > xxx.patch                                  将修改的地方打成一个patch
+git apply xxx.patch                                  将patch打上
+
+11. 后续有用到的命令继续添加
+git reset --soft commitNum      保存代码修改的reset，但这个时候无法使用git diff 进行比较修改的文件，必须：
+git reset filename filename     这样就可以git diff查看
+git diff ffd98b291e0caa6c33575c1ef465eae661ce40c9 b8e7b00c02b95b320f14b625663fdecf2d63e74c 查看某两个版本之间的差异
+git diff ffd98b291e0caa6c33575c1ef465eae661ce40c9:filename b8e7b00c02b95b320f14b625663fdecf2d63e74c:filename 查看某两个版本的某个文件之间的差异
+
+特殊符号:
+     ^代表父提交,当一个提交有多个父提交时,可以通过在^后面跟上一个数字,表示第几个父提交: ^相当于^1.
+     ~<n>相当于连续的<n>个^.
+
+首先，Git必须知道当前版本是哪个版本，在Git中，用HEAD表示当前版本，也就是最新的提交,上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100.
+git reset --hard HEAD^git reset --hard 3628164
+
+工作区（Working Directory）：就是你在电脑里能看到的目录，比如我的learngit文件夹就是一个工作区。
+版本库（Repository）：工作区有一个隐藏目录“.git”，这个不算工作区，而是Git的版本库。
+Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。
+前面讲了我们把文件往Git版本库里添加的时候，是分两步执行的：
+第一步是用“git add”把文件添加进去，实际上就是把文件修改添加到暂存区；
+第二步是用“git commit”提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+
+git checkout -- file可以丢弃工作区的修改
 git checkout -- filename
-用暂存区中的filename文件来覆盖工作区中的filename文件.相当于取消自上次执行git add filename以来(如果执行过)的本地修改
+git checkout -- file命令中的“--”很重要，没有“--”，就变成了“创建一个新分支”的命令.
 
-git checkout branch -- filename
-维持HEAD的指向不变.用branch所指向的提交中的filename替换暂存区和工作区中相应的文件.会将暂存区和工作区中的filename直接覆盖
+用命令git reset HEAD file可以把暂存区的修改撤销掉（unstage），重新放回工作区
 
-git checkout -- .或者git checkout .
-会取消本地所有修改,相当于用暂存区的所有文件直接覆盖本地文件.
+git reset HEAD  filename
+git reset命令既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用HEAD时，表示最新的版本。
 
+场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
+场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。
 
+git3个区域:工作区 暂存区 HEAD指向区
+
+git checkout -- test.txt
+git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。
+
+远程仓库
+要关联一个远程库，使用命令git remote add origin git@server-name:path/repo-name.git；
+
+关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
+
+此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
+
+Git本身的源代码你既可以用git协议来访问，也可以通过http协议来访问
+
+如果要丢弃一个没有被合并过的分支，可以通过git branch -D name强行删除。
+
+当你从远程仓库克隆时，实际上Git自动把本地的master分支和远程的master分支对应起来了，并且，远程仓库的默认名称是origin。
+
+要查看远程库的信息，用git remote或者用git remote -v显示更详细的信息：
+git remote
+git remote -v
+
+推送分支
+推送分支，就是把该分支上的所有本地提交推送到远程库。推送时，要指定本地分支，这样，Git就会把该分支推送到远程库对应的远程分支上.
+
+git push origin master//如果要推送其他分支，比如dev，就改成git push origin dev
+但是，并不是一定要把本地分支往远程推送，那么，哪些分支需要推送，哪些不需要呢？
+
+抓取分支
+
+现在，模拟一个你的小伙伴，可以在另一台电脑（注意要把SSH Key添加到GitHub）或者同一台电脑的另一个目录下克隆：
+
+git clone git://git.kernel.org/pub/scm/git/git.git
+指定本地dev分支与远程origin/dev分支的链接
+
+git branch --set-upstream dev origin/dev
+
+git pull
+因此，多人协作的工作模式通常是这样：
+首先，可以试图用git push origin branch-name推送自己的修改；
+如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+如果合并有冲突，则解决冲突，并在本地提交；
+没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
+如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream branch-name origin/branch-name。
+这就是多人协作的工作模式，一旦熟悉了，就非常简单。
+
+查看远程库信息，使用git remote -v；
+本地新建的分支如果不推送到远程，对其他人就是不可见的；
+从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
+在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
+从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
+
+9.tag的使用
+git tag [tag_name] [version]，在对应版本上（一般用change的SHA1），创建tag
+git tag -l 列出当前tag
+git tag -d [tag_name] 删除tag
+有了tag以后，可以使用git checkout [tag_name] -b [branch_name]来检出对应tag时刻的代码。也可以用tag name来实现diff等功能。
+
+ tag 标签
+命令git tag name就可以打一个新标签，可以用命令git tag查看所有标签
+
+复制代码
+//新建标签git tag v1.0//给commit id 为25656e2的历史版本打标签git tag v1.0  25656e2//查看标签git tag
+复制代码
+用git show tagname查看标签信息
+
+git show v1.0
+命令git tag name用于新建一个标签，默认为HEAD，也可以指定一个commit id；
+
+-a tagname -m "blablabla..."可以指定标签信息；
+
+-s tagname -m "blablabla..."可以用PGP签名标签；
+
+命令git tag可以查看所有标签；
+
+推送某个标签到远程，使用命令git push origin tagname，或者，一次性推送全部尚未推送到远程的本地标签
+
+git push origin v1.0git push origin --tags
+删除标签
+
+分两步，1、删除本地；2、删除远程。
+
+//删除本地git tag -d v0.9//删除远程git push origin :refs/tags/v0.9
+命令git push origin tagname可以推送一个本地标签；
+
+命令git push origin --tags可以推送全部未推送过的本地标签；
+
+命令git tag -d tagname可以删除一个本地标签；
+
+命令git push origin :refs/tags/tagname可以删除一个远程标签。
+
+--------------------------------------------------------------------------------------------------------------------------------------
 
 
 10 个很有用的高级 Git 命令
 1. 输出最后一次提交的改变
 这个命令，我经常使用它 来发送其他没有使用git的人来检查或者集成所修改的。它会输出最近提交的修改内容到一个zip文件中。
 git archive -o ../updated.zip HEAD $(git diff --name-only HEAD^)
-
 
 2. 输出两个提交间的改变
 
@@ -1099,114 +952,6 @@ git pull --rebase
 您也可以将某条branch配置为总是使用rebase推送：
 git config branch.BRANCH_NAME_HERE.rebase true
 
-使用 git rm 命令即可，有两种选择,
-一种是 git rm --cached "文件路径"，不删除物理文件，仅将该文件从缓存中删除；
-一种是 git rm --f "文件路径"，不仅将该文件从缓存中删除，还会将物理文件删除（不会回收到垃圾桶）。
-
-1使用git format-patch生成所需要的patch:
-当前分支所有超前master的提交：
-git format-patch -M master
-某次提交以后的所有patch:
-git format-patch 4e16                --4e16指的是commit名
-从根到指定提交的所有patch:
-git format-patch                          --root 4e16
-某两次提交之间的所有patch:
-git format-patch 365a..4e16      --365a和4e16分别对应两次提交的名称
-某次提交（含）之前的几次提交：
-git format-patch –n 07fe             --n指patch数，07fe对应提交的名称
-故，单次提交即为：
-git format-patch -1 07fe
-git format-patch生成的补丁文件默认从1开始顺序编号，并使用对应提交信息中的第一行作为文件名。如果使用了-- numbered-files选项，则文件名只有编号，不包含提交信息；如果指定了--stdout选项，可指定输出位置，如当所有patch输出到一个文件；可指定-o <dir>指定patch的存放目录；
-创建patch。
-    git format-patch -1
-    或者 :
-     git format-patch alex^..alex
-
-2应用patch：
-先检查patch文件：git apply --stat newpatch.patch
-检查能否应用成功：git apply --check  newpatch.patch
-打补丁：git am --signoff < newpatch.patch
-(使用-s或--signoff选项，可以commit信息中加入Signed-off-by信息)
-
-
-比如，一个典型的git am失败，可能是这样的：
-$ git am PATCH
-Applying: PACTH DESCRIPTION
-error: patch failed: file.c:137
-error: file.c: patch does not apply
-error: patch failed: Makefile:24
-error: libavfilter/Makefile: patch does not apply
-Patch failed at 0001 PATCH DESCRIPTION
-When you have resolved this problem run "git am --resolved".
-If you would prefer to skip this patch, instead run "git am --skip".
-To restore the original branch and stop patching run "git am --abort".
-正如你所见，如果冲突发生，git只是输出上述信息，然后就停下来。一个小冲突会导致整个patch都不会被集成。
-处理这种问题的最简单方法是先使用 git am --abort，然后手动的添加此patch, patch -p1 < PATCH，手动解决掉代码冲突，最后使用 git commit -a 提交代码。但是这样做有个问题就是你会失去PATCH中原本包含的commit信息（比如From，Date，Subject，Signed-off-by等）。应该有一种更聪明的方法。
-在 .git/rebase-apply 目录下，存放着相应的补丁文件，名字是“0001” （在更新的git版本中，存放补丁文件的目录名有所改变，这里使用的git版本是 1.7.4.1）。
-事实上，你可以使用 git apply 命令打patch（git apply 是git中的patch命令）。如同使用 patch -p1 命令时一样，然后手动解决代码冲突（检视生成的 .rej 文件，与冲突文件比较，修改冲突内容，并最终把文件加入到index中）：
-$ git apply PATCH --reject
-$ edit edit edit
-（译注：根据.rej文件手动解决所有冲突）
-$ git add FIXED_FILES
-$ git am --resolved
-就这么简单！
-想多一些解释，好吧。git am 并不改变index，你需要使用 git apply --reject 打patch（保存在 .git/rebase-apply），手动解决代码冲突，（译注：使用 git status 列出所有涉及文件），把所有文件（不仅仅是引起冲突的文件）添加到（git add）index，最后告诉 git am 你已经解决（--resolved）了问题。这样做的好处是你不需要重新编辑commit信息。而且，如果你正在打的是一系列patch（就是说你在打的是多个patch，比如 git am *.patch）你不需要使用 git am --abort，然后又 git am。
-
-这篇文章主要介绍一下git-am 和 format-patch 的使用。 因为在git使用当中，会有很多时候别人（供应商或者其他的开发人员）发过来一系列的patch，这些patch通常的是类似这样的名字：
-
-0001--JFFS2-community-fix-with-not-use-OOB.patch 0002--Community-patch-for-Fix-mount-error-in.patch 0003--partial-low-interrupt-latency-mode-for-ARM113.patch 0004--for-the-global-I-cache-invalidation-ARM11.patch 0005--1-arm-Add-more-cache-memory-types-macr.patch 0006--2-Port-imx-3.3.0-release-to-2.6.28.patch 0007--3-Add-MX25-support.patch 0008--Move-asm-arch-headers-to-linux-inc-dir.patch 0009--1-regulator-allow-search-by-regulator.patch
-里面包含了提交的日志，作者，日期等信息。你想做的是把这些patch引入到你的代码库中，最好是也可以把日志也引入进来， 方便以后维护用。传统的打patch方式是
-
-patch -p1 < 0001--JFFS2-community-fix-with-not-use-OOB.patch
-这样来打patch，但是这样会把这些有用的信息丢失。由于这些patch显然是用git format-patch来生成的，所以用git的工具应该就可以很好的做好。git-am 就是作这件事情。
-
-在使用git-am之前， 你要首先git am –abort 一次，来放弃掉以前的am信息，这样才可以进行一次全新的am。
-不然会遇到这样的错误。
-                .git/rebase-apply still exists but mbox given.
-
-git-am 可以一次合并一个文件，或者一个目录下所有的patch，或者你的邮箱目录下的patch.
-
-下面举两个例子：
-
-你现在有一个code base： small-src, 你的patch文件放在~/patch/0001-trival-patch.patch
-
-
-cd small-src git-am ~/patch/0001-trival-patch.patch
-如果成功patch上去， 你就可以去喝杯茶了。如果失败了， git 会提示错误， 比如：
-
-error: patch failed: android/mediascanner.cpp:452 error: android/mediascanner.cpp: patch does not apply
-这样你就需要先看看patch， 然后改改错误的这个文件，让这个patch能够patch上去。
-
-你有一堆patch， 名字是上面提到的那一堆patch， 你把他们放在~/patch-set/目录下（路径随意）
-
-
-cd opencore git am ~/patch-set/*.patch
-(这里git就会按照文件名的顺序一次am这些patch）如果一切顺利， 你所有的patch都OK了， 你又Lucky了。不过不顺利的时候十有八九，如果git am中间遇到了patch,am就会停到打这个patch的地方， 告诉你是哪个patch打不上去。
-
-比如我现在有一个文件file,有两个patch.
-file 的内容是
-
-the text more text
-两个patch分别是：
-
-0001-add-line.patch:
-
-From 8869ccbced494e05738090afa5a54f2a261df0f Mon Sep 1700:00:00 2001 From: abc abc@abc-desktop.(none) Date: Thu, 22 Apr 2010 13:04:34 +0800 Subject: [PATCH 1/2] add line --- file | 2 ++ 1 files changed, 2 insertions(+), 0 deletions(-) diff --git a/file b/file index 067780e..685f0fa 100644 --- a/file +++ b/file @@ -3,3 +3,5 @@ file: some text more text + +add line -- 1.6.3.3
-0002-change-line.patch:
-
-From f756e1b3a87c216b7e0afea9d15badd033171578 Mon Sep 17 00:00:00 2001 From: abc abc@abc-desktop.(none) Date: Thu, 22 Apr 2010 13:05:19 +0800 Subject: [PATCH 2/2] change line --- file | 2 +- 1 files changed, 1 insertions(+), 1 deletions(-) diff --git a/file b/file index 685f0fa..7af7852 100644 --- a/file file: -some text +Change line text more text -- 1.6.3.3
-运行
-git am *.patch
-
-来merge这些patch， 报错， Patch failed at 0001 add line这样我们看0001这个patch,原来patch需要的是some text, 而file里面是the text, 所以我们用编辑器把这行改成some text,
-
-vi file git apply 0001-add-line.patch git add file git am --resolved
-在解决完冲突以后， 比如用git add来让git知道你已经解决完冲突了。
-
-如果你发现这个冲突是无法解决的， 要撤销整个am的东西。 可以运行git am –abort，
-如果你想只是忽略这一个patch，可以运行git am –skip来跳过这个patch.
-
-第一次使用
 创建SSH Key：$ ssh-keygen -t rsa -C "youremail@example.com"
 如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。
 在服务器端，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容。
@@ -1218,47 +963,6 @@ vi file git apply 0001-add-line.patch git add file git am --resolved
 关联后，使用命令git push -u origin master第一次推送master分支的所有内容；
 此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
 要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。
-在GitHub上免费托管的Git仓库，任何人都可以看到喔（但只有你自己才能改）。所以，不要把敏感信息放进去。
-
-非提交切换分支工作，工作流程：Git提供了一个stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作：
-切换到待做修改工作的分支，新建debug临时分支(git checkout -b)，合并分支（git merge），删除临时分支（git branch -d），切换回之前的状态所在分支，用git stash list命令，找回之前“储藏”的工作现场，一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
-另一种方式是用git stash pop，恢复的同时把stash内容也删了：再用git stash list查看，就看不到任何stash内容了。
-你可以多次stash，恢复的时候，先用git stash list查看，然后恢复指定的stash，用命令：$ git stash apply stash@{0}
-
-
-
-标签
-Git的标签虽然是版本库的快照，但其实它就是指向某个commit的指针（跟分支很像对不对？但是分支可以移动，标签不能移动），所以，创建和删除标签都是瞬间完成的。
-
-git tag <name>就可以打一个新标签，对某次提交打tag:git tag v0.9 6224937
-还可以创建带有说明的标签，用-a指定标签名，-m指定说明文字：$ git tag -a v0.1 -m "version 0.1" 3628164
-还可以通过-s用私钥签名一个标签：$ git tag -s v0.2 -m "version 0.2" fec145a，签名采用PGP签名，如果没有安装GnuPG，或者没有gpg密钥对，就会报错。
-git tag查看所有标签
-git show <tagname>查看标签信息
-git push origin <tagname>可以推送一个本地标签
-git push origin --tags可以推送全部未推送过的本地标签
-git tag -d <tagname>可以删除一个本地标签
-git push origin :refs/tags/<tagname>可以删除一个远程标签
-
-
-1.常用指令：
-git add <file> 添加文件，可反复多次使用
-git commit git commit -m
-git status 工作区状态
-git diff 可以查看修改内容
-git log 命令显示从最近到最远的提交日志 git log -1
-HEAD表示当前版本，git reset --hard HEAD^ 版本号没必要写全，前几位就可以了，Git会自动去找。
-git reflog用来记录你的每一次命令
-要查看远程库的信息，用git remote：或者，用git remote -v显示更详细的信息：可以显示抓取和推送的origin的地址。如果没有推送权限，就看不到push的地址。
-
-版本回退
-
-HEAD指向的版本就是当前版本，即你当前的工作区所用的分支，因此，Git允许我们在版本的历史之间穿梭(类似于修改二级指针内容)，使用命令git reset --hard commit_id。
-穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
-要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
-git init 初始化一个Git仓库，一般建立库时使用。
-
-
 
 提交
 
@@ -1274,7 +978,6 @@ git reset命令既可以回退版本，也可以把暂存区的修改回退到�
 Git管理的是修改
 git diff HEAD -- file可以查看工作区和版本库里面最新版本的区别
 git checkout -- file命令中的--很重要，没有--，就变成了“创建一个新分支”的命令，我们在后面的分支管理中会再次遇到git checkout命令。
-命令git rm用于删除一个文件。如果一个文件已经被提交到版本库，那么你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失最近一次提交后你修改的内容。
 查看分支：git branch
 创建分支：git branch <name>
 切换分支：git checkout <name>
@@ -1293,42 +996,15 @@ head 指向当前分支，分支名（如master）指向当前支的最新提交
 建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
 从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
 当Git无法自动合并分支时，就必须首先解决冲突，一般手动解决。解决冲突后，再提交，合并完成。
-用git log --graph命令可以看到分支合并图。
 当不同分支有冲突时，commit后，在冲突代码中，Git用<<<<<<<，=======，>>>>>>>标记出不同分支的内容。
 通常，合并分支时，如果可能，Git会用Fast forward模式，但这种模式下，删除分支后，会丢掉分支信息。
 如果要强制禁用Fast forward模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。
 
-git merge --no-ff -m "merge with no-ff" dev
-合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-配置Git的时候，加上--global是针对当前用户起作用的，如果不加，那只针对当前的仓库起作用。每个仓库的Git配置文件都放在.git/config文件中。
-git命令 是操作工作区和本地git库或本地git库和远程git库之间的工作。
-本地新建的分支如果不推送到远程，对其他人就是不可见的；
-
-
-
+#################################################
 忽略特殊文件
-
+ignore 文件
+不需要从头写.gitignore文件，GitHub已经为我们准备了各种配置文件，只需要组合一下就可以使用了。所有配置文件可以直接在线浏览：https://github.com/github/gitignore
 在Git工作区的根目录下创建一个特殊的.gitignore文件，然后把要忽略的文件名填进去，Git就会自动忽略这些文件。
 .gitignore文件本身要放到版本库里，并且可以对.gitignore做版本管理！加上你自己定义的文件，最终得到一个完整的.gitignore文件，内容如下：
-# Windows:
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# My configurations:
-db.ini
-deploy_key_rsa
-
-
-
-配置文件：.gitconfig
-
-让Git显示颜色，会让命令输出看起来更醒目：$ git config --global color.ui true
-
-配置别名 [alias]项
-$ git config --global alias.st status
-$ git config --global alias.co checkout
-$ git config --global alias.ci commit
-$ git config --global alias.br branch
-以后st就表示status：co表示checkout，ci表示commit，br表示branch：
+#################################################
