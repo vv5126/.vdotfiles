@@ -7,6 +7,8 @@ gnome-panel
 1. sudo vim /etc/default/keyboard 修改下面这一行：XKBOPTIONS="ctrl:nocaps" # "ctrl:swapcaps"
 2. sudo dpkg-reconfigure keyboard-configuration 出现如下图像（全部选默认的)
 unused: xmodmap /home/user/.Xmodmap
+Ubuntu 14.04 下通过 XKB 修改键盘映射, 实现自定义按键
+https://github.com/Chunlin-Li/Chunlin-Li.github.io/blob/master/blogs/linux/ubuntu-xkb-keyboard-remap.md
 
 [ add to local crontab ]
 crontab -e

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.bin/lib/lib.list
+
 DEST=0
 APP_DIR=$(which $0)
 APP_DIR=${APP_DIR%\/*}

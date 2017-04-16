@@ -226,12 +226,18 @@ function showlist_with_tab(){
 
 ############# will export ##############
 
-export -f showlist
-export -f onlyshowlist
-export -f addlist
-export -f getline
-export -f showlist_with_value
-export -f user_select
-export -f showlist_with_tab
+# case $(ps -q $$ -o comm=) in
+#     'zsh')
+#         ;;
+#     *)
+#         export -f showlist
+#         export -f onlyshowlist
+#         export -f addlist
+#         export -f getline
+#         export -f showlist_with_value
+#         export -f user_select
+#         export -f showlist_with_tab
+#         ;;
+# esac
 
 ########### will export end ############

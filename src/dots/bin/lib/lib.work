@@ -205,21 +205,24 @@ return 0
 
 ############# will export ##############
 
-export -f svi
+# case $(ps -q $$ -o comm=) in
+#     'zsh')
+#         ;;
+#     *)
+#         export -f svi
+#         export -f getdir
+#         export -f vcd
+#         export -f cd_proj
+#         export -f cd_repo
+#         export -f mktag
+#         export -f mklist
+#         export -f getdir_project
+#         export -f getdir_git_repo
+#         ;;
+# esac
+
 alias vi='svi'
-
-export -f getdir
-
-export -f vcd
 alias ..='vcd'
-
-export -f cd_proj
-export -f cd_repo
 alias ...='cd_repo'
-
-export -f mktag
-export -f mklist
-export -f getdir_project
-export -f getdir_git_repo
 
 ########### will export end ############

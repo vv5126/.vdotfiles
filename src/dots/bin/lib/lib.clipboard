@@ -29,7 +29,13 @@ function vpull() {
 
 ############# will export ##############
 
-export -f vpush
-export -f vpull
+# case $(ps -q $$ -o comm=) in
+#     'zsh')
+#         ;;
+#     *)
+#         export -f vpush
+#         export -f vpull
+#         ;;
+# esac
 
 ########### will export end ############
