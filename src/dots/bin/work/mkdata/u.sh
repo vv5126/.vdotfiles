@@ -102,10 +102,7 @@ function init(){
         if [ -n "$uboot_config" ]; then
             board_config=$uboot_config
             the_image="$uboot_image"
-        fi
-
-            forOS="${tmp:=none}"
-
+        else
             echo -en "\n tall me the cfg is  >>> ">&2
             read cfg
 	    grep "$cfg" boards.cfg | awk '{print $1}'
@@ -123,7 +120,8 @@ function init(){
             else
                     the_image=u-boot-with-spl.bin
             fi
-
+        fi
+            forOS="${tmp:=none}"
 	# git_remote="$(git remote -v | head -2 | tail -1 | awk '{print $2}')"
 	git_branch="$(git branch | grep '*' | awk '{print $2}')"
         if [[ "$git_branch" =~ '(' ]]; then
@@ -148,26 +146,11 @@ function mk_data_file() {
                 [[ "$line" =~ "Entering directory" ]] && { dir="${line#* \`}"; echo $dir; continue; }
                 for i in ${line[@]}; do
                         # echo $dir
-                        [ "${i:0-2}" == '.c' ] && echo $dir/$i >> data_tag
-                        [ "${i:0-2}" == '.S' ] && echo $dir/$i >> data_tag
+                        [ "${i:0-2}" == '.c' ] && echo $dir/$i >&1
+                        [ "${i:0-2}" == '.S' ] && echo $dir/$i >&1
                 done
         done < $1
 
-        while read line; do
-                find $line >> data_tag
-        done < $2
-}
-
-function mk_h_file() {
-        local temp
-        while read line; do
-                for i in ${line[@]}; do
-                        [ "${i:0:2}" == '-I' ] && {
-                                [[ "$temp" =~ "$i" ]] || temp=${i:2}
-                }
-                done
-        done < $1
-        echo $temp > data_h
 }
 
 function mk_gcc_file() {
@@ -191,14 +174,23 @@ function mk_gcc_file() {
 		;;
         'ycm_conf')
 	        source .project_info
-		make distclean
-		make $board_config -j1 > .tmp 2>&1
-                # cp .tmp ttt
-                mk_gcc_file .tmp
-                mk_h_file .tmp
-                mk_data_file .tmp data_h
+                mkdir .tag
+                make distclean
+                make $board_config -j1 > .tag/gcc 2>&1
+                mk_gcc_file .tag/gcc
+
+                mk_data_file .tag/gcc > .tag/c
+                get_h_from_c .tag/c > .tag/h
+
+                get_include_from_gcc .tag/gcc > .tag/include
+                clean_duplicate_lines .tag/include
+                get_h_from_include .tag/include >> .tag/h
+
+                cat .tag/c .tag/h > .tag/fortag
+                clean_duplicate_lines .tag/fortag
+                ctags -L .tag/fortag
+
                 # ycmadd .tmp
-                # rm .tmp
                 ;;
 	*)
 		;;

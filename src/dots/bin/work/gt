@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source ~/.bin/lib/lib.base
 source ~/.bin/lib/lib.work
 source ~/.bin/lib/lib.misc
 
@@ -199,7 +200,7 @@ if [ $# -gt 0 ];then
 		                [ $# -eq 2 ] && git_cover $PWD $2
                                 ;;
                         'tag')
-                                git tag | head -n 50
+                                git tag | grep ingenic
                                 ;;
                         'bak')
                                 BAKDIR=${PWD%\/*}/git_bak/${PWD##*\/}/${PWD##*\/}_$(date +%Y%m%d_%H-%M)

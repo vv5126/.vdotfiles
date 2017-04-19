@@ -1,6 +1,5 @@
 
 alias ll='ls -AlFh --color'
-#alias cp='scp'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls'
@@ -12,7 +11,7 @@ alias du='du -h -d 1'
 alias grep='grep --color -rn --exclude-dir=".git"'
 alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
 
-export  LC_ALL=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 export LANG=en_US.utf8
 
 export PYTHON_LIBRARIES="/usr/lib/python2.7"

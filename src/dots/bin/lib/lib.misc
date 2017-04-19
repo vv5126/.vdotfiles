@@ -135,17 +135,17 @@ function col()
 
 ############# will export ##############
 
-case $(ps -q $$ -o comm=) in
-    'zsh')
-        ;;
-    *)
-        export -f get_script_dir
-        export -f mem
-        export -f read_key
-        export -f nicemount
-        export -f ls_file
-        export -f ls_dir
-        ;;
-esac
+# case $(ps -q $$ -o comm=) in
+#     'zsh')
+#         ;;
+#     *)
+#         export -f get_script_dir
+#         export -f mem
+#         export -f read_key
+#         export -f nicemount
+#         export -f ls_file
+#         export -f ls_dir
+#         ;;
+# esac
 
 ########### will export end ############

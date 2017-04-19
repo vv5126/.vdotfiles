@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[[ $(ps -q $$ -o comm=) == 'zsh' ]] && HOSTNAME="$HOST"
+[[ $(ps -p $$ -o comm=) == 'zsh' ]] && HOSTNAME="$HOST"
 
 source $HOME/.bin/base/base.conf
 

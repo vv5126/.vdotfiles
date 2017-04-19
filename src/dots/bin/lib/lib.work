@@ -2,6 +2,29 @@
 
 source ~/.bin/lib/lib.list
 
+function get_c_from_gcc() {
+    grep -oP '\b[^ ,]*\.c\b' $1 >&1
+}
+
+function get_h_from_gcc() {
+    grep -oP '\b[^ ]*\.h\b' $1 >&1
+}
+
+function get_h_from_include() {
+    cat $1 | xargs find - >&1
+}
+
+function get_include_from_gcc() {
+    grep -oP '(?<=-I)[^ ]*\b' $1 | sed 's/\"//g' >&1
+}
+
+function get_h_from_c() {
+    sed -n '/.c$/p;' $1 | while read line; do
+        # dir="${line%/*}"
+        sed -n '/^#inc.*\"$/s/#include "//p;' $line | sed 's/.$//g' | sed 's?.*?'${line%/*}'/&?' >&1
+    done
+}
+
 function guess_obj()
 {
         # kernel
@@ -35,54 +58,6 @@ function get_project_base_info(){
         echo -n "what\'s the feature:  >>> "
         read feature
         feature="$feature"_"$(date +%Y%m%d_%H%M)"
-}
-
-function svi(){
-	if [ $# -ne 0 ]; then
-		STR=$1
-		FILE=${STR%%:*}
-		LINE=${STR#*:}
-		LINE=${LINE%%:*}
-		expr $LINE + 0 &>/dev/null
-		[ $? -eq 0 ] && vim $FILE +$LINE || vim $FILE
-	fi
-}
-
-function getdir(){
-	local TARGET=$1
-	local PROJECT_DIR=''
-	local BASE_DIR=~/
-	local DIR=$PWD
-
-	while [ "$BASE_DIR" != "$DIR/" ];do
-		[ -f "$DIR/$TARGET" -o -d "$DIR/$TARGET" ] && { PROJECT_DIR=$DIR; break; } || PROJECT_DIR=
-		DIR=${DIR%\/*}
-	done
-	[ -n "$PROJECT_DIR" ] && echo "$PROJECT_DIR"
-}
-
-function vcd(){
-	local DIR=~
-	local TARGET=
-	[ -d "$DIR/$1" ] && TARGET=$1
-	[ -f "$DIR/$1" ] && TARGET=${1%/*}
-	[ -z "$1" ] && { TARGET=$(getdir .git); [ -z "$TARGET" ] && TARGET=$(getdir .repo); }
-	[ -z "$TARGET" -a -n "$1" ] && { TARGET=$[${#1}+1]; TARGET=$(seq -s "../" $TARGET); TARGET=${TARGET//[0-9]/}; }
-	[ -n $TARGET ] && cd $TARGET
-}
-
-function cd_proj(){
-	local TARGET=
-	TARGET=$(getdir .git)
-	[ -n "$TARGET" ] && { cd $TARGET; return; }
-	TARGET=$(getdir .repo)
-	[ -n "$TARGET" ] && { cd $TARGET; return; }
-}
-
-function cd_repo(){
-	local TARGET=
-	TARGET=$(getdir .repo)
-	[ -n $TARGET ] && cd $TARGET
 }
 
 function mktag(){
@@ -179,50 +154,16 @@ echo "$PROJECT_DIR_NAME $PROJECT_DIR"
 }
 
 
-function getdir_git_repo(){
-
-local COMP_DIR=~/
-local DIR=$PWD
-local DIR_NAME=''
-local FINIAL_DIR=''
-
-while [ "$COMP_DIR" != "$DIR/" ];do
-	if [ -d "$DIR/.git" ]; then
-		DIR_NAME='GIT_DIR'
-		FINIAL_DIR=$DIR
-		break
-	elif [ -d "$DIR/.repo" ]; then
-		DIR_NAME='REPO_DIR'
-		FINIAL_DIR=$DIR
-		break
-	fi
-	DIR=${DIR%\/*}
-done
-
-echo "$DIR_NAME $FINIAL_DIR"
-return 0
-}
-
 ############# will export ##############
 
 # case $(ps -q $$ -o comm=) in
 #     'zsh')
 #         ;;
 #     *)
-#         export -f svi
-#         export -f getdir
-#         export -f vcd
-#         export -f cd_proj
-#         export -f cd_repo
 #         export -f mktag
 #         export -f mklist
 #         export -f getdir_project
-#         export -f getdir_git_repo
 #         ;;
 # esac
-
-alias vi='svi'
-alias ..='vcd'
-alias ...='cd_repo'
 
 ########### will export end ############

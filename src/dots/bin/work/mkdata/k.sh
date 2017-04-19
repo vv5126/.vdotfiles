@@ -152,6 +152,7 @@ function init(){
         fi
 
         if [ -n "$kernel_config" ]; then
+           forOS=$project_type
            board_config=$kernel_config
            the_image="$kernel_image"
            make $kernel_config
@@ -255,131 +256,30 @@ function mk_data_file() {
         done < $2
 }
 
-function mk_h_file() {
-        local temp
-        while read line; do
-                for i in ${line[@]}; do
-                        [ "${i:0:2}" == '-I' ] && {
-                                [[ "$temp" =~ "$i" ]] || temp=${i:2}
-                }
-                done
-        done < $1
-        echo $temp > data_h
-}
-
 function clean_start_with() {
         sed -i "/^$1/d" $2
 
 }
 
 function mk_gcc_file() {
-        sed -i ':a;N;$ s/\\\n/ /g;ba' $1
-        sed -i 's/;/\n/g' $1
-        sed -i "s/\"//g" $1
-        sed -i 's/\t/ /g' $1
-        sed -i 's/  */ /g' $1
-        sed -i '/^\s/s/\s//' $1
-        sed -i '/^mips-linux-gnu-gcc/!d' $1
+    cmd_files="$(find -name '*.o.cmd' | sed -n '/built-in.o.cmd$/!p;')"
+    # o_files="$(find -name '*.o' | sed -n '/built-in.o$/!p;' | sed -n 's/o$/c/p;')"
+    # echo $cmd_files > $1
+    > $1
+    for i in $cmd_files; do
+        echo $(head -n 1 $i) >> $1
+    done
+
+        # sed -i ':a;N;$ s/\\\n/ /g;ba' $1
+        # sed -i 's/;/\n/g' $1
+        # sed -i "s/\"//g" $1
+        # sed -i 's/\t/ /g' $1
+        # sed -i 's/  */ /g' $1
+        # sed -i '/^\s/s/\s//' $1
+        # sed -i '/^mips-linux-gnu-gcc/!d' $1
+
         # sed -i '/^mips-linux-gnu-gcc\|^gcc/!d' $1
 }
-
-function new_gcc_filter() {
-
-    local file_c=
-    local file_s=
-    local file_h=
-    local file_include=
-
-    local line_c=
-    local line_h=
-    local line_include=
-
-    while read line; do
-
-        line_c=
-        line_h=
-        line_include=
-
-        for i in ${line[@]}; do
-            if [ "${i:0-2}" == '.s' ]; then
-                if [ -f "$i" ]; then
-                    [[ "$file_s" =~ "$i" ]] || file_s="$file_s $i"
-                else
-                    debug echo ttttt
-                fi
-            fi
-
-            if [ "${i:0-2}" == '.c' ]; then
-                if [ -f "$i" ]; then
-                    [[ "$file_c" =~ "$i" ]] || { file_c="$file_c $i"; line_c="$line_c $i"; }
-                else
-                    debug echo ttttt
-                fi
-            fi
-
-            if [ "${i:0-2}" == '.h' ]; then
-                if [ -f "$i" ]; then
-                    [[ "$file_h" =~ "$i" ]] || file_h="$file_h $i"
-                    line_h="$line_h $i"
-                else
-                    debug echo ttttt
-                fi
-            fi
-
-            if [ "${i:0:2}" == '-I' ]; then
-                i="${i:2}"
-                if [ -d "$i" ]; then
-                    [[ "$file_include" =~ "$i" ]] || file_include="$file_include $i"
-                    line_include="$line_include $i"
-                else
-                    debug echo ttttt
-                fi
-            fi
-        done
-
-        for i in ${line_c[@]}; do
-            sed '/^#include/!d' $i > .tmp_h
-
-            while read line; do
-                if [[ "$line" =~ '.h>' ]]; then
-                    head_flie=${line##* }; head_flie=${head_flie:1:0-1}
-                    for j in ${line_include[@]}; do
-                        if [[ -f "$j/$head_flie" ]]; then
-                            [[ "$file_h" =~ "$j/$head_flie" ]] || file_h="$file_h $j/$head_flie"
-                            break
-                        fi
-                    done
-
-                    virtual_h=${i%/*}/$head_flie
-                    if [[ -f "$" ]]; then
-                        [[ "$file_h" =~ "$virtual_h" ]] || file_h="$file_h $virtual_h"
-                    fi
-                fi
-
-                if [[ "$line" =~ '.h"' ]]; then
-                    head_flie=${line##* }; head_flie=${head_flie:1:0-1}
-                    virtual_h=${i%/*}/$head_flie
-                    if [[ -f "$virtual_h" ]]; then
-                        [[ "$file_h" =~ "$virtual_h" ]] || file_h="$file_h $virtual_h"
-                    fi
-                fi
-            done < .tmp_h
-        done
-    done < $1
-
-    # rm .tmp_h
-
-    [ -n "$file_c" ] && echo $file_c > .tagfile
-    [ -n "$file_s" ] && echo $file_s >> .tagfile
-    [ -n "$file_h" ] && echo $file_h >> .tagfile
-
-    echo $file_include > file_include
-    # echo $file_h >> file_include
-
-    sed -i 's/ /\n/g' .tagfile
-    sed -i 's/ /\n/g' file_include
-}
-
 
 [ "$#" -ge 1 ] && {
 	case "$1" in
@@ -409,16 +309,17 @@ function new_gcc_filter() {
                 [ -f '.tagfile' ] && ctags -L .tagfile || echo failed!
 		;;
         'ycm_conf')
-                make clean
-                make uImage -n -j32 > .tmp 2>&1
-                debug cp .tmp ttt
-                debug cp ttt .tmp
-                mk_gcc_file .tmp
-                new_gcc_filter .tmp
-                # mk_h_file .tmp
-                # mk_data_file .tmp data_h
-                ycmadd file_include
-                # rm .tmp
+                mkdir .tag
+                mk_gcc_file .tag/gcc
+                get_c_from_gcc .tag/gcc > .tag/c
+                get_h_from_c .tag/c > .tag/h
+                get_include_from_gcc .tag/gcc > .tag/include
+                clean_duplicate_lines .tag/include
+                get_h_from_include .tag/include >> .tag/h
+                cat .tag/c .tag/h > .tag/fortag
+                clean_duplicate_lines .tag/fortag
+                ctags -L .tag/fortag
+                # ycmadd file_include
                 ;;
 	*)
 		;;

@@ -43,6 +43,8 @@ function make_info_file() {
 
 	# [unuse]
 
+        project_select=$project_select
+
 	repositories_type=repo
 
 	git_remote=$git_remote
@@ -82,7 +84,8 @@ function init() {
         # sed -i "1i\TOPDIR=$PWD/" .tmp
         source .tmp; rm .tmp
 
-        project_type=$TARGET_PRODUCT
+        project_type=manhattan
+        project_select=$TARGET_PRODUCT
         forBOARD=$TARGET_DEVICE
 
 	git_remote=$(cd .repo/manifests; git remote -v | head -2 | tail -1 | awk '{print $2}')

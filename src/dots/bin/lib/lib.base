@@ -49,10 +49,67 @@ function smv() {
 	fi
 }
 
+function getdir(){
+	local TARGET=$1
+	local PROJECT_DIR=''
+	local BASE_DIR=~/
+	local DIR=$PWD
+
+	while [ "$BASE_DIR" != "$DIR/" ];do
+		[ -f "$DIR/$TARGET" -o -d "$DIR/$TARGET" ] && { PROJECT_DIR=$DIR; break; } || PROJECT_DIR=
+		DIR=${DIR%\/*}
+	done
+	[ -n "$PROJECT_DIR" ] && echo "$PROJECT_DIR"
+}
+
+function cddir(){
+	local TARGET=
+	TARGET=$(getdir $1)
+	[ -n "$TARGET" ] && { cd $TARGET; return; }
+}
+
+function cd_proj(){
+	local TARGET=
+	TARGET=$(getdir .git)
+	[ -n "$TARGET" ] && { cd $TARGET; return; }
+	TARGET=$(getdir .repo)
+	[ -n "$TARGET" ] && { cd $TARGET; return; }
+}
+
+function cd_repo(){
+	local TARGET=
+	TARGET=$(getdir .repo)
+	[ -n $TARGET ] && cd $TARGET
+}
+
+function getdir_git_repo(){
+
+local COMP_DIR=~/
+local DIR=$PWD
+local DIR_NAME=''
+local FINIAL_DIR=''
+
+while [ "$COMP_DIR" != "$DIR/" ];do
+	if [ -d "$DIR/.git" ]; then
+		DIR_NAME='GIT_DIR'
+		FINIAL_DIR=$DIR
+		break
+	elif [ -d "$DIR/.repo" ]; then
+		DIR_NAME='REPO_DIR'
+		FINIAL_DIR=$DIR
+		break
+	fi
+	DIR=${DIR%\/*}
+done
+
+echo "$DIR_NAME $FINIAL_DIR"
+return 0
+}
+
 
 ############# will export ##############
 
-# case $(ps -q $$ -o comm=) in
+# case $(ps -p $$ -o comm=) in
 #     'zsh')
 #         export ZSH_EXPORTED_FUNCTIONS="$(functions \
 #             is_local \
@@ -62,10 +119,14 @@ function smv() {
 #         )"
 #         ;;
 #     *)
+#         export -f getdir
+#         export -f cd_proj
+#         export -f cd_repo
 #         export -f is_local
 #         export -f smkdir
 #         export -f srm
 #         export -f smv
+        export -f getdir_git_repo
 #         ;;
 # esac
 

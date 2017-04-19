@@ -5,6 +5,7 @@
 # 2.check kernel version.
 # 3.add creat new project.
 
+source ~/.bin/lib/lib.base
 source ~/.bin/lib/lib.work
 source ~/.bin/lib/lib.misc
 
