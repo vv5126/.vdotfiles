@@ -109,16 +109,17 @@ return 0
 
 ############# will export ##############
 
-# case $(ps -p $$ -o comm=) in
-#     'zsh')
-#         export ZSH_EXPORTED_FUNCTIONS="$(functions \
+case $(ps -p $$ -o comm=) in
+    'zsh')
+        export ZSH_EXPORTED_FUNCTIONS="$(functions \
+           getdir_git_repo \
 #             is_local \
 #             smkdir \
 #             srm \
 #             smv \
-#         )"
-#         ;;
-#     *)
+        )"
+        ;;
+    *)
 #         export -f getdir
 #         export -f cd_proj
 #         export -f cd_repo
@@ -127,7 +128,7 @@ return 0
 #         export -f srm
 #         export -f smv
         export -f getdir_git_repo
-#         ;;
-# esac
+        ;;
+esac
 
 ########### will export end ############

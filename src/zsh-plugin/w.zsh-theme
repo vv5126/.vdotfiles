@@ -15,15 +15,20 @@ GREEN_START_P1="${PR_RESET}${GREEN_BASE_START}${PR_RESET} "
 local HOST_COLOR
 
 if [[ "$USER" == 'user' && "$HOST" == 'ThinkPad-Yoga-260' ]]; then
-    HOST_COLOR="%{$fg[magenta]%}"
-elif [[ "$USER" == '' && "$HOST" == '' ]]; then
+    HOST_COLOR="%{$fg[yellow]%}"
+elif [[ "$USER" == '' && "$HOST" == 'sw' ]]; then
     HOST_COLOR="%{$fg[blue]%}"
+elif [[ "$USER" == '' && "$HOST" == 'lqchen-0B' ]]; then
+    HOST_COLOR="%{$fg[magenta]%}"
+elif [[ "$USER" == '' && "$HOST" == 'ingenic-wgao' ]]; then
+    HOST_COLOR="%{$fg[orange]%}"
 fi
 
 local pwd='%{$fg[blue]%}%~%{$reset_color%}'
 local return_code='%(?..%{$fg[red]%}%? ↵%{$reset_color%})'
 
-PROMPT="${return_code} ${HOST_COLOR}⌚ %T${PR_RESET} ${pwd} ${GREEN_BASE_START} "
+PROMPT="${HOST_COLOR}⌚ %T${PR_RESET} ${pwd} ${GREEN_BASE_START} "
+RPROMPT="${return_code}"
 
 # local weather=''
 # local today=

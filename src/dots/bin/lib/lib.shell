@@ -19,7 +19,7 @@ function quickcd() {
         if [ "$#" -eq 0 ]; then
             local try_old_dir="$(history | tail -n 2 | head -1)"
             try_old_dir="${try_old_dir##* }"
-            [ "${try_old_dir:0:1}" == '~' ] && try_old_dir="$HOME${try_old_dir:1}"
+            [[ "${try_old_dir:0:1}" == '~' ]] && try_old_dir="$HOME${try_old_dir:1}"
             if [ -d "$try_old_dir" ]; then
                 cd "$try_old_dir"
             else
