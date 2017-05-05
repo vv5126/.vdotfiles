@@ -22,7 +22,7 @@ add to local /etc/sudoers use sudo visudo.
 sudo chgrp root vsudoer
 sudo chown root vsudoer
 chmod 440 vsudoer
-ln -s /home/user/.bin/local/vsudoer /etc/sudoers.d/
+ln -P /home/user/.bin/local/vsudoer /etc/sudoers.d/
 
 [ add samba ]
 edit /etc/samba/smb.conf to add the smb-dir.

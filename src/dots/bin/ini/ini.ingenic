@@ -24,7 +24,7 @@ export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"
 [ -d "$HOME/.bin" ] && PATH="$HOME/.bin/base:$HOME/.bin/work:$PATH"
 
 # 4.15 #
-[ $(uname -n) == 'lqchen-0B' ] && {
+[[ $(uname -n) == 'lqchen-0B' ]] && {
     # PATH=/usr/lib/jvm/java/bin:/data1/home/wgao/thync/mips-gcc472-glibc216/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games # debug for thync
 
     # JDK
@@ -61,7 +61,7 @@ export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"
 }
 
 # 4.10 #
-[ $(uname -n) == 'sw' ] && {
+[[ $(uname -n) == 'sw' ]] && {
     # JDK
 
     # GCC
@@ -75,7 +75,7 @@ export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"
 }
 
 # 4.150 #
-[ "$VGL_LOCAL_USER" = "$HOSTNAME" ] && {
+[[ "$VGL_LOCAL_USER" = "$HOSTNAME" ]] && {
     export VGL_NOTIFY=/tmp/.notify_pipe
     export ZSH=$HOME/.vim/bundle/oh-my-zsh
 	PATH="$HOME/.bin/local:$PATH"
@@ -89,9 +89,6 @@ export JRE_HOME=${JAVA_HOME}/jre
 export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
 }
-
-rm .goutputstream* >/dev/null 2>&1
-rm .xsession-errors* >/dev/null 2>&1
 
 clear
 

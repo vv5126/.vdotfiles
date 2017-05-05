@@ -27,7 +27,7 @@ function srm() {
 	for i in $src; do
 		is_local $i
 		if [ $? = 0 ]; then
-			rm $i
+                    [ -e "$i" ] && rm -rf $i
 		else
 			ssh ${i%:*} "rm -rf ${i##*:}"
 		fi

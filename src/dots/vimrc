@@ -207,7 +207,7 @@ endif
         " set shiftwidth=8                   " 设置格式化时制表符占用空格数
         " set softtabstop=8                  " 让 vim 把连续数量的空格视为一个制表符, 使得按退格键时可以一次删掉 4 个空格
         " set expandtab                      " 用空格代替制表符
-        " set noexpandtab                    " 不要用空格代替制表符
+        set noexpandtab                    " 不要用空格代替制表符
         autocmd FileType sh setlocal shiftwidth=4
         "=====================================================
         " 处理折叠行的左右移动
@@ -410,11 +410,18 @@ endif
     " }
 
     " vmode C {
-        if &filetype == 'c'
+        autocmd BufRead *.h set filetype=c
+        function! ADD_H()
+            let l:filename = substitute(toupper(expand("%:t")), '\.', "_", "g")
+            call append(0,"#ifndef __".l:filename."__")
+            call append(1,"#define __".l:filename."__")
+            call append(2,"")
+            call append('$',"#endif /* __".l:filename."__ */")
+        endfunction
 
-            " autocmd FileType c,cpp set expandtab
-            autocmd BufRead *.h set filetype=c
-	    autocmd FileType c,cpp setlocal shiftwidth=8
+        function! SET_FILETYPE_C()
+            setlocal shiftwidth=8
+            " set expandtab
             " -------------------------------------------------
             " set colorcolumn=37                 " 彩色显示一列，用以规范代码
             " highlight ColorColumn ctermbg=green ctermfg=black
@@ -425,7 +432,7 @@ endif
             " 屏蔽代码
             vmap <Leader>j0 dO#endif<Esc>PO#if 0<cr>#else<Esc>
             vmap <Leader>jz di /*  <Esc>P
-	    " 调试
+            " 调试
             vmap <Leader>jd dO#endif<Esc>PO#ifdef DEBUG<Esc>
             " -------------------------------------------------
             "切换到函数头或尾
@@ -440,19 +447,33 @@ endif
             iab wgao2 <c-r>='printf("wgao (l:%d, f:%s, F:%s, p:%d) %d %s\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
             " -------------------------------------------------
             nnoremap <leader>ah :call ADD_H()<cr>
-
-            function! ADD_H()
-                    let l:filename = substitute(toupper(expand("%:t")), '\.', "_", "g")
-                    call append(0,"#ifndef __".l:filename."__")
-                    call append(1,"#define __".l:filename."__")
-                    call append(2,"")
-                    call append('$',"#endif /* __".l:filename."__ */")
-            endfunction
             " -------------------------------------------------
             map <leader>b :vs! ~/.vim/buffer<cr>
+        endfunction
 
-        endif
+        function! UNSET_FILETYPE_C()
+            vunmap <Leader>j0
+            vunmap <Leader>jz
+        endfunction
 
+
+        let g:filetype_last=''
+        function! CHECK_FILETYPE()
+            if &filetype != g:filetype_last
+                if g:filetype_last == 'c'
+                    call UNSET_FILETYPE_C()
+                endif
+
+                if &filetype == 'c'
+                    call SET_FILETYPE_C()
+                endif
+
+                let g:filetype_last=&filetype
+                " echon 'filetype_last = 'g:filetype_last
+            endif
+        endfunction
+
+	autocmd BufEnter * call CHECK_FILETYPE()
     " }
 
     " good function {
