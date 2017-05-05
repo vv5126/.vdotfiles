@@ -30,6 +30,9 @@
 	frag = magenta bold
 	old = red bold
 	new = green bold
+        context = 240
+        commit = 246 024
+        whitespace = red reverse
 
 [color "status"]
 	added = yellow
@@ -43,6 +46,11 @@
 
 [difftool "bcompare_git"]
 	cmd = /usr/bin/bcompare \"$LOCAL\" \"$REMOTE\"
+
+[pager]
+    log  = diff-so-fancy | less -RX
+    show = diff-so-fancy | less -RX
+    diff = diff-so-fancy | less -RX
 
 [alias]
 	br = branch

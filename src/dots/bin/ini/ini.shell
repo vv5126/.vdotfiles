@@ -18,3 +18,8 @@ export PYTHON_LIBRARIES="/usr/lib/python2.7"
 export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"
 export PYTHONPATH=$PYTHONPATH:$HOME/.bin/lib/lib.python
 export EDITOR=/usr/bin/vim
+
+if [ -n "$(which dircolors)" ]; then
+	eval `dircolors -b $HOME/.dir_colors`
+fi
+

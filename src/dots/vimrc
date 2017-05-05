@@ -317,6 +317,7 @@ endif
 
         "esc的映射
         imap jj <esc>
+        imap qq <esc>
 
         "插入模式下移动
         inoremap <c-h> <c-left>
@@ -411,6 +412,7 @@ endif
 
     " vmode C {
         autocmd BufRead *.h set filetype=c
+        autocmd BufRead *.help set filetype=markdown
         function! ADD_H()
             let l:filename = substitute(toupper(expand("%:t")), '\.', "_", "g")
             call append(0,"#ifndef __".l:filename."__")
