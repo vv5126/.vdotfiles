@@ -1,30 +1,30 @@
-[ auto-startup ]
+### auto-startup
 gnome-session-properties
 vpipedaemon
 gnome-panel
 
-[ 改capslock->ctrl ]
+### 改capslock->ctrl
 1. sudo vim /etc/default/keyboard 修改下面这一行：XKBOPTIONS="ctrl:nocaps" # "ctrl:swapcaps"
 2. sudo dpkg-reconfigure keyboard-configuration 出现如下图像（全部选默认的)
 unused: xmodmap /home/user/.Xmodmap
 Ubuntu 14.04 下通过 XKB 修改键盘映射, 实现自定义按键
 https://github.com/Chunlin-Li/Chunlin-Li.github.io/blob/master/blogs/linux/ubuntu-xkb-keyboard-remap.md
 
-[ add to local crontab ]
+### add to local crontab
 crontab -e
 */30 *    * * *   user    /bin/tmsync
 */10 *    * * *   user    /home/user/.bin/local/check-new-mail
 sudo service cron restart
 sudo service cron status
 
-[ vsudoer ]
+### vsudoer
 add to local /etc/sudoers use sudo visudo.
 sudo chgrp root vsudoer
 sudo chown root vsudoer
 chmod 440 vsudoer
 ln -P /home/user/.bin/local/vsudoer /etc/sudoers.d/
 
-[ add samba ]
+### add samba
 edit /etc/samba/smb.conf to add the smb-dir.
 use smbpasswd  -a xxx to add your user's name.
 service smb restart
@@ -34,14 +34,14 @@ setenforce 0
 vi /etc/selinux/config
 change 'SELINUX=enforcing' to 'SELINUX=disabled'
 
-[ font setup ]
+### font setup
 add fonts to ~/.local/share/fonts
 mkfontscale
 mkfontdir
 fc-cache -vf
 rm ~/.vim/bundle/vim-powerline/*.cache
 
-[ Ubuntu取消自动更新命令 ]
+### Ubuntu取消自动更新命令
 vi /etc/apt/apt.conf.d/50unattended-upgrades
 Unattended-Upgrade::Allowed-Origins 全注释
 vi /etc/apt/apt.conf.d/10periodic
@@ -50,13 +50,18 @@ APT::Periodic::Download-Upgradeable-Packages "1"; //下载更新包 0表示停�
 APT::Periodic::AutocleanInterval "7"; // 7日自动删除
 APT::Periodic::Unattended-Upgrade "1"; //启用自动更新 0表示停用自动更新
 
-[ python ]
-pip
-pip for python3.5
-wget https://bootstrap.pypa.io/get-pip.py
-sudo python3.5 get-pip.py
+### python
+<!-- pip -->
+<!-- pip for python3.5 -->
+<!-- wget https://bootstrap.pypa.io/get-pip.py -->
+<!-- sudo python3.5 get-pip.py -->
 
-[ 远程桌面 ]
+### 安装app
+cd app
+python3.6 setup.py build
+python3.6 setup.py install
+
+### 远程桌面
 install xrdp
 vncserver :1
 cat > vim .vnc/xstartup << EOF
@@ -74,7 +79,7 @@ EOF
 vncserver -kill :1
 vncserver :1
 
-[ ftp ]
+### ftp
 install vsftpd
 in /etc/vsftpd.conf:
         anonymous_enable=NO
@@ -83,7 +88,7 @@ in /etc/vsftpd.conf:
 
 sudo service vsftpd restart
 
-[ tftp ]
+### tftp
 install tftpd-hpa
 install tftp-hpa（如果不需要客户端可以不安装）
 2.配置TFTP服务器
@@ -96,13 +101,13 @@ TFTP_OPTIONS="-l -c -s"
 3.重新启动TFTP服务
 sudo service tftpd-hpa restart
 
-[ displaylink usb外置显卡 分辨率配置 ]
+### displaylink usb外置显卡 分辨率配置
 xrandr --newmode "1280x960_60.00"  101.25  1280 1360 1488 1696  960 963 967 996 -hsync +vsync
 xrandr --addmode DVI-1-0 "1280x960_60.00"
 
-[ remount ]
+### remount
 mount -o remount,rw /xxx
 
-[ QT ]
+### QT
 GL/gl.h: No such file or directory 执行下面命令解决：
 sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev

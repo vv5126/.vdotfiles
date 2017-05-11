@@ -14,13 +14,16 @@ alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.utf8
 
-export PYTHON_LIBRARIES="/usr/lib/python2.7"
-export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"
-export PYTHONPATH=$PYTHONPATH:$HOME/.bin/lib/lib.python
+# export PYTHON_LIBRARIES="/usr/lib/python2.7"
+# export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"
+export PYTHONPATH=$PYTHONPATH:$HOME/tools/python3.6
 export EDITOR="$(which vim)"
 
 [[ $(uname -n) == 'ThinkPad-Yoga-260' ]] && {
     export PATH=$HOME/bin/python3.6/bin:$PATH
+}
+[[ $(uname -n) == 'lqchen-0B' ]] && {
+    export PATH=/data1/home/wgao/tools/python3.6/bin:$PATH
 }
 
 if [ -n "$(which dircolors)" ]; then

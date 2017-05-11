@@ -1,16 +1,18 @@
 #!/bin/bash
 
+source ~/.bin/lib/lib.base
+
 dir=${1:-~/tools/bbb}
 
 cd $dir
 
-cpu_num=30
+cpu_num=40
 
 cap_dir="caps"
 oldcap_dir="$cap_dir/old_caps"
 dict_dir="dicts"
 out_dir="out"
-aircrack=$VGLD_CRACK_DIR/make
+aircrack=$dir/make
 fail_dir="$oldcap_dir/fail"
 done_dir="$oldcap_dir/done"
 

@@ -145,7 +145,7 @@ function init(){
                 bool=$(get_input " Do you want move the project to \"$project_target_dir\"?\n please say \e[40;33m Yes\033[0m or \033[40;32m No\033[0m.")
                 if [ "$bool" == 'y' ]; then
                     mkdir -p "$project_target_dir"
-                    mv "$PWD" "$project_target_dir/kernel_$feature" && cd "$project_target_dir/kernel_$feature"
+                    mv "$PWD" "$project_target_dir/kernel_$feature" && ln -s "$project_target_dir/kernel_$feature" ~
                     echo the project has move to "$project_target_dir/kernel_$feature"
                 fi
             }

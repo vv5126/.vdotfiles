@@ -7,12 +7,11 @@
 # add new task 
 
 
+DIR_VHELPER="$HOME/vhelper"
+DIR_TRIGGERS="$DIR_VHELPER/triggers"
+DIR_LIB="$DIR_VHELPER/lib"
 
-
-
-TASKDIR=$HOME/vtask
-VHELPER_LOG=$TASKDIR/log
-JOBDIR=$TASKDIR/jobs
+VHELPER_LOG="$DIR_VHELPER/log"
 tasklist=""
 
 function tasklist_reset() {
@@ -27,13 +26,8 @@ function tasklist_check() {
     fi
 }
 
-function service_timer() {
-    sleep 60
-    kill -100 server_main
-}
-
 function _log() {
-    echo "$@" >> $VHELPER_LOG/$(date -%h).log
+    echo "$(date +%d\ %H:%M)| $@" >> $VHELPER_LOG/a.log
 }
 
 function service_job() {
@@ -44,12 +38,19 @@ function service_job() {
     done
 }
 
+function service_trigger() {
+    local trigger
+    local triggers="$(ls $DIR_TRIGGERS)"
+    for trigger in $triggers; do
+	$DIR_TRIGGERS/$trigger &
+    done
+}
 
-
-function asd() {
-    while [ 1 -eq 1 ]; do
-        sleep 5
-        tasklist_check
+function wakeup_trigger() {
+    while true; do
+        sleep 10 &
+	wait
+	kill -34 $VHELPER_PID
     done
 }
 
@@ -59,19 +60,18 @@ function boot_check() {
 
 function vhelper_main() {
     boot_check
+    VHELPER_PID=$$
 
-    trap 'boot_check' 32
-    trap 'service_job' 33
-    # trap 
-    # trap 
+    # trap 'boot_check' 32
+    # trap 'service_job' 33
+    trap 'service_trigger' 34
+
+    wakeup_trigger &
 
     while true; do
         sleep 10 &
-        wait
+	wait
     done
 }
 
 vhelper_main
-
-
-
