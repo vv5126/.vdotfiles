@@ -15,9 +15,17 @@ base='
 1 pip
 5 pip3
 1 fcitx-googlepinyin
+4 https://github.com/adobe-fonts/source-code-pro
+2 https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz
 '
 ftp='
 1 vsftpd
+'
+goodproject='
+4 https://github.com/sopel-irc/sopel
+4 https://github.com/houtianze/bypy
+3 sopel
+3 bypy
 '
 
 pip3='

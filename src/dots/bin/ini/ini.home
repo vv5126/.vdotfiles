@@ -4,3 +4,4 @@ alias vdiff='vgitdiff ~/.vdotfiles'
 export ZSH=$HOME/.vim/bundle/oh-my-zsh
 [ -d "$HOME/.bin" ] && PATH="$HOME/.bin/base:$HOME/.bin/work:$PATH"
 PATH="$HOME/.bin/local:$PATH"
+PATH="$HOME/bin/mips-gcc472-glibc216-64/bin:$PATH"

@@ -17,7 +17,11 @@ export LANG=en_US.utf8
 export PYTHON_LIBRARIES="/usr/lib/python2.7"
 export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"
 export PYTHONPATH=$PYTHONPATH:$HOME/.bin/lib/lib.python
-export EDITOR=/usr/bin/vim
+export EDITOR="$(which vim)"
+
+[[ $(uname -n) == 'ThinkPad-Yoga-260' ]] && {
+    export PATH=$HOME/bin/python3.6/bin:$PATH
+}
 
 if [ -n "$(which dircolors)" ]; then
 	eval `dircolors -b $HOME/.dir_colors`
