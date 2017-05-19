@@ -1,18 +1,19 @@
 #!/bin/bash
 
+
 # 每台服务器上运行一份,
 # 功能: 处理琐事.
 
 # if new 
 # add new task 
 
-
-DIR_VHELPER="$HOME/vhelper"
+export DIR_VHELPER="$HOME/vhelper"
 DIR_TRIGGERS="$DIR_VHELPER/triggers"
 DIR_LIB="$DIR_VHELPER/lib"
 
-VHELPER_LOG="$DIR_VHELPER/log"
 tasklist=""
+
+source /data1/home/wgao/.vdotfiles/src/dots/bin/lib/lib.trigger
 
 function tasklist_reset() {
     tasklist="$(ls $TASKDIR | grep -v '\/$ -')"
@@ -24,10 +25,6 @@ function tasklist_check() {
         taskchange="$(stat $TASKDIR -c %y)"
         tasklist_reset
     fi
-}
-
-function _log() {
-    echo "$(date +%d\ %H:%M)| $@" >> $VHELPER_LOG/a.log
 }
 
 function service_job() {
@@ -42,14 +39,14 @@ function service_trigger() {
     local trigger
     local triggers="$(ls $DIR_TRIGGERS)"
     for trigger in $triggers; do
-	$DIR_TRIGGERS/$trigger &
+	$BASH $DIR_TRIGGERS/$trigger &
     done
 }
 
 function wakeup_trigger() {
     while true; do
-        sleep 10 &
-	wait
+        sleep 60 &
+	wait $!
 	kill -34 $VHELPER_PID
     done
 }

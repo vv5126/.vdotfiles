@@ -2,7 +2,7 @@
 
 source ~/.bin/lib/lib.base
 
-dir=${1:-~/tools/bbb}
+dir=${1:-~/v/bbb}
 
 cd $dir
 
@@ -56,7 +56,7 @@ for cap in $caps; do
         $aircrack $cap -p $cpu_num -w $dict -l $wanted > /dev/null
         [ -f "$wanted" ] && { echo crack one done!; mv $cap $done_dir; break; }
 
-        [ "$(date +%H)" -eq '7' ] && exit
+        [[ "$(date +%H)" -gt '7' && "$(date +%H)" -lt '20' ]] && exit
     done
     [ -f "$cap" ] && { echo crack one fail!; mv $cap $fail_dir; }
 

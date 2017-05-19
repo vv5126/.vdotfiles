@@ -51,7 +51,9 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     complete -W "push bak baklist cover" gt
 
     export VGL_BOOKMARK='/data1/home/wgao/.vdotfiles/src/bookmark/bookmark.html'
-    export VGLD_CRACK_DIR=/data1/home/wgao/tools/bbb
+    export VGLD_CRACK_DIR=/data1/home/wgao/v/bbb
+
+    # export LD_LIBRARY_PATH=
 } || {
     alias vsync='rsync -rul wgao@192.168.4.15:~/.vdotfiles ~'
     alias vsync1='rsync -rl --exclude=bundle wgao@192.168.4.15:~/.vdotfiles ~'

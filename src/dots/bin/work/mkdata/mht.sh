@@ -73,7 +73,7 @@ function init() {
         trap "rm -f .mht.sh .project_info; exit 2" 1 2 3 15
 
         get_project_base_info
-        local project_target_dir="$HOME/work/$task_type/$customer"
+        local project_target_dir="$HOME/work/$task_type/${customer:+$customer/}"
         local bool
 
         source build/envsetup.sh
@@ -93,7 +93,7 @@ function init() {
         real_br="$(cd .repo/manifests; git branch -a | grep '\->' -)"
 
         the_img_dir=out/product/${forBOARD:+$forBOARD/}image
-        [ -n "$customer" ] && target_dir='$VGL_BOARDS/$task_type/$customer/$feature' || target_dir='$VGL_BOARDS/$task_type/$feature'
+        target_dir='$VGL_BOARDS/$task_type/${customer:+$customer/}/$feature'
 
 	make_info_file ".project_info"
 
