@@ -6,13 +6,16 @@ function _log() {
 
 function time_check()
 {
-    local a b c d e f
+    local a b c d e f tmp
     local trigger_count=5
     time_now=$(date +%m_%d_%H_%M_%u)
     time_base=(${time_now//_/ })
     time_trigger=(${1//_/ })
 
     for i in {0..4}; do
+	tmp="${time_base[i]}"
+	[ "${tmp:0:1}" = '0' ] && tmp="${tmp:1}"
+
 	if [[ "${time_trigger[i]}" =~ ',' ]]; then
 	    a="${time_trigger[i]//,/ }"
 	else
@@ -32,8 +35,8 @@ function time_check()
 		f="${c#*-}"
 		[ "${e:0:1}" = '0' ] && e="${e:1}"
 		[ "${f:0:1}" = '0' ] && f="${f:1}"
-		if [[ "${time_base[i]}" -ge "$e" && "${time_base[i]}" -le "$f" && "$(((time_base[i]-$e)%$d))" -eq 0 ]]; then
-		    # echo $e "${time_base[i]}" $f / $d
+		if [[ "$tmp" -ge "$e" && "$tmp" -le "$f" && "$((($tmp-$e)%$d))" -eq 0 ]]; then
+		    echo date 1 $e "$tmp" $f / $d >> /tmp/vhelp.txt
 		    ((trigger_count--))
 		    break
 		fi
@@ -42,14 +45,15 @@ function time_check()
 		d="${b#*-}"
 		[ "${c:0:1}" = '0' ] && c="${c:1}"
 		[ "${d:0:1}" = '0' ] && d="${d:1}"
-		if [[ "${time_base[i]}" -ge "$c" && "${time_base[i]}" -le "$d" ]]; then
-		    # echo $c "${time_base[i]}" $d
+		if [[ "$tmp" -ge "$c" && "$tmp" -le "$d" ]]; then
+		    echo date 2 $c "$tmp" $d >> /tmp/vhelp.txt
 		    ((trigger_count--))
 		    break
 		fi
 	    else
-		if [[ "x${time_base[i]}" -eq "x$b" || "x$b" -eq 'xy' ]]; then
-		    # echo "${time_base[i]}" $b
+		[ "${b:0:1}" = '0' ] && b="${b:1}"
+		if (("$tmp" == "$b")) || [[ "x$b" == 'xy' ]]; then
+		    echo date 3 "$tmp" $b >> /tmp/vhelp.txt
 		    ((trigger_count--))
 		    break
 		fi

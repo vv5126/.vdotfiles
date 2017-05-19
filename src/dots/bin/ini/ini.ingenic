@@ -33,6 +33,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 
     # GCC
     # PATH=/data1/home/wgao/tools/toolchains/mipseltools-gcc412-glibc261/bin:$PATH
+    PATH=/data1/home/wgao/tools/toolchains/mipsel-gcc472-glibc216-mips32/bin:$PATH
     PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
     # PATH=/pdev/chains/mips-gcc520-glibc222/bin:$PATH
     # export CROSS_COMPILE=mips-linux-gnu-gcc-4.7.2
@@ -81,7 +82,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 	# source ~/.bin/local/vlogin
     alias VB='VirtualBox --startvm $HOME/.VirtualBox/xp/xp.vbox &'
     alias sm='thunderbird -compose'
-    alias ch='nohup /opt/Citrix/ICAClient/wfica -icaroot /opt/Citrix/ICAClient /home/user/.bin/local/launch-chrome3.ica &'
+    alias ch='nohup /opt/Citrix/ICAClient/wfica -icaroot /opt/Citrix/ICAClient /home/user/.bin/local/launch-chrome3.ica > /dev/null &'
 } || {
 # java jdk
 ${JAVA_HOME:=/usr/lib/jvm/java}

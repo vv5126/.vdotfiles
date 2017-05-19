@@ -93,7 +93,7 @@ function init() {
         real_br="$(cd .repo/manifests; git branch -a | grep '\->' -)"
 
         the_img_dir=out/product/${forBOARD:+$forBOARD/}image
-        target_dir='$VGL_BOARDS/$task_type/${customer:+$customer/}/$feature'
+        target_dir='$VGL_BOARDS/$task_type/${customer:+$customer/}$feature'
 
 	make_info_file ".project_info"
 
