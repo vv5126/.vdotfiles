@@ -88,24 +88,31 @@
     " vim帮助中文版
     Bundle 'becaning/vimdoccn'
     " -------------------------------------------------
+    "让Vim变成所见即所得的MarkDown文件编辑器，可以在编辑时预览最终效果。
+    Bundle 'iamcco/markdown-preview.vim'
+    let g:mkdp_path_to_chrome = "firefox"
+    " let g:mkdp_auto_start = 1
+    let g:mkdp_auto_open = 1
+    let g:mkdp_command_for_global = 1
+" -------------------------------------------------
 if 0
     " 注释代码用
     Bundle 'tomtom/tcomment_vim'
-"对NERD_commenter的设置
-" [count],cc 光标以下count行逐行添加注释(7,cc)
-" [count],cu 光标以下count行逐行取消注释(7,cu)
-" [count],cm 光标以下count行尝试添加块注释(7,cm)
-" ,cA 在行尾插入 /* */,并且进入插入模式。 这个命令方便写注释。
-" 注：count参数可选，无则默认为选中行或当前行
- let NERDSpaceDelims=5       " 让注释符与语句之间留一个空格
- let NERDCompactSexyComs=1   " 多行注释时样子更好看
- let NERDShutUp=1
-" 支持单行和多行的选择，//格式
-" Toggle单行注释/“性感”注释/注释到行尾/取消注释
-map <leader>cc ,c<space>
-map <leader>cs ,cs
-map cu ;cu
-map cs ;c$
+    "对NERD_commenter的设置
+    " [count],cc 光标以下count行逐行添加注释(7,cc)
+    " [count],cu 光标以下count行逐行取消注释(7,cu)
+    " [count],cm 光标以下count行尝试添加块注释(7,cm)
+    " ,cA 在行尾插入 /* */,并且进入插入模式。 这个命令方便写注释。
+    " 注：count参数可选，无则默认为选中行或当前行
+    let NERDSpaceDelims=5       " 让注释符与语句之间留一个空格
+    let NERDCompactSexyComs=1   " 多行注释时样子更好看
+    let NERDShutUp=1
+    " 支持单行和多行的选择，//格式
+    " Toggle单行注释/“性感”注释/注释到行尾/取消注释
+    map <leader>cc ,c<space>
+    map <leader>cs ,cs
+    map cu ;cu
+    map cs ;c$
 endif
     " -------------------------------------------------
     " 在vim里画图
@@ -356,6 +363,10 @@ endif
         nnoremap <leader>df :vert diffsplit 
         nnoremap <leader>dff :diffoff<cr>
 
+	" GIT
+        nnoremap <leader>gd :GitGutterPreviewHunk<cr>
+        nnoremap <leader>ga :GitGutterStageHunk<cr>
+
         "Tabel
         nnoremap <S-q> :tabprevious<CR>
         nnoremap <S-w> :tabnext<CR>
@@ -445,8 +456,8 @@ endif
             nmap  <S-F4> :!mk ycm_conf &<cr>
             " -------------------------------------------------
             " iab wgao1 <c-r>='printk("wgao (l:%d, f:%s, F:%s, p:%d) %d %s\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
-            iab wgao1 <c-r>='printk("wgao (l:%d, f:%s, F:%s) %d %s\n", __LINE__, __func__, __FILE__, 0, "");'<cr>
-            iab wgao2 <c-r>='printf("wgao (l:%d, f:%s, F:%s, p:%d) %d %s\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
+            iab wgao1 <c-r>='printk("\033[31mwgao (l:%d, f:%s, F:%s) %d %s\033[0m\n", __LINE__, __func__, __FILE__, 0, "");'<cr>
+            iab wgao2 <c-r>='printf("\033[31mwgao (l:%d, f:%s, F:%s, p:%d) %d %s\033[0m\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
             " -------------------------------------------------
             nnoremap <leader>ah :call ADD_H()<cr>
             " -------------------------------------------------
@@ -1020,9 +1031,6 @@ let g:DirDiffExcludes = "CVS,*.class,*.exe,.*.swp, .*.cmd, *.o, .git"
 " -------------------------------------------------
 " 某些插件会用到的库
 " Bundle 'tlib'
-" -------------------------------------------------
-"让Vim变成所见即所得的MarkDown文件编辑器，可以在编辑时预览最终效果。
-" Bundle 'jiazhoulvke/MarkdownView'
 " -------------------------------------------------
 " 语法高亮 似乎不好用
 " Bundle 'plasticboy/vim-markdown'

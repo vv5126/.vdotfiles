@@ -6,6 +6,7 @@ buildroot=br.sh
 ucos=uc.sh
 bootrom=br.sh
 manhattan=mht.sh
+mozart=mzt.sh
 project=p.sh
 other=o.sh
 

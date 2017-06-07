@@ -22,20 +22,22 @@ function clean_duplicate_lines() {
     }
 }
 
-# xxx line separator from to
+# 字符串任意抽取, 空格为分隔符。
 function get_segment_from_line() {
-        line="$1"
-        count=0
-        ret=''
+        [ $# -ne 2 ] && return 1;
 
-        [ $# -ne 3 ] && return 1;
-        while true; do
-                ((count+=1))
-                s=${line%% *}
-                line=${line#* }
+        local line="$1"
+        local range="$2"
+        local count=0
+        local ret i j
+        [[ "$2" =~ "-" ]] && range="$(seq -s ' ' ${2%%-*} ${2##*-})"
 
-                [ $count -ge $2 -a $count -le $3 ] && ret="$ret $s"
-                [ "x$s" == "x$line" ] && break
+        for i in $line; do
+            ((count+=1))
+
+            for j in $range; do
+                [ $count -eq $j ] && ret="$ret $i"
+            done
         done
         echo "${ret# *}"
 }

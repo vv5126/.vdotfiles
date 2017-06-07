@@ -73,57 +73,55 @@ function mkmain() {
 
         [ "$needclean" = "1" ] && make clean
         [ -f "$the_image" ] && rm $the_image
-	case "$forOS" in
-	'brillo'* | 'android'*)
-		make zImage -j32
-		if [ -f $the_image ]; then
-		    [ ! -d "$build_bootimage_dir" ] && {
-                scp $VGL_BUILD_BOOTIMAGE .
-                tar -xf $build_bootimage_tar && rm $build_bootimage_tar
-            }
-            (
-		    cd $build_bootimage_dir
-		    bash m.sh && {
-                        new_target_name=$target_name
-                        [ "$addtime" = "1" ] && new_target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
-                        [ -n "$note" ] && new_target_name=$new_target_name-$note
-                        new_target_name=$new_target_name.img
-                        echo -e "\n  the out img: $target_dir/$new_target_name" >&2
-                        smkdir $target_dir
-                        scp "out/$target_name" $target_dir/$new_target_name
-                    }
-                    )
-		fi
+	case "${the_image##*/}" in
+	'xImage')
+		make xImage -j32
 		;;
-	'tizen'*)
-		make uImage -j32 && {
+	'zImage')
+		make zImage -j32
+		;;
+	'uImage')
+		make uImage -j32
+		;;
+	esac
+
+	if [ -f $the_image ]; then
+	    case "$forOS" in
+                'android'*)
+                    [ ! -d "$build_bootimage_dir" ] && {
+                    scp $VGL_BUILD_BOOTIMAGE .
+                    tar -xf $build_bootimage_tar && rm $build_bootimage_tar
+                }
+                (
+                cd $build_bootimage_dir
+                bash m.sh && {
                     new_target_name=$target_name
                     [ "$addtime" = "1" ] && new_target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
                     [ -n "$note" ] && new_target_name=$new_target_name-$note
                     new_target_name=$new_target_name.img
                     echo -e "\n  the out img: $target_dir/$new_target_name" >&2
                     smkdir $target_dir
-                    scp $the_image $target_dir/$new_target_name
-		}
-		;;
-	*)
-		make uImage -j32 && {
-                    if [ -n "$the_img_dir" ]; then
-			echo -e "\n  the out img: $the_img_dir" >&2
-			smkdir $the_img_dir
-                        scp $the_image $the_img_dir
-                    else
-                        new_target_name=$target_name
-                        [ "$addtime" = "1" ] && new_target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
-                        [ -n "$note" ] && new_target_name=$new_target_name-$note
-                        new_target_name=$new_target_name.img
-			echo -e "\n  the out img: $target_dir/$new_target_name" >&2
-			smkdir $target_dir
-                        scp $the_image $target_dir/$new_target_name
-                    fi
-		}
-		;;
-	esac
+                    scp "out/$target_name" $target_dir/$new_target_name
+                }
+                )
+            ;;
+        *)
+            if [ -n "$the_img_dir" ]; then
+                echo -e "\n  the out img: $the_img_dir" >&2
+                smkdir $the_img_dir
+                scp $the_image $the_img_dir
+            else
+                new_target_name=$target_name
+                [ "$addtime" = "1" ] && new_target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
+                [ -n "$note" ] && new_target_name=$new_target_name-$note
+                new_target_name=$new_target_name.img
+                echo -e "\n  the out img: $target_dir/$new_target_name" >&2
+                smkdir $target_dir
+                scp $the_image $target_dir/$new_target_name
+            fi
+            ;;
+    esac
+	fi
 }
 
 

@@ -111,3 +111,8 @@ mount -o remount,rw /xxx
 ### QT
 GL/gl.h: No such file or directory 执行下面命令解决：
 sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev
+
+### minicom
+1. 关闭log
+在 ~/.minirc.dfl增加
+pu logfname••••••••

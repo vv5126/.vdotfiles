@@ -106,15 +106,15 @@ function git_bak() {
 
         git status -s > .tmp-git-bak
         while read line; do
-                sign="$(get_segment_from_line "$line" 1 1)"
-                file="$(get_segment_from_line "$line" 2 2)"
-                case x"$sign" in
+                sign="$(get_segment_from_line "x$line" 1)"
+                file="$(get_segment_from_line "x$line" 2)"
+                case "$sign" in
                         "x??" | "xM")
                                 [[ "$file" =~ "/" ]] && {
                                         dir_t=${file%/*} && mkdir -p $bakdir/$dir_t
                                         [ ${file:0-1} = "/" ] && cp -rf $file/* $bakdir/$dir_t/ || cp $file $bakdir/$dir_t
                                 } || {
-                                        cp $file $bakdir
+                                        [ -e "$file" ] && cp $file $bakdir
                                 }
 			        num=$[$num+1]
                         ;;

@@ -17,6 +17,8 @@ base='
 1 fcitx-googlepinyin
 4 https://github.com/adobe-fonts/source-code-pro
 2 https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz
+4 https://github.com/vim/vim.git
+4 https://github.com/WizTeam/WizQTClient
 '
 ftp='
 1 vsftpd

@@ -65,3 +65,5 @@
 	unstage = reset HEAD
         d = diff
         dd = diff --cache
+[http]
+	sslVerify = false
