@@ -76,6 +76,7 @@ function get_key_location {
         local tmp
         local ret=''
 
+        [ "$session_start_location" == "new_session" ] && return
         for tmp in $key_lines; do
             if [ "$tmp" -gt "$session_start_location" -a "$tmp" -lt "$session_end_location" ]; then
                 ret="$ret $tmp"
@@ -88,7 +89,7 @@ function get_key_frist_location {
         local file="$1"
         local session_name="$2"
         local key_name="$3"
-        local lines="$(get_key_location $file $session_name $key_name)"
+        local lines="$(get_key_location "$file" "$session_name" "$key_name")"
         [ -n "$lines" ] && echo "${lines%% *}"
 }
 
@@ -96,7 +97,7 @@ function get_key_last_location {
         local file="$1"
         local session_name="$2"
         local key_name="$3"
-        local lines="$(get_key_location $file $session_name $key_name)"
+        local lines="$(get_key_location "$file" "$session_name" "$key_name")"
         [ -n "$lines" ] && echo "${lines##* }"
 }
 

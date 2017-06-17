@@ -70,6 +70,14 @@ dot_templat=(
 .vdotfiles
 .vim
 .vimrc
+.vimbackup
+.vim-fuf-data
+.viminfo,!
+.viminfo.tmp
+.vimrc_new
+.vimswap
+.vimviews
+.vimundo
 .VirtualBox
 .Xmodmap
 .zsh_history
@@ -91,6 +99,9 @@ dot_templat=(
 .dmrc
 .fonts
 .pki
+.wiznote
+.sopel
+.bypy
 )
 
 #文件方式

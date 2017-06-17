@@ -1,0 +1,154 @@
+#!/bin/bash
+
+. ~/.bin/lib/lib.misc
+. ~/.bin/ini/ini.work
+. ~/.bin/lib/lib.work
+. ~/.bin/lib/lib.shdb
+
+# function get_session_start() {
+#         local file="$1"
+#         local session_name="$2"
+#         local session_line=''
+
+#         session_line="$(sed -n "/^\["$session_name"/=" "$file")"
+#         [ -z "$session_line" ] && echo 'new_session' || echo $session_line
+# }
+
+# function get_session_end() {
+#         local file="$1"
+#         local session_name="$2"
+#         local session_line_start="$(get_session_start "$file" "$session_name")"
+#         local session_lines="$(sed -n '/^\[/=' "$file")"
+#         local got_line=0
+#         local tmp
+
+#         for tmp in ${session_lines[@]}; do
+#             [ "$got_line" -eq 1 ] && { echo $(($tmp-1)); return 0; }
+#             [ "$session_line_start" == "$tmp" ] && got_line=1
+#         done
+#         echo "$(wc -l $file | awk '{print $1}')"
+#         return 0
+# }
+
+# function deal() {
+#     key_frist_location="$(get_key_frist_location "$f_cfg_name" "policy0" "enabled")"
+#     sed -i "$key_frist_location s/.*/enabled=1/" $f_cfg_name
+
+#     new_target="$target_dir/$target_name"
+#     key_frist_location="$(get_key_frist_location "$f_cfg_name" "policy0" "attribute")"
+#     sed -i "$key_frist_location s/.*/attribute=$new_target/" $f_cfg_name
+# }
+
+function processBar()
+{
+    local now=$1
+    local all=$2
+    local percent=`awk BEGIN'{printf "%f", ('$now'/'$all')}'`
+    local len=`awk BEGIN'{printf "%d", (100*'$percent')}'`
+    printf "\r \e[43m%${len}s \e[00m%$[100-len]s %.2f%%" "" "" $len
+}
+
+function analysis_and_get() {
+    cloner_version="$(ssh $LOCAL_HOST "ls ~/.local/cloner_link -l | sed -n -e 's/^.*\.cloner\///' -e 's/\/cloner$//p;' -")"
+    d_cfgs="$CLONER_DIR/$cloner_version/configs"
+    scp "$LOCAL_HOST:$d_cfgs/$f_platform_name" . >/dev/null
+    local cfg_name="$(sed -n -e 's/^board=//p;' $f_platform_name)"
+    local cfg_file="$(ssh $LOCAL_HOST "find "$d_cfgs" -name $cfg_name")"
+    scp "$LOCAL_HOST:$cfg_file" "$f_cfg_name" >/dev/null
+
+    # key_frist_location="$(get_key_frist_location "$f_platform_name" "current" "board")"
+    # sed -i "$key_frist_location s/.*/board=$f_cfg_name/" $f_platform_name
+    sed -i "s/^board=.*/board=$f_cfg_name/1" $f_platform_name
+}
+
+function correct_cfg() {
+    local attribute=($(sed -n -e 's/^attribute=//p;' $f_cfg_name))
+    local enabled=($(sed -n -e 's/^enabled=//p;' $f_cfg_name))
+    local label=($(sed -n -e 's/^label=//p;' $f_cfg_name))
+
+    num=0
+    for i in $(sed -n -e '/^\[policy[0-9].*\]/p;' $f_cfg_name); do
+	[ "${enabled[$num]}" -eq 1 ] && str="$str ${label[$num]} ${attribute[$num]#*boards/} on" \
+				     || str="$str ${label[$num]} ${attribute[$num]#*boards/} off"
+	((num+=1))
+    done
+
+    dialog --backtitle "Checklist" --checklist "select the line you want to burn" 20 120 40 $str 2> .tmp_bn
+    clear
+    sel="$(cat .tmp_bn)"
+    rm .tmp_bn
+
+    for i in $(sed -n -e 's/^label=//p;' $f_cfg_name); do
+	line_num="$(($(sed -n "/label=$i/=" $f_cfg_name)-1))"
+	if [[ "$sel" =~ "$i" ]]; then
+	    sed -i "$line_num s/^enabled=.*/enabled=1/" $f_cfg_name
+	else
+	    sed -i "$line_num s/^enabled=.*/enabled=0/" $f_cfg_name
+	fi
+    done
+}
+
+function restore() {
+    ssh $LOCAL_HOST "cp .local/$f_platform_name $d_cfgs" &
+}
+
+function set_burn_type() {
+    burner="
+	# [burner]
+	cloner_version="$cloner_version"
+    "
+    shdb -f ".project_info" -a "$burner"
+}
+
+# main
+[ -f ".project_info" ] && source .project_info
+
+f_platform_name="platforms.cfg"
+f_cfg_name="$feature-$project_type.cfg"
+
+if [ ! -f "$f_platform_name" ]; then
+    # frist, get info form ..., scp config form ...
+    # gen_new_config and info.
+    analysis_and_get
+
+    # show a select to config
+    correct_cfg
+
+    # up .project_info
+    set_burn_type
+    echo init done
+else
+    core='bin/32bit/core_32'
+    d_cfgs="$CLONER_DIR/$cloner_version/configs"
+
+    # show a select to config
+    [ "$#" -eq 1 ] && correct_cfg
+
+    # backup old
+    trap restore 1 2 3 15
+    ssh $LOCAL_HOST "cp $d_cfgs/$f_platform_name .local/"
+    # scp new.
+    soc="$(sed -n -e 's/^platform=.*,//' -e 's/\"$//p;' $f_platform_name)"
+    scp "$f_cfg_name" "$LOCAL_HOST:$d_cfgs/$soc" >/dev/null
+    scp "$f_platform_name" "$LOCAL_HOST:$d_cfgs" >/dev/null
+
+    # burner
+    ssh $LOCAL_HOST "killall core_32" 2>/dev/null
+
+    ssh -X $LOCAL_HOST "cd "$CLONER_DIR"/"$cloner_version"; "./$core" 2>&1" | while read line; do
+	[ "$line" == 'start burner' ] && echo start
+	[ "$line" == 'delete 0 sucess' ] && echo -e "\ndone"
+
+	if [[ "$line" =~ '(int)message:' ]]; then
+	    if [[ "$line" =~ ':6:' ]]; then
+		line="${line##*:6:}"; line="${line%%;*}"
+		processBar $line 100
+	    fi
+	elif [[ "$line" =~ '(string)message:' ]]; then
+	    line="${line##*:}"
+	    echo -e "\n${line%%;*}"
+	fi
+    done
+fi
+
+
