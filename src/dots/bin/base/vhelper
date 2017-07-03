@@ -7,7 +7,7 @@
 # if new 
 # add new task 
 
-export DIR_VHELPER="$HOME/vhelper"
+export DIR_VHELPER="$HOME/.vhelper"
 DIR_TRIGGERS="$DIR_VHELPER/triggers"
 DIR_LIB="$DIR_VHELPER/lib"
 

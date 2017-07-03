@@ -1,0 +1,4 @@
+[[ "$(time_check y_y_09-19/2_00_1-5)" == '0' ]] && {
+    /data1/home/wgao/work/hub/auto-sync >/dev/null
+    [ $? -eq 0 ] && _log "code sync at $(date)."
+}

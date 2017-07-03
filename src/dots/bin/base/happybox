@@ -2,9 +2,58 @@
 
 ########## delete
 
+function delete_empty_dir_and_file() {
+    find $1 -type d -empty | xargs rm -rf -
+}
+
+function delete_empty_file() {
+    find $1 -name "*" -type f -size 0c | xargs -n 1 rm -f
+}
+
 ########## export
 
+function export_list_to_dir_with_struct(){
+    local line
+    while read line; do
+	# [ -f "$line" ] && { mkdir -p $2/${line%/*}; ln -s "$PWD/$line" $2/$line; }
+	[ -f "$line" ] && { mkdir -p $2/${line%/*}; cp -P "$line" $2/$line; }
+    done < $1
+}
+
+function export_list_to_dir_only_struct(){
+    echo 
+}
+
+function export_dir_only_struct(){
+    echo 
+}
+
+function export_dir_link_with_struct(){
+    echo 
+}
+
+function export_dir_to_list(){
+    local file
+    echo "give a name:"
+    read file
+    find $1 | while read line; do
+	[ -f "$line" ] && echo "$line" >> $file
+    done
+}
+
+function export_dir_to_list_with_md5(){
+    echo 
+}
+
+function export_dir_to_md5(){
+    echo 
+}
+
+# function export_dir_with_struct() {
+# }
+
 ########## statistics
+
 function number_of_dir() {
     ls -lR $target |grep "^d"|wc -l
 }
@@ -13,31 +62,18 @@ function number_of_all_file() {
     ls -lR $target |grep "^-"|wc -l
 }
 
-########## export
-########## export
-########## export
+########## other
 
-function export_file_to_dir() {
-    while read line; do
-	[ -f "$line" ] && { mkdir -p $target/${line%/*}; ln -s "$PWD/$line" $target/$line; }
-	# [ -f "$line" ] && { mkdir -p $target/${line%/*}; cp -P "$line" $target/$line; }
-    done < $list_file
+function clean_kernel_debug() {
+    sed -n 's/^\[.*\] //p;' $1
 }
+
 function clean_duplicate_line() {
     sort -k2n $file | uniq > $target
 }
 
-function delete_empty_dir_and_file() {
-    find $target -type d -empty | xargs rm -rf -
-}
-
-function clean_kernel_debug() {
-    sed -n 's/^\[.*\] //p;' $target
-}
-
-function delete_empty_file() {
-    find $target -name "*" -type f -size 0c | xargs -n 1 rm -f
-}
+########## export
+########## export
 
 file_tools="
 export list to dir with struct
@@ -75,6 +111,6 @@ elif [ -f "$target" ]; then
 fi
 
 IFS=$'\n\t '
-${var//\ /_}
+${var//\ /_} $@
 
 # files in list copy to new dir

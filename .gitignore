@@ -9,3 +9,5 @@ src/dots/bin/lib/lib.python
 src/dots/bin/work/.asd~
 src/dots/bin/base/.vcp_conf
 src/dots/bin/work/gawk
+src/dots/vhelper/log/
+src/dots/vhelper/tmp/

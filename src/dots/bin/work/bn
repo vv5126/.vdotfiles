@@ -45,7 +45,7 @@ function processBar()
     local all=$2
     local percent=`awk BEGIN'{printf "%f", ('$now'/'$all')}'`
     local len=`awk BEGIN'{printf "%d", (100*'$percent')}'`
-    printf "\r \e[43m%${len}s \e[00m%$[100-len]s %.2f%%" "" "" $len
+    printf "\r \e["$bar_color"m%${len}s \e[00m%$[100-len]s %.2f%%" "" "" $len
 }
 
 function analysis_and_get() {
@@ -100,29 +100,8 @@ function set_burn_type() {
     shdb -f ".project_info" -a "$burner"
 }
 
-# main
-[ -f ".project_info" ] && source .project_info
-
-f_platform_name="platforms.cfg"
-f_cfg_name="$feature-$project_type.cfg"
-
-if [ ! -f "$f_platform_name" ]; then
-    # frist, get info form ..., scp config form ...
-    # gen_new_config and info.
-    analysis_and_get
-
-    # show a select to config
-    correct_cfg
-
-    # up .project_info
-    set_burn_type
-    echo init done
-else
-    core='bin/32bit/core_32'
-    d_cfgs="$CLONER_DIR/$cloner_version/configs"
-
-    # show a select to config
-    [ "$#" -eq 1 ] && correct_cfg
+function start_burner() {
+    local core='bin/32bit/core_32'
 
     # backup old
     trap restore 1 2 3 15
@@ -136,19 +115,62 @@ else
     ssh $LOCAL_HOST "killall core_32" 2>/dev/null
 
     ssh -X $LOCAL_HOST "cd "$CLONER_DIR"/"$cloner_version"; "./$core" 2>&1" | while read line; do
-	[ "$line" == 'start burner' ] && echo start
-	[ "$line" == 'delete 0 sucess' ] && echo -e "\ndone"
+	[ "$line" == 'start burner' ] && echo -e "info start"
+	[ "$line" == 'delete 0 sucess' ] && { echo -e "info done"; bar_color=${color[$((RANDOM%7+1))]}; }
 
 	if [[ "$line" =~ '(int)message:' ]]; then
 	    if [[ "$line" =~ ':6:' ]]; then
 		line="${line##*:6:}"; line="${line%%;*}"
-		processBar $line 100
+		echo -e "process $line"
 	    fi
 	elif [[ "$line" =~ '(string)message:' ]]; then
 	    line="${line##*:}"
-	    echo -e "\n${line%%;*}"
+	    echo -e "info ${line%%;*}"
 	fi
     done
+
+}
+
+function show_msg() {
+    while read line; do
+	if [ "${line%% *}" == 'info' ]; then
+	    echo -e "\n${line#* }"
+	elif [ "${line%% *}" == 'process' ]; then
+		processBar "${line#* }" 100
+	fi
+    done
+}
+
+# main
+# goto project root directory if possible.
+cd_proj
+
+[ -f ".project_info" ] && source .project_info
+
+f_platform_name="platforms.cfg"
+f_cfg_name="$feature-$project_type.cfg"
+d_cfgs="$CLONER_DIR/$cloner_version/configs"
+
+if [ ! -f "$f_platform_name" ]; then
+    # frist, get info form ..., scp config form ...
+    # gen_new_config and info.
+    analysis_and_get
+
+    # show a select to config
+    correct_cfg
+
+    # up .project_info
+    set_burn_type
+    echo init done
+else
+    # show a select to config
+    [[  "$#" -eq 1 && "$1" != "vim" ]] && { correct_cfg; exit; }
 fi
 
-
+if [[  "$#" -eq 1 && "$1" == "vim" ]]; then
+    start_burner >&1
+else
+    color=($(seq 40 47))
+    bar_color=${color[$((RANDOM%7+1))]}
+    start_burner | show_msg
+fi

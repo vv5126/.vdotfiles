@@ -1,109 +1,108 @@
 #!/bin/bash
 
 function is_local() {
-	para=$*
-	if [[ "$para" =~ "@" ]] && [[ "$para" =~ ":" ]]; then
-		return 1
-	else
-		return 0
-	fi
+    para=$*
+    if [[ "$para" =~ "@" ]] && [[ "$para" =~ ":" ]]; then
+        return 1
+    else
+        return 0
+    fi
 }
 
 
 function smkdir() {
-	dst=$1
+    dst=$1
 
-	is_local $dst
-	if [ $? = 0 ]; then
-		mkdir -p $dst
-	else
-		ssh ${dst%:*} "[ -d "${dst##*:}" ] || mkdir -p ${dst##*:}"
-	fi
+    is_local $dst
+    if [ $? = 0 ]; then
+        mkdir -p $dst
+    else
+        ssh ${dst%:*} "[ -d "${dst##*:}" ] || mkdir -p ${dst##*:}"
+    fi
 }
 
 
 function srm() {
-	src=$*
-	for i in $src; do
-		is_local $i
-		if [ $? = 0 ]; then
-                    [ -e "$i" ] && rm -rf $i
-		else
-			ssh ${i%:*} "rm -rf ${i##*:}"
-		fi
-	done
+    src=$*
+    for i in $src; do
+        is_local $i
+        if [ $? = 0 ]; then
+            [ -e "$i" ] && rm -rf $i
+        else
+            ssh ${i%:*} "rm -rf ${i##*:}"
+        fi
+    done
 }
 
 
 function smv() {
-	para="$*"
-	scp -r $para
-	if [ $? = 0 ]; then
-		src="${para% *}"
-		is_local "$src"
-		if [ $? = 0 ]; then
-			rm $src
-		else
-			srm $src
-		fi
-	fi
+    para="$*"
+    scp -r $para
+    if [ $? = 0 ]; then
+        src="${para% *}"
+        is_local "$src"
+        if [ $? = 0 ]; then
+            rm $src
+        else
+            srm $src
+        fi
+    fi
 }
 
 function getdir(){
-	local TARGET=$1
-	local PROJECT_DIR=''
-	local BASE_DIR=~/
-	local DIR=$PWD
+    local TARGET=$1
+    local PROJECT_DIR=''
+    local BASE_DIR=~/
+    local DIR=$PWD
 
-	while [ "$BASE_DIR" != "$DIR/" ];do
-		[ -f "$DIR/$TARGET" -o -d "$DIR/$TARGET" ] && { PROJECT_DIR=$DIR; break; } || PROJECT_DIR=
-		DIR=${DIR%\/*}
-	done
-	[ -n "$PROJECT_DIR" ] && echo "$PROJECT_DIR"
+    while [ "$BASE_DIR" != "$DIR/" ];do
+        [ -f "$DIR/$TARGET" -o -d "$DIR/$TARGET" ] && { PROJECT_DIR=$DIR; break; } || PROJECT_DIR=
+        DIR=${DIR%\/*}
+    done
+    [ -n "$PROJECT_DIR" ] && echo "$PROJECT_DIR"
 }
 
 function cddir(){
-	local TARGET=
-	TARGET=$(getdir $1)
-	[ -n "$TARGET" ] && { cd $TARGET; return; }
+    local TARGET=
+    TARGET=$(getdir $1)
+    [ -n "$TARGET" ] && { cd $TARGET; return; }
 }
 
 function cd_proj(){
-	local TARGET=
-	TARGET=$(getdir .git)
-	[ -n "$TARGET" ] && { cd $TARGET; return; }
-	TARGET=$(getdir .repo)
-	[ -n "$TARGET" ] && { cd $TARGET; return; }
+    local TARGET=
+    TARGET=$(getdir .git)
+    [ -n "$TARGET" ] && { cd $TARGET; return; }
+    TARGET=$(getdir .repo)
+    [ -n "$TARGET" ] && { cd $TARGET; return; }
 }
 
 function cd_repo(){
-	local TARGET=
-	TARGET=$(getdir .repo)
-	[ -n $TARGET ] && cd $TARGET
+    local TARGET=
+    TARGET=$(getdir .repo)
+    [ -n $TARGET ] && cd $TARGET
 }
 
 function getdir_git_repo(){
+    local COMP_DIR=~/
+    local DIR=$PWD
+    local DIR_NAME=''
+    local FINIAL_DIR=''
 
-local COMP_DIR=~/
-local DIR=$PWD
-local DIR_NAME=''
-local FINIAL_DIR=''
+    while [ "$COMP_DIR" != "$DIR/" ];do
+        if [ -d "$DIR/.git" ]; then
+            DIR_NAME='GIT_DIR'
+            FINIAL_DIR=$DIR
+            break
+        elif [ -d "$DIR/.repo" ]; then
+            DIR_NAME='REPO_DIR'
+            FINIAL_DIR=$DIR
+            break
+        fi
+        DIR=${DIR%\/*}
+    done
 
-while [ "$COMP_DIR" != "$DIR/" ];do
-	if [ -d "$DIR/.git" ]; then
-		DIR_NAME='GIT_DIR'
-		FINIAL_DIR=$DIR
-		break
-	elif [ -d "$DIR/.repo" ]; then
-		DIR_NAME='REPO_DIR'
-		FINIAL_DIR=$DIR
-		break
-	fi
-	DIR=${DIR%\/*}
-done
-
-echo "$DIR_NAME $FINIAL_DIR"
-return 0
+    echo "$DIR_NAME $FINIAL_DIR"
+    return 0
 }
 
 
@@ -112,21 +111,21 @@ return 0
 case $(ps -p $$ -o comm=) in
     'zsh')
         export ZSH_EXPORTED_FUNCTIONS="$(functions \
-           getdir_git_repo \
-#             is_local \
-#             smkdir \
-#             srm \
-#             smv \
-        )"
+            getdir_git_repo \
+            # is_local \
+            # smkdir \
+            # srm \
+            # smv \
+            )"
         ;;
     *)
-#         export -f getdir
-#         export -f cd_proj
-#         export -f cd_repo
-#         export -f is_local
-#         export -f smkdir
-#         export -f srm
-#         export -f smv
+        # export -f getdir
+        # export -f cd_proj
+        # export -f cd_repo
+        # export -f is_local
+        # export -f smkdir
+        # export -f srm
+        # export -f smv
         export -f getdir_git_repo
         ;;
 esac

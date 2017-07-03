@@ -4,6 +4,7 @@ function _log() {
     echo "$(date +%d\ %H:%M)| $@" >> $VHELPER_LOG/a.log
 }
 
+# e.g. "time_check y_y_00_00_1-6"
 function time_check()
 {
     local a b c d e f tmp
@@ -23,7 +24,10 @@ function time_check()
 	fi
 
 	for b in $a; do
-	    if [[ "${b}" =~ '/' && "${b}" =~ '-' ]]; then
+	    if [[ "x$b" == 'xy' ]]; then
+		((trigger_count--))
+		break
+	    elif [[ "${b}" =~ '/' && "${b}" =~ '-' ]]; then
 		c="${b%%/*}"
 		d="${b#*/}"
 		if [ -z $c ]; then
@@ -31,29 +35,22 @@ function time_check()
 			0) c='00-12' break ;; 1) c='00-31' break ;; 2) c='00-24' break ;; 3) c='00-60' break ;; 4) c='1-7' break ;;
 		    esac
 		fi
-		e="${c%%-*}"
-		f="${c#*-}"
-		[ "${e:0:1}" = '0' ] && e="${e:1}"
-		[ "${f:0:1}" = '0' ] && f="${f:1}"
+		e="$(printf "%.f" "${c%%-*}")"
+		f="$(printf "%.f" "${c#*-}")"
 		if [[ "$tmp" -ge "$e" && "$tmp" -le "$f" && "$((($tmp-$e)%$d))" -eq 0 ]]; then
-		    echo date 1 $e "$tmp" $f / $d >> /tmp/vhelp.txt
 		    ((trigger_count--))
 		    break
 		fi
 	    elif [[ "$b" =~ '-' ]]; then
-		c="${b%%-*}"
-		d="${b#*-}"
-		[ "${c:0:1}" = '0' ] && c="${c:1}"
-		[ "${d:0:1}" = '0' ] && d="${d:1}"
+		c="$(printf "%.f" "${b%%-*}")"
+		d="$(printf "%.f" "${b#*-}")"
 		if [[ "$tmp" -ge "$c" && "$tmp" -le "$d" ]]; then
-		    echo date 2 $c "$tmp" $d >> /tmp/vhelp.txt
 		    ((trigger_count--))
 		    break
 		fi
 	    else
-		[ "${b:0:1}" = '0' ] && b="${b:1}"
-		if (("$tmp" == "$b")) || [[ "x$b" == 'xy' ]]; then
-		    echo date 3 "$tmp" $b >> /tmp/vhelp.txt
+		b="$(printf "%.f" $b)"
+		if (("$tmp" == "$b")); then
 		    ((trigger_count--))
 		    break
 		fi

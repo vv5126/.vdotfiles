@@ -11,6 +11,8 @@ function make_info_file() {
         local str="
 	# [base]
 
+        lh_num=3
+
         task_type=$task_type
 
 	customer=$customer
@@ -59,6 +61,9 @@ function make_info_file() {
 
 function mkmain() {
 	source .project_info
+        source build/envsetup.sh
+        lunch "$lh_num"
+
         [ "$needclean" = "1" ] && make clean
 
         make && {

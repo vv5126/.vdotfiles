@@ -1,0 +1,6 @@
+[[ "$(time_check y_y_0-23/2_00_y)" == '0' ]] && {
+    if [ "$(ps -aux | grep -c sopel -)" -ne 2 ] && {
+	nohup sopel > /dev/null &
+	[ $? -eq 0 ] && _log "reset sopel at $(date)."
+    }
+}

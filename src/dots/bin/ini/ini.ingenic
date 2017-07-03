@@ -3,7 +3,8 @@ WORK_SERVER_MAIN=wgao@192.168.4.15
 export LOCAL_HOST=user@192.168.4.150
 
 # imgs #
-export VGL_BOARDS="$WORK_SERVER_MAIN":/data1/home/wgao/work/local_debug/boards
+export VGL_BOARDS=/data1/home/wgao/work/local_debug/boards
+# export VGL_BOARDS="$WORK_SERVER_MAIN":/data1/home/wgao/work/local_debug/boards
 export CLONER_DIR='/home/user/.cloner'
 # build image #
 export VGL_BUILD_BOOTIMAGE="$WORK_SERVER_MAIN":/data1/home/wgao/tools-bak/build_bootimage.tar.gz
@@ -34,6 +35,8 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 
     # GCC
     # PATH=/data1/home/wgao/tools/toolchains/mipseltools-gcc412-glibc261/bin:$PATH
+
+    # mozart
     # PATH=/data1/home/wgao/tools/toolchains/mipsel-gcc472-glibc216-mips32/bin:$PATH
 
     # PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
@@ -49,8 +52,10 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     PATH=/data1/home/wgao/tools/vim8/bin:$PATH
 
     alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
+    alias wiz='nohup $HOME/tools/wiz/src/WizNote > /dev/null &'
     alias vdiff='vgitdiff ~/.vdotfiles; meld git.diff.add git.diff.rm'
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
+    alias vh='nohup vhelper > /dev/null &'
 
     complete -W "diff bak" vhtml
     complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk

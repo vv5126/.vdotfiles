@@ -18,7 +18,7 @@ function git_push() {
                 git push $warehouse HEAD:refs/for/refs/heads/$branch
         else
                 branch=${branch##* }
-                branch=${branch##*/}
+                # branch=${branch##*/}
                 git push $warehouse HEAD:refs/for/refs/heads/$branch
         fi
 

@@ -28,6 +28,8 @@ dot_templat=(
 .gnome
 .gnome2
 .gnome2_private
+.WizNote
+.vhelper
 -----------------------------
 # 确定忽略 #
 .AndroidStudio1.2
