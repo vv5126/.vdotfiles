@@ -1,0 +1,3 @@
+# install module at user space.
+python3.4 setup.py install --user
+as python3.4 setup.py install --prefix=$HOME/.local

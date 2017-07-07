@@ -4,6 +4,11 @@
 
 function delete_empty_dir_and_file() {
     find $1 -type d -empty | xargs rm -rf -
+    find $1 -name "*" -type f -size 0c | xargs -n 1 rm -f
+}
+
+function delete_empty_dir() {
+    find $1 -type d -empty | xargs rm -rf -
 }
 
 function delete_empty_file() {
@@ -12,11 +17,12 @@ function delete_empty_file() {
 
 ########## export
 
-function export_list_to_dir_with_struct(){
+function export_list_to_dir(){
     local line
     while read line; do
 	# [ -f "$line" ] && { mkdir -p $2/${line%/*}; ln -s "$PWD/$line" $2/$line; }
 	[ -f "$line" ] && { mkdir -p $2/${line%/*}; cp -P "$line" $2/$line; }
+	[ -d "$line" ] && { cp -r "$line" $2/$line; }
     done < $1
 }
 
@@ -49,9 +55,6 @@ function export_dir_to_md5(){
     echo 
 }
 
-# function export_dir_with_struct() {
-# }
-
 ########## statistics
 
 function number_of_dir() {
@@ -76,15 +79,14 @@ function clean_duplicate_line() {
 ########## export
 
 file_tools="
-export list to dir with struct
+export list to dir
 export list to dir only struct
 sort
 "
 
 dir_tools="
-export dir with struct
 export dir only struct
-export dir link with struct
+export dir link
 export dir to list
 export dir to list with md5
 export dir to md5

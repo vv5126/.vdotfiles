@@ -16,9 +16,13 @@ function try_get_obj()
         [ -d "arch" -a -d "kernel" ] && { echo $kernel; return; }
         # uboot
         [ -d "arch" -a -d "spl" ] && { echo $uboot; return; }
+        # mozart
+        [ -d "mozart" ] && { echo $mozart; return; }
 
-        # if [ -d ".git" ]; then
-        # fi
+        if [ -d ".git" ]; then
+            # mozart
+            [ -n "$(git remote -v | grep -io 'mozart')" ] && { echo $mozart; return; }
+        fi
 
         if [ -d ".repo" ]; then
                 cd .repo/manifests

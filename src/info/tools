@@ -25,6 +25,7 @@ ftp='
 '
 goodproject='
 4 https://github.com/sopel-irc/sopel
+4 https://github.com/acidvegas/irc
 4 https://github.com/houtianze/bypy
 3 sopel
 3 bypy

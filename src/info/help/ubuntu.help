@@ -1,65 +1,63 @@
+# ubuntu 常用功能整理
+
 ### auto-startup
-gnome-session-properties
-vpipedaemon
-gnome-panel
+* gnome-session-properties
+* vpipedaemon
+* gnome-panel
 
 ### 改capslock->ctrl
-1. sudo vim /etc/default/keyboard 修改下面这一行：XKBOPTIONS="ctrl:nocaps" # "ctrl:swapcaps"
-2. sudo dpkg-reconfigure keyboard-configuration 出现如下图像（全部选默认的)
+* sudo vim /etc/default/keyboard 修改下面这一行：XKBOPTIONS="ctrl:nocaps" # "ctrl:swapcaps"
+* sudo dpkg-reconfigure keyboard-configuration 出现如下图像（全部选默认的)
 unused: xmodmap /home/user/.Xmodmap
 Ubuntu 14.04 下通过 XKB 修改键盘映射, 实现自定义按键
 https://github.com/Chunlin-Li/Chunlin-Li.github.io/blob/master/blogs/linux/ubuntu-xkb-keyboard-remap.md
 
 ### add to local crontab
-crontab -e
+* crontab -e
 */30 *    * * *   user    /bin/tmsync
 */10 *    * * *   user    /home/user/.bin/local/check-new-mail
-sudo service cron restart
-sudo service cron status
+* sudo service cron restart
+* sudo service cron status
 
 ### vsudoer
-add to local /etc/sudoers use sudo visudo.
-sudo chgrp root vsudoer
-sudo chown root vsudoer
-chmod 440 vsudoer
-ln -P /home/user/.bin/local/vsudoer /etc/sudoers.d/
+* add to /etc/sudoers use sudo visudo.
+******---
+* sudo chgrp root vsudoer
+* sudo chown root vsudoer
+* chmod 440 vsudoer
+* ln -P /home/user/.bin/local/vsudoer /etc/sudoers.d/
 
 ### add samba
-edit /etc/samba/smb.conf to add the smb-dir.
-use smbpasswd  -a xxx to add your user's name.
-service smb restart
-maybe unused:
+* edit /etc/samba/smb.conf to add the smb-dir.
+* use smbpasswd  -a xxx to add your user's name.
+* service smb restart
+****maybe unused:****
 service  iptables stop
 setenforce 0
 vi /etc/selinux/config
 change 'SELINUX=enforcing' to 'SELINUX=disabled'
 
 ### font setup
-add fonts to ~/.local/share/fonts
-mkfontscale
-mkfontdir
-fc-cache -vf
-rm ~/.vim/bundle/vim-powerline/*.cache
+* add fonts to ~/.local/share/fonts
+* mkfontscale
+* mkfontdir
+* fc-cache -vf
+* rm ~/.vim/bundle/vim-powerline/*.cache
 
 ### Ubuntu取消自动更新命令
-vi /etc/apt/apt.conf.d/50unattended-upgrades
-Unattended-Upgrade::Allowed-Origins 全注释
-vi /etc/apt/apt.conf.d/10periodic
-APT::Periodic::Update-Package-Lists "1"; //显示更新包列表 0表示停用设置
-APT::Periodic::Download-Upgradeable-Packages "1"; //下载更新包 0表示停用设置
-APT::Periodic::AutocleanInterval "7"; // 7日自动删除
-APT::Periodic::Unattended-Upgrade "1"; //启用自动更新 0表示停用自动更新
+* vi /etc/apt/apt.conf.d/50unattended-upgrades
+* Unattended-Upgrade::Allowed-Origins 全注释
+* vi /etc/apt/apt.conf.d/10periodic
+* APT::Periodic::Update-Package-Lists "1"; //显示更新包列表 0表示停用设置
+* APT::Periodic::Download-Upgradeable-Packages "1"; //下载更新包 0表示停用设置
+* APT::Periodic::AutocleanInterval "7"; // 7日自动删除
+* APT::Periodic::Unattended-Upgrade "1"; //启用自动更新 0表示停用自动更新
 
 ### python
-<!-- pip -->
-<!-- pip for python3.5 -->
-<!-- wget https://bootstrap.pypa.io/get-pip.py -->
-<!-- sudo python3.5 get-pip.py -->
-
-### 安装app
-cd app
-python3.6 setup.py build
-python3.6 setup.py install
+##### 安装app
+* cd app
+* python3.6 setup.py build --user
+* python3.6 setup.py install
 
 ### 远程桌面
 install xrdp
@@ -89,21 +87,17 @@ in /etc/vsftpd.conf:
 sudo service vsftpd restart
 
 ### tftp
-install tftpd-hpa
-install tftp-hpa（如果不需要客户端可以不安装）
-2.配置TFTP服务器
+* install tftpd-hpa
+* install tftp-hpa（如果不需要客户端可以不安装）
+* 配置TFTP服务器
 sudo vim /etc/default/tftpd-hpa
 将原来的内容改为:
 TFTP_USERNAME="tftp"
 TFTP_ADDRESS="0.0.0.0:69"
 TFTP_DIRECTORY="tftp根目录" #服务器目录,需要设置权限为777,chomd 777
 TFTP_OPTIONS="-l -c -s"
-3.重新启动TFTP服务
+* 重新启动TFTP服务
 sudo service tftpd-hpa restart
-
-### displaylink usb外置显卡 分辨率配置
-xrandr --newmode "1280x960_60.00"  101.25  1280 1360 1488 1696  960 963 967 996 -hsync +vsync
-xrandr --addmode DVI-1-0 "1280x960_60.00"
 
 ### remount
 mount -o remount,rw /xxx
@@ -116,3 +110,7 @@ sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev
 1. 关闭log
 在 ~/.minirc.dfl增加
 pu logfname••••••••
+
+### displaylink usb外置显卡 分辨率配置
+xrandr --newmode "1280x960_60.00"  101.25  1280 1360 1488 1696  960 963 967 996 -hsync +vsync
+xrandr --addmode DVI-1-0 "1280x960_60.00"

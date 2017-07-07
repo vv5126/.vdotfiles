@@ -192,7 +192,6 @@ endf
 可能用不到的配置
 nmap cc :color <space>
 nmap <leader>w :w!<cr>
-set matchtime=5                    " 匹配括号高亮的时间（单位是十分之一秒）
 set nowrapscan              " 禁止在搜索到文件两端时重新搜索
 highlight cursorLine cterm=bold ctermfg=green ctermbg=red
 set cursorcolumn                   "高亮显示当前列
@@ -313,6 +312,8 @@ if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"
 " colorscheme solarized             " Load a colorscheme
 
 unused
+        "折叠html标签 ,fold tag
+        "nnoremap <leader>ft vatzf
 漂亮的括号 感觉意义不大
 Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'tpope/vim-markdown'
@@ -351,3 +352,158 @@ vnoremap $e <esc>`>a"<esc>`<i"<esc>
 imap<C-u><esc>d0i
 imap   <C-k> <esc>d$i " 与自动补全中的绑定冲突
 Bundle 'tComment'
+
+" 剩余的 {
+" try
+"     call fuf#defineLaunchCommand('FufCWD', 'file', 'fnamemodify(getcwd(), ''%:p:h'')')
+"     map <leader>t :FufCWD **/<CR>
+" catch
+" endtry
+" -------------------------------------------------
+" map <leader>h :call ToHexModle()<cr>
+" }
+
+" maybe unused {
+
+        " 查找冲突的地方
+        "map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
+
+        "Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
+        " nmap <leader>t2 mz:m+<cr>`z
+        " nmap <A-k> mz:m-2<cr>`z
+        " vmap <A-j> :m'>+<cr>`<my`>mzgv`yo`z
+        " vmap <A-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+        "=====================================================
+        " 替换增强
+        "=====================================================
+        " 不确认、非整词
+        "  nnoremap <Leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
+        " " 不确认、整词
+        "  nnoremap <Leader>rw :call Replace(0, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+        " " 确认、非整词
+        "  nnoremap <Leader>rr :call Replace(1, 0, input('Replace '.expand('<cword>').' with: '))<CR>
+        " " 确认、整词
+        "  nnoremap <Leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
+
+        " 替换函数。参数说明：
+        " confirm：是否替换前逐一确认
+        " wholeword：是否整词匹配
+        " replace：被替换字符串
+        " function! Replace(confirm, wholeword, replace)
+        "     wa
+        "     let flag = ''
+        "     if a:confirm
+        "         let flag .= 'gec'
+        "     else
+        "         let flag .= 'ge'
+        "     endif
+        "     let search = ''
+        "     if a:wholeword
+        "         let search .= '\<' . escape(expand('<cword>'), '/\.*$^~[') . '\>'
+        "     else
+        "         let search .= expand('<cword>')
+        "     endif
+        "     let replace = escape(a:replace, '/\&~')
+        "     execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
+        " endfunction
+        " -------------------------------------------------
+        " 映射vsp这些开启新的buffer,默认目录为当前目录
+        " cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
+        " map <leader>ew :e %%
+        " map <leader>es :sp %%
+        " map <leader>ev :vsp %%
+        " map <leader>et :tabe %%
+        " -------------------------------------------------
+        "Remove the Windows ^M - when the encodings gets messed up
+        " noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+        " 去掉所有的^M
+        " noremap <Leader>ff :%s/\\\$//g<cr>:%s/\\\/ /g<cr>
+        " -------------------------------------------------
+        "删除行尾的一个^M
+        " nmap dm :%s/\r\+$//e<cr>:set ff=unix<cr>
+        " -------------------------------------------------
+        "以unix格式显示换行符
+        " nmap xsm :e ++ff=unix
+        "以dos格式显示换行符
+        " nmap xsm :e ++ff=dos
+        " -------------------------------------------------
+        "  map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
+        "在当前目录查找光标词的所有位置
+        " nmap  <leader>t2 :vimgrep /<C-R>=expand("<cword>")<cr>/ **/*.c **/*.h<cr><C-o>:cw<cr>
+        " ,ff 查找光标后的单词位置，列出选择项
+        " nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+        " -------------------------------------------------
+        " 配置多语言环境
+        " 环境变量 LANG（使用的语言）;
+        " 环境变量 LC_CTYPE（使用的内部编码）;
+        " Vim 选项 encoding(enc)（Vim 的内部编码；必须是 UTF-8,国际化支持的基础）。
+        " Vim 选项 termencoding(tenc)（Vim 与输入输出交互编码）;
+        " Vim 选项 fileencoding(fenc)（Vim 存储编码）;
+        " Vim 选项 fileencodings(fencs)（Vim 打开时尝试的编码）;
+        " Vim 选项 ambiwidth（对“不明宽度”字符的处理方式;Vim 6.1.455 后引入）。
+
+        " if has("multi_byte")
+        "     set encoding=utf-8
+        "     set termencoding=utf-8
+        "     set fileencoding=utf-8
+        "     " set fileencoding=gb18030
+        "     " set fileencoding=gb2312
+        "     " set fileencodings=euc-jp,iso-8859-1
+        "     set fileencodings=utf-8,gbk,ucs-bom,cp936,gb18030,utf-16,big5,gb2312,chinese
+        "
+        "     if v:lang=~? '^\(zh\)\|\(ja\)\|\(ko\)'
+        "         set ambiwidth=double
+        "     endif
+        " else
+        "     echoerr "Sorry, this version of (g)vim was not compiled with +multi_byte"
+        " endif
+        " -------------------------------------------------
+        " cnoremap $c e <C-\>eCurrentFileDir("e")<cr>
+        " func! CurrentFileDir(cmd)
+        "    return a:cmd . " " . expand("%:p:h") . "/"
+        " endfunc
+        " -------------------------------------------------
+        " 意义不大
+        "set grepprg=/bin/grep\ -nH  "":grep" 使用的程序
+        "let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
+        "let g:SuperTabRetainCompletionType=2
+        "let g:SuperTabDefaultCompletionType="<C-X><C-O>"
+        " -------------------------------------------------
+        "F6 for uncomment
+        " vmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
+        " nmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
+        " imap <F6> <ESC>:s=^\(//\)*==g<cr>:noh<cr>
+        " -------------------------------------------------
+        " set mousemodel=extend
+        " set mousemodel=popup
+        " set switchbuf=usetab
+        " -------------------------------------------------
+        " set formatoptions=lq            " 控制 Vim 如何对文本进行排版
+        " set formatoptions=tcrn2bmMB1j
+        " set formatoptions+=mM             "自动对中文换行
+        " set cindent                        " 使用C样式的缩进
+        " set cinoptions=:0                  " 设置 'cindent' 时如何缩进
+        " set smartindent                    " C 程序智能自动缩进
+        " -------------------------------------------------
+        " Do :help cope if you are unsure what cope is. It's super useful!
+        " map <leader>t1 :botright cope<cr>
+        " -------------------------------------------------
+        " set fileformats=unix,dos,mac       " 自动识别UNIX格式和MS-DOS格式
+        " set fileformat=unix                " 以UNIX的换行符格式保存文件，注意是去掉一个^M
+        " set fileformat=dos                 " 以dos的换行符格式保存文件, 注意是在行尾变为两个^M
+        " -------------------------------------------------
+if 0    " NerdTree的设置
+        " plugin - NERD_tree.vim 以树状方式浏览系统中的文件和目录
+        " :NERDtree 打开NERD_tree         :NERDtreeClose    关闭NERD_tree
+        " o 打开关闭文件或者目录         t 在标签页中打开
+        " T 在后台标签页中打开           ! 执行此文件
+        " p 到上层目录                   P 到根目录
+        " K 到第一个节点                 J 到最后一个节点
+        " u 打开上层目录                 m 显示文件系统菜单（添加、删除、移动操作）
+        " r 递归刷新当前目录             R 递归刷新当前根目录
+
+        let NERDTreeShowFiles=1
+        let NERDTreeShowLineNumbers=1
+endif
+" -------------------------------------------------

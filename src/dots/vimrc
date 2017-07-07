@@ -53,10 +53,6 @@
     " 'Tabular'
     " ex: :TAb /=
     " -------------------------------
-    " 可视化的方式能将相同缩进的代码关联起来
-    " 'nathanaelkane/vim-indent-guides'
-    " 快捷键 i 开/关缩进可视化
-    " :nmap <silent> <Leader>i <Plug>IndentGuidesToggle
     " -------------------------------
     " -------------------------------
     " -------------------------------
@@ -109,8 +105,7 @@
     " <leader>/  所有MarkWords的下一个    <leader>?  所有MarkWords的上一个
     " -------------------------------------------------
     " 最大化当前panel.
-    " Bundle 'troydm/zoomwintab.vim'
-    Bundle 'ZoomWin'
+    Bundle 'troydm/zoomwintab.vim'
     " -------------------------------------------------
     " -------------------------------------------------
     " -------------------------------------------------
@@ -236,13 +231,13 @@
     " 自动排版，可以少打很多空格
     " Bundle 'ywgx/auto.vim'
     " -------------------------------------------------
-    " 检测当光标改变时，执行函数。
+    " 检测当光标改变时，执行函数
     " Bundle 'hookcursormoved'
     " -------------------------------------------------
     " 函数提示
     " Bundle 'mbbill/echofunc'
     " -------------------------------------------------
-    " Commentary: 快速注释。
+    " 快速注释
     " Bundle 'tpope/vim-commentary'
     " -------------------------------------------------
     " 类似emacs的king ring,给vim的yank也增加缓冲,vim本身只缓冲删除的字符串,不缓冲yank的内容,这个插件可以同时粘贴多个需要的单词等
@@ -384,6 +379,18 @@
     " 异步语法检查
     " Bundle 'w0rp/ale'
     " -------------------------------------------------
+    " 扩展了vim的%功能,让%可以匹配的,不再仅仅是括号,支持多种语言.必备插件之一
+    " 'matchit.zip'
+    " % 正向匹配      g% 反向匹配
+    " [% 定位块首     ]% 定位块尾
+    " -------------------------------------------------
+    " Very small, clean but quick and powerful buffer manager. c.
+    " qbuf
+    " -------------------------------------------------
+    " ShowFunc.vim  <-------- 暂时没有使用
+    " F2打开ShowFunc TagList窗口，显示C/C++函数原型
+    " map <F2> <Plug>ShowFunc
+    " -------------------------------------------------
     if 0
 	Bundle 'ccglue'
 	Bundle 'jsfaint/gen_tags.vim'
@@ -398,15 +405,12 @@
 	Bundle 'winfileexplorer.vim'
 	Bundle 'wintagexplorer.vim'
 	Bundle 'gtags.vim'
-	Bundle 'jiazhoulvke/myproject'
 	Bundle 'chrisbra/csv.vim'
 	Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 	Bundle 'tpope/vim-rails.git'
 	Bundle 'python-imports.vim'
 	Bundle 'CaptureClipboard'
 	Bundle 'ctrlp-modified.vim'
-	Bundle 'last_edit_marker.vim'
-	Bundle 'synmark.vim'
 	Bundle 'SQLComplete.vim'
     endif
     " -------------------------------------------------
@@ -419,7 +423,7 @@
     "===============================================================================+
 " }
 
-" add my main set here. {
+" add my main set here. {{{
 
     source ~/.vim/vfunc.vim
     " Environment {
@@ -450,7 +454,7 @@
         set shell=/bin/bash
         set mousehide                      " 输入文件时隐藏鼠标
         set nospell
-        set matchtime=0
+        set matchtime=0			   " 匹配括号高亮的时间（单位是十分之一秒）
         set selectmode=mouse,key
         set bufhidden=hide
         set wildignore+=*.bak,*.o,*.e,*~,*.obj,.git,*.pyc
@@ -618,6 +622,9 @@
         nnoremap <leader>df :vert diffsplit 
         nnoremap <leader>dff :diffoff<cr>
 
+	" Markdown
+        map <leader>md :MarkdownPreview<cr>
+
 	" GIT
         nnoremap <leader>gd :GitGutterPreviewHunk<cr>
         nnoremap <leader>ga :GitGutterStageHunk<cr>
@@ -703,407 +710,236 @@
     " }
 
 " my plugin config {{{
+" Setting of plugin in bundle.
 
-" Setting of plugin in bundle. {{{
-if 1 && isdirectory(expand("~/.vim/bundle/vim-multiple-cursors"))
-    let g:multi_cursor_next_key='<C-n>'
-    let g:multi_cursor_prev_key='<C-p>'
-    let g:multi_cursor_skip_key='<C-x>'
-    let g:multi_cursor_quit_key='<Esc>'
-endif
-
-" -------------------------------------------------
-
-" EasyMotion设置
-if 1 && isdirectory(expand("~/.vim/bundle/vim-easymotion"))
-    " nmap t <Plug>(easymotion-t2)
-    map  ? <Plug>(easymotion-sn)
-    omap ? <Plug>(easymotion-tn)
-    " map  n <Plug>(easymotion-next)
-    " map  N <Plug>(easymotion-prev)
-    map <Leader>l <Plug>(easymotion-lineforward)
-    map <Leader>j <Plug>(easymotion-j)
-    map <Leader>k <Plug>(easymotion-k)
-    map <Leader>h <Plug>(easymotion-linebackward)
-    let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
-
-    let g:EasyMotion_do_mapping = 0 " Disable default mappings
-    " Bi-directional find motion
-    " Jump to anywhere you want with minimal keystrokes, with just one key
-    " binding.
-    " `s{char}{label}`
-    nmap s <Plug>(easymotion-s)
-    " or
-    " `s{char}{char}{label}`
-    " Need one more keystroke, but on average, it may be more comfortable.
-    nmap s <Plug>(easymotion-s2)
-    " Turn on case insensitive feature
-    let g:EasyMotion_smartcase = 1
-endif
-
-" -------------------------------------------------
-
-"YouCompleteMe
-if 1 && isdirectory(expand("~/.vim/bundle/YouCompleteMe"))
-
-    "**
-    " 首次使用步骤:
-    " 1. 获取 YCM 的依赖包
-    "    cd ~/.vim/bundle/YouCompleteMe/
-    "    git submodule update --init --recursive
-    "    follow the README.md 保证安装好cmake
-    " 2. ./install.py --clang-completer
-    " 3. done
-    " 如果失败就使用下面的方法
-    " 2. 在 http://llvm.org/releases/download.html 找到最新版 LLVM，在Pre-built Binaries
-    "    下选择适合你发行套件的最新版预编译二进制文件，下载并解压至 ~/xxx/clang+llvm,这里最好将bin目录添加到环境变量，以后有用。
-    " 3. mkdir and cd ~/ycm_build
-    "    cmake -G "Unix Makefiles" -DPATH_TO_LLVM_ROOT=~/xxx/clang+llvm/ . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp
-    "    make ycm_support_libs
-    "    cmake -G "Unix Makefiles" . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp
-    " 4. done
-    " ------------------>>> may be need install python-dev
-    "*/
-
-    nnoremap <F1> :YcmForceCompileAndDiagnostics<CR>
-    let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_conf/ycm_extra_conf_c.py'
-    let g:syntastic_always_populate_loc_list = 1
-    let g:ycm_always_populate_location_list =1
-
-    " 菜单
-    highlight Pmenu ctermfg=3 ctermbg=black guifg=#005f87 guibg=#EEE8D5
-    " 选中项
-    highlight PmenuSel ctermfg=green ctermbg=black guifg=#AFD700 guibg=#106900
-    " 补全功能在注释中同样有效
-    let g:ycm_complete_in_comments=1
-    " 允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
-    let g:ycm_confirm_extra_conf=0
-    " 开启 YCM 标签补全引擎
-    let g:ycm_collect_identifiers_from_tags_files=1
-    " 引入 C++ 标准库tags
-    "set tags+=/data/misc/software/misc./vim/stdcpp.tags
-    " YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
-    "inoremap <leader>; <C-x><C-o>
-    " 补全内容不以分割子窗口形式出现，只显示补全列表
-    set completeopt-=preview
-    " 从第一个键入字符就开始罗列匹配项
-    let g:ycm_min_num_of_chars_for_completion=2
-    " 禁止缓存匹配项，每次都重新生成匹配项
-    let g:ycm_cache_omnifunc=0
-    " 语法关键字补全
-    let g:ycm_seed_identifiers_with_syntax=0
-    " 收集所有词条
-    let g:ycm_collect_identifiers_from_comments_and_strings = 1
-    " 关闭语法检查
-    let g:ycm_register_as_syntastic_checker = 0
-
-    let g:ycm_auto_trigger = 1
-    " let g:ycm_semantic_triggers = {}
-    " let g:ycm_semantic_triggers.c = ['->', '.', ' ', '(', '[', '&']
-
-    " let g:ycm_register_as_syntastic_checker = 0
-    let g:syntastic_enable_highlighting = 0
-
-    " nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
-    nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
-    nnoremap <leader>gl :YcmCompleter GoToDefinitionElseDeclaration<CR>
-    " nmap <F3> :YcmDiags<CR>
-
-endif
-
-" -------------------------------------------------
-" 'majutsushi/tagbar'
-" let tagbar_ctags_bin=ctags
-" 设置 tagbar 子窗口的位置出现在主编辑区的左边
-let tagbar_left=1
-" 设置显示／隐藏标签列表子窗口的快捷键。
-" nnoremap <Leader>tl :TagbarToggle<CR>
-nmap tb :Tagbar<cr>
-" 设置标签子窗口的宽度
-let tagbar_width=32
-" tagbar 子窗口中不显示冗余帮助信息
-let g:tagbar_compact=1
-" 设置 ctags 对哪些代码元素生成标签
-let g:tagbar_type_cpp = {
-	    \ 'kinds' : [
-	    \ 'd:macros:1',
-	    \ 'g:enums',
-	    \ 't:typedefs:0:0',
-	    \ 'e:enumerators:0:0',
-	    \ 'n:namespaces',
-	    \ 'c:classes',
-	    \ 's:structs',
-	    \ 'u:unions',
-	    \ 'f:functions',
-	    \ 'm:members:0:0',
-	    \ 'v:global:0:0',
-	    \ 'x:external:0:0',
-	    \ 'l:local:0:0'
-	    \ ],
-	    \ 'sro'      : '::',
-	    \ 'kind2scope' : {
-	    \ 'g' : 'enum',
-	    \ 'n' : 'namespace',
-	    \ 'c' : 'class',
-	    \ 's' : 'struct',
-	    \ 'u' : 'union'
-	    \ },
-	    \ 'scope2kind' : {
-	    \ 'enum'     : 'g',
-	    \ 'namespace' : 'n',
-	    \ 'class'   : 'c',
-	    \ 'struct' : 's',
-	    \ 'union'   : 'u'
-	    \ }
-	    \ }
-
-" 'vim-airline'
-let g:airline_theme="dark"
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-let g:airline_symbols.space = "\ua0"
-
-" -------------------------------------------------
-
-" Ctrlp 和 Ctrlp-funky(,fu)
-if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
-    let g:ctrlp_working_path_mode = 'ra'
-    nnoremap <silent> <D-t> :CtrlP<CR>
-    nnoremap <silent> <D-r> :CtrlPMRU<CR>
-    let g:ctrlp_custom_ignore = {
-		\ 'dir':  '\.git$\|\.hg$\|\.svn$',
-		\ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
-
-    if executable('ag')
-	let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
-    elseif executable('ack-grep')
-	let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
-    elseif executable('ack')
-	let s:ctrlp_fallback = 'ack %s --nocolor -f'
-	" On Windows use "dir" as fallback command.
-    else
-	let s:ctrlp_fallback = 'find %s -type f'
+    if 1 && isdirectory(expand("~/.vim/bundle/vim-multiple-cursors"))
+	let g:multi_cursor_next_key='<C-n>'
+	let g:multi_cursor_prev_key='<C-p>'
+	let g:multi_cursor_skip_key='<C-x>'
+	let g:multi_cursor_quit_key='<Esc>'
     endif
-    if exists("g:ctrlp_user_command")
-	unlet g:ctrlp_user_command
-    endif
-    let g:ctrlp_user_command = {
-		\ 'types': {
-		\ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-		\ 2: ['.hg', 'hg --cwd %s locate -I .'],
-		\ },
-		\ 'fallback': s:ctrlp_fallback
-		\ }
 
-    if isdirectory(expand("~/.vim/bundle/ctrlp-funky/"))
-	" CtrlP extensions
-	let g:ctrlp_extensions = ['funky']
-	"funky
-	nnoremap <Leader>fu :CtrlPFunky<Cr>
+    " -------------------------------------------------
+
+    " EasyMotion设置
+    if 1 && isdirectory(expand("~/.vim/bundle/vim-easymotion"))
+	" nmap t <Plug>(easymotion-t2)
+	map  ? <Plug>(easymotion-sn)
+	omap ? <Plug>(easymotion-tn)
+	" map  n <Plug>(easymotion-next)
+	" map  N <Plug>(easymotion-prev)
+	map <Leader>l <Plug>(easymotion-lineforward)
+	map <Leader>j <Plug>(easymotion-j)
+	map <Leader>k <Plug>(easymotion-k)
+	map <Leader>h <Plug>(easymotion-linebackward)
+	let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
+
+	let g:EasyMotion_do_mapping = 0 " Disable default mappings
+	" Bi-directional find motion
+	" Jump to anywhere you want with minimal keystrokes, with just one key
+	" binding.
+	" `s{char}{label}`
+	nmap s <Plug>(easymotion-s)
+	" or
+	" `s{char}{char}{label}`
+	" Need one more keystroke, but on average, it may be more comfortable.
+	nmap s <Plug>(easymotion-s2)
+	" Turn on case insensitive feature
+	let g:EasyMotion_smartcase = 1
     endif
-endif
-" 重复了
-" nnoremap <C-n> :CtrlPFunky<Cr>
-" let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-" let g:ctrlp_custom_ignore = '\v\.(exe|so|dll)$'
-" ------------------------------------------------
+
+    " -------------------------------------------------
+
+    "YouCompleteMe
+    if 1 && isdirectory(expand("~/.vim/bundle/YouCompleteMe"))
+
+	"**
+	" 首次使用步骤:
+	" 1. 获取 YCM 的依赖包
+	"    cd ~/.vim/bundle/YouCompleteMe/
+	"    git submodule update --init --recursive
+	"    follow the README.md 保证安装好cmake
+	" 2. ./install.py --clang-completer
+	" 3. done
+	" 如果失败就使用下面的方法
+	" 2. 在 http://llvm.org/releases/download.html 找到最新版 LLVM，在Pre-built Binaries
+	"    下选择适合你发行套件的最新版预编译二进制文件，下载并解压至 ~/xxx/clang+llvm,这里最好将bin目录添加到环境变量，以后有用。
+	" 3. mkdir and cd ~/ycm_build
+	"    cmake -G "Unix Makefiles" -DPATH_TO_LLVM_ROOT=~/xxx/clang+llvm/ . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp
+	"    make ycm_support_libs
+	"    cmake -G "Unix Makefiles" . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp
+	" 4. done
+	" ------------------>>> may be need install python-dev
+	"*/
+
+	nnoremap <F1> :YcmForceCompileAndDiagnostics<CR>
+	let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_conf/ycm_extra_conf_c.py'
+	let g:syntastic_always_populate_loc_list = 1
+	let g:ycm_always_populate_location_list =1
+
+	" 菜单
+	highlight Pmenu ctermfg=3 ctermbg=black guifg=#005f87 guibg=#EEE8D5
+	" 选中项
+	highlight PmenuSel ctermfg=green ctermbg=black guifg=#AFD700 guibg=#106900
+	" 补全功能在注释中同样有效
+	let g:ycm_complete_in_comments=1
+	" 允许 vim 加载 .ycm_extra_conf.py 文件，不再提示
+	let g:ycm_confirm_extra_conf=0
+	" 开启 YCM 标签补全引擎
+	let g:ycm_collect_identifiers_from_tags_files=1
+	" 引入 C++ 标准库tags
+	"set tags+=/data/misc/software/misc./vim/stdcpp.tags
+	" YCM 集成 OmniCppComplete 补全引擎，设置其快捷键
+	"inoremap <leader>; <C-x><C-o>
+	" 补全内容不以分割子窗口形式出现，只显示补全列表
+	set completeopt-=preview
+	" 从第一个键入字符就开始罗列匹配项
+	let g:ycm_min_num_of_chars_for_completion=2
+	" 禁止缓存匹配项，每次都重新生成匹配项
+	let g:ycm_cache_omnifunc=0
+	" 语法关键字补全
+	let g:ycm_seed_identifiers_with_syntax=0
+	" 收集所有词条
+	let g:ycm_collect_identifiers_from_comments_and_strings = 1
+	" 关闭语法检查
+	let g:ycm_register_as_syntastic_checker = 0
+
+	let g:ycm_auto_trigger = 1
+	" let g:ycm_semantic_triggers = {}
+	" let g:ycm_semantic_triggers.c = ['->', '.', ' ', '(', '[', '&']
+
+	" let g:ycm_register_as_syntastic_checker = 0
+	let g:syntastic_enable_highlighting = 0
+
+	" nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
+	nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
+	nnoremap <leader>gl :YcmCompleter GoToDefinitionElseDeclaration<CR>
+	" nmap <F3> :YcmDiags<CR>
+
+    endif
+
+    " -------------------------------------------------
+
+    if 1 && isdirectory(expand("~/.vim/bundle/tagbar"))
+	" let tagbar_ctags_bin=ctags
+	" 设置 tagbar 子窗口的位置出现在主编辑区的左边
+	let tagbar_left=1
+	" 设置显示／隐藏标签列表子窗口的快捷键。
+	" nnoremap <Leader>tl :TagbarToggle<CR>
+	nmap tb :Tagbar<cr>
+	" 设置标签子窗口的宽度
+	let tagbar_width=32
+	" tagbar 子窗口中不显示冗余帮助信息
+	let g:tagbar_compact=1
+	" 设置 ctags 对哪些代码元素生成标签
+	let g:tagbar_type_cpp = {
+		    \ 'kinds' : [
+		    \ 'd:macros:1',
+		    \ 'g:enums',
+		    \ 't:typedefs:0:0',
+		    \ 'e:enumerators:0:0',
+		    \ 'n:namespaces',
+		    \ 'c:classes',
+		    \ 's:structs',
+		    \ 'u:unions',
+		    \ 'f:functions',
+		    \ 'm:members:0:0',
+		    \ 'v:global:0:0',
+		    \ 'x:external:0:0',
+		    \ 'l:local:0:0'
+		    \ ],
+		    \ 'sro'      : '::',
+		    \ 'kind2scope' : {
+		    \ 'g' : 'enum',
+		    \ 'n' : 'namespace',
+		    \ 'c' : 'class',
+		    \ 's' : 'struct',
+		    \ 'u' : 'union'
+		    \ },
+		    \ 'scope2kind' : {
+		    \ 'enum'     : 'g',
+		    \ 'namespace' : 'n',
+		    \ 'class'   : 'c',
+		    \ 'struct' : 's',
+		    \ 'union'   : 'u'
+		    \ }
+		    \ }
+    endif
+
+    " -------------------------------------------------
+
+    if 1 && isdirectory(expand("~/.vim/bundle/vim-airline"))
+	let g:airline_theme="dark"
+	let g:airline_powerline_fonts = 1
+	let g:airline#extensions#tabline#buffer_nr_show = 1
+	let g:airline#extensions#tabline#enabled = 1
+	let g:airline#extensions#tabline#left_sep = ' '
+	let g:airline#extensions#tabline#left_alt_sep = '|'
+	if !exists('g:airline_symbols')
+	    let g:airline_symbols = {}
+	endif
+	let g:airline_symbols.space = "\ua0"
+    endif
+
+    " -------------------------------------------------
+
+    " Ctrlp 和 Ctrlp-funky(,fu)
+    if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
+	let g:ctrlp_working_path_mode = 'ra'
+	nnoremap <silent> <D-t> :CtrlP<CR>
+	nnoremap <silent> <D-r> :CtrlPMRU<CR>
+	let g:ctrlp_custom_ignore = {
+		    \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+		    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+
+	if executable('ag')
+	    let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
+	elseif executable('ack-grep')
+	    let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
+	elseif executable('ack')
+	    let s:ctrlp_fallback = 'ack %s --nocolor -f'
+	    " On Windows use "dir" as fallback command.
+	else
+	    let s:ctrlp_fallback = 'find %s -type f'
+	endif
+	if exists("g:ctrlp_user_command")
+	    unlet g:ctrlp_user_command
+	endif
+	let g:ctrlp_user_command = {
+		    \ 'types': {
+		    \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+		    \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+		    \ },
+		    \ 'fallback': s:ctrlp_fallback
+		    \ }
+
+	if isdirectory(expand("~/.vim/bundle/ctrlp-funky/"))
+	    " CtrlP extensions
+	    let g:ctrlp_extensions = ['funky']
+	    "funky
+	    nnoremap <Leader>fu :CtrlPFunky<Cr>
+	endif
+    endif
+    " 重复了
+    " nnoremap <C-n> :CtrlPFunky<Cr>
+    " let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+    " let g:ctrlp_custom_ignore = '\v\.(exe|so|dll)$'
+    " ------------------------------------------------
+    if isdirectory(expand("~/.vim/bundle/vim-powerline/"))
+	" mkfontscale
+	" mkfontdir
+	" fc-cache -vf
+	" rm ~/.vim/bundle/vim-powerline/*.cache
+	" https://github.com/eugeii/consolas-powerline-vim.git
+	" https://github.com/powerline/fonts.git
+	" set guifont=PowerlineSymbols\ for\ Powerline
+	" let g:Powerline_symbols = 'fancy'
+    endif
+    " -------------------------------------------------
+" }}}
 " }}}
 
-" -------------------------------------------------
-if 0    " NerdTree的设置
-        " plugin - NERD_tree.vim 以树状方式浏览系统中的文件和目录
-        " :NERDtree 打开NERD_tree         :NERDtreeClose    关闭NERD_tree
-        " o 打开关闭文件或者目录         t 在标签页中打开
-        " T 在后台标签页中打开           ! 执行此文件
-        " p 到上层目录                   P 到根目录
-        " K 到第一个节点                 J 到最后一个节点
-        " u 打开上层目录                 m 显示文件系统菜单（添加、删除、移动操作）
-        " r 递归刷新当前目录             R 递归刷新当前根目录
-
-        let NERDTreeShowFiles=1
-        let NERDTreeShowLineNumbers=1
-endif
-" -------------------------------------------------
-" 'Lokaltog/vim-powerline'
-" mkfontscale
-" mkfontdir
-" fc-cache -vf
-" rm ~/.vim/bundle/vim-powerline/*.cache
-" https://github.com/eugeii/consolas-powerline-vim.git
-" https://github.com/powerline/fonts.git
-" set guifont=PowerlineSymbols\ for\ Powerline
-" let g:Powerline_symbols = 'fancy'
-" -------------------------------------------------
-" ------------------------------------------------
-" -------------------------------------------------
-" }}}
-
-" 剩余的 {
-" try
-"     call fuf#defineLaunchCommand('FufCWD', 'file', 'fnamemodify(getcwd(), ''%:p:h'')')
-"     map <leader>t :FufCWD **/<CR>
-" catch
-" endtry
-" map <F7> :FufTag<cr>
-" map <C-F7> :FufTaggedFile<cr>
-" -------------------------------------------------
-" 扩展了vim的%功能,让%可以匹配的,不再仅仅是括号,支持多种语言.必备插件之一
-" 'matchit.zip'
-" % 正向匹配      g% 反向匹配
-" [% 定位块首     ]% 定位块尾
-" -------------------------------------------------
-" Very small, clean but quick and powerful buffer manager. c.
-" qbuf
-" -------------------------------------------------
-" ShowFunc.vim  <-------- 暂时没有使用
-" F2打开ShowFunc TagList窗口，显示C/C++函数原型
-" map <F2> <Plug>ShowFunc
-" -------------------------------------------------
-" map <leader>h :call ToHexModle()<cr>
-" }
-
-" maybe unused {
-        "折叠html标签 ,fold tag
-        "nnoremap <leader>ft vatzf
-
-        " 查找冲突的地方
-        "map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
-
-        "Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
-        " nmap <leader>t2 mz:m+<cr>`z
-        " nmap <A-k> mz:m-2<cr>`z
-        " vmap <A-j> :m'>+<cr>`<my`>mzgv`yo`z
-        " vmap <A-k> :m'<-2<cr>`>my`<mzgv`yo`z
-
-        "=====================================================
-        " 替换增强
-        "=====================================================
-        " 不确认、非整词
-        "  nnoremap <Leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
-        " " 不确认、整词
-        "  nnoremap <Leader>rw :call Replace(0, 1, input('Replace '.expand('<cword>').' with: '))<CR>
-        " " 确认、非整词
-        "  nnoremap <Leader>rr :call Replace(1, 0, input('Replace '.expand('<cword>').' with: '))<CR>
-        " " 确认、整词
-        "  nnoremap <Leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
-
-        " 替换函数。参数说明：
-        " confirm：是否替换前逐一确认
-        " wholeword：是否整词匹配
-        " replace：被替换字符串
-        " function! Replace(confirm, wholeword, replace)
-        "     wa
-        "     let flag = ''
-        "     if a:confirm
-        "         let flag .= 'gec'
-        "     else
-        "         let flag .= 'ge'
-        "     endif
-        "     let search = ''
-        "     if a:wholeword
-        "         let search .= '\<' . escape(expand('<cword>'), '/\.*$^~[') . '\>'
-        "     else
-        "         let search .= expand('<cword>')
-        "     endif
-        "     let replace = escape(a:replace, '/\&~')
-        "     execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
-        " endfunction
-        " -------------------------------------------------
-        " 映射vsp这些开启新的buffer,默认目录为当前目录
-        " cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
-        " map <leader>ew :e %%
-        " map <leader>es :sp %%
-        " map <leader>ev :vsp %%
-        " map <leader>et :tabe %%
-        " -------------------------------------------------
-        "Remove the Windows ^M - when the encodings gets messed up
-        " noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
-        " 去掉所有的^M
-        " noremap <Leader>ff :%s/\\\$//g<cr>:%s/\\\/ /g<cr>
-        " -------------------------------------------------
-        "删除行尾的一个^M
-        " nmap dm :%s/\r\+$//e<cr>:set ff=unix<cr>
-        " -------------------------------------------------
-        "以unix格式显示换行符
-        " nmap xsm :e ++ff=unix
-        "以dos格式显示换行符
-        " nmap xsm :e ++ff=dos
-        " -------------------------------------------------
-        "  map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
-        "在当前目录查找光标词的所有位置
-        " nmap  <leader>t2 :vimgrep /<C-R>=expand("<cword>")<cr>/ **/*.c **/*.h<cr><C-o>:cw<cr>
-        " ,ff 查找光标后的单词位置，列出选择项
-        " nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
-        " -------------------------------------------------
-        " 配置多语言环境
-        " 环境变量 LANG（使用的语言）;
-        " 环境变量 LC_CTYPE（使用的内部编码）;
-        " Vim 选项 encoding(enc)（Vim 的内部编码；必须是 UTF-8,国际化支持的基础）。
-        " Vim 选项 termencoding(tenc)（Vim 与输入输出交互编码）;
-        " Vim 选项 fileencoding(fenc)（Vim 存储编码）;
-        " Vim 选项 fileencodings(fencs)（Vim 打开时尝试的编码）;
-        " Vim 选项 ambiwidth（对“不明宽度”字符的处理方式;Vim 6.1.455 后引入）。
-
-        " if has("multi_byte")
-        "     set encoding=utf-8
-        "     set termencoding=utf-8
-        "     set fileencoding=utf-8
-        "     " set fileencoding=gb18030
-        "     " set fileencoding=gb2312
-        "     " set fileencodings=euc-jp,iso-8859-1
-        "     set fileencodings=utf-8,gbk,ucs-bom,cp936,gb18030,utf-16,big5,gb2312,chinese
-        "
-        "     if v:lang=~? '^\(zh\)\|\(ja\)\|\(ko\)'
-        "         set ambiwidth=double
-        "     endif
-        " else
-        "     echoerr "Sorry, this version of (g)vim was not compiled with +multi_byte"
-        " endif
-        " -------------------------------------------------
-        " cnoremap $c e <C-\>eCurrentFileDir("e")<cr>
-        " func! CurrentFileDir(cmd)
-        "    return a:cmd . " " . expand("%:p:h") . "/"
-        " endfunc
-        " -------------------------------------------------
-        " 意义不大
-        "set grepprg=/bin/grep\ -nH  "":grep" 使用的程序
-        "let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
-        "let g:SuperTabRetainCompletionType=2
-        "let g:SuperTabDefaultCompletionType="<C-X><C-O>"
-        " -------------------------------------------------
-        "F6 for uncomment
-        " vmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
-        " nmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
-        " imap <F6> <ESC>:s=^\(//\)*==g<cr>:noh<cr>
-        " -------------------------------------------------
-        " set mousemodel=extend
-        " set mousemodel=popup
-        " set switchbuf=usetab
-        " -------------------------------------------------
-        " set formatoptions=lq            " 控制 Vim 如何对文本进行排版
-        " set formatoptions=tcrn2bmMB1j
-        " set formatoptions+=mM             "自动对中文换行
-        " set cindent                        " 使用C样式的缩进
-        " set cinoptions=:0                  " 设置 'cindent' 时如何缩进
-        " set smartindent                    " C 程序智能自动缩进
-        " -------------------------------------------------
-        " Do :help cope if you are unsure what cope is. It's super useful!
-        " map <leader>t1 :botright cope<cr>
-        " -------------------------------------------------
-        " set fileformats=unix,dos,mac       " 自动识别UNIX格式和MS-DOS格式
-        " set fileformat=unix                " 以UNIX的换行符格式保存文件，注意是去掉一个^M
-        " set fileformat=dos                 " 以dos的换行符格式保存文件, 注意是在行尾变为两个^M
-        " -------------------------------------------------
-        " -------------------------------------------------
-" }
-
-" yingxiang paiban {{{
+"{{{ yingxiang paiban 
         "函数内排版
         nmap = =a{
 

@@ -27,12 +27,12 @@ function time_check()
 	    if [[ "x$b" == 'xy' ]]; then
 		((trigger_count--))
 		break
-	    elif [[ "${b}" =~ '/' && "${b}" =~ '-' ]]; then
+	    elif [[ "${b}" =~ '/' ]]; then
 		c="${b%%/*}"
 		d="${b#*/}"
 		if [ -z $c ]; then
 		    case $i in
-			0) c='00-12' break ;; 1) c='00-31' break ;; 2) c='00-24' break ;; 3) c='00-60' break ;; 4) c='1-7' break ;;
+			0) c='00-12' ;; 1) c='00-31' ;; 2) c='00-24' ;; 3) c='00-60' ;; 4) c='1-7' ;;
 		    esac
 		fi
 		e="$(printf "%.f" "${c%%-*}")"

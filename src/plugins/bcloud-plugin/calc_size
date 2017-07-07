@@ -1,0 +1,52 @@
+#!/bin/bash
+
+function ss()
+{
+    local in=$1
+    local level=0
+    while ((${in%.*}>1024)); do
+        in=$(echo "scale=2; $in/1024.0" | bc)
+        ((level+=1))
+    done
+    [ "$level" == 0 ] && { echo "$in"B; return; }
+    [ "$level" == 1 ] && { echo "$in"K; return; }
+    [ "$level" == 2 ] && { echo "$in"M; return; }
+    [ "$level" == 3 ] && { echo "$in"G; return; }
+}
+
+while [ 1 -eq 1 ]; do
+    echo -n "input the dir you want size: "
+    read dir
+    echo ''
+    if [ '/' = "${dir:0:1}" -o -z "$dir" ]; then
+        total_size=
+        sub_size=
+        left_dir=
+        while read line; do
+            file=/"${line#*/}"
+            dir_len=${#dir}
+            str="${file:0:dir_len+1}"
+            if [ "$str" == "$dir/" ]; then
+                ((total_size+=${line%% *}))
+                maybe_new_dir=${file:dir_len+1}
+                if [[ "$maybe_new_dir" =~ '/' ]]; then
+                    maybe_new_dir=${maybe_new_dir%%/*}
+                    if [ "$left_dir" != "$maybe_new_dir" ]; then
+                        [ -n "$left_dir" ] && { echo $(ss $sub_size) "$dir/$left_dir"; }
+                        left_dir="$maybe_new_dir"
+                        sub_size=0
+                    else
+                        ((sub_size+=${line%% *}))
+                    fi
+                else
+                    echo $(ss ${line%% *}) $file
+                fi
+            fi
+        done < '/home/user/bdy_file'
+        [ -n "$left_dir" ] && { echo $(ss $sub_size) "$dir/$left_dir"; }
+        echo ''
+        [ -n "$total_size" ] && echo $(ss $total_size)
+        echo ''
+    fi
+
+done

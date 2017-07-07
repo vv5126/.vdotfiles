@@ -1,0 +1,132 @@
+#!/usr/bin/env python3
+
+# Copyright (C) 2014 LiuLang <gsushzhsosgsu@gmail.com>
+# Use of this source code is governed by GPLv3 license that can be found
+# in http://www.gnu.org/licenses/gpl-3.0.html
+
+from gi.repository import Gtk
+
+from bcloud import gutil
+from bcloud import pcs
+from bcloud.SigninDialog import SigninDialog
+
+import os
+import re
+
+LEFT = []
+GET_LIST_NUM = 0
+
+class App(object):
+
+    def __init__(self):
+        global LEFT
+        self.app = Gtk.Application.new('org.liulang.bcloud_tree', 0)
+        self.app.connect('startup', self.on_app_startup)
+        self.app.connect('activate', self.on_app_activate)
+        self.app.connect('shutdown', self.on_app_shutdown)
+        self.profile = None
+
+        user_path = os.path.expanduser('~')
+        if not os.path.isfile(user_path + '/bdy_processing'):
+            self.process = open(user_path + '/bdy_processing', 'w+')
+            self.data_file = open(user_path + '/bdy_file', 'w')
+            self.data_dir = open(user_path + '/bdy_dir', 'w')
+            LEFT = ['/']
+        else:
+            self.process = open(user_path + '/bdy_processing', 'r+')
+            self.data_file = open(user_path + '/bdy_file', 'a')
+            self.data_dir = open(user_path + '/bdy_dir', 'a')
+
+            LEFT = re.split('\n', self.process.read())
+            self.process.seek(0)
+            self.process.truncate()
+
+            # if len(LEFT) == 0:
+            #     print('left empty!')
+            #     LEFT = ['/进步/圣经 标准版']
+        print('LEFT is:')
+        print(LEFT)
+
+    def run(self):
+        self.app.run([])
+
+    def on_app_startup(self, app):
+        self.window = Gtk.ApplicationWindow.new(app)
+        self.window.set_default_size(200, 200)
+        self.app.add_window(self.window)
+
+        self.label = Gtk.Label()
+        self.label.set_text('Signin ...')
+        self.window.add(self.label)
+
+    def on_app_activate(self, app):
+        self.window.show_all()
+        dialog = SigninDialog(self, auto_signin=False)
+        dialog.run()
+        dialog.destroy()
+        if self.cookie and self.tokens:
+            self.label.set_text('Fetching directory tree now...')
+            gutil.async_call(self.tree, callback=self.on_list_dir_finished)
+        else:
+            self.label.set_text('Failed to sign in')
+
+    def on_app_shutdown(self, app):
+        global LEFT
+        self.data_file.close()
+        self.data_dir.close()
+
+        LEFT = '\n'.join(LEFT)
+        if LEFT == '':
+            LEFT = 'well done!'
+        print('left ===>>> \n' + LEFT)
+        self.process.write(LEFT)
+        self.process.close()
+        pass
+
+    def fetch_tree(self):
+        while len(LEFT) != 0:
+            try:
+                print('do fork')
+                pid = os.fork()
+                if pid == 0:
+                    self.tree()
+                else:
+                    print('wait')
+                    os.wait()
+                    print('wait end')
+            except OSError:
+                pass
+
+    def tree(self):
+        global LEFT
+        global GET_LIST_NUM
+        GET_LIST_NUM += 1
+        print('in dir: ' + LEFT[0] + ' list is ' + str(GET_LIST_NUM))
+        parent_, files = pcs.list_dir_all(self.cookie, self.tokens, LEFT[0])
+        tmp = []
+        for file_ in files:
+            if file_['isdir']:
+                self.data_dir.write(file_['path'] + '/\n')
+                # print(file_['path'] + '/\n')
+                tmp.append(file_['path'])
+            else:
+                self.data_file.write(str(file_['size'])  + ' ' + file_['md5'] + ' ' + file_['path'] + '\n')
+                # print(str(file_['size'])  + ' ' + file_['md5'] + ' ' + file_['path'] + '\n')
+        print('out dir: ' + LEFT[0])
+        LEFT.pop(0)
+        if len(tmp) != 0:
+            LEFT = tmp + LEFT
+
+        if GET_LIST_NUM == 1000:
+            self.on_list_dir_finished()
+            exit()
+
+        if len(LEFT) != 0:
+            self.tree()
+
+    def on_list_dir_finished(self, *args):
+        self.label.set_text('Finished!')
+
+if __name__ == '__main__':
+    app = App()
+    app.run()

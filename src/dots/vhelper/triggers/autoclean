@@ -1,3 +1,7 @@
 [[ "$(time_check y_y_00_00_1-6)" == '0' ]] && {
     find ~/.rm -type d -empty | xargs rm -rf -
+    [ $? -eq 0 ] && _log "auto clean at $(date)."
 }
+
+# [[ -d "$HOME/Desktop" ]] && rm -r $HOME/Desktop
+# [[ -d "$HOME/www" ]] && rm -r $HOME/www
