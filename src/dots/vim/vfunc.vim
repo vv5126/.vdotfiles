@@ -211,6 +211,31 @@ function! VZOOM()
 	let l:tmp_wid = 142 - (l:nr - l:cur_nr + 1) * 2
 	exe "vertical resize " . l:tmp_wid
     endif
+
+function! HasPaste()
+    if &paste
+	return '[PASTE MODE]'
+    else
+	return ''
+    endif
+endfunction
+
+function! InsertStatuslineColor(mode)
+    if a:mode == 'i'
+	hi User7 ctermbg=red
+    else
+	hi User7 ctermbg=black
+    endif
+endfunction
+
+" -------------------------------------------------
+
+function! GO_GIT_DIR()
+    let l:dir = system("getdir_git_repo")
+    let l:dir = matchstr(l:dir, '/.*')
+    exec 'cd' l:dir
+    exec 'pwd'
+    " echon 'git dir'
 endfunction
 " -------------------------------------------------
 " }}}

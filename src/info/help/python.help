@@ -1,3 +1,10 @@
 # install module at user space.
 python3.4 setup.py install --user
 as python3.4 setup.py install --prefix=$HOME/.local
+
+列表类似与C的结构体
+有pop方法 append extend remove insert ...
+列表分片
+aaa[1:5]
+in
+not in

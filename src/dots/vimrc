@@ -69,14 +69,14 @@
     let g:fencview_autodetect=1
     " -------------------------------------------------
     " 支持分支的 undo
-    Bundle 'sjl/gundo.vim'
+    " Bundle 'sjl/gundo.vim'
     " 调用 gundo 树
-    nnoremap <Leader>ud :GundoToggle<CR>
+    " nnoremap <Leader>ud :GundoToggle<CR>
     " -------------------------------------------------
     " 显示缩进对齐线
     Bundle 'Yggdroot/indentLine'
     let g:indentLine_char = '┊'
-    map <leader>il :IndentLinesToggle<CR>
+    " map <leader>il :IndentLinesToggle<CR>
     " -------------------------------------------------
     " 显示git diff的插件
     Bundle 'airblade/vim-gitgutter'
@@ -445,11 +445,11 @@
         set numberwidth=4                  " 行号栏的宽度
         set fillchars=vert:\ ,stl:\        " 在被分割的窗口间显示空白，便于阅读,stlnc:\(加了这个wm分割兰有\\\\\\\\\\\\\)
         set cmdheight=1                    " 命令行（在状态行下）的高度，默认为1
-        set noeb                           " 去掉输入错误的提示声音
-        set noerrorbells                   " 关闭错误信息响铃
-        set novisualbell                   " 关闭使用可视响铃代替呼叫
+        " set noeb                           " 去掉输入错误的提示声音
+        " set noerrorbells                   " 关闭错误信息响铃
+        " set novisualbell                   " 关闭使用可视响铃代替呼叫
         " set undofile                     " 无限undo
-        set t_vb=                          " 置空错误铃声的终端代码
+        " set t_vb=                          " 置空错误铃声的终端代码
         set showtabline=1                  " 指定何时显示带有标签页标签的行,这里设置为至少有两个以上才显示.
         set confirm                        " 退出、写入等有未保存的改动或文件只读时询问
         set noswapfile                     " 关闭交换文件
@@ -465,8 +465,10 @@
         set wildignore+=*.bak,*.o,*.e,*~,*.obj,.git,*.pyc
         set autoread                       " 设置当文件被改动时自动载入
         set completeopt=preview,longest,menuone "代码补全
-        " :help digraph-table 特殊字符表
         " set rtp+=xxx/vim		   " 自定义vim目录位置
+
+        " :help digraph-table 特殊字符表
+
         " 好用的复制、粘贴
         vmap <C-c> "+y
         imap <C-v> <Esc>"*pa
@@ -474,8 +476,8 @@
 	vnoremap <silent> p p`]
 	nnoremap <silent> p p`]
         "=====================================================
+
         " tab的设定
-        " -------------------------------------------------
         set smarttab                       " 在行和段开始处使用制表符
         set tabstop=8                      " 设置编辑时制表符占用空格数
         " set shiftwidth=8                 " 设置格式化时制表符占用空格数
@@ -483,14 +485,12 @@
         " set expandtab                    " 用空格代替制表符
         set noexpandtab                    " 不要用空格代替制表符
         autocmd FileType sh setlocal shiftwidth=4
-        "=====================================================
+
         " 处理折叠行的左右移动
         noremap j gj
         noremap k gk
-        "=====================================================
-        " -------------------------------------------------
+
         " 支持代码折叠
-        " -------------------------------------------------
         set foldlevel=1               " 设置折叠层数为
         " set foldenable                   " 允许折叠
         " set foldclose=all                " 设置为自动关闭折叠
@@ -501,8 +501,7 @@
         set foldcolumn=0                   " 设置折叠区域的宽度
         " 代码折叠开关
         " nmap <F1> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
-        " -------------------------------------------------
-        "=====================================================
+
         " buffer 设置
         "=====================================================
         " buffer缩放
@@ -510,8 +509,6 @@
         nmap ++ 5<C-w>+
         nmap >> 5<C-w>>
         nmap << 5<C-w><
-        "===================================================
-        nnoremap <C-]> g]
         "===================================================
 
         " Switching between buffers.
@@ -537,22 +534,6 @@
         highlight User6 ctermfg=blue
         highlight User7 ctermbg=black
         set statusline=%7*\ %3*%{HasPaste()}%*[file:\ %2*%t%r%h%w%*]%3*%m%*[dir:\ %<%2*%{CurDir()}%*]%=\ \ \ \ \ \ \ \ \ \ %4*[%{&ff}][%{&encoding}]%6*%y%*[Line:%2*%l%*/%2*%L%*,Column:%2*%c%*][%2*%p%%%*]
-
-        function! HasPaste()
-            if &paste
-                return '[PASTE MODE]'
-            else
-                return ''
-            endif
-        endfunction
-
-        function! InsertStatuslineColor(mode)
-            if a:mode == 'i'
-                hi User7 ctermbg=red
-            else
-                hi User7 ctermbg=black
-            endif
-        endfunction
 
         au InsertEnter * call InsertStatuslineColor('i')
         au InsertLeave * call InsertStatuslineColor('')
@@ -672,13 +653,6 @@
         noremap <leader>1 :execute "cd" expand("%:h")<CR>:execute 'pwd'<cr>
         noremap <leader>2 :call GO_GIT_DIR()<cr>
 
-        function! GO_GIT_DIR()
-	    let l:dir = system("getdir_git_repo")
-	    let l:dir = matchstr(l:dir, '/.*')
-	    exec 'cd' l:dir
-	    exec 'pwd'
-	    " echon 'git dir'
-        endfunction
         "=====================================================
         map <leader>e :e! ~/.vimrc<cr>
         "自动载入配置文件不需要重启
@@ -693,6 +667,7 @@
 	autocmd BufRead *.h set filetype=c
 	autocmd BufRead *.help set filetype=markdown
         "=====================================================
+        nnoremap <C-]> g]
         map <C-]> g]
         " gd 代替 *
         " g] 代替 C-]
