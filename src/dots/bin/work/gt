@@ -15,12 +15,12 @@ function git_push() {
                 branch="$(git branch -a | sed -n '/->/p')"
                 branch=${branch##*-> }
                 branch=${branch##*/}
-                git push $warehouse HEAD:refs/for/refs/heads/$branch
         else
                 branch=${branch##* }
                 # branch=${branch##*/}
-                git push $warehouse HEAD:refs/for/refs/heads/$branch
         fi
+                echo git push $warehouse HEAD:refs/for/refs/heads/$branch
+                git push $warehouse HEAD:refs/for/refs/heads/$branch
 
 }
 function make_git_push_file() {

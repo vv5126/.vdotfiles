@@ -1,6 +1,6 @@
 
 WORK_SERVER_MAIN=wgao@192.168.4.15
-export LOCAL_HOST=user@192.168.4.150
+export LOCAL_HOST=user@192.168.2.106
 
 # imgs #
 export VGL_BOARDS=/data1/home/wgao/work/local_debug/boards

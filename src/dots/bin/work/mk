@@ -18,6 +18,7 @@ function try_get_obj()
         [ -d "arch" -a -d "spl" ] && { echo $uboot; return; }
         # mozart
         [ -d "mozart" ] && { echo $mozart; return; }
+        [ -d "shairport" -a -d "dlna" ] && { echo $mozart; return; }
 
         if [ -d ".git" ]; then
             # mozart
@@ -42,6 +43,10 @@ function checkver()
 function mkinit()
 {
         DEST=$(try_get_obj "$VGLD_MKDATA/cfg")
+
+        # only for mozart now
+        [ "$DEST" == 'mzt.sh' -a -d "mozart" ] && cd mozart
+
         [ -z "$DEST" ] && DEST=$(showlist_with_value "$VGLD_MKDATA/cfg" "what project type do you want init")
 	if [ ! -f ".$DEST" ]; then
                 cp "$VGLD_MKDATA/$DEST" ".$DEST"
@@ -71,6 +76,7 @@ function mkn()
 
 function mkmain() {
         # goto project root directory if possible.
+        export TRIGGER_DIR=$PWD
         cd_proj
 
         # creat new project

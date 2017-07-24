@@ -24,8 +24,8 @@ https://github.com/Chunlin-Li/Chunlin-Li.github.io/blob/master/blogs/linux/ubunt
 ******---
 * sudo chgrp root vsudoer
 * sudo chown root vsudoer
-* chmod 440 vsudoer
-* ln -P /home/user/.bin/local/vsudoer /etc/sudoers.d/
+* sudo chmod 440 vsudoer
+* sudo ln -Pf /home/user/.bin/local/vsudoer /etc/sudoers.d/
 
 ### add samba
 * edit /etc/samba/smb.conf to add the smb-dir.

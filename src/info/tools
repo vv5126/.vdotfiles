@@ -15,20 +15,24 @@ base='
 1 pip
 5 pip3
 1 fcitx-googlepinyin
-4 https://github.com/adobe-fonts/source-code-pro
+4 adobe-fonts/source-code-pro
 2 https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz
-4 https://github.com/vim/vim.git
-4 https://github.com/WizTeam/WizQTClient
+4 vim/vim.git
+4 WizTeam/WizQTClient
 '
 ftp='
 1 vsftpd
 '
 goodproject='
-4 https://github.com/sopel-irc/sopel
-4 https://github.com/acidvegas/irc
-4 https://github.com/houtianze/bypy
+4 sopel-irc/sopel
+4 acidvegas/irc
+4 houtianze/bypy
 3 sopel
 3 bypy
+'
+
+zsh='
+4 wting/autojump
 '
 qt='
 2 http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run
@@ -69,7 +73,7 @@ xrdp='
 '
 
 baiduyun='
-2 https://github.com/Yufeikang/bcloud
+2 Yufeikang/bcloud
 1 python3-dev
 3 cssselect
 3 pycrypto
@@ -92,8 +96,8 @@ aircrack='
 '
 
 unused='
-# 2 https://github.com/eugeii/consolas-powerline-vim.git
-# 2 https://github.com/powerline/fonts.git
+# 2 eugeii/consolas-powerline-vim.git
+# 2 powerline/fonts.git
 1 kolourpaint
 1 getmail4
 # music
@@ -134,7 +138,7 @@ function do_install() {
             echo sudo pip3.5 install "$2"
             ;;
         '4')
-            echo git clone "$2"
+            echo git clone https://github.com/"$2"
             ;;
         '5')
             install "$2"

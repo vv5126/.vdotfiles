@@ -193,6 +193,9 @@ function init(){
                 'android'*)
                     the_image=arch/mips/boot/zcompressed/zImage
                     ;;
+                'mozart'*)
+                    the_image=arch/mips/boot/zcompressed/xImage
+                    ;;
                 'tizen'*)
                     the_image=arch/mips/boot/uImage
                     ;;
@@ -210,7 +213,7 @@ function init(){
         fi
 
 	target_name='$project_type-$forBOARD-$forOS'
-        [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/$task_type/${customer:+$customer/}$forBOARD-$forOS-imgs'
+        [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/$task_type/${customer:+$customer/}$forBOARD-$forOS-${feature%%_*}-imgs'
 
 	make_info_file ".project_info"
 	return 0

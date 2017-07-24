@@ -2,6 +2,7 @@ export VHELPER_LOG="$DIR_VHELPER/log"
 
 function _log() {
     echo "$(date +%d\ %H:%M)| $@" >> $VHELPER_LOG/a.log
+    echo "----------------------------------------------------" >> $VHELPER_LOG/a.log
 }
 
 # e.g. "time_check y_y_00_00_1-6"
