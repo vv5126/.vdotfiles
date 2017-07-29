@@ -107,27 +107,14 @@
     " 最大化当前panel.
     Bundle 'troydm/zoomwintab.vim'
     " -------------------------------------------------
+    " 另一种对齐方式
+    Bundle 'junegunn/vim-easy-align'
+    nmap ga <Plug>(EasyAlign)
+    xmap ga <Plug>(EasyAlign)
     " -------------------------------------------------
+    " end 自动补全
+    Bundle 'tpope/vim-endwise'
     " -------------------------------------------------
-    if 0
-	" 注释代码用
-	Bundle 'tomtom/tcomment_vim'
-	"对NERD_commenter的设置
-	" [count],cc 光标以下count行逐行添加注释(7,cc)
-	" [count],cu 光标以下count行逐行取消注释(7,cu)
-	" [count],cm 光标以下count行尝试添加块注释(7,cm)
-	" ,cA 在行尾插入 /* */,并且进入插入模式。 这个命令方便写注释。
-	" 注：count参数可选，无则默认为选中行或当前行
-	let NERDSpaceDelims=5       " 让注释符与语句之间留一个空格
-	let NERDCompactSexyComs=1   " 多行注释时样子更好看
-	let NERDShutUp=1
-	" 支持单行和多行的选择，//格式
-	" Toggle单行注释/“性感”注释/注释到行尾/取消注释
-	map <leader>cc ,c<space>
-	map <leader>cs ,cs
-	map cu ;cu
-	map cs ;c$
-    endif
     " -------------------------------------------------
     " 在vim里画图
     " Bundle 'DrawIt'
@@ -160,7 +147,28 @@
     " 将代码行最后无效的空格标红
     " Bundle 'ShowTrailingWhitespace'
     " -------------------------------------------------
-    " -------------------------------------------------
+    " 为小括号加如彩虹效果，但对c貌似没啥意义...
+    Bundle 'kien/rainbow_parentheses.vim'
+    let g:rbpt_colorpairs = [
+		\ ['brown',       'RoyalBlue3'],
+		\ ['Darkblue',    'SeaGreen3'],
+		\ ['darkgray',    'DarkOrchid3'],
+		\ ['darkgreen',   'firebrick3'],
+		\ ['darkcyan',    'RoyalBlue3'],
+		\ ['darkred',     'SeaGreen3'],
+		\ ['darkmagenta', 'DarkOrchid3'],
+		\ ['brown',       'firebrick3'],
+		\ ['gray',        'RoyalBlue3'],
+		\ ['black',       'SeaGreen3'],
+		\ ['darkmagenta', 'DarkOrchid3'],
+		\ ['Darkblue',    'firebrick3'],
+		\ ['darkgreen',   'RoyalBlue3'],
+		\ ['darkcyan',    'SeaGreen3'],
+		\ ['darkred',     'DarkOrchid3'],
+		\ ['red',         'firebrick3'],
+		\ ]
+    let g:rbpt_max = 16
+    let g:rbpt_loadcmd_toggle = 0
     " -------------------------------------------------
     " -------------------------------------------------
     " dealing
@@ -193,15 +201,12 @@
     " -------------------------------------------------
     "Bundle 'cctree'             " 可以查看function的call tree
     " -------------------------------------------------
-    if has('ack')
-	" 使用 ctrlsf.vim 插件在工程内全局查找光标所在关键字，设置快捷键。快捷键速记法：search in project
-	" ack 后端， 需要ack版本不低于2.0
+    if executable('ack')
 	" 可以键入 p 键，将在右侧子窗口中给出该匹配项的完整代码，而不再仅有前后几行。
 	" 不想跳至任何匹配项，可以直接键入  q 退出 ctrlsf.vim；如果有钟意的匹配项，
 	" 光标定位该项后回车，立即跳至新 buffer 中对应位置。
-	Bundle 'dyng/ctrlsf.vim'
-	Bundle 'ack.vim'
-	" nnoremap <Leader>sp :CtrlSF<CR>
+        Bundle 'dyng/ctrlsf.vim'
+	" vmap <C-E>a <Plug>CtrlSFVwordPath
     endif
     " -------------------------------------------------
     Bundle 'dkprice/vim-easygrep'
@@ -465,6 +470,9 @@
         " 好用的复制、粘贴
         vmap <C-c> "+y
         imap <C-v> <Esc>"*pa
+	vnoremap <silent> y y`]
+	vnoremap <silent> p p`]
+	nnoremap <silent> p p`]
         "=====================================================
         " tab的设定
         " -------------------------------------------------
@@ -577,6 +585,9 @@
         "光标所在词搜索
         nnoremap <leader>f *
         nnoremap <leader>fa :call SET_ISK()<cr>
+
+	" 窗口自动半边排版
+        nnoremap <silent> <leader>; :call VZOOM()<cr>
 
         "使用<leader>空格来取消搜索高亮
         nnoremap <silent> <leader><space> :noh<cr>

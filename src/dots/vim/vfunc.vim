@@ -184,4 +184,33 @@ function! CHECK_FILETYPE()
 endfunction
 " -------------------------------------------------
 
+function! VZOOM()
+    let l:cur_nr=winnr()
+    let l:nr = winnr("$")
+    let l:cur_col = screencol()
+
+    if l:cur_col < 142 || 1 == l:cur_nr
+	let l:nr = 1
+	while l:nr < l:cur_nr
+	    exe l:nr . "wincmd w"
+	    vertical resize 1
+	    let l:nr += 1
+	endwhile
+
+	exe l:cur_nr . "wincmd w"
+	let l:tmp_wid = 142 - (l:cur_nr - 1) * 2 - 1
+	exe "vertical resize " . l:tmp_wid
+    else
+	let l:tmp_nr = l:cur_nr - 1
+	let l:tmp_col =  142 + wincol() - l:cur_col
+
+	exe l:tmp_nr . "wincmd w"
+	exe "vertical resize +" . l:tmp_col
+
+	exe l:cur_nr . "wincmd w"
+	let l:tmp_wid = 142 - (l:nr - l:cur_nr + 1) * 2
+	exe "vertical resize " . l:tmp_wid
+    endif
+endfunction
+" -------------------------------------------------
 " }}}

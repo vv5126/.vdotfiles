@@ -3,6 +3,13 @@
 function htmldiff(){
 
 src=$VGL_BOOKMARK
+
+ls ~/bookmarks_*.html 2>/dev/null
+if [ "$?" -ne 0 ]; then
+    scp $LOCAL_HOST:~/mnt/57/bookmarks_*.html . 1>/dev/null 2>&1
+    [ "$?" -ne 0 ] && exit
+fi
+
 dst=${1:-$(ls ~/bookmarks_*.html)}
 
 out=./bookmarks_diff

@@ -8,7 +8,9 @@ alias LS='ls'
 alias SL='ls'
 alias ax='chmod +x'
 alias du='du -h -d 1'
-alias grep='grep --color -rn --exclude-dir=".git"'
+alias grep='grep --color --exclude-dir=".git"'
+alias ag='ag --noheading --smart-case'
+
 alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
 
 export LC_ALL=en_US.UTF-8

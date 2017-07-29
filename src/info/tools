@@ -29,6 +29,8 @@ goodproject='
 4 houtianze/bypy
 3 sopel
 3 bypy
+4 hackjutsu/Lepton # for gist
+4 ggreer/the_silver_searcher #ag
 '
 
 zsh='

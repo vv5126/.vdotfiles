@@ -66,9 +66,20 @@ function vcd(){
 	[ -n $TARGET ] && cd $TARGET
 }
 
+function change_to_mozart(){
+    if [[ "$PATH" =~ "toolchains/mipsel-gcc472-glibc216-mips32" ]]; then
+        PATH="${PATH/\/data1\/home\/wgao\/tools\/toolchains\/mipsel-gcc472-glibc216-mips32\/bin:/}"
+        # PATH=/pdev/chains/mips-linux-gnu/bin:$PATH
+    else
+        # PATH="${PATH/\/pdev\/chains\/mips-linux-gnu\/bin:/}"
+        PATH=/data1/home/wgao/tools/toolchains/mipsel-gcc472-glibc216-mips32/bin:$PATH
+    fi
+}
+
 ############# will export ##############
 alias cd='quickcd'
 alias vi='svi'
 alias ..='vcd'
 alias ...='cd_repo'
+export -f change_to_mozart
 ########### will export end ############

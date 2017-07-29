@@ -62,7 +62,7 @@ function mkmain() {
 	    make $job-rebuild
 	fi
     fi
-    make -j20
+    make
 
     _nv=$(md5sum "output/target/nv.img" | awk '{print $1}')
     _usrdata=$(md5sum "output/target/usrdata.jffs2" | awk '{print $1}')

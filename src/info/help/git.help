@@ -4,45 +4,40 @@
 3. 技巧
 补丁
 
-#################################################
-OK
-#################################################
-1. 创建
+### 基础
+* 创建
 git init
      在本地新建一个repo,进入一个项目目录,执行git init,会初始化一个repo,并在当前文件夹下创建一个.git文件夹.
 
 git clone <some repository>
      获取一个url对应的远程Git repo, 创建一个local copy.
-     一般的格式是git clone [url].
-     clone下来的repo会以url最后一个斜线后面的名称命名,创建一个文件夹,如果想要指定特定的名称,可以git clone [url] newname指定.
+     一般的格式是git clone [url]. clone下来的repo会以url最后一个斜线后面的名称命名,创建一个文件夹,如果想要指定特定的名称,可以git clone [url] newname指定.
 
-复制代码仓库：
 git clone --bare /var/www/html/myrepo.git
+    复制代码仓库
 
-克隆远程版本库，但只下载其中最近200个提交的历史记录
  git clone --depth 200 <some repository>
-#################################################
+    克隆远程版本库，但只下载其中最近200个提交的历史记录
 
-#################################################
-2. 配置文件：.gitconfig
-让Git显示颜色，会让命令输出看起来更醒目：
+* 配置文件：.gitconfig
 git config --global color.ui true
+    让Git显示颜色，会让命令输出看起来更醒目：
 
-在命令行中使用不同颜色显示不同内容
 git config --global color.ui "auto"
+    在命令行中使用不同颜色显示不同内容
 
-配置别名 [alias]项
 git config --global alias.st status
 git config --global alias.co checkout
 git config --global alias.ci commit
 git config --global alias.br branch
 git config --global alias.unstage 'reset HEAD'
-以后st就表示status：co表示checkout，ci表示commit，br表示branch：
-加上--global是针对当前用户起作用的，不加只针对当前的仓库起作用。每个仓库的Git配置文件都放在.git/config文件中。
+    配置别名 [alias]项
+    以后st就表示status：co表示checkout，ci表示commit，br表示branch：
+    加上--global是针对当前用户起作用的，不加只针对当前的仓库起作用。每个仓库的Git配置文件都放在.git/config文件中。
 
-配置全局用户名和电子邮件地址
 git config --global user.name "Your Name"
 git config --global user.email "email@example.com"
+    配置全局用户名和电子邮件地址
 
 为特定的版本库配置用户名和电子邮件地址
 注意：你可以为每个版本库单独设置用户名和邮件地址。这使得用户可在不同项目中使用不同的用户名和/或不同的邮件地址。
@@ -52,9 +47,7 @@ git config user.email "email@example.com"
 
 设置一些默认的全局变量，对所有工程代码有效
 git config --global push.default tracking     这样后续git push 后面不用带参数
-#################################################
 
-#################################################
 git clean
      git clean是从工作目录中移除没有track的文件.
      通常的参数是git clean -df:
@@ -72,35 +65,31 @@ git stash
      删除stash中的项目:
      git stash drop: 删除栈顶,也可指定参数删除指定的一个项目.
      git stash clear: 删除所有项目.
-#################################################
 
-#################################################
 OK END
-#################################################
+
 2. 添加
 暂存已有文件上的部分修改
 
-git add <file> 添加文件，可反复多次使用
-git add
-     在提交之前,Git有一个暂存区(staging area),可以放入新添加的文件或者加入新的改动. commit时提交的改动是上一次加入到staging area中的改动,而不是我们disk上的改动.
-     git add .
-     会递归地添加当前工作目录中的所有文件.
+git add <file>
+    添加文件，可反复多次使用
+    在提交之前,Git有一个暂存区(staging area),可以放入新添加的文件或者加入新的改动. commit时提交的改动是上一次加入到staging area中的改动,而不是我们disk上的改动.
+git add .
+    会递归地添加当前工作目录中的所有文件.
 
- git add -p [<some file> [<some file> [and so on]]]"
-选择要提交的文本块……
+git add -p [<some file> [<some file> [and so on]]]
+    选择要提交的文本块……
 
-使用交互方式添加文件
- git add -i
+git add -i
+    使用交互方式添加文件
 
-暂存已纳入Git版本控制之下的文件的修改
- git add -u [<some path> [<some path>]]
+git add -u [<some path> [<some path>]]
+    暂存已纳入Git版本控制之下的文件的修改
 
-#################################################
-合并
-#################################################
-回退
-#################################################
-推送
+* 合并
+* 回退
+* 推送
+
 把修改变化从本地分支推入远程版本库
  git push <remote repository> <local branch>:<remote branch>
 
@@ -117,10 +106,8 @@ git add
 在远程版本库中删除分支
  git push <remote repository> :<remote branch>
 
-#################################################
 分析
 
-#################################################
 分支
 Branches
 

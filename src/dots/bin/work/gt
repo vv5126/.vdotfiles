@@ -181,8 +181,7 @@ if [ $# -gt 0 ];then
                                 repo status
                                 ;;
                         'tag')
-                                cd .repo/manifests
-                                git tag
+                                git --git-dir .repo/manifests/.git/ tag
                                 ;;
                         *)
                                 repo "$@"
