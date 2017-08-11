@@ -33,6 +33,6 @@ be_sudoer() {
 #======================== MAIN
 
 # be_sudoer
-# generate_link
-vim_init
+generate_link
+# vim_init
 echo " done!"

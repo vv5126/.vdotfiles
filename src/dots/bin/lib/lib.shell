@@ -81,5 +81,16 @@ alias cd='quickcd'
 alias vi='svi'
 alias ..='vcd'
 alias ...='cd_repo'
-export -f change_to_mozart
+
+case $(ps -p $$ -o comm=) in
+    'zsh')
+        export ZSH_EXPORTED_FUNCTIONS="$(functions \
+            change_to_mozart \
+            )"
+        ;;
+    *)
+        export -f change_to_mozart
+        ;;
+esac
+
 ########### will export end ############

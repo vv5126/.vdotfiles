@@ -415,14 +415,6 @@ Bundle 'tComment'
         " map <leader>ev :vsp %%
         " map <leader>et :tabe %%
         " -------------------------------------------------
-        "Remove the Windows ^M - when the encodings gets messed up
-        " noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
-        " 去掉所有的^M
-        " noremap <Leader>ff :%s/\\\$//g<cr>:%s/\\\/ /g<cr>
-        " -------------------------------------------------
-        "删除行尾的一个^M
-        " nmap dm :%s/\r\+$//e<cr>:set ff=unix<cr>
-        " -------------------------------------------------
         "以unix格式显示换行符
         " nmap xsm :e ++ff=unix
         "以dos格式显示换行符

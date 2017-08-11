@@ -1,6 +1,7 @@
 
 alias ll='ls -AlFh --color'
 alias ll='ls -alF'
+alias llh='ls -lh'
 alias la='ls -A'
 alias l='ls'
 alias sl='ls'

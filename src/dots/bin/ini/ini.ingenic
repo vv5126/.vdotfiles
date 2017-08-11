@@ -1,6 +1,6 @@
 
 WORK_SERVER_MAIN=wgao@192.168.4.15
-export LOCAL_HOST=user@192.168.2.106
+export LOCAL_HOST=user@192.168.4.150
 
 # imgs #
 export VGL_BOARDS=/data1/home/wgao/work/local_debug/boards
@@ -24,6 +24,8 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 
 # 4.15 #
 [[ $(uname -n) == 'lqchen-0B' ]] && {
+    # [ "$(ps -p $$ -o comm=)" != 'zsh' -a -x '/data1/home/wgao/.local/bin/zsh' ] && exec /data1/home/wgao/.local/bin/zsh
+
     # PATH=/usr/lib/jvm/java/bin:/data1/home/wgao/thync/mips-gcc472-glibc216/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games # debug for thync
 
     # JDK

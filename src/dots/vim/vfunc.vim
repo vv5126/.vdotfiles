@@ -211,6 +211,7 @@ function! VZOOM()
 	let l:tmp_wid = 142 - (l:nr - l:cur_nr + 1) * 2
 	exe "vertical resize " . l:tmp_wid
     endif
+endfunction
 
 function! HasPaste()
     if &paste

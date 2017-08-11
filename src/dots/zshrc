@@ -5,7 +5,7 @@ export ZSH=$HOME/.vim/bundle/oh-my-zsh
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 
-[ ! -f "$ZSH/themes/w.zsh-theme" ] && (ln -s "$HOME/.vdotfiles/src/zsh-plugin/w.zsh-theme" "$ZSH/themes/w.zsh-theme")
+[ ! -f "$ZSH/themes/w.zsh-theme" ] && (ln -sf "$HOME/.vdotfiles/src/plugins/zsh-plugin/w.zsh-theme" "$ZSH/themes/w.zsh-theme")
 ZSH_THEME="w"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -62,8 +62,6 @@ source $HOME/.bin/base/batchExport
 # for autojump
 [[ -s /home/user/.autojump/etc/profile.d/autojump.sh ]] && source /home/user/.autojump/etc/profile.d/autojump.sh
 autoload -U compinit && compinit -u
-
-eval "$(fasd --init auto)"
 
 alias v='f -e vim'
 
@@ -445,3 +443,32 @@ export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
 export LESS_TERMCAP_so=$'\E[38;5;246m'    # begin standout-mode - info box
 export LESS_TERMCAP_ue=$'\E[0m'           # end underline
 export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
+
+fancy-ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+    BUFFER="fg"
+    zle accept-line
+  else
+    zle push-input
+    zle clear-screen
+  fi
+}
+
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
+
+
+eval "$(fasd --init auto)"
+fasd_cd ()
+{
+    if [ $# -le 1 ]; then
+	fasd "$@";
+    else
+	local _fasd_ret="$(fasd -e 'printf %s' "$@")";
+	[ -z "$_fasd_ret" ] && return;
+	[ -d "$_fasd_ret" ] && printf %s\\n "$_fasd_ret" && cd "$_fasd_ret";
+    fi
+}
+alias j='z'
+alias jj='zz'
+alias v='f -e vim'
