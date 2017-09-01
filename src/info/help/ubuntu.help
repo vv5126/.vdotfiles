@@ -129,3 +129,6 @@ $ python -m SimpleHTTPServer
 
 ### 执行命令前用你最喜欢的编辑器来编辑命令
 command <C-x C-e>
+
+talnet xxx 端口 
+dos2unix 可以将dos下的脚本格式化为unix下的。

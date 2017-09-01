@@ -1,17 +1,37 @@
 #!/bin/bash
 
-CLONER_LINK="$HOME/.local/cloner_link"
+if [ $# -eq 0 ]; then
+    source ~/.cloner/.cloner_info 2>/dev/null
+    if [ -z "$cloner_version" ]; then
+	select var in $(ls ~/.cloner/ -1 | sed -n '/^cloner-/p;') ;do
+	    break
+	done
 
-[ $# -eq 1 ] && select=$1
+	if [ -n "$var" ]; then
+	    echo "cloner_version=$var" > ~/.cloner/.cloner_info
+	    cloner_version="$var"
+	fi
+    fi
+else
+    (("$1"+1))
+    if [ $? -eq 0 ]; then
+	select="$1"
+	if [ "$select" == '0' ]; then
+	    select var in $(ls ~/.cloner/ -1 | sed -n '/^cloner-/p;') ;do
+		break
+	    done
+	else
+	    var="$(ls ~/.cloner/ -1 | sed -n '/^cloner-/p;' | head -$select | tail -1)"
+	fi
 
-cd ~
+	if [ -n "$var" ]; then
+	    echo "cloner_version=$var" > ~/.cloner/.cloner_info
+	    cloner_version="$var"
+	fi
+    fi
+fi
 
-# cloner_file=$(ls ~/ -at1 | grep .cloner- | head -1 &2>/dev/null)
-cloner_file=$(ls ~/ -al | grep ^d - | awk '{print $9}' | grep cloner- - | head -$select | tail -1 &2>/dev/null)
-
-ln -sf $HOME/$cloner_file/cloner $CLONER_LINK
-
-cd $cloner_file
-
-# sudo ./cloner
-sudo $CLONER_LINK
+if [ -n "$cloner_version" ]; then
+    echo cloner_version: "$cloner_version"
+    cd $HOME/.cloner/$cloner_version
+fi

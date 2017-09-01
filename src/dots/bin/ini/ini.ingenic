@@ -26,8 +26,6 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 [[ $(uname -n) == 'lqchen-0B' ]] && {
     # [ "$(ps -p $$ -o comm=)" != 'zsh' -a -x '/data1/home/wgao/.local/bin/zsh' ] && exec /data1/home/wgao/.local/bin/zsh
 
-    # PATH=/usr/lib/jvm/java/bin:/data1/home/wgao/thync/mips-gcc472-glibc216/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games # debug for thync
-
     # JDK
     # PATH=/data1/home/wgao/tools/JDK-1.5.0/jdk1.6.0_31/bin:$PATH
     # export JAVA_HOME="/data1/home/wgao/tools/jdk1.6.0_31"
@@ -36,22 +34,11 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
 
     # GCC
-    # PATH=/data1/home/wgao/tools/toolchains/mipseltools-gcc412-glibc261/bin:$PATH
-
-    # mozart
-    # PATH=/data1/home/wgao/tools/toolchains/mipsel-gcc472-glibc216-mips32/bin:$PATH
-
-    # PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
-    # PATH=/pdev/chains/mips-gcc520-glibc222/bin:$PATH
     PATH=/pdev/chains/mips-linux-gnu/bin:$PATH
-    # export CROSS_COMPILE=mips-linux-gnu-gcc-4.7.2
 
-    # GCC for Android
-    PATH=/data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin:$PATH
-    # PATH=/data1/home/wgao/tools/toolchains/mips64el-linux-android-4.9/bin:$PATH
-    # export CROSS_COMPILE=mips64el-linux-android- # for android
     # VIM8
     PATH=/data1/home/wgao/tools/vim8/bin:$PATH
+    PATH=/data1/home/wgao/tools/llvm/bin:$PATH
 
     alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
     alias wiz='nohup $HOME/tools/wiz/src/WizNote > /dev/null &'
@@ -66,7 +53,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     export VGL_BOOKMARK='/data1/home/wgao/.vdotfiles/src/bookmark/bookmark.html'
     export VGLD_CRACK_DIR=/data1/home/wgao/v/bbb
 
-    # export LD_LIBRARY_PATH=
+    export LD_LIBRARY_PATH=/data1/home/wgao/.local/lib
     export GOPATH=/data1/home/wgao/tools/godir
 
     # vim8 with python3
@@ -107,7 +94,7 @@ export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH
 }
 
-clear
+# clear
 
 # [unused]
 # rm ~/.bash_history* >/dev/null 2>&1

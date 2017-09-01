@@ -1,4 +1,45 @@
 
+
+mkdir build
+cd build
+cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON ..
+
+cmake -D CMAKE_INSTALL_PREFIX=/usr "CMakeLists.txt dir"
+
+wifi no mac:
+#define BOOTARGS_COMMON BOOTARGS_BASE " wifi_mac=94A1A284903C "
+
+
+ 我给AVS做了repo工程，下载方式如下：
+
+repo init -u ssh://192.168.1.26:29418/Manhattan/platform/manifest -b 
+mozart-avs
+repo sync
+
+
+1. 首先执行envsetup.sh脚本配置编译环境
+    source build/envsetup.sh
+
+2.直接全编整个系统：
+v23板子：
+        #make v23
+V10板子：
+        #make v10
+
+
+
+
+
+下面的下载方式可以将molib库下载并编译，供开发人员使用，由于molib库是保密的，请勿外传！
+> repo init -u ssh://192.168.1.26:29418/Manhattan/platform/manifest -b dev/mozart-avs 
+
+
+
+
+
+
+
+
 echo mem > /sys/power/state
 
 

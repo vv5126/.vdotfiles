@@ -66,14 +66,41 @@ function vcd(){
 	[ -n $TARGET ] && cd $TARGET
 }
 
-function change_to_mozart(){
-    if [[ "$PATH" =~ "toolchains/mipsel-gcc472-glibc216-mips32" ]]; then
-        PATH="${PATH/\/data1\/home\/wgao\/tools\/toolchains\/mipsel-gcc472-glibc216-mips32\/bin:/}"
-        # PATH=/pdev/chains/mips-linux-gnu/bin:$PATH
+function change_toolchain(){
+
+    paths="
+    # GCC for Android
+    # /data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin
+    # /data1/home/wgao/tools/toolchains/mips64el-linux-android-4.9/bin
+    # debug for thync
+    # /data1/home/wgao/thync/mips-gcc472-glibc216/bin
+    # export CROSS_COMPILE=mips-linux-gnu-gcc-4.7.2
+    # export CROSS_COMPILE=mips64el-linux-android- # for android
+    /pdev/chains/mips-gcc472-glibc216/bin
+    /pdev/chains/mips-gcc520-glibc222/bin
+    /pdev/chains/mips-linux-gnu/bin
+    /data1/home/wgao/tools/toolchains/mipsel-gcc472-glibc216-mips32/bin
+    # mozart
+    /data1/home/wgao/tools/toolchains/mipseltools-gcc412-glibc261/bin"
+
+    OLD_IFS="$IFS"
+    IFS=$'\n'
+
+    select var in $(echo "$paths" | sed -n "/^\ \+\#/!p;" | sed -n "s/^\ \+//p;"); do
+        break
+    done
+
+    IFS="$OLD_IFS"
+
+    if [[ "$PATH" =~ "$var:" ]]; then
+        tmp="${PATH/$var:/}"
+    elif [[ "$PATH" =~ ":$var" ]]; then
+        tmp="${PATH/:$var/}"
     else
-        # PATH="${PATH/\/pdev\/chains\/mips-linux-gnu\/bin:/}"
-        PATH=/data1/home/wgao/tools/toolchains/mipsel-gcc472-glibc216-mips32/bin:$PATH
+        tmp="$PATH"
     fi
+
+    PATH=$var:$tmp
 }
 
 ############# will export ##############
@@ -85,11 +112,11 @@ alias ...='cd_repo'
 case $(ps -p $$ -o comm=) in
     'zsh')
         export ZSH_EXPORTED_FUNCTIONS="$(functions \
-            change_to_mozart \
+            change_toolchain \
             )"
         ;;
     *)
-        export -f change_to_mozart
+        export -f change_toolchain
         ;;
 esac
 

@@ -14,7 +14,7 @@ function git_push() {
         if [[ "$branch" =~ '(' ]]; then
                 branch="$(git branch -a | sed -n '/->/p')"
                 branch=${branch##*-> }
-                branch=${branch##*/}
+                branch=${branch#*/}
         else
                 branch=${branch##* }
                 # branch=${branch##*/}

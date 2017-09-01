@@ -49,7 +49,7 @@ function processBar()
 }
 
 function analysis_and_get() {
-    cloner_version="$(ssh $LOCAL_HOST "ls ~/.local/cloner_link -l | sed -n -e 's/^.*\.cloner\///' -e 's/\/cloner$//p;' -")"
+    eval $(ssh $LOCAL_HOST "cat ~/.cloner/.cloner_info")
     d_cfgs="$CLONER_DIR/$cloner_version/configs"
     scp "$LOCAL_HOST:$d_cfgs/$f_platform_name" . >/dev/null
     local cfg_name="$(sed -n -e 's/^board=//p;' $f_platform_name)"
@@ -68,8 +68,10 @@ function correct_cfg() {
 
     num=0
     for i in $(sed -n -e '/^\[policy[0-9].*\]/p;' $f_cfg_name); do
-	[ "${enabled[$num]}" -eq 1 ] && str="$str ${label[$num]} ${attribute[$num]#*boards/} on" \
-				     || str="$str ${label[$num]} ${attribute[$num]#*boards/} off"
+	if [ -n "${label[$num]}" ] && [ -n "${attribute[$num]}" ]; then
+	    [ "${enabled[$num]}" -eq 1 ] && str="$str ${label[$num]} ${attribute[$num]#*boards/} on" \
+					|| str="$str ${label[$num]} ${attribute[$num]#*boards/} off"
+	fi
 	((num+=1))
     done
 

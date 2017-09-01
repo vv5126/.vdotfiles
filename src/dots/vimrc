@@ -58,6 +58,8 @@
     " -------------------------------
     " -------------------------------
     " -------------------------------------------------
+    " good.
+    " -------------------------------------------------
     " Vim8 异步运行shell
     Bundle 'skywind3000/asyncrun.vim'
     " -------------------------------------------------
@@ -111,6 +113,10 @@
     Bundle 'junegunn/vim-easy-align'
     nmap ga <Plug>(EasyAlign)
     xmap ga <Plug>(EasyAlign)
+    " -------------------------------------------------
+    " 排版
+    " Bundle 'Chiel92/vim-autoformat'
+    Bundle 'rhysd/vim-clang-format'
     " -------------------------------------------------
     " end 自动补全
     Bundle 'tpope/vim-endwise'
@@ -174,6 +180,33 @@
     " -------------------------------------------------
     " dealing
     " -------------------------------------------------
+    " 缩进代替
+    " Bundle 'tpope/vim-sleuth'
+    " -------------------------------------------------
+    Bundle 'haya14busa/incsearch.vim'
+    map /  <Plug>(incsearch-forward)
+    " -------------------------------------------------
+    " Bundle 'vim-utils/vim-man'
+    " -------------------------------------------------
+    " color theme浏览插件,列出所有的vim color theme到一个列表中,选中后按回车即可应用
+    " Bundle 'sjas/csExplorer'
+    " -------------------------------------------------
+    " 打开quickfix快捷键
+    Bundle 'Valloric/ListToggle'
+    " let g:lt_location_list_toggle_map = '<leader>ff'
+    let g:lt_quickfix_list_toggle_map = '<leader>qq'
+    let g:lt_height = 10
+    " -------------------------------------------------
+    " vim中打开终端的功能+
+    " Bundle 'Shougo/vimshell.vim'
+    " Please install vimproc Ver.6.0 or above.
+    " Bundle 'Shougo/vimproc'
+    " -------------------------------------------------
+    " -------------------------------------------------
+    " -------------------------------------------------
+    " -------------------------------------------------
+    " -------------------------------------------------
+    " -------------------------------------------------
     " Bundle 'jeaye/color_coded'
     " let g:color_coded_enabled = 1
     " let g:color_coded_filetypes = ['c', 'cpp', 'objc']
@@ -192,7 +225,6 @@
     "noremap <leader>j :CommandT<cr>
     "noremap <leader>y :CommandTFlush<cr>
     " -------------------------------------------------
-    " Bundle 'ervandew/supertab'
     " -------------------------------------------------
     "智能补全
     " Bundle 'mbbill/code_complete'
@@ -203,22 +235,17 @@
     "Bundle 'cctree'             " 可以查看function的call tree
     " -------------------------------------------------
     if executable('ack')
-	" 可以键入 p 键，将在右侧子窗口中给出该匹配项的完整代码，而不再仅有前后几行。
-	" 不想跳至任何匹配项，可以直接键入  q 退出 ctrlsf.vim；如果有钟意的匹配项，
-	" 光标定位该项后回车，立即跳至新 buffer 中对应位置。
-        Bundle 'dyng/ctrlsf.vim'
-	" vmap <C-E>a <Plug>CtrlSFVwordPath
+        " Bundle 'dyng/ctrlsf.vim'
+	" " vmap <C-E>a <Plug>CtrlSFVwordPath
+	" let g:ctrlsf_default_root = 'project'
     endif
     " -------------------------------------------------
     Bundle 'dkprice/vim-easygrep'
-    let g:EasyGrepMode = 2     " All:0, Open Buffers:1, TrackExt:2, 
+    let g:EasyGrepMode = 2     " All:0, Open Buffers:1, TrackExt:2,
     let g:EasyGrepCommand = 0  " Use vimgrep:0, grepprg:1
     let g:EasyGrepRecursive  = 1 " Recursive searching
     let g:EasyGrepIgnoreCase = 1 " not ignorecase:0
     let g:EasyGrepFilesToExclude = "*.bak, *~, cscope.*, *.a, *.o, *.pyc, *.bak"
-    " -------------------------------------------------
-    " Syntax highlighting for GLib, Gtk+, Xlib, Gimp, Gstreamer, and more. 
-    " Bundle 'gtk-vim-syntax'
     " -------------------------------------------------
     " 工程内查找与替换+
     Bundle 'grep.vim'
@@ -251,9 +278,6 @@
     " Bundle 'osyo-manga/unite-quickfix'
     " Bundle 'tsukkee/unite-tag'
     " -------------------------------------------------
-    " Bundle 'haya14busa/incsearch.vim'
-    " map /  <Plug>(incsearch-forward)
-    " -------------------------------------------------
     Bundle 'will133/vim-dirdiff'
     let g:DirDiffExcludes = "CVS,*.class,*.exe,.*.swp, .*.cmd, *.o, .git"
     " -------------------------------------------------
@@ -264,14 +288,9 @@
     " Bundle 'kana/vim-textobj-indent'
     " Bundle 'kana/vim-textobj-user'
     " -------------------------------------------------
-    " 快速打开关闭quickfix window
-    " Bundle '907th/vim-qfix'
-    " -------------------------------------------------
     " 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
     " Bundle 'navicore/vis.vim'
     " -------------------------------------------------
-    " 某些插件会用到的库
-    " Bundle 'tlib'
     " -------------------------------------------------
     " 语法高亮 似乎不好用
     " Bundle 'plasticboy/vim-markdown'
@@ -279,8 +298,6 @@
     " -------------------------------------------------
     " Bundle 'vimwiki/vimwiki'
     " -------------------------------------------------
-    " 将语法高亮转成 BBS 上的彩色
-    " toansi.vim
     " -------------------------------------------------
     " 让大文件打开快一点
     " LargeFile.vim
@@ -291,8 +308,6 @@
     " 自制的工程管理插件
     " project.vim
     " -------------------------------------------------
-    " Bundle 'vim-utils/vim-man'
-    " -------------------------------------------------
     " array操作库函数，multiselect依赖它
     " Bundle 'multvals.vim'
     " -------------------------------------------------
@@ -300,15 +315,7 @@
     " 给vim增加生成递增或者递减数列的功能,支持十进制,十六进制,日期,星期等,功能强大灵活
     " Bundle 'VisIncr'
     " -------------------------------------------------
-    " 一些插件用到的一些库函数
-    " cecutil.vim
     " -------------------------------------------------
-    " netrw清理工具，经常升级netrw的话，用来删除老版本
-    " netrwclean.vim
-    " Bundle 'netrw.vba.gz'
-    " -------------------------------------------------
-    " 功能强大的缩写扩展，vim版的TextMate
-    " snippetsEmu.vim
     " -------------------------------------------------
     " runs make and shows the test run status with a red or green bar.
     " Bundle 'reinh/vim-makegreen'
@@ -316,11 +323,6 @@
     " C++相关
     " Bundle 'stl.vim' "stl语法高亮+
     " Bundle 'stlrefvim' "stl帮助 +
-    " -------------------------------------------------
-    Bundle 'Valloric/ListToggle'
-    let g:lt_location_list_toggle_map = '<leader>ff'
-    let g:lt_quickfix_list_toggle_map = '<leader>qq'
-    let g:lt_height = 10
     " -------------------------------------------------
     " Bundle 'Wildog/airline-weather.vim'
     " -------------------------------------------------
@@ -367,18 +369,8 @@
     " map <C-Tab> :MBEbn<cr>
     " map <C-S-Tab> :MBEbp<cr>
     " -------------------------------------------------
-    " vim中打开终端的功能+
-    " Bundle 'Shougo/vimshell.vim'
-    " Please install vimproc Ver.6.0 or above.
-    " -------------------------------------------------
-    " color theme浏览插件,列出所有的vim color theme到一个列表中,选中后按回车即可应用
-    " Bundle 'sjas/csExplorer'
-    " -------------------------------------------------
     " 异步语法检查
     " Bundle 'w0rp/ale'
-    " -------------------------------------------------
-    " smooth scroll
-    Bundle 'yonchu/accelerated-smooth-scroll'
     " -------------------------------------------------
     " 扩展了vim的%功能,让%可以匹配的,不再仅仅是括号,支持多种语言.必备插件之一
     " 'matchit.zip', has in bundle
@@ -388,31 +380,18 @@
     " Very small, clean but quick and powerful buffer manager. c.
     " qbuf
     " -------------------------------------------------
-    " ShowFunc.vim  <-------- 暂时没有使用
-    " F2打开ShowFunc TagList窗口，显示C/C++函数原型
-    " map <F2> <Plug>ShowFunc
     " -------------------------------------------------
     if 0
-	Bundle 'ccglue'
 	Bundle 'jsfaint/gen_tags.vim'
-	Bundle 'PasteBin.vim'
-	Bundle 'tohtml.vim'
-	Bundle 'matchparen.vim'
+	Bundle 'gtags.vim'
+	Bundle 'matchparen/'
 	Bundle 'xml.vim'
-	Bundle 'zipPlugin.vim'
-	Bundle 'cuteErrorMarker.vim'
 	Bundle 'tpope/vim-git'
-	Bundle 'rrhelper.vim'
 	Bundle 'winfileexplorer.vim'
 	Bundle 'wintagexplorer.vim'
-	Bundle 'gtags.vim'
 	Bundle 'chrisbra/csv.vim'
-	Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-	Bundle 'tpope/vim-rails.git'
-	Bundle 'python-imports.vim'
 	Bundle 'CaptureClipboard'
 	Bundle 'ctrlp-modified.vim'
-	Bundle 'SQLComplete.vim'
     endif
     " -------------------------------------------------
 " }
@@ -599,10 +578,13 @@
         cnoremap <C-P> <Up>
         cnoremap <C-N> <Down>
 
-        "比较文件
+        " 比较文件
         nnoremap <leader>df :vert diffsplit 
         nnoremap <leader>dff :diffoff<cr>
 
+	" i/a 技巧: di da vi va ya yi...
+	" 快速选择段中串
+	map <leader>u vi"
 	" Markdown
         map <leader>md :MarkdownPreview<cr>
 
@@ -797,6 +779,9 @@
 	nnoremap <leader>gl :YcmCompleter GoToDefinitionElseDeclaration<CR>
 	" nmap <F3> :YcmDiags<CR>
 
+	" let g:UltiSnipsExpandTrigger="<c-m>"
+	" let g:UltiSnipsJumpForwardTrigger="<c-j>"
+	" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
     endif
 
     " -------------------------------------------------
@@ -920,7 +905,7 @@
 " }}}
 " }}}
 
-"{{{ yingxiang paiban 
+"{{{ yingxiang paiban
         "函数内排版
         nmap = =a{
 

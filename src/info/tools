@@ -31,6 +31,8 @@ goodproject='
 3 bypy
 4 hackjutsu/Lepton # for gist
 4 ggreer/the_silver_searcher #ag
+4 rizsotto/Bear
+1 wmctrl
 '
 
 zsh='
