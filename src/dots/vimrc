@@ -144,9 +144,6 @@
     vmap v <Plug>(expand_region_expand)
     vmap <C-v> <Plug>(expand_region_shrink)
     " -------------------------------------------------
-    " 将代码行最后无效的空格标红
-    " Bundle 'ShowTrailingWhitespace'
-    " -------------------------------------------------
     " 为小括号加如彩虹效果，但对c貌似没啥意义...
     Bundle 'kien/rainbow_parentheses.vim'
     let g:rbpt_colorpairs = [
@@ -169,6 +166,10 @@
 		\ ]
     let g:rbpt_max = 16
     let g:rbpt_loadcmd_toggle = 0
+    " au VimEnter * RainbowParenthesesToggle
+    " au Syntax * RainbowParenthesesLoadRound
+    " au Syntax * RainbowParenthesesLoadSquare
+    " au Syntax * RainbowParenthesesLoadBraces
     " -------------------------------------------------
     " -------------------------------------------------
     " dealing
@@ -233,17 +234,9 @@
     " 结构化数据变成漂亮的表
     " Bundle 'Stormherz/tablify'
     " -------------------------------------------------
-    " 自动排版，可以少打很多空格
-    " Bundle 'ywgx/auto.vim'
     " -------------------------------------------------
     " 检测当光标改变时，执行函数
     " Bundle 'hookcursormoved'
-    " -------------------------------------------------
-    " 函数提示
-    " Bundle 'mbbill/echofunc'
-    " -------------------------------------------------
-    " 快速注释
-    " Bundle 'tpope/vim-commentary'
     " -------------------------------------------------
     " 类似emacs的king ring,给vim的yank也增加缓冲,vim本身只缓冲删除的字符串,不缓冲yank的内容,这个插件可以同时粘贴多个需要的单词等
     " Bundle 'YankRing.vim'

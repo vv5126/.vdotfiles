@@ -935,3 +935,8 @@ function! ADD_YCM_CONF()
         echon c
     endif
 endfunction
+
+# ---------unused plugin
+    " 将代码行最后无效的空格标红
+    " Bundle 'ShowTrailingWhitespace'
+# ---------unused plugin end
