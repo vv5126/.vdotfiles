@@ -7,6 +7,15 @@ source ~/.bin/lib/lib.misc
 APP_DIR=$(which $0)
 APP_DIR=${APP_DIR%\/*}
 
+function get_project_source_path() {
+        cd .repo/manifests
+	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $2}'`
+        branch="$(git branch -a | sed -n '/->/p;')"
+        branch="${branch##*-> }"
+        branch="${branch##*/}"
+        echo repo init -u $warehouse -b $branch
+}
+
 function git_push() {
         local branch
 	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $1}'`
@@ -182,6 +191,9 @@ if [ $# -gt 0 ];then
                                 ;;
                         'tag')
                                 git --git-dir .repo/manifests/.git/ tag
+                                ;;
+                        'l')
+                                get_project_source_path
                                 ;;
                         *)
                                 repo "$@"

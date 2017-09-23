@@ -2,7 +2,7 @@
 
 source ~/.bin/lib/lib.base
 
-dir=${1:-~/tools/v/bbb}
+dir=${2:-~/tools/v/bbb}
 
 cd $dir
 

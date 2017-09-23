@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.bin/lib/lib.base
+
 dst=$VGL_ASD_FILE
 
 is_local $dst

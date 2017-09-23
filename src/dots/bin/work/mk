@@ -74,6 +74,17 @@ function mkn()
         fi
 }
 
+function tagbuild() {
+    find . -name '*.cc' -o -name '*.h' -o -name '*.c' > '/tmp/.cs_db'
+    cscope -bkq -i '/tmp/.cs_db'
+    # find . -name '*.cc' -o -name '*.h' -o -name '*.c' > 'cscope.files'
+    # cscope -bkq
+    # echo gen cscope done!
+    # ctags -L /tmp/.cs_db
+    [ -f 'tags' ] || ctags -R --file-scope=yes --langmap=c:+.h --languages=c,c++ --links=yes --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q
+    # echo gen tag done!
+}
+
 function mkmain() {
         # goto project root directory if possible.
         export TRIGGER_DIR=$PWD
@@ -82,6 +93,10 @@ function mkmain() {
         # creat new project
         get_param '-c' $@
         [ $? -eq 0 ] && { mkn; return 0; }
+
+        # creat tag
+        get_param '-t' $@
+        [ $? -eq 0 ] && { tagbuild; return 0; }
 
         # check kernel version.
         get_param '-v' $@

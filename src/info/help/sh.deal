@@ -2,13 +2,13 @@
 一、Shell语法
 1.1、变量声明
 
-变量＝值 （注意：等号两侧不能有空格） 
+变量＝值 （注意：等号两侧不能有空格）
 a="hello"
 b=9
 
 变量应用中要注意：
-echo '$1 = $1 ; $2 = $2'; 屏蔽$1 ,屏蔽$2，直接显示$1 ,$2，同理也屏蔽了*的通配符作用 
-${SAT}day ，变量要与字符串连在一起时，应该用 ${} 
+echo '$1 = $1 ; $2 = $2'; 屏蔽$1 ,屏蔽$2，直接显示$1 ,$2，同理也屏蔽了*的通配符作用
+${SAT}day ，变量要与字符串连在一起时，应该用 ${}
 a= `ls -al` 反引号，运行里面的命令，并把结果返回给变量a
 a=$(ls -al) 等价于反引号
 单引号‘’和双引号“”的区别，单引号完全屏蔽 $a 变量，双引号不屏蔽$a,单引号和双引号都屏蔽 * 的通配符作用。
@@ -22,44 +22,43 @@ name[2]="John"
 name=("Tom" "Tomy" "John")
 
 例子：
-#!/bin/bash
 name=("Tom" "Tomy" "John")
 for i in 0 1 2
 do
-echo $i:${name[$i]} 
+echo $i:${name[$i]}
 
-上面的例子中使用了$0 $1 $2 $# $? 等变量，下面是程序的解释： 
-判断运行参数个数，如果不等于2，显示使用"用法帮助", 其中 $0 表示就是脚本自己。 
-用grep 在$2 文件中查找$1 字符串。 
-判断前一个命令运行后的返回值(一般成功都会返回0, 失败都会返回非0)。 
-如果没有成功显示没找到相关信息，否则显示找到了。 
+上面的例子中使用了$0 $1 $2 $# $? 等变量，下面是程序的解释：
+判断运行参数个数，如果不等于2，显示使用"用法帮助", 其中 $0 表示就是脚本自己。
+用grep 在$2 文件中查找$1 字符串。
+判断前一个命令运行后的返回值(一般成功都会返回0, 失败都会返回非0)。
+如果没有成功显示没找到相关信息，否则显示找到了。
 其中"表示转义，在"" 里面还需要显示"号，则需要加上转义符"
 
 1.4.1、整数运算符
 
-整数的算术运算符 
-+ － * / % 
-赋值运算符 
-＋＝ －＝ * ＝ / ＝ ％＝ 
-位运算符 
-<< >> & | ~ ^ 
-位运算赋值运算符 
-<< ＝ >> ＝ & ＝ | ＝ ~ ＝ ^ ＝ 
-逻辑运算符： 
-&& || ! > > ＝ < < ＝ !＝ ＝＝ 
+整数的算术运算符
++ － * / %
+赋值运算符
+＋＝ －＝ * ＝ / ＝ ％＝
+位运算符
+<< >> & | ~ ^
+位运算赋值运算符
+<< ＝ >> ＝ & ＝ | ＝ ~ ＝ ^ ＝
+逻辑运算符：
+&& || ! > > ＝ < < ＝ !＝ ＝＝
 
-expr命令计算一个表达式的值 
+expr命令计算一个表达式的值
 格式 :expr arg
 例子：
-计算（2 ＋3 ）×4 的值 
+计算（2 ＋3 ）×4 的值
 1 、分步计算，即先计算2 ＋3 ，再对其和乘4
 s=`expr 2 + 3`
 expr $s * 4
-2 、一步完成计算： 
-expr `expr 2 + 3 ` * 4 
-说明： 
-运算符号和参数之间要有空格分开； 
-通配符号（* ）, 在作为乘法运算符时要用 、“” 、‘’ 符号修饰 
+2 、一步完成计算：
+expr `expr 2 + 3 ` * 4
+说明：
+运算符号和参数之间要有空格分开；
+通配符号（* ）, 在作为乘法运算符时要用 、“” 、‘’ 符号修饰
 
 关键字let计算表达式的值：
 #!/bin/bash
@@ -67,18 +66,18 @@ x=2006
 let "x = $x + 1"
 echo $x
 x="a string."
-echo $x 
+echo $x
 
-又出现了新的关键字：let。关于整数变量计算，有如下几种：" + - * / % "，他们的意思和字面意思相同，在*和/之前必须冠以反斜线，已防被SHELL先行解释。整数运算一般通过 let 和 expr 这两个指令来实现，如对变量 x 加 1 可以写作：let "x = $x + 1" 或者 x=`expr $x + 1` 
+又出现了新的关键字：let。关于整数变量计算，有如下几种：" + - * / % "，他们的意思和字面意思相同，在*和/之前必须冠以反斜线，已防被SHELL先行解释。整数运算一般通过 let 和 expr 这两个指令来实现，如对变量 x 加 1 可以写作：let "x = $x + 1" 或者 x=`expr $x + 1`
 
 
 逻辑连接符：
-! expr 当expr的值是False时,返回True 
-Expr1 -a expr2 当expr1,expr2值同为True时,返回True 
-Expr1 -o expr2 当expr1,expr2的值至少有一个为True时,返回True 
+! expr 当expr的值是False时,返回True
+Expr1 -a expr2 当expr1,expr2值同为True时,返回True
+Expr1 -o expr2 当expr1,expr2的值至少有一个为True时,返回True
 
 命令逻辑连接符：
-[ -r "$mailfolder" ]||{ echo "Can not read $mailfolder" ; exit 1; } 
+[ -r "$mailfolder" ]||{ echo "Can not read $mailfolder" ; exit 1; }
 使用{}把两个命令括起来，表示一个函数的用法。 && 与 ||或
 [ -f "/etc/shadow" ] && echo "This computer uses shadow passwors"
 注意：在“[”和“]”符号的左右都留有空格
@@ -94,20 +93,20 @@ grep "^From " $mailfolder
 1.5.2、case语句
 
 例子：
-#!/bin/bash 
+#!/bin/bash
 echo "Hit a key, then hit return."
-read Keypress 
+read Keypress
 
 case "$Keypress" in
 [a-z] ) echo "Lowercase letter";;
 [A-Z] ) echo "Uppercase letter";;
 [0-9] ) echo "Digit";;
 * ) echo "Punctuation, whitespace, or other";;
-esac 
+esac
 exit 0
 
 1.5.3、select 语句
-尤其擅长于交互式使用。用户可以从一组不同的值中进行选择。 
+尤其擅长于交互式使用。用户可以从一组不同的值中进行选择。
 
 select var in ... ; do
 　break
@@ -121,9 +120,9 @@ select var in "Linux" "Gnu Hurd" "Free BSD" "Other"; do
 done
 echo "You have selected $var"
 
-下面是该脚本运行的结果： 
+下面是该脚本运行的结果：
 What is your favourite OS?
-1) Linux 
+1) Linux
 2) Gnu Hurd
 3) Free BSD
 4) Other
@@ -157,9 +156,9 @@ for rpmpackage in $*; do
 done
 
 例子3：
-for var1 in "$@" 
-do 
-#statements 
+for var1 in "$@"
+do
+#statements
 done
 例2和例3的 $* 和“$@”是相同的
 
@@ -169,19 +168,19 @@ while [ express ]; do
 Done
 
 例子1：
-count=1 
-while [ -n "$*"] 
-do 
-echo "this is a parameter number $count $1" 
-shift 
-count='expr $count + 1' 
+count=1
+while [ -n "$*"]
+do
+echo "this is a parameter number $count $1"
+shift
+count='expr $count + 1'
 done
 
 例子2：
 while [ -n "$1" ]; do
 case $1 in
--h) help;shift 1;; # function help is called 
-# 执行 help 函数 ， shift 1 表示，移除第一个变量 $1 ,则第二个变为： $1 
+-h) help;shift 1;; # function help is called
+# 执行 help 函数 ， shift 1 表示，移除第一个变量 $1 ,则第二个变为： $1
 　　-f) opt_f=1;shift 1;; # variable opt_f is set
 　　-l) opt_l=$2;shift 2;; # -l takes an argument -> shift by 2
 　　--) shift;break;; # end of options
@@ -195,31 +194,31 @@ done
 1.6.3、breake 和continue
 关键字"break" 用来跳出循环。而关键字”continue”用来不执行余下的部分而直接跳到下一个循环。
 
-1.6.4、shiftshift将存放在位置变量中的命令行参数,依次向左传递.例如 
-位置变量当前值为: 
-$1=file1 $2=file2 $3=file3 
-执行一次shift命令后,位置变量的值为: 
-$1=file2 $2=file3 
-还可以在shift命令中指定位置变量转移的次数, 如: 
-shift n 
-例子: 
-while [ "$1"] 
-do 
-if [ "$1"="-i"] then 
-infile=" $2" 
-shift 2 
-else if [ "$1"="-o"] then 
-outfile="$2" 
-shift 2 
-else 
-echo "Program $0 does not recognize option $1" 
-fi 
-done 
+1.6.4、shiftshift将存放在位置变量中的命令行参数,依次向左传递.例如
+位置变量当前值为:
+$1=file1 $2=file2 $3=file3
+执行一次shift命令后,位置变量的值为:
+$1=file2 $2=file3
+还可以在shift命令中指定位置变量转移的次数, 如:
+shift n
+例子:
+while [ "$1"]
+do
+if [ "$1"="-i"] then
+infile=" $2"
+shift 2
+else if [ "$1"="-o"] then
+outfile="$2"
+shift 2
+else
+echo "Program $0 does not recognize option $1"
+fi
+done
 tr a-z A-Z<$infile>$outfile
 
 
 二、函数
-脚本 b2d 将二进制数 (比如 1101) 转换为相应的十进制数。这也是一个用expr命令进行数学运算的例子： 
+脚本 b2d 将二进制数 (比如 1101) 转换为相应的十进制数。这也是一个用expr命令进行数学运算的例子：
 
 #!/bin/sh
 # vim: set sw=4 ts=4 et:
@@ -312,20 +311,20 @@ do
    echo $i
 done
 #详细列出（字符且项数不多）
-for File in 1 2 3 4 5 
-do 
-    echo $File 
+for File in 1 2 3 4 5
+do
+    echo $File
 done
 #对存在的文件进行循环
 for shname in `ls *.sh`
-do 
-          name=`echo "$shname" | awk -F. '{print $1}'`           
+do
+          name=`echo "$shname" | awk -F. '{print $1}'`
           echo $name
 done
 #查找循环（ls数据量太大的时候也可以用这种方法）
 for shname in `find . -type f -name "*.sh"`
-do 
-          name=`echo "$shname" | awk -F/ '{print $2}'`          
+do
+          name=`echo "$shname" | awk -F/ '{print $2}'`
           echo $name
 done
 #((语法循环--有点像C语法，但记得双括号
@@ -353,7 +352,7 @@ while [ $min -le $max ]
 do
     echo $min
     min=`expr $min + 1`
-done  
+done
 #双括号形式，内部结构有点像C的语法，注意赋值：i=$(($i+1))
 i=1
 while(($i<100))
@@ -366,9 +365,9 @@ do
 done
 #从配置文件读取，并可以控制进程数量
 MAX_RUN_NUM=8
-cat cfg/res_card_partition.cfg |grep -v '^$'|grep -v "#" | grep -v grep |while read partition 
-do        
-                nohup sh inv_res_card_process.sh $partition >log/resCard$partition.log 2>&1 &               
+cat cfg/res_card_partition.cfg |grep -v '^$'|grep -v "#" | grep -v grep |while read partition
+do
+                nohup sh inv_res_card_process.sh $partition >log/resCard$partition.log 2>&1 &
                 while [ 1 -eq 1 ]
                 do
                                 psNum=`ps -ef | grep "inv_res_card_process" | grep -v "grep" | wc -l`
@@ -377,12 +376,12 @@ do
                                               sleep 5
                                 else
                                               break
-                                 fi                                        
-                done                
+                                 fi
+                done
 done
 
-# 三.循环控制语句 
-# break 命令不执行当前循环体内break下面的语句从当前循环退出. 
+# 三.循环控制语句
+# break 命令不执行当前循环体内break下面的语句从当前循环退出.
 # continue 命令是程序在本循体内忽略下面的语句,从循环头开始执行
 
 
@@ -415,33 +414,33 @@ echo ${string%%3*1}    //abc12     从$string右边开始，去掉最长匹配�
 
 expr 是一个手工命令行计数器，可计算加减乘除，并输出结果
 如： expr 10 + 10   输出结果为20    注意乘法要用：\*
- 
+
 declare  声明变量的内容
 用法： declare 参数 变量名
 参数： -i 定义为整数             -f 定义为函数
         -a 定义为数组             -r 定义为只读
        -x 定义为透过环境输出变量
 例如： declare –i a 定义a 为整数，在进行整数运算时，可用a来存储结果
- 
- 
+
+
 linux开机启动五个脚本文件介绍：
 /etc/profile:
 此文件为系统的每个用户设置环境信息,当用户第一次登录时,该文件被执行.
-并从/etc/profile.d目录的配置文件中搜集shell的设置. 
-  
+并从/etc/profile.d目录的配置文件中搜集shell的设置.
+
 /etc/bashrc:
 为每一个运行bash shell的用户执行此文件.当bash shell被打开时,该文件被读取.
-  
+
 ~/.bash_profile:
 每个用户都可使用该文件输入专用于自己使用的shell信息,当用户登录时,该
-文件仅仅执行一次!默认情况下,他设置一些环境变量,执行用户的.bashrc文件.   
-  
+文件仅仅执行一次!默认情况下,他设置一些环境变量,执行用户的.bashrc文件.
+
 ~/.bashrc:
-该文件包含专用于你的bash shell的bash信息,当登录时以及每次打开新的shell时,该  
-该文件被读取.   
-  
+该文件包含专用于你的bash shell的bash信息,当登录时以及每次打开新的shell时,该
+该文件被读取.
+
 ~/.bash_logout:
-当每次退出系统(退出bash shell)时,执行该文件.   
+当每次退出系统(退出bash shell)时,执行该文件.
 
 另外,/etc/profile中设定的变量(全局)的可以作用于任何用户,
 而~/.bashrc等中设定的变量(局部)只能继承/etc/profile中的变量,他们是"父子"关系.

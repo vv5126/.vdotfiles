@@ -83,6 +83,18 @@ function! CmdLine(str)
 endfunction
 " -------------------------------------------------
 
+function! Mktagexit()
+    let g:asyncrun_exit = ''
+    call GO_GIT_DIR()
+    if filereadable("cscope.out")
+	" exec 'cs kill cscope.out'
+	exec 'cs add cscope.out'
+	echo "make tag done!"
+    else
+	echo "make tag failed!"
+    endif
+endfunction
+" -------------------------------------------------
 function! ADD_H()
     let l:filename = substitute(toupper(expand("%:t")), '\.', "_", "g")
     call append(0,"#ifndef __".l:filename."__")
@@ -118,7 +130,8 @@ function! SET_FILETYPE_C()
     nmap <tab> [[
     nmap <S-tab> ]]
 
-    nmap  <F1> :copen<cr>:AsyncRun mk ycm_conf<cr>
+    " nmap  <F1> :copen<cr>:AsyncRun mk ycm_conf<cr>
+    nmap  <F1> :let g:asyncrun_exit = 'call Mktagexit()'<cr>:AsyncRun mk -t<cr>:echo 'uptag ...'<cr>
     nmap  <F2> :call Burn_on()<cr>
     nmap  <F3> :call Burn_off()<cr>
     nmap  <F4> :copen<cr>:AsyncRun mk<cr>
