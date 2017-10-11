@@ -132,3 +132,21 @@ command <C-x C-e>
 
 talnet xxx 端口 
 dos2unix 可以将dos下的脚本格式化为unix下的。
+
+### autotools 常用命令
+aclocal 缺少宏定义时使用
+autoscan 生成configure.ac
+autoconf 生成configure
+automake --add-missing 如果缺少install.sh等执行
+./configure --prefix ~/.local
+make && make install
+
+### ssh 常用命令
+ssh-copy-id
+
+"Agent admitted failure to sign using the key.
+ssh-add ~/.ssh/id_rsa
+
+ssh-keygen -t rsa
+
+

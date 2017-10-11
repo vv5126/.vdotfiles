@@ -7,7 +7,7 @@ export VGL_BOARDS=/data1/home/wgao/work/local_debug/boards
 # export VGL_BOARDS="$WORK_SERVER_MAIN":/data1/home/wgao/work/local_debug/boards
 export CLONER_DIR='/home/user/.cloner'
 # build image #
-export VGL_BUILD_BOOTIMAGE="$WORK_SERVER_MAIN":/data1/home/wgao/tools-bak/build_bootimage.tar.gz
+export VGL_BUILD_BOOTIMAGE="$WORK_SERVER_MAIN":/data1/home/wgao/work/tools-bak/build_bootimage.tar.gz
 export VGLD_MKDATA=$HOME/.bin/work/mkdata
 
 # clipboard
@@ -35,6 +35,8 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 
     # GCC
     PATH=/pdev/chains/mips-linux-gnu/bin:$PATH
+    # GCC for Android
+    PATH=/data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin:$PATH
 
     # VIM8
     PATH=/data1/home/wgao/tools/vim8/bin:$PATH
@@ -88,7 +90,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     alias ch='(cd $HOME/.vdotfiles; git checkout src/dots/bin/local/launch-chrome3.ica;); nohup /opt/Citrix/ICAClient/wfica -icaroot /opt/Citrix/ICAClient /home/user/.bin/local/launch-chrome3.ica > /dev/null &'
 } || {
 # java jdk
-${JAVA_HOME:=/usr/lib/jvm/java}
+JAVA_HOME=${JAVA_HOME:=/usr/lib/jvm/java}
 export JRE_HOME=${JAVA_HOME}/jre
 export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
 export PATH=${JAVA_HOME}/bin:$PATH

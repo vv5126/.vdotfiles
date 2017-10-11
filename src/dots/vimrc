@@ -1,5 +1,19 @@
 " design by wgao. {{{
 
+" fix base. {{{
+" sync_repo() {
+"     [ ! -e "$1" ] && { mkdir -p "$1"; git clone -b "$3" "$2" "$1"; } || { cd "$1" && git pull origin "$3"; }
+" }
+
+" vim_init() {
+"     REPO_BRANCH='3.0'
+"     sync_repo   "$HOME/.vim/bundle/spf13-vim" 'https://github.com/spf13/spf13-vim.git' "$REPO_BRANCH" "spf13-vim"
+"     sync_repo   "$HOME/.vim/bundle/vundle" 'https://github.com/gmarik/vundle.git' "master" "vundle"
+"     vim -u      "$HOME/.vimrc" "+set nomore" "+BundleInstall!" "+qall"
+"     # vim -u      "$HOME/.vimrc" "+set nomore" "+BundleInstall!" "+BundleClean" "+qall"
+" }
+" }}}
+
 " spf13 before. {{{
     set nocompatible        " Must be first line
     "===============================================================================+
@@ -86,7 +100,8 @@
     Bundle 'vv5126/wim'
     " -------------------------------------------------
     " vim帮助中文版
-    Bundle 'becaning/vimdoccn'
+    " Bundle 'becaning/vimdoccn'
+    Bundle 'yianwillis/vimcdoc'
     " -------------------------------------------------
     "让Vim变成所见即所得的MarkDown文件编辑器，可以在编辑时预览最终效果。
     Bundle 'iamcco/markdown-preview.vim'
@@ -183,8 +198,9 @@
     " 缩进代替
     " Bundle 'tpope/vim-sleuth'
     " -------------------------------------------------
-    Bundle 'haya14busa/incsearch.vim'
-    map /  <Plug>(incsearch-forward)
+    " 会造成/不好用
+    " Bundle 'haya14busa/incsearch.vim'
+    " map /  <Plug>(incsearch-forward)
     " -------------------------------------------------
     " Bundle 'vim-utils/vim-man'
     " -------------------------------------------------
@@ -608,6 +624,9 @@
         " highlight cursorLine cterm=bold ctermfg=green ctermbg=black
         " highlight cursorColumn cterm=bold ctermfg=green ctermbg=black
 
+	" 没sudo却想保存
+	cmap w!! w !sudo tee % >/dev/null
+
         "设置鼠标粘贴模式
         nnoremap <leader>mo :call SET_MOUSE()<cr>
 
@@ -651,6 +670,10 @@
         " gd 代替 *
         " g] 代替 C-]
         "=====================================================
+	" 查找冲突的地方
+	" ========>>> ...
+	map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
+	"=====================================================
     " }
 
 
@@ -781,9 +804,10 @@
 	nnoremap <leader>gl :YcmCompleter GoToDefinitionElseDeclaration<CR>
 	" nmap <F3> :YcmDiags<CR>
 
-	" let g:UltiSnipsExpandTrigger="<c-m>"
-	" let g:UltiSnipsJumpForwardTrigger="<c-j>"
-	" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+        " 影响回车
+	let g:UltiSnipsExpandTrigger="<c-a>"
+	let g:UltiSnipsJumpForwardTrigger="<c-j>"
+	let g:UltiSnipsJumpBackwardTrigger="<c-k>"
     endif
 
     " -------------------------------------------------

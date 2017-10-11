@@ -1,718 +1,15 @@
-"常用知识
-" :noremap 普通，可视和操作符等待模式
-" :vnoremap 可视模式
-" :nnoremap 普通模式
-" :onoremap 操作符等待模式
-" :noremap! 插入和命令行模式
-" :inoremap 插入模式
-" :cnoremap 命令行模式
-" :h option-list "查看set项
-"
-" let 变量名 = 数值
-" g: ——全局变量（在函数中访问全局变量必须使用该前缀，不加前缀的话则认为是函数内的局部变量）；
-" s: ——变量名只在当前脚本中有效；
-
-
-
-
-
-
-
-
-"文件类型切换
- nmap <leader>fj :set ft=javascript<CR>
-
-"Delete trailing white space, useful for Python ;)
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
-
-" $q is super useful when browsing on the command line
-" cno $q <C-\>eDeleteTillSlash()<cr>
-"
-" func! DeleteTillSlash()
-"     let g:cmd = getcmdline()
-"     if MySys() == "linux" || MySys() == "mac"
-"         let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
-"     else
-"         let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
-"     endif
-"     if g:cmd == g:cmd_edited
-"         if MySys() == "linux" || MySys() == "mac"
-"             let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
-"         else
-"             let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
-"         endif
-"     endif
-"     return g:cmd_edited
-" endfunc
-"
-" "Persistent undo
-" set undodir=~/.vim_runtime/undodir
-" au FileType c setlocal dict+=~/.vim/dict/c.dict
-" :autocmd BufRead,BufNewFile *.dot map <F5> :w<CR>:!dot -Tjpg -o %<.jpg % && eog %<.jpg  <CR><CR> && exec "redr!"
-
-" autocmd BufNewFile,BufRead *.coffee set filetype=coffee
-" autocmd FileType haskell setlocal expandtab shiftwidth=2 softtabstop=2
-" autocmd FileType haskell setlocal commentstring=--\ %s
-" autocmd FileType haskell setlocal nospell
-
-" if !(g:iswindows==1)
-"     autocmd BufNewFile,BufRead *.c
-"                 \ map <F9> <Esc><Esc>:!gcc -g -Wall -lm -o %< % <CR>
-"     autocmd BufNewFile,BufRead *.c
-"                 \ map <S-F9> <Esc><Esc>:!gcc -O3 -o %< % <CR>
-"
-"     autocmd BufNewFile,BufRead *.cc,*.cpp,*.c++,*.cxx,*.CC
-"                 \ map <F9> <Esc><Esc>:!g++ -g -Wall -o %< % <CR>
-"     autocmd BufNewFile,BufRead *.cc,*.cpp,*.c++,*.cxx,*.CC
-"                 \ map <S-F9> <Esc><Esc>:!g++ -O3 -o %< % <CR>
-"
-"     autocmd BufNewFile,BufRead *.sh
-"                 \ map <F9> <Esc><Esc>:!./% <CR>
-"
-"     autocmd BufNewFile,BufRead *.py
-"                 \ map <F9> <Esc><Esc>:!python -u % <CR>
-"
-"     map <C-F9> <Esc><Esc>:!./%<<CR>
-"     map <C-F8> <Esc><Esc>:!gdb ./%<<CR>
-"     map <C-F5> :make<CR>
-" endif
-
-" Close the current buffer
-map <leader>bd :Bclose<cr>
-
-" 删除buffer时不关闭窗口
-command! Bclose call <SID>BufcloseCloseIt()
-function! <SID>BufcloseCloseIt()
-    let l:currentBufNum = bufnr("%")
-    let l:alternateBufNum = bufnr("#")
-
-    if buflisted(l:alternateBufNum)
-        buffer #
-    else
-        bnext
-    endif
-
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
-
-    if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
-    endif
-endfunction
-
-"""""新文件标题""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"新建.c,.h,.sh,.java文件，自动插入文件头
-autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java exec ":call AddTitle()"
-
-function AddTitle()
-	call append(0,"/*=============================================================================")
-	call append(1,"*")
-	call append(10,"* Description:")
-	call append(11,"*")
-	call append(12,"=============================================================================*/")
-    "新建文件后，自动定位到文件末尾
-endfunction
-
-"更新最近修改时间和文件名
-function UpdateTitle()
-	normal m'
-	execute '/# *Last modified:/s@:.*$@\=strftime(":\t%Y-%m-%d %H:%M")@'
-	normal ''
-	normal mk
-	execute '/# *Filename:/s@:.*$@\=":\t\t".expand("%:t")@'
-	execute "noh"
-	normal 'k
-	echohl WarningMsg | echo "Successful in updating the copy right." | echohl None
-endfunction
-
-"判断前10行代码里面，是否有Last modified这个单词，
-"如果没有的话，代表没有添加过作者信息，需要新添加；
-"如果有的话，那么只需要更新即可
-map <F6> :call TitleDet()<cr>'s
-function TitleDet()
-	let n=1
-	"默认为添加
-	while n < 10
-		let line = getline(n)
-		if line =~ '^\#\s*\S*Last\smodified:\S*.*$'
-			call UpdateTitle()
-			return
-		endif
-		let n = n + 1
-	endwhile
-	call AddTitle()
-endfunction
-
-highlight WhitespaceEOL ctermbg=red guibg=red
-match WhitespaceEOL /\s\+$/
-
-"代码格式优化化
-map <F6> :call FormartSrc()<CR><CR>
-
-func FormartSrc()
-    exec "w"
-    if &filetype == 'c'
-        exec "!astyle --style=ansi -a --suffix=none %"
-    elseif &filetype == 'cpp' || &filetype == 'hpp'
-        exec "r !astyle --style=ansi --one-line=keep-statements -a --suffix=none %> /dev/null 2>&1"
-    elseif &filetype == 'perl'
-        exec "!astyle --style=gnu --suffix=none %"
-    elseif &filetype == 'py'||&filetype == 'python'
-        exec "r !autopep8 -i --aggressive %"
-    elseif &filetype == 'java'
-        exec "!astyle --style=java --suffix=none %"
-    elseif &filetype == 'jsp'
-        exec "!astyle --style=gnu --suffix=none %"
-    elseif &filetype == 'xml'
-        exec "!astyle --style=gnu --suffix=none %"
-    else
-        exec "normal gg=G"
-        return
-    endif
-    exec "e! %"
-endfunc
-
-"---------------------------------------------------
-if 0
-"omnicppcomplete会打开一个预览窗口来提示变量定义，如果不想要看到详细的信息的话，在vimrc中这样配置
- set completeopt=longest,menu
-"搜索字符串，或以递增方式搜索字符串
- let Grep_Default_Filelist = '*.[chS]'
- let Grep_Default_Filelist = '*.c *.cpp *.asm'
- let Grep_Skip_Files = '*tags* *cscope* *.o* *.lib *.a* *.r* *.d*'
- nnoremap <silent> <C-f> :Rgrep<CR><CR><CR><CR>
- nnoremap <silent> <C-g> :RgrepAdd<CR><CR><CR><CR>
- set nocp
- set completeopt=menu "去掉提示窗口"
- let OmniCpp_DefaultNamespaces = ["std"] "下面的设置用于当用户预先声明namespace时也能自动补全代码（如使用using std::string）
- let OmniCpp_NamespaceSearch = 1
- let OmniCpp_GlobalScopeSearch = 1
- let OmniCpp_ShowAccess = 1
- let OmniCpp_ShowPrototypeInAbbr = 1 " 显示函数参数列表
- let OmniCpp_MayCompleteDot = 1 " 输入 . 后自动补全
- let OmniCpp_MayCompleteArrow = 1 " 输入 -> 后自动补全
- let OmniCpp_MayCompleteScope = 1 " 输入 :: 后自动补全
- let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
- let OmniCpp_SelectFirstItem=2
-" c-j自动补全，当补全菜单打开时，c-j,k上下选择
-" imap <expr> <c-j>      pumvisible()?"\<C-N>":"\<C-X><C-O>"
-" imap <expr> <c-k>      pumvisible()?"\<C-P>":"\<esc>"
-" f:文件名补全，l:行补全，d:字典补全，]:tag补全
-" imap <C-]>             <C-X><C-]>
-" imap <C-F>             <C-X><C-F>
-" imap <C-D>             <C-X><C-D>
-" imap <C-L>             <C-X><C-L>
- endif
-
-"---------------------------------------------------
-set csprg=/usr/bin/cscope
-set cscopetag
-set cscopeverbose
-set cscopequickfix=c-,d-,e-,g-,i-,s-,t-
-set csto=1
-set cst
-set nocsverb
-
-" cscope的vim插件,提供快捷键操纵cscope,好东东,如果你在用cscope的话
-"Bundle 'chazy/cscope_maps'
-"Bundle 'cscope_macros.vim'
-
-"---------------------------------------------------
-"---------------------------------------------------
-"  Bundle 'snipMate'
-let g:snips_author="ingenic"
-let g:snips_email="ingenic@ingenic.com"
-let g:snips_copyright="SicMicro, Inc"
-
-"---------------------------------------------------
-"---------------------------------------------------
-" 自动补全tab触发
-" function! InsertTabWrapper()
-" 	let col = col('.') - 1
-" 	if !col || getline('.')[col - 1] !~ '\k'
-"         return "\<tab>"
-" 	else
-"         return "\<c-p>"
-" 	endif
-" endfunction
-" inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
-" inoremap <S-Tab> <c-n>
-"---------------------------------------------------
-" 神级插件，ZenCoding(原名)可以让你以一种神奇而无比爽快的感觉写HTML、CSS
-"  Bundle 'ZenCoding.vim'
-"=====================================================
-"底层的lookupfile的功能支持+
- Bundle 'genutils'
-
-" lookupfile.vim 使用部分关键字查找文件名
- Bundle 'lookupfile'
- nmap  <F5> <Plug>LookupFile<cr>
-nmap <silent> <leader>ff :LookupFile<cr>
-let g:LookupFile_MinPatLength           = 2 "最少输入2个字符才开始查找
-let g:LookupFile_PreserveLastPattern    = 0 "不保存上次查找的字符串
-let g:LookupFile_PreservePatternHistory = 1 "保存查找历史
-let g:LookupFile_AlwaysAcceptFirst      = 1 "回车打开第一个匹配项目
-let g:LookupFile_AllowNewFiles          = 0 "不允许创建不存在的文件
-let g:LookupFile_SortMethod             = "" "关闭对搜索结果的字母排序
-"let g:LookupFile_TagExpr ='tags'
-
-" LookupFile setting
-function! LookupFile_IgnoreCaseFunc(pattern)
-    let _tags = &tags
-    try
-        let &tags = eval(g:LookupFile_TagExpr)
-        let newpattern = '\c' . a:pattern
-        let tags = taglist(newpattern)
-    catch
-        echohl ErrorMsg | echo "Exception: " . v:exception | echohl NONE
-        return ""
-    finally
-        let &tags = _tags
-    endtry
-
-    " Show the matches for what is typed so far.
-    let files = map(tags, 'v:val["filename"]')
-    return files
-endfunction
-let g:LookupFile_LookupFunc = 'LookupFile_IgnoreCaseFunc'
-
-"---------------------------------------------------
-" 保存当前会话
-" Bundle 'xolox/vim-misc'
-" Bundle 'xolox/vim-session'
-"---------------------------------------------------
-if 0
-" plugin - NeoComplCache.vim    自动补全插件
-let g:AutoComplPop_NotEnableAtStartup = 1
-let g:NeoComplCache_EnableAtStartup = 1
-let g:NeoComplCache_SmartCase = 1
-let g:NeoComplCache_TagsAutoUpdate = 1
-let g:NeoComplCache_EnableInfo = 1
-let g:NeoComplCache_EnableCamelCaseCompletion = 1
-let g:NeoComplCache_MinSyntaxLength = 3
-let g:NeoComplCache_EnableSkipCompletion = 1
-let g:NeoComplCache_SkipInputTime = '0.5'
-let g:NeoComplCache_SnippetsDir = $VIMFILES.'/snippets'
-let g:neocomplcache_enable_at_startup = 1
-" <TAB> completion.
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-" snippets expand key
-imap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
-smap <silent> <C-e> <Plug>(neocomplcache_snippets_expand)
-endif
-
-"---------------------------------------------------
-"---------------------------------------------------
-if 0
-" 添加doxygen注释
-" DoxygenToolkit.vim
-" plugin - DoxygenToolkit.vim  由注释生成文档，并且能够快速生成函数标准注释
-let g:DoxygenToolkit_authorName="Asins - asinsimple AT gmail DOT com"
-let g:DoxygenToolkit_briefTag_funcName="yes"
-map <leader>da :DoxAuthor<CR>
-map <leader>df :Dox<CR>
-map <leader>db :DoxBlock<CR>
-map <leader>dc a /*  */<LEFT><LEFT><LEFT>
-
-map fg : Dox<cr>
-let g:DoxygenToolkit_authorName="Anders"
-let g:DoxygenToolkit_licenseTag="My own license\<enter>"
-let g:DoxygenToolkit_undocTag="DOXIGEN_SKIP_BLOCK"
-let g:DoxygenToolkit_briefTag_pre = "@brief\t"
-let g:DoxygenToolkit_paramTag_pre = "@param\t"
-let g:DoxygenToolkit_returnTag = "@return\t"
-let g:DoxygenToolkit_briefTag_funcName = "no"
-let g:DoxygenToolkit_maxFunctionProtoLines = 30
-endif
-
-nmap <leader>p :set paste<CR>
-nmap <leader>pp :set nopaste<CR>
-map <leader>pp :setlocal paste!<cr>
-
-nnoremap <leader>gg :call ADD_YCM_CONF()<cr>
-function! ADD_YCM_CONF()
-    let c = inputlist(['select one:',"1.c","2.py"])
-    echo "\n"
-    if c == 1
-        let l:dir = system("getdir_git_repo")
-        let l:dir = matchstr(l:dir, '/.*')
-        exec 'cd' l:dir
-        call system("cp ~/.vim/ycm_conf/ycm_extra_conf_c.py ./.ycm_extra_conf.py")
-        echon "OK."
-        exec 'cd -'
-    elseif c == 2
-        echon c
-    endif
-endfunction
-
-# ---------unused plugin
-    " 将代码行最后无效的空格标红
-    " Bundle 'ShowTrailingWhitespace'
-# ---------unused plugin end
-漂亮的括号 感觉意义不大
-Bundle 'kien/rainbow_parentheses.vim'
-同时选择多个区域
-Bundle 'voithos/vim-multiselect'
-
-Bundle 'vimballPlugin.vim'
-Bundle 'tComment'
-Bundle 'Shougo/vimproc.vim', { 'build' : { 'unix' : 'make -f make_unix.mak', }, }
-画图
-Bundle 'sketch.vim'
-命令行模式的补全+
-Bundle 'cmdline-completion'
-
-显示：路径，文件名 总行数 编码 文件格式
-set statusline=%7* %3*%{Checkmail()}%{HasPaste()}%*[file: %2*%t%r%h%w%*]%3*%m%*[dir: %<%2*%{CurDir()}%*]%=                    %4*[%{&ff}][%{&encoding}]%6*%y%*[Line:%2*%l%*/%2*%L%*,Column:%2*%c%*][%2*%p%%%*]
-
-没sudo却想保存
-cmap w!! w !sudo tee % >/dev/null
-diffoff
-noremap <S-h> <C-left>
-noremap <S-j> <pagedown>
-noremap <S-k> <pageup>
-noremap <S-l> <C-right>
-inoremap <c-h> <left>
-inoremap <c-j> <down>
-inoremap <c-k> <up>
-inoremap <c-l> <right>
-黏贴板
-iab idate <c-r>=strftime("%Y-%m-%d")<CR>
-iab itime <c-r>=strftime("%H:%M")<CR>
-table 设置
-nnoremap tc :tabclose<cr>
-nnoremap tm :call Delmail()<cr>
-在文件名上按gf时，在新的tab中打开
-map gf :tabnew <cfile><cr>
-window 设置
-使用,w来垂直分割窗口，这样可以同时查看多个文件,如果想水平分割则<c-w>s
-nnoremap <leader>w <c-w>v<c-w>l
-nnoremap <leader>wc <c-w>c
-nnoremap <leader>ww <c-w>w
-以下列出了和语言编码的相关的设置：
-环境变量 LANG（使用的语言）；
-环境变量 LC_CTYPE（使用的内部编码）；
-Vim 选项 encoding(enc)（Vim 的内部编码）；不管文件的编码如何，不管如何显示和输入， Vim 内部使用的编码是 UTF-8；这是国际化支持的基础。
-Vim 选项 termencoding(tenc)（Vim 在与屏幕/键盘交互时使用的编码）；
-Vim 选项 fileencoding(fenc)（Vim 当前编辑的文件在存储时的编码）；
-Vim 选项 fileencodings(fencs)（Vim 打开文件时的尝试使用的编码）；
-Vim 选项 ambiwidth（对“不明宽度”字符的处理方式；Vim 6.1.455 后引入）。
-
-setlocal foldlevel=1               " 设置折叠层数为
-set foldmethod=marker
-set nofoldenable                   " 启动 vim 时关闭折叠代码
-set foldlevel=100
-set foldcolumn=1                   " 设置折叠区域的宽度
-
-不常用
-: exec 'cd ~/' . fnameescape('/.vim')
-
-set backspace=indent,eol,start     " 这指明在插入模式下在哪里允许 <BS> 删除光标前面的字符。退格键分别可删除缩进，上一行结束，insert之前的字
-文本格式和排版
-nmap <leader>fd :set fileformat=dos<CR>
-nmap <leader>fu :set fileformat=unix<CR>
-代码补全
-set report=0
-set gcr=a:block-blinkon0           " 禁止光标闪烁
-使用tab键来代替%进行匹配跳转
-nnoremap <tab> %
-vnoremap <tab> %
-搜索替换
-nmap <leader>s :,s///c
-=> Parenthesis/bracket expanding
-vnoremap $1 <esc>`>a)<esc>`<i(<esc>
-vnoremap $2 <esc>`>a]<esc>`<i[<esc>
-vnoremap $3 <esc>`>a}<esc>`<i{<esc>
-vnoremap $$ <esc>`>a"<esc>`<i"<esc>
-vnoremap $q <esc>`>a'<esc>`<i'<esc>
-map <leader>cc :botright cope<cr>
-nmap <F10> :call HLUDSync()<cr>
-nmap <leader>gs :GetScripts<cr>
-设置tag和window间快速跳转
-let g:easyWindows = 1
-if exists('g:easyWindows')
-向上
-map <C-J> <C-W>j<C-W>_
-向下
-map <C-K> <C-W>k<C-W>_
-向右
-map <C-L> <C-W>l<C-W>_
-向左
-map <C-H> <C-W>h<C-W>_
-map! <C-O> <C-Y>,
-imap <C-k> <C-y>,
-imap <C-t> <C-q><TAB>
-nmap <F9> :marks<CR>
-nmap <F4> :MarksBrowser<CR>
-nmap <C-r> :ConqueTermVSplit bash <cr>
-nmap <C-P> :ConqueTermSplit bash <cr>
-nmap <F2> :set ic<cr>/
-nmap <S-C> :stj <C-R>=expand("<cword>")<CR><CR>
-nmap ff :1,$s///g
-启动 vim 时自动全屏
-autocmd VimEnter * call ToggleFullscreen()
-将外部命令 wmctrl 控制窗口最大化的命令行参数封装成一个 vim 的函数
-fun! ToggleFullscreen()
-call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")
-endf
-set nowrapscan              " 禁止在搜索到文件两端时重新搜索
-highlight cursorLine cterm=bold ctermfg=green ctermbg=red
-set cursorcolumn                   "高亮显示当前列
-highlight cursorColumn cterm=bold ctermfg=green ctermbg=red
-highlight ColorColumn ctermbg=green ctermfg=green
-set wrap                           "自动换行
-修改vim的正则表达
-nnoremap / /v
-vnoremap / /v
-set modelines=0                   " set项的检查数量??
-暂时没有使用
-Tab configuration
-初始窗口的宽度
-set columns=135
-初始窗口的高度
-set lines=50
-初始窗口的位置
-winpos 620 45
-匹配括号的规则，增加针对html的<>
-set matchpairs=(:),{:},[:],<:>
-nmap <A-j> mz:m+<cr>`z
-nmap  <F6> :vimgrep /<C-R>=expand("<cword>")<cr>/ **/*.c **/*.h<cr><C-o>:cw<cr>
-map <leader>t8 :setlocal shiftwidth=4<cr>
-noremap <Leader>ff :%s/
-$//g<cr>:%s/
-/ /g<cr>
-autocmd Filetype * if &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-autocmd InsertLeave * set nocul    " 用浅色高亮当前行
-autocmd InsertEnter * set cul      " 用浅色高亮当前行
-set wildmenu                     " vim 自身命令行模式智能补全
-插件窗口的宽度，如TagList,NERD_tree等，自己设置
-let s:PlugWinSize = 30
-
-let col = col('.') - 1
-if !col || getline('.')[col - 1] !~ 'k'
-return "<tab>"
-return "<c-p>"
-
-vnoremap <silent> <C-T> :<C-u>Ydv<CR>
-nnoremap <silent> <C-T> :<C-u>Ydc<CR>
-noremap <leader>yd :<C-u>Yde<CR>
 " vim: set filetype=vim sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
-nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
-vnoremap $e <esc>`>a"<esc>`<i"<esc>
-imap<C-u><esc>d0i
-imap   <C-k> <esc>d$i " 与自动补全中的绑定冲突
-
-" try
-"     call fuf#defineLaunchCommand('FufCWD', 'file', 'fnamemodify(getcwd(), ''%:p:h'')')
-"     map <leader>t :FufCWD **/<CR>
-" catch
-" endtry
+" need 将当前不用的buffer移动到win
+" buffer 交换
+" 空格键替换为换行
 " -------------------------------------------------
-
-" 查找冲突的地方
-"map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
-
-"Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
-" nmap <leader>t2 mz:m+<cr>`z
-" nmap <A-k> mz:m-2<cr>`z
-" vmap <A-j> :m'>+<cr>`<my`>mzgv`yo`z
-" vmap <A-k> :m'<-2<cr>`>my`<mzgv`yo`z
-
-"=====================================================
-" 替换增强
-nnoremap <Leader>rwc :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
-"=====================================================
-" 不确认、非整词
-"  nnoremap <Leader>R :call Replace(0, 0, input('Replace '.expand('<cword>').' with: '))<CR>
-" " 不确认、整词
-"  nnoremap <Leader>rw :call Replace(0, 1, input('Replace '.expand('<cword>').' with: '))<CR>
-" " 确认、非整词
-"  nnoremap <Leader>rr :call Replace(1, 0, input('Replace '.expand('<cword>').' with: '))<CR>
-" " 确认、整词
-"  nnoremap <Leader>rcw :call Replace(1, 1, input('Replace '.expand('<cword>').' with: '))<CR>
-
-" 替换函数。参数说明：
-" confirm：是否替换前逐一确认
-" wholeword：是否整词匹配
-" replace：被替换字符串
-" function! Replace(confirm, wholeword, replace)
-"     wa
-"     let flag = ''
-"     if a:confirm
-"         let flag .= 'gec'
-"     else
-"         let flag .= 'ge'
-"     endif
-"     let search = ''
-"     if a:wholeword
-"         let search .= '\<' . escape(expand('<cword>'), '/\.*$^~[') . '\>'
-"     else
-"         let search .= expand('<cword>')
-"     endif
-"     let replace = escape(a:replace, '/\&~')
-"     execute 'argdo %s/' . search . '/' . replace . '/' . flag . '| update'
-" endfunction
-" -------------------------------------------------
-" 映射vsp这些开启新的buffer,默认目录为当前目录
-" cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
-" map <leader>ew :e %%
-" map <leader>es :sp %%
-" map <leader>ev :vsp %%
-" map <leader>et :tabe %%
-" -------------------------------------------------
-"以unix格式显示换行符
-" nmap xsm :e ++ff=unix
-"以dos格式显示换行符
-" nmap xsm :e ++ff=dos
-" -------------------------------------------------
-"  map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
-"在当前目录查找光标词的所有位置
-" nmap  <leader>t2 :vimgrep /<C-R>=expand("<cword>")<cr>/ **/*.c **/*.h<cr><C-o>:cw<cr>
-" ,ff 查找光标后的单词位置，列出选择项
-" nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
-" -------------------------------------------------
-" 配置多语言环境
-" 环境变量 LANG（使用的语言）;
-" 环境变量 LC_CTYPE（使用的内部编码）;
-" Vim 选项 encoding(enc)（Vim 的内部编码；必须是 UTF-8,国际化支持的基础）。
-" Vim 选项 termencoding(tenc)（Vim 与输入输出交互编码）;
-" Vim 选项 fileencoding(fenc)（Vim 存储编码）;
-" Vim 选项 fileencodings(fencs)（Vim 打开时尝试的编码）;
-" Vim 选项 ambiwidth（对“不明宽度”字符的处理方式;Vim 6.1.455 后引入）。
-
-" if has("multi_byte")
-"     set encoding=utf-8
-"     set termencoding=utf-8
-"     set fileencoding=utf-8
-"     " set fileencoding=gb18030
-"     " set fileencoding=gb2312
-"     " set fileencodings=euc-jp,iso-8859-1
-"     set fileencodings=utf-8,gbk,ucs-bom,cp936,gb18030,utf-16,big5,gb2312,chinese
-"
-"     if v:lang=~? '^\(zh\)\|\(ja\)\|\(ko\)'
-"         set ambiwidth=double
-"     endif
-" else
-"     echoerr "Sorry, this version of (g)vim was not compiled with +multi_byte"
-" endif
-" -------------------------------------------------
-" cnoremap $c e <C-\>eCurrentFileDir("e")<cr>
-" func! CurrentFileDir(cmd)
-"    return a:cmd . " " . expand("%:p:h") . "/"
-" endfunc
-" -------------------------------------------------
-" 意义不大
-"set grepprg=/bin/grep\ -nH  "":grep" 使用的程序
-"let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
-"let g:SuperTabRetainCompletionType=2
-"let g:SuperTabDefaultCompletionType="<C-X><C-O>"
-" -------------------------------------------------
-"F6 for uncomment
-" vmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
-" nmap <F6> :s=^\(//\)*==g<cr>:noh<cr>
-" imap <F6> <ESC>:s=^\(//\)*==g<cr>:noh<cr>
-" -------------------------------------------------
-" set mousemodel=extend
-" set mousemodel=popup
-" set switchbuf=usetab
-" -------------------------------------------------
-set formatoptions+=mB
-set formatoptions=qrnl
-set formatoptions=tcrqn            " 控制 Vim 如何对文本进行排版
-" set formatoptions=lq            " 控制 Vim 如何对文本进行排版
-" set formatoptions=tcrn2bmMB1j
-" set formatoptions+=mM             "自动对中文换行
-" set cindent                        " 使用C样式的缩进
-" set cinoptions=:0                  " 设置 'cindent' 时如何缩进
-" set smartindent                    " C 程序智能自动缩进
-" -------------------------------------------------
-" Do :help cope if you are unsure what cope is. It's super useful!
-" map <leader>t1 :botright cope<cr>
-" -------------------------------------------------
-set fileformats=unix,dos,mac       " 自动识别UNIX格式和MS-DOS格式     参与自动检测的 'fileformat' 的格式
-" set fileformat=unix                " 以UNIX的换行符格式保存文件，注意是去掉一个^M
-" set fileformat=dos                 " 以dos的换行符格式保存文件, 注意是在行尾变为两个^M
-" -------------------------------------------------
-if 0    " NerdTree的设置
-        " o 打开关闭文件或者目录         t 在标签页中打开
-        " T 在后台标签页中打开           ! 执行此文件
-        " p 到上层目录                   P 到根目录
-        " K 到第一个节点                 J 到最后一个节点
-        " u 打开上层目录                 m 显示文件系统菜单（添加、删除、移动操作）
-        " r 递归刷新当前目录             R 递归刷新当前根目录
-        let NERDTreeShowFiles=1
-        let NERDTreeShowLineNumbers=1
-endif
-" -------------------------------------------------
-set colorcolumn=37 " 彩色显示一列，用以规范代码
+set mousemodel=extend
+set mousemodel=popup
+set switchbuf=usetab
 augroup vimrcEx
-清除所有自动命令
-au!
+au! " 清除所有自动命令
 autocmd BufReadPost * if line("'"") > 0 && line("'"") <= line("$") | exe "normal g'"" | else | exe "normal $" | endif
 augroup END
-endif " has("autocmd")
-autocmd FileType c,cpp set expandtab
-nmap <leader>p :set paste<CR>
-nmap <leader>pp :set nopaste<CR>
-map <leader>pp :setlocal paste!<cr>
-
-autocmd BufEnter * if bufname("") !~ "^[A-Za-z0-9]*://" | lcd %:p:h | endif
-noremap <Leader>ff :%s/$//g<cr>:%s// /g<cr>
-set display=lastline "长行显示，解决@@@@的问题
-set iskeyword+=.,_,$,@,%,#,- " 含有此字符皆属于单词
-set iskeyword-=.,_,$,@,%,#,- " 已此为单词分隔符
-let l:pattern = escape(@", '/.*$^~[]')
-只剩 NERDTree时自动关闭
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-map <C-h> ,c<space>
-NERD_commenter.vim
-Bundle 'winmanager'
-let g:winManagerWindowLayout='NERDTree|TagList'
-nmap wm :if IsWinManagerVisible() <BAR> WMToggle<CR> <BAR> else <BAR> WMToggle<CR>:q<CR> endif <CR><CR>
-let g:winManagerWindowLayout='NERDTree|BufExplorer'
-let g:winManagerWindowLayout = 'FileExplorer|TagList'
-let g:winManagerWindowLayout='FileExplorer|MarksBrowser'
-let g:winManagerWindowLayout = 'FileExplorer'
-let g:winManagerWidth = 25
-let g:defaultExplorer = 0
-nmap wm :WMToggle<cr>
-autocmd BufWinEnter [Buf List] setl nonumber
-Bundle 'biogoo.vim'
-Bundle 'gtrans.vim'
-Bundle 'bufexplorer.zip'
-color theme浏览插件,列出所有的vim color theme到一个列表中,选中后按回车即可应用相应的color theme,试验color theme时再也不用一次次输入:colo theme_name了,从上百个color theme中选择自己喜欢的theme时有用
-Bundle 'fugitive.vim'
-Bundle 'vimcdoc'
-Bundle 'EnhancedCommentify' " 多文本类型的快捷comment/uncomment, 据说NERD Commenter 更好一些
-Bundle 'manpageview' " 在Vim中查看Manpage，有语法高亮
-Trigger configuration. Do not use <tab>
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-minibufexpl插件的一般设置
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplModSelTarget = 1
-let g:miniBufExplorerMoreThanOne = 1 "自动打开
-autocmd BufRead,BufNew :call UMiniBufExplorer
-=> Minibuffer plugin
-let g:miniBufExplUseSingleClick = 1
-let g:miniBufExplVSplit = 25
-=> Fuzzy finder
-map <F7> :FufTag<cr>
-map <C-F7> :FufTaggedFile<cr>
-Commentary: 快速注释。
-manpageview.vim
-扩展了vim的abbr缩写功能,支持占位符,支持变量替换.
-snippetEmu.vim
-let g:indent_guides_guide_size=1
 
 
 
@@ -913,3 +210,98 @@ autocmd FileType python set tabstop=4 shiftwidth=4 expandtab
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 
+"文件类型切换
+ nmap <leader>fj :set ft=javascript<CR>
+
+"Delete trailing white space, useful for Python ;)
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunc
+autocmd BufWrite *.py :call DeleteTrailingWS()
+
+"常用知识
+" :noremap 普通，可视和操作符等待模式
+" :vnoremap 可视模式
+" :nnoremap 普通模式
+" :onoremap 操作符等待模式
+" :noremap! 插入和命令行模式
+" :inoremap 插入模式
+" :cnoremap 命令行模式
+" :h option-list "查看set项
+"
+" let 变量名 = 数值
+" g: 全局变量（在函数中访问全局变量必须使用该前缀，不加前缀的话则认为是函数内的局部变量）；
+" s: 变量名只在当前脚本中有效；
+
+" 配置多语言环境
+" 以下列出了和语言编码的相关的设置：
+" 环境变量 LANG（使用的语言）；
+" 环境变量 LC_CTYPE（使用的内部编码）；
+" Vim 选项 encoding(enc)（Vim 的内部编码）；不管文件的编码如何，不管如何显示和输入， Vim 内部使用的编码是 UTF-8；这是国际化支持的基础。
+" Vim 选项 termencoding(tenc)（Vim 在与屏幕/键盘交互时使用的编码）；
+" Vim 选项 fileencoding(fenc)（Vim 当前编辑的文件在存储时的编码）；
+" Vim 选项 fileencodings(fencs)（Vim 打开文件时的尝试使用的编码）；
+" Vim 选项 ambiwidth（对“不明宽度”字符的处理方式；Vim 6.1.455 后引入）。
+
+" if has("multi_byte")
+"     set termencoding=utf-8
+"     set fileencoding=utf-8
+"     " set fileencoding=gb18030
+"     " set fileencoding=gb2312
+"     " set fileencodings=euc-jp,iso-8859-1
+"     set fileencodings=utf-8,gbk,ucs-bom,cp936,gb18030,utf-16,big5,gb2312,chinese
+"
+"     if v:lang=~? '^\(zh\)\|\(ja\)\|\(ko\)'
+"         set ambiwidth=double
+"     endif
+" endif
+" -------------------------------------------------
+if 0    " NerdTree的设置
+        " o 打开关闭文件或者目录         t 在标签页中打开
+        " T 在后台标签页中打开           ! 执行此文件
+        " p 到上层目录                   P 到根目录
+        " K 到第一个节点                 J 到最后一个节点
+        " u 打开上层目录                 m 显示文件系统菜单（添加、删除、移动操作）
+        " r 递归刷新当前目录             R 递归刷新当前根目录
+        let NERDTreeShowFiles=1
+        let NERDTreeShowLineNumbers=1
+endif
+" -------------------------------------------------
+" 参考
+highlight WhitespaceEOL ctermbg=red guibg=red
+match WhitespaceEOL /\s\+$/
+" bufname("")
+" let l:pattern = escape(@", '/.*$^~[]')
+nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+function AddTitle()
+	call append(0,"/*=============================================================================")
+	normal m'
+	execute '/# *Last modified:/s@:.*$@\=strftime(":\t%Y-%m-%d %H:%M")@'
+	normal ''
+	normal mk
+	execute '/# *Filename:/s@:.*$@\=":\t\t".expand("%:t")@'
+	execute "noh"
+	normal 'k
+	echohl WarningMsg | echo "Successful in updating the copy right." | echohl None
+	let n=1
+	while n < 10
+		let line = getline(n)
+		if line =~ '^\#\s*\S*Last\smodified:\S*.*$'
+			call UpdateTitle()
+			return
+		endif
+		let n = n + 1
+	endwhile
+	call AddTitle()
+    let c = inputlist(['select one:',"1.c","2.py"])
+    echo "\n"
+    if c == 1
+        let l:dir = system("getdir_git_repo")
+        let l:dir = matchstr(l:dir, '/.*')
+    elseif c == 2
+        echon c
+    endif
+endfunction
+" -------------------------------------------------

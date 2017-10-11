@@ -33,6 +33,9 @@ goodproject='
 4 ggreer/the_silver_searcher #ag
 4 rizsotto/Bear
 1 wmctrl
+4 jpmens/jo
+4 keenerd/jshon
+2 http://www.pixelbeat.org/fslint/fslint-2.46.tar.xz
 '
 
 zsh='

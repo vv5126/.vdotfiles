@@ -197,9 +197,12 @@ EXEC 01;32
 .ogg 00;36
 .ra 00;36
 .wav 00;36
-# http://wiki.xiph.org/index.php/MIME_Types_and_File_Extensions
 .axa 00;36
 .oga 00;36
 .spx 00;36
 .xspf 00;36
-.c 32;32
+.c 32;33
+
+# not care
+.o 1;30
+.su 1;30

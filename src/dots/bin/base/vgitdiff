@@ -26,8 +26,8 @@ cd - > /dev/null
 
 while read line; do
     [ "${line:0:3}" == "---" -o "${line:0:3}" == "+++" ] && continue
-        [ "${line:0:1}" == "+" ] && echo ${line:1} >> $tmp_add--
-        [ "${line:0:1}" == "-" ] && echo ${line:1} >> $tmp_rm--
+        [ "${line:0:1}" == "+" ] && echo "${line:1}" >> $tmp_add--
+        [ "${line:0:1}" == "-" ] && echo "${line:1}" >> $tmp_rm--
 done < $tmp_frist_diff
 
 cat $tmp_add-- | grep -oP '[^" ].*' - > $tmp_add-

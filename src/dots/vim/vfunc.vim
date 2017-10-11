@@ -138,7 +138,7 @@ function! SET_FILETYPE_C()
     nmap  <F5> :cclose<cr>
     " -------------------------------------------------
     " iab wgao1 <c-r>='printk("wgao (l:%d, f:%s, F:%s, p:%d) %d %s\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
-    iab wgao1 <c-r>='printk("\033[31mwgao (l:%d, f:%s, F:%s) %d %s\033[0m\n", __LINE__, __func__, __FILE__, 0, "");'<cr>
+    iab wgao1 <c-r>='printk("\033[31m(l:%d, f:%s) %d %s\033[0m\n", __LINE__, __func__, 0, "");'<cr>
     iab wgao2 <c-r>='printf("\033[31mwgao (l:%d, f:%s, F:%s, p:%d) %d %s\033[0m\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
     " -------------------------------------------------
     nnoremap <leader>ah :call ADD_H()<cr>

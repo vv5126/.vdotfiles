@@ -1,0 +1,126 @@
+#!/bin/bash
+
+function Clean_zero()
+{
+	local formula="$1"
+	local unit="$2"
+	local tmp
+	tmp="$(echo "scale=4;"$formula"" | bc)"
+	tmp="$(echo $tmp | grep -oP '.*[^\.][^0]+')"
+	[ "${tmp:0-1}" == '.' ] && tmp="${tmp:0:-1}"
+	[ "${tmp:0:1}" == '.' ] && tmp="0$tmp"
+	[ -n "$tmp" ] && echo "$tmp""$unit" >&2
+	return 0
+}
+function To_HZ()
+{
+	local val="$1"
+	local unit="$2"
+	case "$unit" in
+		'm'|'ms')
+			val="$(echo "scale=4;1000/$val" | bc)"
+			;;
+		'u'|'us')
+			val="$(echo "scale=4;1000*1000/$val" | bc)"
+			;;
+		'n'|'ns')
+			val="$(echo "scale=4;1000*1000*1000/$val" | bc)"
+			;;
+		'p'|'ps')
+			val="$(echo "scale=4;1000*1000*1000*1000/$val" | bc)"
+			;;
+		*)
+			val="$(echo "scale=4;$val" | bc)"
+			;;
+	esac
+
+	Clean_zero "$val" HZ
+	Clean_zero "$val/1000" kHZ
+	Clean_zero "$val/1000/1000" MHz
+	Clean_zero "$val/1000/1000/1000" GHz
+	return 0
+}
+
+function To_S()
+{
+	local val="$1"
+	local unit="$2"
+	case "$unit" in
+		'k'|'khz')
+			val="$(echo "scale=4;1000*1000*1000/$val" | bc)"
+			;;
+		'm'|'mhz')
+			val="$(echo "scale=4;1000*1000/$val" | bc)"
+			;;
+		'g'|'ghz')
+			val="$(echo "scale=4;1000/$val" | bc)"
+			# val="$((val*1000))"
+			;;
+		*)
+			val="$(echo "scale=4;1000*1000*1000*1000/$val" | bc)"
+			;;
+	esac
+
+	Clean_zero "$val" ps
+	Clean_zero "$val/1000" ns
+	Clean_zero "$val/1000/1000" us
+	Clean_zero "$val/1000/1000/1000" ms
+	Clean_zero "$val/1000/1000/1000/1000" s
+	return 0
+}
+
+function TO_SIZE()
+{
+	Clean_zero "scale=4;obase=10;ibase=16;$1/400" KByte
+	Clean_zero "scale=4;obase=10;ibase=16;$1/400/400" MByte
+	Clean_zero "scale=4;obase=10;ibase=16;$1/400/400/400" GByte
+}
+function TO_ADDR()
+{
+	local val="$1"
+	local unit="$2"
+	case "$unit" in
+		'k')
+			echo $(echo "scale=4;obase=16;ibase=16;$1*400" | bc)
+			;;
+		'm')
+			echo $(echo "scale=4;obase=16;ibase=16;$1*400*400" | bc)
+			;;
+		'g')
+			echo $(echo "scale=4;obase=16;ibase=16;$1*400*400*400" | bc)
+			;;
+	esac
+
+}
+function TO_SECTOR()
+{
+	local val="$1"
+	local unit="$2"
+	case "$unit" in
+		'k')
+			echo sector: 0x"$((val=$val*1024/512))"
+			;;
+		'm')
+			echo sector: 0x"$((val=$val*1024*1024/512))"
+			;;
+		'g')
+			echo sector: 0x"$((val=$val*1024*1024*1024/512))"
+			;;
+	esac
+}
+
+if [ "${1:0:2}" == '0x' ]; then
+	echo 转换为大小 ---------
+	TO_SIZE "${1:2}"
+else
+	val=$(echo "$1" | grep -oP '[0-9]+')
+	unit=$(echo "$1" | grep -oP '[^0-9]+')
+	echo 转换为秒 -----------
+	To_S $val $unit
+	echo 转换为频率 ---------
+	To_HZ $val $unit
+	echo 转换为地址 ---------
+	TO_ADDR $val $unit
+	echo 转换为扇区 ---------
+	TO_SECTOR $val $unit
+fi
