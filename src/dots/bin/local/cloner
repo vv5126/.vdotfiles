@@ -34,4 +34,5 @@ fi
 if [ -n "$cloner_version" ]; then
     echo cloner_version: "$cloner_version"
     cd $HOME/.cloner/$cloner_version
+    ./cloner
 fi

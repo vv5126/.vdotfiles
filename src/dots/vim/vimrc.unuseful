@@ -1,47 +1,28 @@
 " vim: set filetype=vim sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 " need 将当前不用的buffer移动到win
 " buffer 交换
-" 空格键替换为换行
-" -------------------------------------------------
-set mousemodel=extend
-set mousemodel=popup
-set switchbuf=usetab
-augroup vimrcEx
-au! " 清除所有自动命令
-autocmd BufReadPost * if line("'"") > 0 && line("'"") <= line("$") | exe "normal g'"" | else | exe "normal $" | endif
-augroup END
-
-
-
-
-
-
-
-
-
 "---------------------------------------------------
 "python 插件
-"if v:version < 704
-"    Bundle 'Pydiction'
-"    Bundle 'Python-mode-klen'
-"endif
-" python_calltips
-"   pydiction       补全提示+
+if v:version < 704
+    Bundle 'Python-mode-klen'
+endif
+python_calltips
+Bundle 'Pydiction' "补全提示+
 let g:pydiction_menu_height = 20
-" let g:pydiction_location = '.vim/pydiction-1.2/complete-dict'
-"   pythoncomplete  vim自带的python补全提示
-"   VimPdb          调试Python程序+
-" Bundle 'pyflakes' "Python代码检查+
-" Bundle 'pytest'
-" Bundle 'pep8'
-" Bundle 'pyclewn'
-"djang
-" Bundle 'django_templates.vim'
-" Bundle 'Django-Projects'
-" Bundle 'djangojump'
-" Bundle 'hdima/python-syntax'
-" Bundle 'hynek/vim-python-pep8-indent'
-" Bundle 'kevinw/pyflakes-vim'
+let g:pydiction_location = '.vim/pydiction-1.2/complete-dict'
+pythoncomplete  vim自带的python补全提示
+VimPdb          调试Python程序+
+Bundle 'pyflakes' "Python代码检查+
+Bundle 'pytest'
+Bundle 'pep8'
+Bundle 'pyclewn'
+jang
+Bundle 'django_templates.vim'
+Bundle 'Django-Projects'
+Bundle 'djangojump'
+Bundle 'hdima/python-syntax'
+Bundle 'hynek/vim-python-pep8-indent'
+Bundle 'kevinw/pyflakes-vim'
 """"""""""""""""""""""""""""""
 " => JavaScript section
 """""""""""""""""""""""""""""""

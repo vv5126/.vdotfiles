@@ -56,6 +56,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
     export VGLD_CRACK_DIR=/data1/home/wgao/v/bbb
 
     export LD_LIBRARY_PATH=/data1/home/wgao/.local/lib
+    export LD_RUN_PATH=/data1/home/wgao/.local/lib
     export GOPATH=/data1/home/wgao/tools/godir
 
     # vim8 with python3

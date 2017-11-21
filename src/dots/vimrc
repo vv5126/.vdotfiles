@@ -37,7 +37,7 @@
     "===============================================================================+
 " }}}
 
-" add my bundles here. {
+" add my bundles here. {{{
 
     "==================================================
     "外部库,借用Bundle.
@@ -412,19 +412,19 @@
 	Bundle 'ctrlp-modified.vim'
     endif
     " -------------------------------------------------
-" }
+" }}}
 
-" spf13. {
+" spf13. {{{
     "===============================================================================+
     endif
     source ~/.vim/bundle/spf13-vim/.vimrc
     "===============================================================================+
-" }
+" }}}
 
 " add my main set here. {{{
 
     source ~/.vim/vfunc.vim
-    " Environment {
+    " Environment {{{
         filetype off                       " 关闭文件类型侦测
         " syntax enable                      " 开启语法高亮功能
         set nofen
@@ -483,6 +483,13 @@
         noremap j gj
         noremap k gk
 
+        " 为选中代码加括号啥的
+        vnoremap 1 h<esc>`>a)<esc>`<i(<esc>
+        vnoremap 2 h<esc>`>a]<esc>`<i[<esc>
+        vnoremap 3 h<esc>`>a}<esc>`<i{<esc>
+        vnoremap 4 h<esc>`>a"<esc>`<i"<esc>
+	vnoremap 5 h<esc>`>a'<esc>`<i'<esc>
+
         " 支持代码折叠
         set foldlevel=1               " 设置折叠层数为
         " set foldenable                   " 允许折叠
@@ -514,9 +521,9 @@
         "inoremap <C-j> <Esc><C-W>j
         "inoremap <C-k> <Esc><C-W>k
         "inoremap <C-l> <Esc><C-W>l
-    " }
+    " }}}
 
-    " statusline {
+    " statusline {{{
         highlight StatusLine cterm=bold ctermfg=gray ctermbg=black
         highlight LineNr ctermfg=gray ctermbg=black                       " 侧边颜色
         highlight User1 ctermfg=gray
@@ -530,7 +537,7 @@
 
         au InsertEnter * call InsertStatuslineColor('i')
         au InsertLeave * call InsertStatuslineColor('')
-    " }
+    " }}}
 
     " leader {{{
         " let g:spf13_leader=';'
@@ -541,7 +548,7 @@
         let g:maplocalleader = ";"
     " }}}
 
-    " something good {
+    " something good {{{
         " 常用缩写
         iab zhushi <c-r>='"====================================================='<cr><cr>" <cr>"=====================================================
         iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
@@ -584,6 +591,17 @@
         "清除末尾空格
         nnoremap <leader>ds :%s/\s\+$//<cr>
 
+        "函数内排版
+        nmap = =a{
+
+        "清除选中行中所有空格
+        nnoremap <leader>dd :s/[ \t]\{1,}//g<cr>:noh<cr>
+        vnoremap <leader>dd :s/[ \t]\{1,}//g<cr>:noh<cr>
+
+        "清除选中行中空格,保留一个
+        nnoremap <leader>d1 :s/[ \t]\{1,}/ /g<cr>:noh<cr>
+        vnoremap <leader>d1 :s/[ \t]\{1,}/ /g<cr>:noh<cr>
+
         "设置tab宽度
         map <leader>t2 :setlocal shiftwidth=2<cr>
         map <leader>t4 :setlocal shiftwidth=4<cr>
@@ -618,6 +636,9 @@
         map <leader>1 1gt
         map <leader>2 2gt
         map <leader>3 3gt
+
+	" 空格键替换为换行
+	nnoremap <S-k> :s/ /\r/g<cr>:noh<cr>
 
         nmap <Leader>tl <Plug>GitGutterPreviewHunk
 
@@ -677,7 +698,7 @@
     " }
 
 
-    " 宏 {
+    " 宏 {{{
         "宏录制相关
         " q+<register> 开始记录命令, <register> 指用户自己定义的a-z中的一个寄存器
         " q 完成记录，退出记录
@@ -695,7 +716,7 @@
         " 3 这段内容保存或传递。
         " 4 使用命令：let @a="ohello th id<80>kb<80>kb<80>kbis is a a<80>kba<80>kbmaco of vim.^[" 或者参考修改宏的第三步。
         " 5 其他人用@a命令就可以使用你制作的宏了。
-    " }
+    " }}}
 
 " my plugin config {{{
 " Setting of plugin in bundle.
@@ -709,7 +730,7 @@
 
     " -------------------------------------------------
 
-    " EasyMotion设置
+    " EasyMotion设置 {{{
     if 1 && isdirectory(expand("~/.vim/bundle/vim-easymotion"))
 	" nmap t <Plug>(easymotion-t2)
 	map  ? <Plug>(easymotion-sn)
@@ -735,10 +756,11 @@
 	" Turn on case insensitive feature
 	let g:EasyMotion_smartcase = 1
     endif
+    " }}}
 
     " -------------------------------------------------
 
-    "YouCompleteMe
+    " YouCompleteMe {{{
     if 1 && isdirectory(expand("~/.vim/bundle/YouCompleteMe"))
 
 	"**
@@ -809,9 +831,11 @@
 	let g:UltiSnipsJumpForwardTrigger="<c-j>"
 	let g:UltiSnipsJumpBackwardTrigger="<c-k>"
     endif
+    " }}}
 
     " -------------------------------------------------
 
+    " tagbar {{{
     if 1 && isdirectory(expand("~/.vim/bundle/tagbar"))
 	" let tagbar_ctags_bin=ctags
 	" 设置 tagbar 子窗口的位置出现在主编辑区的左边
@@ -857,9 +881,11 @@
 		    \ }
 		    \ }
     endif
+    " }}}
 
     " -------------------------------------------------
 
+    " vim-airline {{{
     if 1 && isdirectory(expand("~/.vim/bundle/vim-airline"))
 	let g:airline_theme="dark"
 	let g:airline_powerline_fonts = 1
@@ -872,10 +898,11 @@
 	endif
 	let g:airline_symbols.space = "\ua0"
     endif
+    " }}}
 
     " -------------------------------------------------
 
-    " Ctrlp 和 Ctrlp-funky(,fu)
+    " Ctrlp 和 Ctrlp-funky(,fu) {{{
     if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
 	let g:ctrlp_working_path_mode = 'ra'
 	nnoremap <silent> <D-t> :CtrlP<CR>
@@ -912,6 +939,8 @@
 	    nnoremap <Leader>fu :CtrlPFunky<Cr>
 	endif
     endif
+    " }}}
+
     " 重复了
     " nnoremap <C-n> :CtrlPFunky<Cr>
     " let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
@@ -931,18 +960,7 @@
 " }}}
 " }}}
 
-"{{{ yingxiang paiban
-        "函数内排版
-        nmap = =a{
-
-        "清除选中行中所有空格
-        nnoremap <leader>dd :s/[ \t]\{1,}//g<cr>:noh<cr>
-        vnoremap <leader>dd :s/[ \t]\{1,}//g<cr>:noh<cr>
-
-        "清除选中行中空格,保留一个
-        nnoremap <leader>d1 :s/[ \t]\{1,}/ /g<cr>:noh<cr>
-        vnoremap <leader>d1 :s/[ \t]\{1,}/ /g<cr>:noh<cr>
-
+" 影响排版 {{{
         " 为选中代码加括号啥的
         " vnoremap 1 <esc>`>a)<esc>`<i(<esc>
         " vnoremap 2 <esc>`>a]<esc>`<i[<esc>

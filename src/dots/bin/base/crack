@@ -22,6 +22,8 @@ smkdir $done_dir
 smkdir $dict_dir
 smkdir $out_dir
 
+[ $# -eq 1 ] && dict_dir="$dict_dir/$1"
+
 # dicts=$(find $dict_dir -name *.txt)
 dicts=$(ls $dict_dir/*.txt -1)
 [ $? != 0 ] && { echo 'no dicts!'; exit; }
