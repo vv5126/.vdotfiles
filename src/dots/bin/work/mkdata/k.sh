@@ -4,12 +4,12 @@
 . ~/.bin/lib/lib.work
 . ~/.bin/lib/lib.shdb
 
-debug=1
+debug=0
 
 function get_repo_dir() {
     repo_info=''
     local repo_dir="$(getdir .repo)"
-    [ -n "$repo_dir" -a -f "$repo_dir/.project_info" ] && repo_info="$repo_dir/.project_info"
+    [ -n "$repo_dir" -a -f "$repo_dir/.pro/project_info" ] && repo_info="$repo_dir/.pro/project_info"
 }
 
 function make_info_file(){
@@ -34,6 +34,8 @@ function make_info_file(){
 	lcd_name=$lcd_name
 
 	board_config=$board_config
+
+        date="$(date +%Y%m%d_%H%M)"
 
 	# [opt]
 
@@ -66,8 +68,8 @@ function mkmain() {
     local build_bootimage_tar=${VGL_BUILD_BOOTIMAGE##*\/}
     local build_bootimage_dir=${build_bootimage_tar%%.*}
 
-    # [ ! -f ".project_info" -a -n "$repo_info" ] && source $repo_info
-    [ -f ".project_info" ] && source .project_info
+    # [ ! -f ".pro/project_info" -a -n "$repo_info" ] && source $repo_info
+    [ -f ".pro/project_info" ] && source .pro/project_info
     # [ "$use_repo" -eq 1 -a -n "$repo_info" ] && source $repo_info
     # the_image=$KERNEL_IMAGE_PATH/$KERNEL_TARGET_IMAGE
 
@@ -126,7 +128,7 @@ function mkmain() {
 
 
 function init(){
-        trap "rm -f .k.sh .project_info; exit 2" 1 2 3 15
+        trap "rm -rf .pro; exit 2" 1 2 3 15
 
 	local tmp=
 
@@ -180,29 +182,31 @@ function init(){
 	    tmp=$(user_select 'what OS' "${surport_os[@]}")
             forOS="${tmp:=none}"
 
-            case $project_type in
-                'kernel3.0.8')
-                    the_image=arch/mips/boot/compressed/uImage
-                    ;;
-                'kernel3.10.14')
-                    the_image=arch/mips/boot/uImage
-                    ;;
-            esac
+            the_image="$(jp -e "project_img" -e "$project_type" < $HOME/.bin/sources/ingenic.json)"
+            # case $project_type in
+            #     'kernel3.0.8')
+            #         the_image=arch/mips/boot/compressed/uImage
+            #         ;;
+            #     'kernel3.10.14')
+            #         the_image=arch/mips/boot/uImage
+            #         ;;
+            # esac
 
-            case $forOS in
-                'android'*)
-                    the_image=arch/mips/boot/zcompressed/zImage
-                    ;;
-                'mozart'*)
-                    the_image=arch/mips/boot/zcompressed/xImage
-                    ;;
-                'tizen'*)
-                    the_image=arch/mips/boot/uImage
-                    ;;
-                'buildroot'*)
-                    the_image=
-                    ;;
-            esac
+            [ -z "the_image" ] && the_image="$(jp -e "project_img" -e "$forOS" < $HOME/.bin/sources/ingenic.json)"
+            # case $forOS in
+            #     'android'*)
+            #         the_image=arch/mips/boot/zcompressed/zImage
+            #         ;;
+            #     'mozart'*)
+            #         the_image=arch/mips/boot/zcompressed/xImage
+            #         ;;
+            #     'tizen'*)
+            #         the_image=arch/mips/boot/uImage
+            #         ;;
+            #     'buildroot'*)
+            #         the_image=
+            #         ;;
+            # esac
         fi
 
 	git_remote="$(git remote -v | head -2 | tail -1 | awk '{print $2}')"
@@ -215,7 +219,7 @@ function init(){
 	target_name='$project_type-$forBOARD-$forOS'
         [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/$task_type/${customer:+$customer/}$forBOARD-$forOS-${feature%%_*}-imgs'
 
-	make_info_file ".project_info"
+	make_info_file ".pro/project_info"
 	return 0
 }
 
@@ -329,4 +333,4 @@ function mk_gcc_file() {
 	mkmain
 }
 
-shdb_format ".project_info" &
+shdb_format ".pro/project_info" &

@@ -21,7 +21,7 @@ out_rm=git.diff.rm
 [ -f "$out_rm" ] && rm $out_rm
 
 cd $1
-git diff > $tmp_frist_diff
+git diff . > $tmp_frist_diff
 cd - > /dev/null
 
 while read line; do

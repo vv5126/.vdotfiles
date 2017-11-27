@@ -1,0 +1,11 @@
+snippet std "aaa" b
+typedef union ddrp_${1:class} {
+	uint32_t d32;
+	struct {
+		unsigned int reserved2_3:2;
+	}b;
+}ddrp_$1_t;
+
+endsnippet
+# iab idate <c-r>=strftime("%Y-%m-%d")<CR>
+# iab itime <c-r>=strftime("%H:%M")<CR>

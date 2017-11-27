@@ -1,5 +1,56 @@
 #!/bin/bash
 
+. ~/.bin/ini/ini.work
+. ~/.bin/lib/lib.work
+. ~/.bin/lib/lib.shdb
+
+function make_info_file(){
+        local file=$1
+        local str="
+	# [base]
+
+        task_type=$task_type
+
+	customer=$customer
+
+	feature=$feature
+
+	forOS=$forOS
+
+	forBOARD=$forBOARD
+
+	project_type=$project_type
+
+	the_image=$the_image
+
+	lcd_name=$lcd_name
+
+	board_config=$board_config
+
+	# [opt]
+
+	needclean=$needclean
+
+	addtime=$addtime
+
+	note=$note
+
+	# [out]
+
+	target_dir=$target_dir
+
+	target_name=$target_name
+
+	# [unuse]
+
+	repositories_type='git'
+
+	git_remote=$git_remote
+
+	git_branch=$git_branch
+        "
+        shdb -f "$file" -a "$str"
+}
 
 function mk() {
 

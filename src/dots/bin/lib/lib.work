@@ -57,7 +57,7 @@ function get_project_base_info(){
 
         echo -n "what\'s the feature:  >>> "
         read feature
-        feature="$feature"_"$(date +%Y%m%d_%H%M)"
+        # feature="$feature"_"$(date +%Y%m%d_%H%M)"
 }
 
 function mktag(){

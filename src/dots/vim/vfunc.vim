@@ -252,4 +252,39 @@ function! GO_GIT_DIR()
     " echon 'git dir'
 endfunction
 " -------------------------------------------------
+"" vp doesn't replace paste buffer
+function! RestoreRegister()
+    let @" = s:restore_reg
+    return ''
+endfunction
+
+function! s:Repl()
+    let s:restore_reg = @"
+    return "p@=RestoreRegister()\<cr>"
+endfunction
+" -------------------------------------------------
+function! g:UltiSnips_Complete()
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res == 0
+	if pumvisible()
+	    return "\<C-n>"
+	else
+	    call UltiSnips#JumpForwards()
+	    if g:ulti_jump_forwards_res == 0
+		return "\<TAB>"
+	    endif
+	endif
+    endif
+    return ""
+endfunction
+
+function! g:UltiSnips_Reverse()
+    call UltiSnips#JumpBackwards()
+    if g:ulti_jump_backwards_res == 0
+	return "\<C-P>"
+    endif
+
+    return ""
+endfunction
+" -------------------------------------------------
 " }}}

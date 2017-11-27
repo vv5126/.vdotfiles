@@ -146,8 +146,9 @@ function show_msg() {
 # main
 # goto project root directory if possible.
 cd_proj
+[ ! -f ".pro" ] && exit
 
-[ -f ".project_info" ] && source .project_info
+[ -f ".project_info" ] && source .project_info || { echo no project info!; exit; }
 
 f_platform_name="platforms.cfg"
 f_cfg_name="$feature-$project_type.cfg"

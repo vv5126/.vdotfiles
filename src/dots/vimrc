@@ -137,6 +137,25 @@
     Bundle 'tpope/vim-endwise'
     " -------------------------------------------------
     " -------------------------------------------------
+    " cscope的vim插件,提供快捷键操纵cscope
+    " Bundle 'chazy/cscope_maps'
+    " Bundle 'cscope_macros.vim'
+    " set cscopetag
+    " set cscopeverbose
+    " set cscopequickfix=c-,d-,e-,g-,i-,s-,t-
+    " set cscopetagorder=1
+    " set nocsverb "增加 cscope 数据库时，不给出消息
+    " -------------------------------------------------
+    " Bundle 'charz/multi-cscope-db'
+    " Bundle 'brookhong/cscope.vim'
+    " nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
+    " nnoremap <leader>l :call ToggleLocationList()<CR>
+    " -------------------------------------------------
+    " Bundle 'rking/ag.vim'
+    " let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
+    " let g:ag_working_path_mode="r"
+    " Bundle 'Chun-Yang/vim-action-ag'
+    " -------------------------------------------------
     " 在vim里画图
     " Bundle 'DrawIt'
     " -------------------------------------------------
@@ -286,6 +305,7 @@
     " -------------------------------------------------
     " c/c++ support,让你用编写c/c++程序时如虎添翼,有很多贴心的功能,每个功能都有快捷键,不过一部分和NERD_comments冲突 如果经常编写一些单文件的c程序,但是不想写makefile,用这个,他帮你完成,F9编译并链接,ctrl-F9运行
     Bundle 'c.vim'
+    " let g:C_Ctrl_j = 'off'
     " -------------------------------------------------
     " Unite可以在一个项目中快速浏览文件。但是它不仅限于文件，其他任何可以列出的东西都可以很好的被显示和搜索。
     Bundle 'Shougo/unite-help'
@@ -307,6 +327,24 @@
     " 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
     " Bundle 'navicore/vis.vim'
     " -------------------------------------------------
+    " 折叠
+    Bundle 'lambdalisue/vim-foldround'
+    nmap <Leader>xf <Plug>(foldround-forward)
+    nmap <Leader>fb <Plug>(foldround-backward)
+
+    Bundle 'Konfekt/FastFold'
+    nmap zuz <Plug>(FastFoldUpdate)
+    let g:fastfold_savehook = 1
+    let g:fastfold_fold_command_suffixes =  ['x','X','a','A','o','O','c','C']
+    let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']
+
+    Bundle 'tmhedberg/SimpylFold'
+
+    Bundle 'tweekmonster/braceless.vim'
+
+    setlocal foldlevel=1               " 设置折叠层数为
+    set nofoldenable                   " 启动 vim 时关闭折叠代码
+    set foldcolumn=1                   " 设置折叠区域的宽度
     " -------------------------------------------------
     " 语法高亮 似乎不好用
     " Bundle 'plasticboy/vim-markdown'
@@ -380,6 +418,15 @@
     " let g:miniBufExplBRSplit = 0
     let g:miniBufExplVSplit = 20
     " let g:miniBufExplSplitBelow=1
+
+    " minibufexpl插件的一般设置
+    " let g:miniBufExplMapWindowNavVim = 1
+    " let g:miniBufExplMapWindowNavArrows = 1
+    " let g:miniBufExplMapCTabSwitchBufs = 1
+    " let g:miniBufExplModSelTarget = 1
+    " let g:miniBufExplorerMoreThanOne = 1 "自动打开
+    " autocmd BufRead,BufNew :call UMiniBufExplorer
+    " let g:miniBufExplUseSingleClick = 1
 
     " 显示/隐藏 MiniBufExplorer 窗口
     " map <Leader>bl :MBEToggle<cr>
@@ -476,9 +523,13 @@
         " set shiftwidth=8                 " 设置格式化时制表符占用空格数
         " set softtabstop=8                " 让 vim 把连续数量的空格视为一个制表符, 使得按退格键时可以一次删掉 4 个空格
         " set expandtab                    " 用空格代替制表符
-        set noexpandtab                    " 不要用空格代替制表符
-        autocmd FileType sh setlocal shiftwidth=4
+        " set noexpandtab                    " 不要用空格代替制表符
+        " autocmd FileType sh setlocal shiftwidth=4
 
+	" 使用tab键来代替%进行匹配跳转
+	nnoremap <tab> %
+	vnoremap <tab> %
+        "=====================================================
         " 处理折叠行的左右移动
         noremap j gj
         noremap k gk
@@ -578,12 +629,17 @@
         imap qq <esc>
 
         "插入模式下移动
-        inoremap <c-h> <c-left>
-        inoremap <c-j> <left>
-        inoremap <c-k> <right>
-        inoremap <c-l> <c-right>
-        inoremap <C-a> <HOME>
-        inoremap <C-e> <END>
+        inoremap <c-h> <C-o><S-Left>
+        inoremap <c-j> <C-o><left>
+        inoremap <c-k> <C-o><right>
+        inoremap <c-l> <C-o><c-right>
+        inoremap <C-a> <C-o><HOME>
+        inoremap <C-e> <C-o><END>
+	inoremap <C-b> <S-Left>
+	" inoremap <C-h> <left>
+	" inoremap <C-j> <down>
+	" inoremap <C-k> <up>
+	" inoremap <C-l> <right>
 
         "去空行
         nnoremap <leader>db :g/^\s*$/d<cr>
@@ -618,6 +674,9 @@
         nnoremap <leader>df :vert diffsplit 
         nnoremap <leader>dff :diffoff<cr>
 
+	"Esc 键不让光标左移
+	imap <Esc> <C-o>:stopinsert<CR>
+
 	" i/a 技巧: di da vi va ya yi...
 	" 快速选择段中串
 	map <leader>u vi"
@@ -642,8 +701,25 @@
 
         nmap <Leader>tl <Plug>GitGutterPreviewHunk
 
-        " highlight cursorLine cterm=bold ctermfg=green ctermbg=black
-        " highlight cursorColumn cterm=bold ctermfg=green ctermbg=black
+	" 独立的剪贴板
+	" vmap <silent> <expr> p <sid>Repl()
+
+	" set colorcolumn=100
+	" set cursorcolumn                   "高亮显示当前列
+	" set nocul
+	" set nocuc
+	" autocmd InsertLeave * set nocul    " 用浅色高亮当前行
+	" autocmd InsertEnter * set cul      " 用浅色高亮当前行
+        " highlight cursorLine cterm=bold ctermfg=green ctermbg=blue
+        " highlight cursorColumn cterm=bold ctermfg=green ctermbg=yellow
+	" highlight cursorLine cterm=bold ctermfg=green ctermbg=red
+	" highlight cursorColumn cterm=bold ctermfg=green ctermbg=red
+	" set colorcolumn=37 " 彩色显示一列，用以规范代码
+	" highlight ColorColumn ctermbg=green ctermfg=green
+
+        nmap <A-j> mz:m+<cr>`z
+	" dot 文件生成并预览
+	" :autocmd BufRead,BufNewFile *.dot map <F5> :w<CR>:!dot -Tjpg -o %<.jpg % && eog %<.jpg  <CR><CR> && exec "redr!"
 
 	" 没sudo却想保存
 	cmap w!! w !sudo tee % >/dev/null
@@ -960,11 +1036,66 @@
 " }}}
 " }}}
 
-" 影响排版 {{{
-        " 为选中代码加括号啥的
-        " vnoremap 1 <esc>`>a)<esc>`<i(<esc>
-        " vnoremap 2 <esc>`>a]<esc>`<i[<esc>
-        " vnoremap 3 <esc>`>a}<esc>`<i{<esc>
-        " vnoremap 4 <esc>`>a"<esc>`<i"<esc>
-        " vnoremap 5 <esc>`>a'<esc>`<i'<esc>
+" {{{
+	" s: Find this C symbol 0或者s   —— 查找这个C符号
+	nmap <C-\>s :call GO_GIT_DIR()<cr>:cs find s <C-R>=expand("<cword>")<CR><CR>
+	" g: Find this definition 1或者g  —— 查找这个定义
+	nmap <C-\>g :call GO_GIT_DIR()<cr>:cs find g <C-R>=expand("<cword>")<CR><CR>
+	" c: Find functions calling this function 3或者c  —— 查找调用这个函数的函数（们）
+	nmap <C-\>c :call GO_GIT_DIR()<cr>:cs find c <C-R>=expand("<cword>")<CR><CR>
+	" t: Find this text string 4或者t   —— 查找这个字符串
+	nmap <C-\>t :call GO_GIT_DIR()<cr>:cs find t <C-R>=expand("<cword>")<CR><CR>
+	" e: Find this egrep pattern 6或者e  —— 查找这个egrep匹配模式
+	nmap <C-\>e :call GO_GIT_DIR()<cr>:cs find e <C-R>=expand("<cword>")<CR><CR>
+	" f: Find this file 7或者f   —— 查找这个文件
+	nmap <C-\>f :call GO_GIT_DIR()<cr>:cs find f <C-R>=expand("<cfile>")<CR><CR>
+	" i: Find files #including this file 8或者i   —— 查找#include这个文件的文件（们）
+	nmap <C-\>i :call GO_GIT_DIR()<cr>:cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+	" d: Find functions called by this function 2或者d  —— 查找被这个函数调用的函数（们）
+        nmap <C-\>d :call GO_GIT_DIR()<cr>:cs find d <C-R>=expand("<cword>")<CR><CR>
+	set cst
+	set cspc=3
+
+" DoxygenToolkit.vim  由注释生成文档，并且能够快速生成函数标准注释
+Bundle 'DoxygenToolkit.vim'
+let g:DoxygenToolkit_authorName="Asins - asinsimple AT gmail DOT com"
+let g:DoxygenToolkit_briefTag_funcName="yes"
+map <leader>da :DoxAuthor<CR>
+map <leader>df :Dox<CR>
+map <leader>db :DoxBlock<CR>
+map fg : Dox<cr>
+let g:DoxygenToolkit_licenseTag="My own license\<enter>"
+let g:DoxygenToolkit_undocTag="DOXIGEN_SKIP_BLOCK"
+let g:DoxygenToolkit_briefTag_pre = "@brief\t"
+let g:DoxygenToolkit_paramTag_pre = "@param\t"
+let g:DoxygenToolkit_returnTag = "@return\t"
+let g:DoxygenToolkit_maxFunctionProtoLines = 30
+
+nmap <F2> :set ic<cr>/
+nmap <S-C> :stj <C-R>=expand("<cword>")<CR><CR>
+" nmap ff :1,$s///g<LEFT><LEFT><LEFT>
+" imap <C-u> <esc>d0i
+" imap <C-k> <esc>d$i " 与自动补全中的绑定冲突
+
+set modelines=1                   " set项的检查数量??
+try
+    call fuf#defineLaunchCommand('FufCWD', 'file', 'fnamemodify(getcwd(), ''%:p:h'')')
+    map <leader>t :FufCWD **/<CR>
+catch
+endtry
+
+" -------------------------------------------------
+" 排版
+" set formatoptions=rqnl
+" set formatoptions=rqntc            " 控制 Vim 如何对文本进行排版
+" set formatoptions=tcrn2bmMB1j
+" set formatoptions+=mM             "自动对中文换行
+" set formatoptions+=mB
+" set cindent                        " 使用C样式的缩进
+" set cinoptions=:0                  " 设置 'cindent' 时如何缩进
+" set smartindent                    " C 程序智能自动缩进
+" set fileformats=unix,dos,mac       " 自动识别UNIX格式和MS-DOS格式     参与自动检测的 'fileformat' 的格式
+" set fileformat=unix                " 以UNIX的换行符格式保存文件，注意是去掉一个^M
+" -------------------------------------------------
+" }}}
 " }}}
