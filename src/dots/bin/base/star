@@ -43,6 +43,9 @@ done
             *bz2)
                 tar -xvf $1
                 ;;
+            *tbz)
+                tar -xvf $1
+                ;;
             *zip)
                 unzip $1
                 ;;

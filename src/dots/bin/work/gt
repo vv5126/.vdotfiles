@@ -10,17 +10,19 @@ APP_DIR=${APP_DIR%\/*}
 function get_project_source_path() {
         cd .repo/manifests
 	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $2}'`
+        local moudle="$(ls default.xml -l)"
+        moudle="${moudle##* }"
         branch="$(git branch -a | sed -n '/->/p;')"
         branch="${branch##*-> }"
         branch="${branch##*/}"
-        echo repo init -u $warehouse -b $branch
+        echo repo init -u $warehouse -b $branch -m $moudle
 }
 
 function git_push() {
         local branch
 	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $1}'`
         branch="$(git branch | sed -n '/^\*/p')"
-        if [[ "$branch" =~ '(' ]]; then
+        if [[ "$branch" =~ '(' || "$branch" =~ ' default' ]]; then
                 branch="$(git branch -a | sed -n '/->/p')"
                 branch=${branch##*-> }
                 branch=${branch#*/}

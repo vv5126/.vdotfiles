@@ -1,4 +1,6 @@
 
+source ~/.bin/lib/lib.misc
+
 WORK_SERVER_MAIN=wgao@192.168.4.15
 export LOCAL_HOST=user@192.168.4.150
 
@@ -20,27 +22,26 @@ export VGLD_LIB=$HOME/.bin/lib
 export VGL_ASD_FILE="$WORK_SERVER_MAIN":"$HOME"/.bin/work/.asd
 export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 
-[ -d "$HOME/.bin" ] && PATH="$HOME/.bin/base:$HOME/.bin/work:$PATH"
+add_path "$HOME/.bin/base"
+add_path "$HOME/.bin/work"
 
 # 4.15 #
 [[ $(uname -n) == 'lqchen-0B' ]] && {
     # [ "$(ps -p $$ -o comm=)" != 'zsh' -a -x '/data1/home/wgao/.local/bin/zsh' ] && exec /data1/home/wgao/.local/bin/zsh
 
     # JDK
-    # PATH=/data1/home/wgao/tools/JDK-1.5.0/jdk1.6.0_31/bin:$PATH
+    # add_path "/data1/home/wgao/tools/JDK-1.5.0/jdk1.6.0_31/bin"
     # export JAVA_HOME="/data1/home/wgao/tools/jdk1.6.0_31"
     # export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
     # export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
     export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
 
-    # GCC
-    PATH=/pdev/chains/mips-linux-gnu/bin:$PATH
     # GCC for Android
-    PATH=/data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin:$PATH
+    add_path "/data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin"
 
     # VIM8
-    PATH=/data1/home/wgao/tools/vim8/bin:$PATH
-    PATH=/data1/home/wgao/tools/llvm/bin:$PATH
+    add_path "/data1/home/wgao/tools/vim8/bin"
+    add_path "/data1/home/wgao/tools/llvm/bin"
 
     alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
     alias wiz='nohup $HOME/tools/wiz/src/WizNote > /dev/null &'
@@ -61,6 +62,8 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 
     # vim8 with python3
     # ./configure --with-features=huge --enable-python3interp --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu/ --enable-rubyinterp --enable-luainterp --enable-perlinterp --with-python3-config-dir=/data1/home/wgao/tools/python3.6/lib/python3.6/config-3.6m-x86_64-linux-gnu/ --enable-multibyte --enable-cscope --prefix=/data1/home/wgao/tools/vim8/
+    clean_path "/usr/games"
+    clean_path "/usr/local/games"
 } || {
     alias vsync='rsync -rul wgao@192.168.4.15:~/.vdotfiles ~'
     alias vsync1='rsync -rl --exclude=bundle wgao@192.168.4.15:~/.vdotfiles ~'
@@ -84,7 +87,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 [[ "$VGL_LOCAL_USER" = "$HOSTNAME" ]] && {
     export VGL_NOTIFY=/tmp/.notify_pipe
     export ZSH=$HOME/.vim/bundle/oh-my-zsh
-	PATH="$HOME/.bin/local:$PATH"
+        add_path "$HOME/.bin/local"
 	# source ~/.bin/local/vlogin
     alias VB='VirtualBox --startvm $HOME/.VirtualBox/xp/xp.vbox &'
     alias sm='thunderbird -compose'
@@ -94,7 +97,7 @@ export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 JAVA_HOME=${JAVA_HOME:=/usr/lib/jvm/java}
 export JRE_HOME=${JAVA_HOME}/jre
 export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
-export PATH=${JAVA_HOME}/bin:$PATH
+add_path "${JAVA_HOME}/bin"
 }
 
 # clear

@@ -1,5 +1,27 @@
 " function {{{
 " -------------------------------------------------
+function! SuperPrint(Num)
+    let l:tmp = @+
+    let l:pre = ''
+    let l:priv = ''
+    if a:Num == 1
+	let l:pre = l:tmp . ' = %d'
+	let l:priv = ', (' . l:tmp . ')'
+    else
+	let l:tmp = substitute(l:tmp, '+\|=\|\*\|/\|,', ' ', 'g')
+	let l:list = split(l:tmp)
+	for l:i in l:list
+	    if ('.-' =~ l:i) && (strlen(l:i) == 1)
+		continue
+	    else
+		let l:pre = l:pre . ' ' . l:i . ' = %d |'
+		let l:priv = l:priv . ', ' . l:i
+	    endif
+	endfor
+    endif
+    call append(line('.'), 'prntk("\033[31m' . l:pre . '\033[0m\n"' . l:priv . ');')
+endfunction
+" -------------------------------------------------
 
 "To hex modle
 let s:hexModle = "N"

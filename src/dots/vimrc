@@ -536,7 +536,7 @@
 
         " 为选中代码加括号啥的
         vnoremap 1 h<esc>`>a)<esc>`<i(<esc>
-        vnoremap 2 h<esc>`>a]<esc>`<i[<esc>
+        " vnoremap 2 h<esc>`>a]<esc>`<i[<esc> 'bug for vv'
         vnoremap 3 h<esc>`>a}<esc>`<i{<esc>
         vnoremap 4 h<esc>`>a"<esc>`<i"<esc>
 	vnoremap 5 h<esc>`>a'<esc>`<i'<esc>
@@ -603,6 +603,10 @@
         " 常用缩写
         iab zhushi <c-r>='"====================================================='<cr><cr>" <cr>"=====================================================
         iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+
+        " super print
+        nnoremap <leader>t :call SuperPrint(1)<CR>
+        nnoremap <leader>y :call SuperPrint(0)<CR>
 
         " 对选中代码进行匹配
         vnoremap <silent> * :call VisualSearch('f')<CR>
@@ -675,7 +679,7 @@
         nnoremap <leader>dff :diffoff<cr>
 
 	"Esc 键不让光标左移
-	imap <Esc> <C-o>:stopinsert<CR>
+	" imap <Esc> <C-o>:stopinsert<CR>
 
 	" i/a 技巧: di da vi va ya yi...
 	" 快速选择段中串
@@ -706,16 +710,14 @@
 
 	" set colorcolumn=100
 	" set cursorcolumn                   "高亮显示当前列
+	" set colorcolumn=37                 " 彩色显示一列，用以规范代码
 	" set nocul
 	" set nocuc
 	" autocmd InsertLeave * set nocul    " 用浅色高亮当前行
 	" autocmd InsertEnter * set cul      " 用浅色高亮当前行
         " highlight cursorLine cterm=bold ctermfg=green ctermbg=blue
         " highlight cursorColumn cterm=bold ctermfg=green ctermbg=yellow
-	" highlight cursorLine cterm=bold ctermfg=green ctermbg=red
-	" highlight cursorColumn cterm=bold ctermfg=green ctermbg=red
-	" set colorcolumn=37 " 彩色显示一列，用以规范代码
-	" highlight ColorColumn ctermbg=green ctermfg=green
+	" highlight cursorColumn ctermbg=green ctermfg=green
 
         nmap <A-j> mz:m+<cr>`z
 	" dot 文件生成并预览

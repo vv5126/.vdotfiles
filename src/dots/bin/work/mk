@@ -104,6 +104,10 @@ function mkmain() {
         get_param '-v' $@
         [ $? -eq 0 ] && { checkver; return 0; }
 
+        # try find the a.sh and run.
+        [ -f 'a.sh' ] && { chmod +x a.sh && ./a.sh; return 0; }
+        [ -f "$TRIGGER_DIR/a.sh" ] && { cd $TRIGGER_DIR && chmod +x a.sh && ./a.sh; return 0; }
+
         # project init a make system.
 	[ ! -f ".pro/project_info" ] && { mkinit && echo "init ok" >&2; return 0; }
 
