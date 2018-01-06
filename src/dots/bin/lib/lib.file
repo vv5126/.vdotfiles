@@ -144,4 +144,4 @@ find . -path "./sk" -prune -o -name "*.txt" -print
 # 要列出所有长度为零的文件
 find . -empty
 
-[ $# -ne 0 ] && $@
+[[ "$(basename $0)" =~ "lib.file" ]] && $@

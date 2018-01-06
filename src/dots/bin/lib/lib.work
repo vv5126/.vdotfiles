@@ -168,4 +168,4 @@ echo "$PROJECT_DIR_NAME $PROJECT_DIR"
 
 ########### will export end ############
 
-[ $# -ne 0 ] && $@
+[[ "$(basename $0)" =~ "lib.work" ]] && $@

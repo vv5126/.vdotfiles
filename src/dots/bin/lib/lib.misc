@@ -168,4 +168,4 @@ function gen_info() {
 
 ########### will export end ############
 
-[ $# -ne 0 ] && $@
+[[ "$(basename $0)" =~ "lib.misc" ]] && $@

@@ -242,4 +242,4 @@ function showlist_with_tab(){
 
 ########### will export end ############
 
-[ $# -ne 0 ] && $@
+[[ "$(basename $0)" =~ "lib.list" ]] && $@
