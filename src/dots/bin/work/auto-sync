@@ -3,12 +3,19 @@
 # sync the hub codes
 
 list='
+bootrom
+buildroot
+m150
+manhattan-x1000-new
+mensa
+mozart
 kernel-3.0.8
-kernel-3.10.14
+kernel-3.10-new
+kernel-4.4
 manhattan-for-halley2
-manhattan-for-phoenix
+manhattan-for-newton2_plus
 '
-rootdir="$HOME/hub"
+rootdir="$HOME/work/hub"
 
 sync_git() {
     git_remote=$(git remote)
@@ -33,4 +40,7 @@ for line in ${list[@]}; do
         [ -d '.repo' ] && sync_repo
     fi
 done
+echo '' >> $rootdir/sync.log
 echo 0 > $rootdir/.working_state
+
+exit 0

@@ -11,6 +11,7 @@ alias ax='chmod +x'
 alias du='du -h -d 1'
 alias grep='grep --color --exclude-dir=".git"'
 alias ag='ag --noheading --smart-case'
+alias libmk='lib.misc gen_lib_info ~/.bin/lib'
 
 alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
 
@@ -22,6 +23,7 @@ export LANG=en_US.utf8
 # export PYTHONPATH=$PYTHONPATH:/usr/lib/python3/dist-packages/
 
 export EDITOR="$(which vim)"
+add_path "$HOME/.bin/lib"
 [[ $(uname -n) == 'ThinkPad-Yoga-260' ]] && {
     add_path "$HOME/bin/python3.6/bin"
 }

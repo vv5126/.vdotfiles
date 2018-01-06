@@ -1,0 +1,26 @@
+
+# http://kmkeen.com/jshon/
+# -e 字典(一个具体对象)
+# -k key 字典索引(子对象集)
+# -t 类型
+# -u 值(非对象)
+# -t (type) returns string, object, array, number, bool, null
+# -l (length) returns an integer. Only works on string, object, array.
+# -k (keys) returns a newline separated list of keys. Only works on object.
+# -e index (extract) returns json value at "index". Only works on object, array. Negative array indexes wrap around.
+# -a (across) maps the remaining actions across the selected element. Only works on objects and arrays. Multiple -a calls can be nested, though the need is rare in practice.
+# -s value (string) returns a json encoded string. Can also be -inserted to an existing structure.
+# -n value (nonstring/number) returns a json element to be later -inserted into an existing structure. Valid values are true, false, null, array, object, integers and floats. Abbreviates t, f, n, [] and {} respectively also work.
+# -u (unstring) returns a decoded string. Works on string, int, real, boolean, null.
+# -p (pop) pops the last manipulation from the stack, rewinding the history. Useful for extracting multiple values from one object.
+# -d index (delete) removes and item in an array or object. Negative array indexes will wrap around.
+# -i index
+
+
+
+# sample "key:value" deal.
+
+function json_get_value()
+{
+    jp -e kernel_img -k < $VGL_JSON_FILE
+}

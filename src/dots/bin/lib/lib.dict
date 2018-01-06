@@ -18,4 +18,4 @@ function dict_get_key() {
 	sed ""
 }
 
-[[ "$(basename $0)" =~ "lib.dict" ]] && $@
+[[ "${0##*/}" =~ "lib.dict" ]] && $@

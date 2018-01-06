@@ -96,7 +96,7 @@ function get_script_dir() {
     echo DIR = $DIR
 }
 
-function mem(){
+function mem() {
 	echo mem > /sys/power/state
 }
 
@@ -140,17 +140,31 @@ function col()
       awk -v col=$1 '{print $col}'
 }
 
-function gen_info() {
-	local lib_dir="$1"
-	local files="$(find_all "$lib_dir")"
-	for i in $(list_all "$files"); do
-		lines=$(sed -n "/^func/=;"  "$i")
-		for j in lines; do
-			"$(lib.file get_line_from_file "$i" "$((j-2))")"
-		done
-		# sed -n -e "/^func/p;" -e "/^func/=;" "$i"
-	done
+function gen_lib_info() {
+    local func_name func_desc line lines i j lib_dir files
+    lib_dir="$1"
+    rm $lib_dir/ReadMe >/dev/null
+    files="$(find "$lib_dir" -name "lib.*")"
+    for i in $files; do
+        if [ -f "$i" ]; then
+            lines="$(sed -n "/^func/=;" "$i")"
+            echo "--- $i ---" >> $lib_dir/ReadMe
+            for j in $lines; do
+                line=$((j-1>0?j-1:0))
+                func_name="$(sed -n "$j,$j p;" "$i" | awk '{print $2}')"
+                func_desc="$(sed -n "$line,$line p;" "$i")"
+                [ "${func_desc:0:1}" == '#' ] || func_desc=''
+                echo -e "$func_name: $func_desc" >> $lib_dir/ReadMe
+            done
+            echo '' >> $lib_dir/ReadMe
+        fi
+    done
+
+    # 排版
+    vim -c "1,$(sed -n '$=' "$lib_dir/ReadMe")EasyAlign :" "$lib_dir/ReadMe"
 }
+
+
 ############# will export ##############
 
 # case $(ps -q $$ -o comm=) in
@@ -168,4 +182,4 @@ function gen_info() {
 
 ########### will export end ############
 
-[[ "$(basename $0)" =~ "lib.misc" ]] && $@
+[[ "${0##*/}" =~ "lib.misc" ]] && $@

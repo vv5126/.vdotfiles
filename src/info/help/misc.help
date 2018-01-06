@@ -104,20 +104,6 @@ free -m | grep cache | awk '/[0-9]/{ print $4" MB" }'
 打开vim并跳转到文件最后:
 vim + some_file_name
 
-git clone特定branch (本例是master分支):
-git clone git@github.com:name/app.git -b master
-
-git切换到另外一个branch (本例是develop分支):
-git checkout develop
-
-git删除一个branch(本例是myfeature):
-git branch -d myfeature
-
-Git删除一个远程branch:
-git push origin :branchName
-
-Git push 新的branch到远程:
-git push -u origin mynewfeature
 
 打印history中最后的cat命令
 !cat:p
@@ -155,12 +141,6 @@ kill -9 $$
 扫描网络来找出开放的端口:
 nmap -p 8081 172.20.0.0/16
 
-设置git email:
-git config --global user.email "me@example.com"
-
-如果你有未提交的commit，与master同步:
-git pull --rebase origin master
-
 将文件名中含有txt的所有文件移动到/home/user:
 find -iname "*txt*" -exec mv -v {} /home/user \;
 
@@ -178,9 +158,6 @@ expand test.txt > test1.txt
 
 跳过bash历史:
 <<空格>>cmd
-
-回到之前的工作目录:
-cd -
 
 切割大的tar.gz文件为几个文件 (每个100MB)，并还原:
 split –b 100m /path/to/large/archive /path/to/output/files cat files* > archive

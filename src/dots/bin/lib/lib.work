@@ -27,18 +27,50 @@ function get_h_from_c() {
 
 function guess_obj()
 {
-        # kernel
-        [ -d "arch" -a -d "kernel" ] && { echo "kernel"; return; }
-        # uboot
-        [ -d "arch" -a -d "spl" ] && { echo "uboot"; return; }
+    local project_type project_path
+    source ~/.bin/lib/lib.base
 
-        if [ -d ".repo" ]; then
+    # other: have a.sh
+    local dir=$(getdir a.sh)
+    [ -n "$dir" ] && { project_type="other"; project_path="$dir"; }
+
+    if [ -z "$project_type" ]; then
+        cd_proj
+        if [ $? -eq 0 ]; then
+
+            if [ -z "$project_type" -a -d ".git" ]; then
+                # rootfs
+
+                # mozart
+                [ -z "$project_type" -a -n "$(git remote -v | grep -io 'mozart')" ] && project_type="mozart"
+
+                # kernel
+                [ -z "$project_type" -a -d "arch" -a -d "kernel" ] && project_type="kernel"
+
+                # uboot
+                [ -z "$project_type" -a -d "arch" -a -d "spl" ] && project_type="uboot"
+            fi
+
+            if [ -z "$project_type" -a -d ".repo" ]; then
                 cd .repo/manifests
-        # manhattan
-                [ -n "$(git remote -v | grep -io 'manhattan')" ] && { echo "manhattan"; return; }
-        # android
-                [ -n "$(git remote -v | grep -io 'mipsia/platform')" ] && { echo "android"; return; }
+
+                # manhattan
+                [ -z "$project_type" -a -n "$(git remote -v | grep -io 'manhattan')" ] && project_type="manhattan"
+
+                # android
+                [ -z "$project_type" -a -n "$(git remote -v | grep -io 'mipsia/platform')" ] && project_type="android"
+            fi
+
+            [ -n "$project_type" ] && project_path="$PWD"
         fi
+    fi
+
+    # unknown
+    [ -z "$project_type" ] && project_type="unknown"
+
+    echo "$project_type $project_path"
+
+    [ "$project_type" == "unknown" ] && return -1 || return 0
 }
 
 function get_project_base_info(){
@@ -168,4 +200,4 @@ echo "$PROJECT_DIR_NAME $PROJECT_DIR"
 
 ########### will export end ############
 
-[[ "$(basename $0)" =~ "lib.work" ]] && $@
+[[ "${0##*/}" =~ "lib.work" ]] && $@

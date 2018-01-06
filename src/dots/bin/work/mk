@@ -11,25 +11,8 @@ source ~/.bin/lib/lib.misc
 
 function try_get_obj()
 {
-        source $1
-        # kernel
-        [ -d "arch" -a -d "kernel" ] && { echo $kernel; return; }
-        # uboot
-        [ -d "arch" -a -d "spl" ] && { echo $uboot; return; }
-        # mozart
-        [ -d "mozart" ] && { echo $mozart; return; }
-        [ -d "shairport" -a -d "dlna" ] && { echo $mozart; return; }
-
-        if [ -d ".git" ]; then
-            # mozart
-            [ -n "$(git remote -v | grep -io 'mozart')" ] && { echo $mozart; return; }
-        fi
-
-        if [ -d ".repo" ]; then
-                cd .repo/manifests
-        # manhattan
-                [ -n "$(git remote -v | grep -io 'manhattan')" ] && { echo $manhattan; return; }
-        fi
+    local tmp="$(guess_obj)"
+    [ "${tmp%% *}" != "unknown" ] && eval echo "$(jp -e "mk_sub" -e "${tmp%% *}" < $VGL_JSON_FILE)"
 }
 
 function checkver()
@@ -42,14 +25,15 @@ function checkver()
 
 function mkinit()
 {
-        local dest=$(try_get_obj "$VGLD_MKDATA/cfg")
+        local dest=$(try_get_obj)
         rm -rf .pro && mkdir .pro
 
         # only for mozart now
         [ "$dest" == 'mzt.sh' -a -d "mozart" ] && cd mozart
 
-        echo $dest
-        [ -z "$dest" ] && dest=$(showlist_with_value "$VGLD_MKDATA/cfg" "what project type do you want init")
+        local project_list="$(jp -e mk_sub -k < $VGL_JSON_FILE)"
+        [ -z "$dest" ] && dest=$(user_select 'what project type do you want init' "${project_list[@]}")
+
 	if [ ! -f ".pro/.$dest" ]; then
                 cp "$VGLD_MKDATA/$dest" ".pro/.$dest"
                 ./.pro/".$dest" init
@@ -111,19 +95,10 @@ function mkmain() {
         # project init a make system.
 	[ ! -f ".pro/project_info" ] && { mkinit && echo "init ok" >&2; return 0; }
 
-	local value=
-	local key=
-	while read line; do
-		if [ -f ".pro/.${line#*=}" ]; then
-			value=".${line#*=}"
-			key=${line%%=*}
-			break
-		fi
-	done < "$VGLD_MKDATA/cfg"
-
+        value=$(find .pro -name '.*.sh')
 	if [ -n "value" ]; then
 		# echo "this's maybe a $key project" >&2
-		./.pro/$value $@
+		./$value $@
 		return 0
 	else
 		echo "NO PROJECT DIR" >&2

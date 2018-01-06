@@ -125,6 +125,13 @@ function change_toolchain(){
     add_path "$var"
 }
 
+function lnn() {
+    local lnfile="$1"
+    local searchdir="${2:-"$HOME/.bin"}"
+    local d="$(find "$searchdir/" -name "$lnfile" | head -1)"
+    [ -n "$d" ] && ln -sf "$d" "$lnfile"
+}
+
 ############# will export ##############
 alias cd='quickcd'
 alias vi='svi'

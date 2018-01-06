@@ -995,3 +995,23 @@ ignore 文件
 在Git工作区的根目录下创建一个特殊的.gitignore文件，然后把要忽略的文件名填进去，Git就会自动忽略这些文件。
 .gitignore文件本身要放到版本库里，并且可以对.gitignore做版本管理！加上你自己定义的文件，最终得到一个完整的.gitignore文件，内容如下：
 #################################################
+git clone特定branch (本例是master分支):
+git clone git@github.com:name/app.git -b master
+
+git切换到另外一个branch (本例是develop分支):
+git checkout develop
+
+git删除一个branch(本例是myfeature):
+git branch -d myfeature
+
+Git删除一个远程branch:
+git push origin :branchName
+
+设置git email:
+git config --global user.email "me@example.com"
+
+如果你有未提交的commit，与master同步:
+git pull --rebase origin master
+
+Git push 新的branch到远程:
+git push -u origin mynewfeature

@@ -135,6 +135,7 @@ function init(){
         get_repo_dir
 
         if [ -n "$repo_info" ]; then
+            debug echo source $repo_info
             source $repo_info
         else
             get_project_base_info
@@ -179,7 +180,8 @@ function init(){
         fi
 
         if [ -z "$forOS" ]; then
-	    tmp=$(user_select 'what OS' "${surport_os[@]}")
+            local surport_os="$(jp -e surport_os -k < $VGL_JSON_FILE)"
+            tmp=$(user_select 'what OS' "${surport_os[@]}")
             forOS="${tmp:=none}"
 
             the_image="$(jp -e "kernel_img" -e "$project_type" < $VGL_JSON_FILE)"

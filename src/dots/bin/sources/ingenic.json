@@ -49,5 +49,70 @@
 	"load_type": [
 		"burner",
 		"push"
-	]
+	],
+	"mk_sub": {
+		"kernel": "k.sh",
+		"tizen": "t.sh",
+		"uboot": "u.sh",
+		"android": "a.sh",
+		"buildroot": "br.sh",
+		"ucos": "uc.sh",
+		"bootrom": "br.sh",
+		"manhattan": "mht.sh",
+		"mozart": "mzt.sh",
+		"project": "p.sh",
+		"other": "o.sh"
+	},
+	"surport_boards": [
+		"dorado_v22",
+		"dorado_v21",
+		"mercury_v02",
+		"newton2",
+		"solar",
+		"halley2",
+		"yak1",
+		"slt_x1500",
+		"aw808",
+		"mensa",
+		"other"
+	],
+	"surport_os": {
+		"android_43": "x",
+		"android_44": "x",
+		"android_51": "x",
+		"android_60": "x",
+		"android_70": "x",
+		"ucos": "x",
+		"tizen23": "x",
+		"brillo": "x",
+		"buildroot": "x",
+		"manhattan": "x",
+		"mozart": "x"
+	},
+	"init": {
+		"ThinkPad-Yoga-260": {
+			".bin/lib/lib.shell": "x",
+			".bin/ini/ini.shell": "x",
+			".bin/ini/ini.home": "x",
+			".bin/lib/lib.clipboard": "x"
+		},
+		"sw": {
+			".bin/lib/lib.shell": "x",
+			".bin/ini/ini.shell": "x",
+			".bin/ini/ini.ingenic": "x",
+			".bin/lib/lib.clipboard": "x"
+		},
+		"lqchen-0B": {
+			".bin/lib/lib.shell": "x",
+			".bin/ini/ini.shell": "x",
+			".bin/ini/ini.ingenic": "x",
+			".bin/lib/lib.clipboard": "x"
+		},
+		"ingenic-wgao": {
+			".bin/lib/lib.shell": "x",
+			".bin/ini/ini.shell": "x",
+			".bin/ini/ini.ingenic": "x",
+			".bin/lib/lib.clipboard": "x"
+		}
+	}
 }

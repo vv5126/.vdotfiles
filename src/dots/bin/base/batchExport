@@ -4,22 +4,8 @@
 
 source $HOME/.bin/base/base.conf
 
-# echo --- "$(dirname "$0")"
-# echo aaa $(ps -q $$ -o comm=)
-# source ${0%/*}/base.conf
-
-# if [[ "$(ps)" =~ 'bash' ]]; then
-#     hostname="${HOSTNAME//-/_}"
-# else
-#     hostname="${HOST//-/_}"
-# fi
-# list=($(echo ${!hostname}))
-# eval list="\$$hostname"
-# list=($(echo $list))
-
 if [[ -n "$list" ]]; then
     for line in ${list[@]}; do
-        # echo aaa $line
         if [ -f "$HOME/$line" ]; then
             source "$HOME/$line"
         fi

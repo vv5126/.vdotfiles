@@ -100,6 +100,3 @@ if ! shopt -oq posix; then
 fi
 
 source $HOME/.bin/base/batchExport
-
-# export PKG_CONFIG_PATH=/data1/home/wgao/mips-gcc472-glibc216/sysroot/usr/share/pkgconfig
-# export PKG_CONFIG_PATH=/data1/home/wgao/mips-gcc472-glibc216/sysroot/usr/lib/pkgconfig

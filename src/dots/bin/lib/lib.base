@@ -71,9 +71,10 @@ function cddir(){
 function cd_proj(){
     local TARGET=
     TARGET=$(getdir .git)
-    [ -n "$TARGET" ] && { cd $TARGET; return; }
+    [ -n "$TARGET" ] && { cd $TARGET; return 0; }
     TARGET=$(getdir .repo)
-    [ -n "$TARGET" ] && { cd $TARGET; return; }
+    [ -n "$TARGET" ] && { cd $TARGET; return 0; }
+    return -1
 }
 
 function cd_repo(){

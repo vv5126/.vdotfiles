@@ -19,7 +19,11 @@ function! SuperPrint(Num)
 	    endif
 	endfor
     endif
-    call append(line('.'), 'prntk("\033[31m' . l:pre . '\033[0m\n"' . l:priv . ');')
+    if g:code_project == 'kernel'
+	call append(line('.'), 'printk("\033[31m' . l:pre . '\033[0m\n"' . l:priv . ');')
+    else
+	call append(line('.'), 'printf("\033[31m' . l:pre . '\033[0m\n"' . l:priv . ');')
+    endif
 endfunction
 " -------------------------------------------------
 
@@ -127,6 +131,9 @@ endfunction
 " -------------------------------------------------
 
 function! SET_FILETYPE_C()
+    " guess project
+    let g:code_project = system("tmp=$(lib.work guess_obj); echo -n ${tmp%% *}")
+
     " 'scrooloose/syntastic 语法检查'
     "  let g:syntastic_check_on_open=0
     " let g:syntastic_auto_loc_list = 1
@@ -159,9 +166,15 @@ function! SET_FILETYPE_C()
     nmap  <F4> :copen<cr>:AsyncRun mk<cr>
     nmap  <F5> :cclose<cr>
     " -------------------------------------------------
-    " iab wgao1 <c-r>='printk("wgao (l:%d, f:%s, F:%s, p:%d) %d %s\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
-    iab wgao1 <c-r>='printk("\033[31m(l:%d, f:%s) %d %s\033[0m\n", __LINE__, __func__, 0, "");'<cr>
-    iab wgao2 <c-r>='printf("\033[31mwgao (l:%d, f:%s, F:%s, p:%d) %d %s\033[0m\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
+    if g:code_project == 'kernel'
+	iab wgao1 <c-r>='printk("\033[31m(l:%d, f:%s, F:%s) %d %s\033[0m\n", __LINE__, __func__, __FILE__, 0, "");'<cr>
+	iab wgao2 <c-r>='printk("\033[31m(l:%d, f:%s, F:%s) %d %s\033[0m\n", __LINE__, __func__, __FILE__, 0, "");'<cr>
+	" iab wgao1 <c-r>='printk("\033[31m(l:%d, f:%s, F:%s, p:%d) %d %s\033[0m\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
+    else
+	iab wgao1 <c-r>='printf("\033[31m(l:%d, f:%s, F:%s) %d %s\033[0m\n", __LINE__, __func__, __FILE__, 0, "");'<cr>
+	iab wgao2 <c-r>='printf("\033[31m(l:%d, f:%s, F:%s) %d %s\033[0m\n", __LINE__, __func__, __FILE__, 0, "");'<cr>
+	" iab wgao2 <c-r>='printf("\033[31m(l:%d, f:%s, F:%s, p:%d) %d %s\033[0m\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
+    endif
     " -------------------------------------------------
     nnoremap <leader>ah :call ADD_H()<cr>
     " -------------------------------------------------
@@ -211,7 +224,7 @@ function! CHECK_FILETYPE()
 	elseif &filetype == 'vim'
 	    call SET_FILETYPE_VIM()
 	endif
-	echon "the filetype is " &filetype
+	" echon "the filetype is " &filetype
 
 	let g:filetype_last=&filetype
 	" echon 'filetype_last = 'g:filetype_last

@@ -98,6 +98,7 @@
     Bundle 'airblade/vim-gitgutter'
     " -------------------------------------------------
     Bundle 'vv5126/wim'
+    source ~/.vim/vfunc.vim
     " -------------------------------------------------
     " vim帮助中文版
     " Bundle 'becaning/vimdoccn'
@@ -132,6 +133,10 @@
     " 排版
     " Bundle 'Chiel92/vim-autoformat'
     Bundle 'rhysd/vim-clang-format'
+    " let g:clang_format#code_style = "chromium"
+    let g:clang_format#style_options = {
+            \ 'AllowShortIfStatementsOnASingleLine' : 'false',
+            \ "BreakBeforeBraces" : "Linux"}
     " -------------------------------------------------
     " end 自动补全
     Bundle 'tpope/vim-endwise'
@@ -470,7 +475,6 @@
 
 " add my main set here. {{{
 
-    source ~/.vim/vfunc.vim
     " Environment {{{
         filetype off                       " 关闭文件类型侦测
         " syntax enable                      " 开启语法高亮功能
@@ -773,8 +777,7 @@
 	" ========>>> ...
 	map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
 	"=====================================================
-    " }
-
+    " }}}
 
     " 宏 {{{
         "宏录制相关
@@ -799,12 +802,16 @@
 " my plugin config {{{
 " Setting of plugin in bundle.
 
+    " -------------------------------------------------
+
+    " vim-multiple-cursors设置 {{{
     if 1 && isdirectory(expand("~/.vim/bundle/vim-multiple-cursors"))
 	let g:multi_cursor_next_key='<C-n>'
 	let g:multi_cursor_prev_key='<C-p>'
 	let g:multi_cursor_skip_key='<C-x>'
 	let g:multi_cursor_quit_key='<Esc>'
     endif
+    " }}}
 
     " -------------------------------------------------
 
@@ -903,6 +910,8 @@
 	nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
 	nnoremap <leader>gl :YcmCompleter GoToDefinitionElseDeclaration<CR>
 	" nmap <F3> :YcmDiags<CR>
+
+	" let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/bundle/wim/UltiSnips']
 
         " 影响回车
 	let g:UltiSnipsExpandTrigger="<c-a>"
@@ -1064,7 +1073,7 @@ let g:DoxygenToolkit_authorName="Asins - asinsimple AT gmail DOT com"
 let g:DoxygenToolkit_briefTag_funcName="yes"
 map <leader>da :DoxAuthor<CR>
 map <leader>df :Dox<CR>
-map <leader>db :DoxBlock<CR>
+" map <leader>db :DoxBlock<CR>
 map fg : Dox<cr>
 let g:DoxygenToolkit_licenseTag="My own license\<enter>"
 let g:DoxygenToolkit_undocTag="DOXIGEN_SKIP_BLOCK"
