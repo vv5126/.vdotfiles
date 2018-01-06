@@ -1,0 +1,21 @@
+#!/bin/bash
+
+function dict_get_value() {
+	local dict="$1"
+	local key="$2"
+
+	if [ -f "$dict" ]; then
+		value="$(cat "$1" | sed -n "/^$1 /p;")"
+	else
+		value="$(echo "$1" | sed -n "/^$1 /p;")"
+	fi
+}
+
+function dict_get_key() {
+	local dict="$1"
+	local value="$2"
+
+	sed ""
+}
+
+[ $# -ne 0 ] && $@

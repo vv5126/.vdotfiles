@@ -4,6 +4,7 @@
 
 source ~/.bin/lib/lib.misc
 source ~/.bin/lib/lib.base
+source ~/.bin/lib/lib.str
 
 debug=0
 
@@ -161,7 +162,7 @@ function shdb_add() {
                         local key_last_location="$(get_key_last_location "$shdb" "$session_name" "$key_name")"
 
                         if [[ "$(get_session_context $shdb $session_name)" =~ "$key_name=$key_value" ]]; then
-                            sed "$session_start_location,$session_end_location s/$key_name=$key_value/$line/" -i $shdb
+                            sed "$session_start_location,$session_end_location s/$(string_escape $key_name)=$(string_escape $key_value)/$(string_escape $line)/" -i $shdb
                         else
                             if [ ${line:0:1} != '#' ]; then
                                 # annotation all key

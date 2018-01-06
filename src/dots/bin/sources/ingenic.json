@@ -37,12 +37,17 @@
 			"ddr_type": ["lpddr2", "lpddr3"]
 		}
 	},
-	"project_img": {
+	"kernel_img": {
 		"kernel3.0.8" : "arch/mips/boot/compressed/uImage",
 		"kernel3.10.14": "arch/mips/boot/uImage",
+		"kernel4.4.0": "arch/mips/boot/uImage",
 		"android": "arch/mips/boot/zcompressed/zImage",
 		"mozart": "arch/mips/boot/zcompressed/xImage",
 		"tizen": "arch/mips/boot/uImage",
 		"buildroot": "the_image"
-	}
+	},
+	"load_type": [
+		"burner",
+		"push"
+	]
 }

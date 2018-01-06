@@ -1,5 +1,10 @@
 #!/bin/bash
 
+function is_ip() {
+    echo $1 | grep -oP "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$" >/dev/null
+    [ "$?" -eq 0 ] && return 0 || return -1
+}
+
 #check clean var.
 function check_var() {
     local quit var
@@ -135,6 +140,17 @@ function col()
       awk -v col=$1 '{print $col}'
 }
 
+function gen_info() {
+	local lib_dir="$1"
+	local files="$(find_all "$lib_dir")"
+	for i in $(list_all "$files"); do
+		lines=$(sed -n "/^func/=;"  "$i")
+		for j in lines; do
+			"$(lib.file get_line_from_file "$i" "$((j-2))")"
+		done
+		# sed -n -e "/^func/p;" -e "/^func/=;" "$i"
+	done
+}
 ############# will export ##############
 
 # case $(ps -q $$ -o comm=) in
@@ -151,3 +167,5 @@ function col()
 # esac
 
 ########### will export end ############
+
+[ $# -ne 0 ] && $@

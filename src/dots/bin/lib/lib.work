@@ -167,3 +167,5 @@ echo "$PROJECT_DIR_NAME $PROJECT_DIR"
 # esac
 
 ########### will export end ############
+
+[ $# -ne 0 ] && $@

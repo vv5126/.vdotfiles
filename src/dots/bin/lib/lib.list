@@ -241,3 +241,5 @@ function showlist_with_tab(){
 # esac
 
 ########### will export end ############
+
+[ $# -ne 0 ] && $@

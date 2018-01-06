@@ -1,0 +1,8 @@
+
+function string_escape() {
+	local str="$1" key="= / ' \""
+	for i in $key; do
+		str="${str//$i/'\'$i}"
+	done
+	echo "$str"
+}

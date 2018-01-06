@@ -182,7 +182,7 @@ function init(){
 	    tmp=$(user_select 'what OS' "${surport_os[@]}")
             forOS="${tmp:=none}"
 
-            the_image="$(jp -e "project_img" -e "$project_type" < $HOME/.bin/sources/ingenic.json)"
+            the_image="$(jp -e "kernel_img" -e "$project_type" < $VGL_JSON_FILE)"
             # case $project_type in
             #     'kernel3.0.8')
             #         the_image=arch/mips/boot/compressed/uImage
@@ -192,7 +192,7 @@ function init(){
             #         ;;
             # esac
 
-            [ -z "the_image" ] && the_image="$(jp -e "project_img" -e "$forOS" < $HOME/.bin/sources/ingenic.json)"
+            [ -z "the_image" ] && the_image="$(jp -e "kernel_img" -e "$forOS" < $VGL_JSON_FILE)"
             # case $forOS in
             #     'android'*)
             #         the_image=arch/mips/boot/zcompressed/zImage
