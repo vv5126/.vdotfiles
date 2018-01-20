@@ -1,11 +1,12 @@
 #!/bin/bash
 
+# 是否为合法IP
 function is_ip() {
     echo $1 | grep -oP "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$" >/dev/null
     [ "$?" -eq 0 ] && return 0 || return -1
 }
 
-#check clean var.
+# 检查是否为有效变量
 function check_var() {
     local quit var
 
@@ -20,7 +21,7 @@ function check_var() {
     return 0
 }
 
-#clean same lines in one file.
+# 删除文件中重复行
 function clean_duplicate_lines() {
     [ $# -eq 1 ] && {
         cp $1 .clean_dup && cat .clean_dup | sort | uniq > $1
@@ -47,6 +48,7 @@ function get_segment_from_line() {
         echo "${ret# *}"
 }
 
+# 获取指定参数的值
 function get_param() {
         # 不支持参数带空格哦
         # 参数必须以'-'开始，且只能是一个字母，好像数字也行
@@ -84,7 +86,7 @@ function get_param() {
         [ $success -eq 0 ] && return -1 || return $param_num
 }
 
-
+# 获取当前执行脚本的真实路径
 function get_script_dir() {
     SOURCE="$0"
     while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
@@ -96,6 +98,7 @@ function get_script_dir() {
     echo DIR = $DIR
 }
 
+# 系统休眠
 function mem() {
 	echo mem > /sys/power/state
 }
@@ -117,18 +120,21 @@ function read_key() {
 
 nicemount() { (echo "DEVICE PATH TYPE FLAGS" && mount | awk '$2=$4="";1') | column -t; }
 
+# 显示指定深度的所有文件
 function ls_file()
 {
     local level=$1
     find . -maxdepth $level -type f | sed 's/^\.\///g' >&1
 }
 
+# 显示指定深度的所有文件夹
 function ls_dir()
 {
     local level=$1
     find . -maxdepth $level -type d | sed '1d;s/^\.\///g' >&1
 }
 
+# 调试时,设置debug宏,即执行后面的指令
 function debug()
 {
     [ "$debug" == '1' ] && $*
@@ -140,6 +146,7 @@ function col()
       awk -v col=$1 '{print $col}'
 }
 
+# 生成指定目录下所有脚本功能信息
 function gen_lib_info() {
     local func_name func_desc line lines i j lib_dir files
     lib_dir="$1"
@@ -148,7 +155,7 @@ function gen_lib_info() {
     for i in $files; do
         if [ -f "$i" ]; then
             lines="$(sed -n "/^func/=;" "$i")"
-            echo "--- $i ---" >> $lib_dir/ReadMe
+            echo "--- ${i##*/} ---" >> $lib_dir/ReadMe
             for j in $lines; do
                 line=$((j-1>0?j-1:0))
                 func_name="$(sed -n "$j,$j p;" "$i" | awk '{print $2}')"

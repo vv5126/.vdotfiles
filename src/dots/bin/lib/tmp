@@ -1,0 +1,96 @@
+function mklist() {
+	local DIR=
+	local LISTFILE='list'
+	local BAKDIR=`pwd`
+	local line=''
+	local NUM=0
+
+	[ $# -eq 1 ] && [ -f $1 ] && LISTFILE=$1
+	[ -f "$LISTFILE" ] || { echo no listfile; echo 'listdir=xxx' > $LISTFILE; echo '#put the opposite dir' >> $LISTFILE; return; }
+	read line < $LISTFILE
+	[[ $line =~ "=" ]] && [ -d "${line##*=}" ] && BAKDIR=${line##*=} || echo "${line##*=}"
+	#BAKDIR=_$(date +%Y-%m-%d_%H-%M)
+	echo BAKDIR = $BAKDIR
+	echo LISTFILE = $LISTFILE
+
+	while read line; do
+		if [ "${line:0:1}" = "#" ]; then
+			echo "jump ${line:1}"
+		elif [ -d "$line" ]; then
+			mkdir -p $BAKDIR/$line
+			cp -r $line/* $BAKDIR/$line/
+			NUM=$[$NUM+1]
+		elif [ -f "$line" ]; then
+			mkdir -p $BAKDIR/${line%/*}
+			cp $line $BAKDIR/${line%/*}/
+			NUM=$[$NUM+1]
+		fi
+	done < "$LISTFILE"
+	echo "list mk done! total $NUM. "
+}
+
+function getdir_project() {
+
+    local COMP_DIR=~/
+    local BASE_DIR=$PWD
+    local DIR=$BASE_DIR
+    local PROJECT_DIR_NAME=
+    local PROJECT_DIR=
+
+    while [ "$COMP_DIR" != "$DIR/" ];do
+        if [ -f "$DIR/.k.sh" ]; then
+            PROJECT_DIR_NAME='KERNEL_DIR'
+            PROJECT_DIR=$DIR
+            break
+        elif [ -f "$DIR/.u.sh" ]; then
+            PROJECT_DIR_NAME='UBOOT_DIR'
+            PROJECT_DIR=$DIR
+            break
+        elif [ -f "$DIR/.a.sh" ]; then
+            PROJECT_DIR_NAME='ANDROID_DIR'
+            PROJECT_DIR=$DIR
+            break
+        elif [ -f "$DIR/.t.sh" ]; then
+            PROJECT_DIR_NAME='TIZEN_DIR'
+            PROJECT_DIR=$DIR
+            break
+        elif [ -f "$DIR/.m.sh" ]; then
+            PROJECT_DIR_NAME='MODELE_DIR'
+            PROJECT_DIR=$DIR
+            break
+        elif [ -f "$DIR/.app.sh" ]; then
+            PROJECT_DIR_NAME='NORMAL_DIR'
+            PROJECT_DIR=$DIR
+            break
+        else
+            PROJECT_DIR_NAME=
+            PROJECT_DIR=
+        fi
+        DIR=${DIR%\/*}
+    done
+
+    echo "$PROJECT_DIR_NAME $PROJECT_DIR"
+}
+
+function getdir_git_repo() {
+    local COMP_DIR=~/
+    local DIR=$PWD
+    local DIR_NAME=''
+    local FINIAL_DIR=''
+
+    while [ "$COMP_DIR" != "$DIR/" ];do
+        if [ -d "$DIR/.git" ]; then
+            DIR_NAME='GIT_DIR'
+            FINIAL_DIR=$DIR
+            break
+        elif [ -d "$DIR/.repo" ]; then
+            DIR_NAME='REPO_DIR'
+            FINIAL_DIR=$DIR
+            break
+        fi
+        DIR=${DIR%\/*}
+    done
+
+    echo "$DIR_NAME $FINIAL_DIR"
+    return 0
+}

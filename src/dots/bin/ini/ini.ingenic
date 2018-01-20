@@ -29,6 +29,7 @@ add_path "$HOME/.bin/work"
 
 # 4.15 #
 [[ $(uname -n) == 'lqchen-0B' ]] && {
+    add_path "/data1/home/wgao/.bin/4.15"
     # [ "$(ps -p $$ -o comm=)" != 'zsh' -a -x '/data1/home/wgao/.local/bin/zsh' ] && exec /data1/home/wgao/.local/bin/zsh
 
     # JDK
@@ -73,6 +74,7 @@ add_path "$HOME/.bin/work"
 
 # 4.10 #
 [[ $(uname -n) == 'sw' ]] && {
+    add_path "/data1/home/wgao/.bin/4.10"
     # JDK
 
     # GCC

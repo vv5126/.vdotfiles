@@ -280,7 +280,7 @@ endfunction
 " -------------------------------------------------
 
 function! GO_GIT_DIR()
-    let l:dir = system("getdir_git_repo")
+    let l:dir = system("getdir .git")
     let l:dir = matchstr(l:dir, '/.*')
     exec 'cd' l:dir
     exec 'pwd'

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# 是否为本地文件
 function is_local() {
     para=$*
     if [[ "$para" =~ "@" ]] && [[ "$para" =~ ":" ]]; then
@@ -9,7 +10,7 @@ function is_local() {
     fi
 }
 
-
+# 智能创建文件夹(远程or本地)
 function smkdir() {
     dst=$1
 
@@ -21,7 +22,7 @@ function smkdir() {
     fi
 }
 
-
+# 智能删除(远程or本地)
 function srm() {
     src=$*
     for i in $src; do
@@ -34,7 +35,7 @@ function srm() {
     done
 }
 
-
+# 智能移动(远程or本地)
 function smv() {
     para="$*"
     scp -r $para
@@ -49,7 +50,8 @@ function smv() {
     fi
 }
 
-function getdir(){
+# 遍历上级寻找指定文件或文件夹
+function getdir() {
     local TARGET=$1
     local PROJECT_DIR=''
     local BASE_DIR=~/
@@ -62,13 +64,15 @@ function getdir(){
     [ -n "$PROJECT_DIR" ] && echo "$PROJECT_DIR"
 }
 
-function cddir(){
+# 遍历上级寻找并进入指定文件夹
+function cddir() {
     local TARGET=
     TARGET=$(getdir $1)
     [ -n "$TARGET" ] && { cd $TARGET; return; }
 }
 
-function cd_proj(){
+# 遍历上级寻找并进入工程目录
+function cd_proj() {
     local TARGET=
     TARGET=$(getdir .git)
     [ -n "$TARGET" ] && { cd $TARGET; return 0; }
@@ -77,42 +81,19 @@ function cd_proj(){
     return -1
 }
 
-function cd_repo(){
+# 遍历上级寻找并进入repo工程目录
+function cd_repo() {
     local TARGET=
     TARGET=$(getdir .repo)
     [ -n $TARGET ] && cd $TARGET
 }
-
-function getdir_git_repo(){
-    local COMP_DIR=~/
-    local DIR=$PWD
-    local DIR_NAME=''
-    local FINIAL_DIR=''
-
-    while [ "$COMP_DIR" != "$DIR/" ];do
-        if [ -d "$DIR/.git" ]; then
-            DIR_NAME='GIT_DIR'
-            FINIAL_DIR=$DIR
-            break
-        elif [ -d "$DIR/.repo" ]; then
-            DIR_NAME='REPO_DIR'
-            FINIAL_DIR=$DIR
-            break
-        fi
-        DIR=${DIR%\/*}
-    done
-
-    echo "$DIR_NAME $FINIAL_DIR"
-    return 0
-}
-
 
 ############# will export ##############
 
 case $(ps -p $$ -o comm=) in
     'zsh')
         export ZSH_EXPORTED_FUNCTIONS="$(functions \
-            getdir_git_repo \
+            # getdir_git_repo \
             # is_local \
             # smkdir \
             # srm \
@@ -120,14 +101,13 @@ case $(ps -p $$ -o comm=) in
             )"
         ;;
     *)
-        # export -f getdir
+        export -f getdir
         # export -f cd_proj
         # export -f cd_repo
         # export -f is_local
         # export -f smkdir
         # export -f srm
         # export -f smv
-        export -f getdir_git_repo
         ;;
 esac
 
