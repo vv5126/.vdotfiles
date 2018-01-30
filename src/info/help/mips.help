@@ -325,3 +325,6 @@ $31:($ra)存放返回地址，MIPS有个jal(jump-and-link,跳转并链接)指令
 |054	36	6	 |  078	4E	N	 |  102	66	f	 |  126	7E	~  |
 |055	37	7	 |  079	4F	O	 |  103	67	g	 |  127	7F	DEL|
 +----------------+---------------+---------------+-------------+-----------------
+
+<!-- 交叉编译 -->
+./configure --build=i686-pc-linux-gnu --host=mips-linux-gnu --target=mips-linux-gnu --prefix=/data1/home/wgao/gui/directfb-gtk

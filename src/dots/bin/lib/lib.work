@@ -2,6 +2,52 @@
 
 source ~/.bin/lib/lib.list
 
+function mm1 {
+    unalias mm
+    type mm >/dev/null 2>&1
+    [ "$?" -eq 0 ] && mm | tee /tmp/.mk_tmp || {
+        cd_repo
+        source build/envsetup.sh >/dev/null 2>&1
+        [ -f ".pro/project_info" ] && source .pro/project_info
+        if [ -n "$lunch_num" ]; then
+            echo $lunch_num > .pro/.lunch
+            lunch < .pro/.lunch
+            rm .pro/.lunch
+        else
+            lunch
+        fi
+        cd -
+        cddir Build.mk
+        [ "$?" -eq 0 ] && mm | tee /tmp/.mk_tmp
+        cd -
+    }
+    alias mm='mm1'
+    # local str="$(grep 'make completed successfully' /tmp/.mk_tmp)"
+    # [ -n "$str" ] && str="$(sed -n '')"
+}
+
+function mma1 {
+    unalias mma
+    type mma >/dev/null 2>&1
+    [ "$?" -eq 0 ] && mma || {
+        cd_repo
+        source build/envsetup.sh >/dev/null 2>&1
+        [ -f ".pro/project_info" ] && source .pro/project_info
+        if [ -n "$lunch_num" ]; then
+            echo $lunch_num > .pro/.lunch
+            lunch < .pro/.lunch
+            rm .pro/.lunch
+        else
+            lunch
+        fi
+        cd -
+        cddir Build.mk
+        [ "$?" -eq 0 ] && mma | tee /tmp/.mk_tmp
+        cd -
+    }
+    alias mma='mma1'
+}
+
 function get_c_from_gcc() {
     grep -oP '\b[^ ,]*\.c\b' $1 >&1
 }

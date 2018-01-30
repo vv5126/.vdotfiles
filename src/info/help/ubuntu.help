@@ -149,4 +149,28 @@ ssh-add ~/.ssh/id_rsa
 
 ssh-keygen -t rsa
 
+sudo apt-get install libevent-dev      #如果成功安装就跳去第6步, 如果提示安装冲突(xxxx冲突  libevent-2.0-5 xxxxx), 就执行如下步骤:
+sudo dpkg --purge --force-depends  libevent-2.0-5    # 这里的 libevent-2.0-5 按照自己系统提示是什么冲突, 就改成什么
+sudo apt-get install  libevent-dev      #如果成功安装就跳去第6步, 失败就执行如下步骤
+sudo apt-get install -f               # 自动修复依赖关系
+sudo apt-get install libevent-dev    #  到这里应该就可以顺利安装libevent库了
 
+<!-- 安装普通用户程序,最好先导出如下环境 -->
+export PREFIX="$HOME"/.local
+export LDFLAGS=-L$PREFIX/lib
+export CFLAGS="-g -I$PREFIX/include"
+export CPPFLAGS="-g -I$PREFIX/include"
+export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
+
+
+在平时工作中，有时候需要SSH登陆到别的Linux主机上去，但有时候SSH登陆会被禁止，并弹出如下类似提示：
+比较奇怪，于是研究了一下。 ssh会把你每个你访问过计算机的公钥(public key)都记录在~/.ssh/known_hosts。当下次访问相同计算机时，OpenSSH会核对公钥。如果公钥不同，OpenSSH会发出警告， 避免你受到DNS Hijack之类的攻击。
+原因：一台主机上有多个Linux系统，会经常切换，那么这些系统使用同一ip，登录过一次后就会把ssh信息记录在本地的~/.ssh/known_hsots文件中，切换该系统后再用ssh访问这台主机就会出现冲突警告，需要手动删除修改known_hsots里面的内容。
+有以下两个解决方案：
+1. 手动删除修改known_hsots里面的内容；
+2. 修改配置文件“~/.ssh/config”，加上这两行，重启服务器。
+   StrictHostKeyChecking no
+   UserKnownHostsFile /dev/null
+优缺点：
+1. 需要每次手动删除文件内容，一些自动化脚本的无法运行（在SSH登陆时失败），但是安全性高；
+2. SSH登陆时会忽略known_hsots的访问，但是安全性低；

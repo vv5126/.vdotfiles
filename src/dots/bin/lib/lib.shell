@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source ~/.bin/lib/lib.base
+source ~/.bin/lib/lib.work
 
 # 反转上一次操作
 function ccd(){
@@ -137,38 +138,6 @@ function lnn() {
     local searchdir="${2:-"$HOME/.bin"}"
     local d="$(find "$searchdir/" -name "$lnfile" | head -1)"
     [ -n "$d" ] && ln -sf "$d" "$lnfile"
-}
-
-function mm1 {
-    unalias mm
-    type mm >/dev/null 2>&1
-    [ "$?" -eq 0 ] && mm | tee /tmp/.mk_tmp || {
-        cd_repo
-        source build/envsetup.sh >/dev/null 2>&1
-        lunch
-        cd -
-        cddir Build.mk
-        [ "$?" -eq 0 ] && mm | tee /tmp/.mk_tmp
-        cd -
-    }
-    alias mm='mm1'
-    # local str="$(grep 'make completed successfully' /tmp/.mk_tmp)"
-    # [ -n "$str" ] && str="$(sed -n '')"
-}
-
-function mma1 {
-    unalias mma
-    type mma >/dev/null 2>&1
-    [ "$?" -eq 0 ] && mma || {
-        cd_repo
-        source build/envsetup.sh >/dev/null 2>&1
-        lunch
-        cd -
-        cddir Build.mk
-        [ "$?" -eq 0 ] && mma
-        cd -
-    }
-    alias mma='mma1'
 }
 
 ############# will export ##############
