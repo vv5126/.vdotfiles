@@ -39,7 +39,7 @@ function quickcd() {
             [ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" >> ~/.cdlist; continue; }
             [ $# -eq 1 -a -f "$HOME/.cdlist" ] && {
             while read line; do
-                [ $1 = "${line% *}" ] && { cd ${line#* }; continue; }
+                [ $1 = "${line% *}" ] && { cd ${line#* }; continue 2; }
                 done < ~/.cdlist
             }
             tmp="$(find -maxdepth 1 -type d -name "$1*")"; [ $? -eq 0 -a -d "$tmp" ] && { cd "$tmp"; continue; }
@@ -50,18 +50,22 @@ function quickcd() {
 
 # vim的增强版
 function svi(){
-	if [ $# -ne 0 ]; then
-		STR=$1
-		FILE=${STR%%:*}
-		LINE=${STR#*:}
-		LINE=${LINE%%:*}
-		expr $LINE + 0 &>/dev/null
-		if [ $? -eq 0 ]; then
-                    [ -f "$FILE" ] && vim $FILE +$LINE
-                else
-                    vim $FILE
-                fi
-	fi
+    local STR FILE LINE
+    if [ $# -ne 0 ]; then
+        STR=$1
+        FILE=${STR%%:*}
+        LINE=${STR#*:}
+        LINE=${LINE%%:*}
+
+        expr $LINE + 0 &>/dev/null
+        [ $? -eq 0 ] && LINE="+$LINE" || LINE=''
+
+        STR=''
+        [ ! -f $FILE -a $PWD != "$HOME" ] && STR="$(fd $FILE)"
+        [ -n "$STR" ] && FILE="$STR"
+
+        [ -f "$FILE" ] && vim $FILE ${LINE:+$LINE}
+    fi
 }
 
 # find的增强版
@@ -114,6 +118,7 @@ function change_toolchain(){
     # /data1/home/wgao/thync/mips-gcc472-glibc216/bin
     # export CROSS_COMPILE=mips-linux-gnu-gcc-4.7.2
     # export CROSS_COMPILE=mips64el-linux-android- # for android
+    /data1/home/wgao/tools/toolchains/mips-gcc520-glibc222
     /pdev/chains/mips-gcc472-glibc216/bin
     /pdev/chains/mips-gcc520-glibc222/bin
     /pdev/chains/mips-linux-gnu/bin

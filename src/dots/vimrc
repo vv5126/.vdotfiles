@@ -77,6 +77,11 @@ endif
     " 'Tabular'
     " ex: :TAb /=
     " -------------------------------
+    " 扩展了vim的%功能,让%可以匹配的,
+    " 不再仅仅是括号,支持多种语言.必备插件之一
+    " 'matchit.zip'
+    " % 正向匹配      g% 反向匹配
+    " [% 定位块首     ]% 定位块尾
     " -------------------------------
     " -------------------------------
     " -------------------------------
@@ -155,57 +160,14 @@ endif
     Bundle 'gregsexton/gitv'
     " -------------------------------------------------
     " -------------------------------------------------
-    " -------------------------------------------------
-    " -------------------------------------------------
-    " dealing
-    " -------------------------------------------------
-    " cscope的vim插件,提供快捷键操纵cscope
-    " Bundle 'chazy/cscope_maps'
-    " Bundle 'cscope_macros.vim'
-    " set cscopetag
-    " set cscopeverbose
-    " set cscopequickfix=c-,d-,e-,g-,i-,s-,t-
-    " set cscopetagorder=1
-    " set nocsverb "增加 cscope 数据库时，不给出消息
-    " -------------------------------------------------
-    " Bundle 'charz/multi-cscope-db'
-    " Bundle 'brookhong/cscope.vim'
-    " nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
-    " nnoremap <leader>l :call ToggleLocationList()<CR>
-    " -------------------------------------------------
-    " Bundle 'rking/ag.vim'
-    " let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
-    " let g:ag_working_path_mode="r"
-    " Bundle 'Chun-Yang/vim-action-ag'
-    " -------------------------------------------------
-    " 在vim里画图
-    " Bundle 'DrawIt'
-    " -------------------------------------------------
-    " 让书签可视化的插件
-    " Bundle 'kshenoy/vim-signature'
+    " unuseful
     " -------------------------------------------------
     " 日历插件,有了它,用vim来写日记很方便
     " Bundle 'itchyny/calendar.vim'
     " let g:calendar_frame = 'default'
     " -------------------------------------------------
-    " 任务列表的插件 —— TaskList.vim，方便管理项目中的 TODO、FIXME 等标签.
-    " Bundle 'TaskList.vim'
-    " nnoremap <leader>v <Plug>TaskList
-    " -------------------------------------------------
-    " repeat 支持使用.来重复执行一些插件的命令（如speeddating, surround等)
-    " Bundle 'repeat.vim'
-    " -------------------------------------------------
-    " 'jiangmiao/auto-pairs'
-    " 给选中的文字加上引号`,选中后,\加上你想要添加的符号,比如选中abc后,\(,得到(abc)
-    " Bundle 'Raimondi/delimitMate'
-    " -------------------------------------------------
-    " 可以在vim和tmux的任何组合间无缝切换
-    " Bundle 'christoomey/vim-tmux-navigator'
-    " -------------------------------------------------
-    " have bug.
-    " Bundle 'terryma/vim-expand-region'
-    " vmap v <Plug>(expand_region_expand)
-    " vmap <C-v> <Plug>(expand_region_shrink)
+    " View man pages in vim. Grep for the man pages.
+    " Bundle 'vim-utils/vim-man'
     " -------------------------------------------------
     " 为小括号加如彩虹效果，但对c貌似没啥意义...
     Bundle 'kien/rainbow_parentheses.vim'
@@ -234,6 +196,50 @@ endif
     " au Syntax * RainbowParenthesesLoadSquare
     " au Syntax * RainbowParenthesesLoadBraces
     " -------------------------------------------------
+    " 在vim里画图
+    " Bundle 'DrawIt'
+    " -------------------------------------------------
+    " -------------------------------------------------
+    " -------------------------------------------------
+    " dealing
+    " -------------------------------------------------
+    " cscope的vim插件,提供快捷键操纵cscope
+    " Bundle 'chazy/cscope_maps'
+    " Bundle 'cscope_macros.vim'
+    " set cscopetag
+    " set cscopeverbose
+    " set cscopequickfix=c-,d-,e-,g-,i-,s-,t-
+    " set cscopetagorder=1
+    " set nocsverb "增加 cscope 数据库时，不给出消息
+    " -------------------------------------------------
+    " Bundle 'charz/multi-cscope-db'
+    " Bundle 'brookhong/cscope.vim'
+    " nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
+    " nnoremap <leader>l :call ToggleLocationList()<CR>
+    " -------------------------------------------------
+    " Bundle 'rking/ag.vim'
+    " let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
+    " let g:ag_working_path_mode="r"
+    " Bundle 'Chun-Yang/vim-action-ag'
+    " -------------------------------------------------
+    " 让书签可视化的插件
+    " Bundle 'kshenoy/vim-signature'
+    " -------------------------------------------------
+    " 任务列表的插件 —— TaskList.vim，方便管理项目中的 TODO、FIXME 等标签.
+    " Bundle 'TaskList.vim'
+    " nnoremap <leader>v <Plug>TaskList
+    " -------------------------------------------------
+    " repeat 支持使用.来重复执行一些插件的命令（如speeddating, surround等)
+    " Bundle 'repeat.vim'
+    " -------------------------------------------------
+    " 可以在vim和tmux的任何组合间无缝切换
+    " Bundle 'christoomey/vim-tmux-navigator'
+    " -------------------------------------------------
+    " have bug.
+    " Bundle 'terryma/vim-expand-region'
+    " vmap v <Plug>(expand_region_expand)
+    " vmap <C-v> <Plug>(expand_region_shrink)
+    " -------------------------------------------------
     " -------------------------------------------------
     " -------------------------------------------------
     " 缩进代替
@@ -242,8 +248,6 @@ endif
     " 会造成/不好用
     " Bundle 'haya14busa/incsearch.vim'
     " map /  <Plug>(incsearch-forward)
-    " -------------------------------------------------
-    " Bundle 'vim-utils/vim-man'
     " -------------------------------------------------
     " color theme浏览插件,列出所有的vim color theme到一个列表中,选中后按回车即可应用
     " Bundle 'sjas/csExplorer'
@@ -407,17 +411,6 @@ endif
     " let g:weather#area = 'newyorkcity,us'
     " let g:weather#unit = 'metric'
     " -------------------------------------------------
-    "添加标记,可以来回跳,但不太好用.
-    " Bundle 'ShowMarks'
-    " let showmarks_enable = 1
-    " let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLM"
-    " Ignore help, quickfix, non-modifiable buffers
-    " let showmarks_ignore_type = "hqm"
-    " Hilight lower & upper marks
-    " let showmarks_hlline_lower = 1
-    " let showmarks_hlline_upper = 1
-    " let marksCloseWhenSelected = 0
-    " -------------------------------------------------
     "FuzzyFinder底层依耐+
     " Bundle 'l9'
     " Bundle 'junegunn/fzf'
@@ -461,11 +454,6 @@ endif
     " -------------------------------------------------
     " 异步语法检查
     " Bundle 'w0rp/ale'
-    " -------------------------------------------------
-    " 扩展了vim的%功能,让%可以匹配的,不再仅仅是括号,支持多种语言.必备插件之一
-    " 'matchit.zip', has in bundle
-    " % 正向匹配      g% 反向匹配
-    " [% 定位块首     ]% 定位块尾
     " -------------------------------------------------
     " Very small, clean but quick and powerful buffer manager. c.
     " qbuf
@@ -814,7 +802,8 @@ endif
         nnoremap <leader>ga :GitGutterStageHunk<cr>
 
         " 空格键替换为换行
-        nnoremap <S-k> :s/ /\r/g<cr>:noh<cr>
+        " nnoremap <S-k> :s/ \+/\r/g<cr>:noh<cr>
+        vnoremap <S-k> :s/ \+/\r/g<cr>:noh<cr>
 
         "使用<leader>空格来取消搜索高亮
         nnoremap <silent> <leader><space> :noh<cr>

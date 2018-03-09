@@ -35,3 +35,4 @@ if [ -n "$(which dircolors)" ]; then
 	eval `dircolors -b $HOME/.dir_colors`
 fi
 
+stty -ixon
