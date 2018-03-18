@@ -1,19 +1,32 @@
 " design by wgao. {{{
 
-" fix base. {{{
-" sync_repo() {
-"     [ ! -e "$1" ] && { mkdir -p "$1"; git clone -b "$3" "$2" "$1"; } || { cd "$1" && git pull origin "$3"; }
-" }
+" vim init. {{{
+function! Sync_repo(Dir, Remote, Branch)
+    if ! isdirectory(a:Dir)
+        echo a:Dir
+        call system("mkdir -p " . a:Dir)
+        call system("git clone -b " . a:Branch . ' ' . a:Remote . ' ' . a:Dir)
+    else
+        call system("cd " . a:Dir . " && git pull origin " . a:Branch)
 
-" vim_init() {
-"     REPO_BRANCH='3.0'
-"     sync_repo   "$HOME/.vim/bundle/spf13-vim" 'https://github.com/spf13/spf13-vim.git' "$REPO_BRANCH" "spf13-vim"
-"     sync_repo   "$HOME/.vim/bundle/vundle" 'https://github.com/gmarik/vundle.git' "master" "vundle"
-"     vim -u      "$HOME/.vimrc" "+set nomore" "+BundleInstall!" "+qall"
-"     # vim -u      "$HOME/.vimrc" "+set nomore" "+BundleInstall!" "+BundleClean" "+qall"
-" }
+    endif
+endfunction
+
+function! VIM_init()
+   call Sync_repo("$HOME/.vim/bundle/spf13-vim", "https://github.com/spf13/spf13-vim.git", "3.0")
+   call Sync_repo("$HOME/.vim/bundle/vundle", "https://github.com/gmarik/vundle.git", "master")
+    " vim -u      "$HOME/.vimrc" "+set nomore" "+BundleInstall!" "+qall"
+    " vim -u      "$HOME/.vimrc" "+set nomore" "+BundleInstall!" "+BundleClean" "+qall"
+endfunction
 " }}}
 
+" check vundle. {{{
+if ! isdirectory($HOME."/.vim/bundle/vundle")
+        echo "setup vundle frist!"
+        call VIM_init()
+endif
+" }}}
+"
 " spf13 before. {{{
     "===============================================================================+
     set nocompatible        " Must be first line
@@ -30,10 +43,7 @@
 
 " spf13 vundle. {{{
     "===============================================================================+
-    if ! isdirectory($HOME."/.vim/bundle/vundle")
-        echo "you should setup vundle frist!"
-    else
-        source ~/.vim/bundle/spf13-vim/.vimrc.bundles
+    source ~/.vim/bundle/spf13-vim/.vimrc.bundles
     "===============================================================================+
 " }}}
 
@@ -475,7 +485,6 @@
 
 " spf13. {{{
     "===============================================================================+
-    endif
     source ~/.vim/bundle/spf13-vim/.vimrc
     "===============================================================================+
     " config spf13's plugin should after source spf13-vim/.vimrc.
