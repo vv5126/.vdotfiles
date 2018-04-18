@@ -178,3 +178,9 @@ opencv
 cmake -D CMAKE_INSTALL_PREFIX=~/.local BUILD_TIFF=ON ..
 
 利用依赖方式
+
+
+
+
+### 中文乱码解决
+iconv -f gb2312 -t utf-8 xxx > xxx

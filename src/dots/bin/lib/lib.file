@@ -1,11 +1,48 @@
 #!/bin/bash
 
+# NF=14
+# awk '{$NF="'$PWD/'"$NF; print}' $1
+
 # 如果行有中文,则注释
 
-# 目录->文件
+# done start
 
-# 目录到文件
+function find_file_by_suffix() {
+	local tmp i
+	for i in $1; do
+		tmp="$tmp"'|\.'"$i"'\'
+	done
+
+	find . -iregex ".*\(${tmp:1})$"
+}
+function find_file_by_type() { }
+
+# done end
+
+
+
+
+# 单目录到文件
+function dir_to_list() {
+	local dir="$1"
+	local target_file="$2"
+	local tmp_file=.lib.file.tmp
+
+	NF=14
+	tree -pif | awk '{$NF="'$PWD'"$NF; print}' >> $tmp_file
+	# tree -pif >> $tmp_file
+	# local files="$(tree -pif)"
+}
+
+function del_file_in_list() {
+	local list_file="$1"
+	local target_dir="$2"
+
+}
+
+
 # 常用类型到文件
+# 指定配置到文件? json?
 
 # 剔除类型到文件
 # 剔除文件中目录
@@ -14,12 +51,16 @@
 # 插入目录到文件
 # 合并文件
 
+# 删除所有子目录指定类型文件
 
 
 
 # 文件->目录
 
 # 根据文件或者正则表达式进行匹配
+# find_all_file_by_type "*.cpp *.c *.h"
+# find_all_file_by_c 
+
 # 列出当前目录及子目录下所有文件和文件夹
 
 function get_line_from_file() {
@@ -143,5 +184,17 @@ find . -path "./sk" -prune -o -name "*.txt" -print
 # find其他技巧收集
 # 要列出所有长度为零的文件
 find . -empty
+找出在/home/user中的所有空子目录:
+find /home/user -maxdepth 1 -type d -empty
+
+将文件名中含有txt的所有文件移动到/home/user:
+find -iname "*txt*" -exec mv -v {} /home/user \;
+
+找出文件中带有末尾空格的文件:
+find . -type f -exec egrep -l " +$" "{}" \;
+
+找出用tab缩进的文件:
+find . -type f -exec egrep -l $'\t' "{}" \;
+
 
 [[ "${0##*/}" =~ "lib.file" ]] && $@

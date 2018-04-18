@@ -43,7 +43,7 @@ add_path "$HOME/.bin/work"
     add_path "/data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin"
 
     # VIM8
-    add_path "/data1/home/wgao/tools/vim8/bin"
+    # add_path "/data1/home/wgao/tools/vim8/bin"
     add_path "/data1/home/wgao/tools/llvm/bin"
 
     alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
@@ -51,6 +51,7 @@ add_path "$HOME/.bin/work"
     alias vdiff='vgitdiff ~/.vdotfiles; meld git.diff.add git.diff.rm'
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
     alias vh='nohup vhelper > /dev/null &'
+    alias c='ctags -R .'
 
     complete -W "diff bak" vhtml
     complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk
@@ -67,6 +68,9 @@ add_path "$HOME/.bin/work"
     # ./configure --with-features=huge --enable-python3interp --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu/ --enable-rubyinterp --enable-luainterp --enable-perlinterp --with-python3-config-dir=/data1/home/wgao/tools/python3.6/lib/python3.6/config-3.6m-x86_64-linux-gnu/ --enable-multibyte --enable-cscope --prefix=/data1/home/wgao/tools/vim8/
     clean_path "/usr/games"
     clean_path "/usr/local/games"
+
+    # OpenCV
+    export OpenCV_LIBS=~/.local/lib
 } || {
     alias vsync='rsync -rul wgao@192.168.4.15:~/.vdotfiles ~'
     alias vsync1='rsync -rl --exclude=bundle wgao@192.168.4.15:~/.vdotfiles ~'

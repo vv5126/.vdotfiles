@@ -1,60 +1,106 @@
 #!/bin/bash
 
-dirname=
-note=
-pkg=2
-num=1
+function set_dir() {
+    local prefix=$1 tmp_prefix=$1 num=1
 
-for para in $@; do
-    [ $num = "1" ] && [ -d "$para" ] && dirname="$para" #|| break
-    [ $num = "2" ] && [ -n "$para" ] && note="_$para" #|| break
-    [ $num = "3" ] && [ -n "$para" ] && pkg="$para" #|| break
-	num=$[$num+1]
-done
+    while true; do
+	if [ -d "$tmp_prefix" ]; then
+	    [ "$(ls -A $tmp_prefix)" == "" ] && { prefix="$tmp_prefix"; break; } || { tmp_prefix="$prefix-$num"; ((num+=1)); }
+	else
+		{ prefix="$tmp_prefix"; break; }
+	fi
+    done
 
-#echo $dirname $note $pkg
-[ -n "$dirname" ] && {
-    tarname=${dirname%%/*}
-    case "$pkg" in
-        '1')
-            tar -cvf "$tarname""$note".tar $dirname
-            ;;
-        '2')
-            tar -zcvf "$tarname""$note".tar.gz $dirname
-            ;;
-        '3')
-            tar -jcvf "$tarname""$note".tar.bz2 $dirname
-            ;;
-        *)
-            ;;
-        esac
-} || {
-    if [ $# -eq 1 ] && [ -f "$1" ]; then
-        case "$1" in
-            *xz)
-                tar -xvf $1
-                ;;
-            *tar)
-                tar -xvf $1
-                ;;
-            *gz)
-                tar -xvf $1
-                ;;
-            *bz2)
-                tar -xvf $1
-                ;;
-            *tbz)
-                tar -xvf $1
-                ;;
-            *zip)
-                unzip $1
-                ;;
-            *rpm)
-                unrpm $1
-                ;;
-            *)
-                ;;
-        esac
-    fi
+    echo "$prefix"
 }
 
+function set_name() {
+    local prefix=$1 tmp_prefix=$1 suffix=$2 num=1
+
+    while true; do
+	[ -f "$tmp_prefix.$suffix" ] && { tmp_prefix="$prefix-$num"; ((num+=1)); } || { prefix="$tmp_prefix"; break; }
+    done
+    echo "$prefix.$suffix"
+}
+
+function _tar() {
+    local dir pkg prefix_name file_name
+
+    dir=${1%%/*}
+    pkg='gz'
+    prefix_name=$dir
+
+    [ $# -ge 2 ] && { [[ "rar tar gz bz2 xz" =~ "$2" ]] && pkg="$2" || prefix_name="$2"; }
+    [ $# -ge 3 ] && prefix_name="$3"
+
+    case "$pkg" in
+	'tar')
+	    file_name="$(set_name "$prefix_name" tar)"
+	    tar -cvf "$file_name" $dir
+	    ;;
+	'gz')
+	    file_name="$(set_name "$prefix_name" tar.gz)"
+	    tar -zcvf "$file_name" $dir
+	    ;;
+	'bz2')
+	    file_name="$(set_name "$prefix_name" tar.bz2)"
+	    tar -jcvf "$file_name" $dir
+	    ;;
+	# 'xz')
+	#     file_name="$(set_name "$prefix_name" tar.bz2)"
+	#     tar -jcvf "$file_name" $dir
+	#     ;;
+	# 'rar')
+	#     rar -jcvf "$tarname""$note".tar.bz2 $dirname
+	#     ;;
+	*)
+	    echo error: not support.
+	    ;;
+    esac
+}
+
+function _untar() {
+    local file_name suffix prefix dir pkg
+
+    file_name="$1"
+    [ -f "$file_name" ] && { prefix=${file_name%%.*}; suffix=${file_name#*.}; } || { echo error; exit; }
+
+    pkg="${suffix##*.}"
+    [ $# -ge 2 ] && prefix="$2"
+    dir=$(set_dir $prefix)
+    [ ! -d $dir ] && mkdir -p $dir
+
+    case "$pkg" in
+	*xz)
+	    tar -xvf $file_name  -C $dir
+	    ;;
+	*tar)
+	    tar -xvf $file_name  -C $dir
+	    ;;
+	*gz)
+	    tar -xvf $file_name  -C $dir
+	    ;;
+	*bz2)
+	    tar -xvf $file_name  -C $dir
+	    ;;
+	*tbz)
+	    tar -xvf $file_name  -C $dir
+	    ;;
+	*zip)
+	    unzip $file_name -d $dir
+	    ;;
+	*rpm)
+	    unrpm $file_name
+	    ;;
+	*)
+	    ;;
+    esac
+}
+
+if [ $# -ge 1 ]; then
+	if [ -d $1 ]; then
+		_tar $@
+	elif [ -f $1 ]; then
+		_untar $@
+	fi
+fi

@@ -10,7 +10,7 @@ alias SL='ls'
 alias ax='chmod +x'
 alias du='du -h -d 1'
 alias grep='grep --color --exclude-dir=".git"'
-alias ag='ag --noheading --smart-case'
+alias ag='ag --noheading --smart-case -t'
 alias libmk='lib.misc gen_lib_info ~/.bin/lib'
 
 alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'

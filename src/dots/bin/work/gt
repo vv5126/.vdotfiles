@@ -8,13 +8,15 @@ APP_DIR=$(which $0)
 APP_DIR=${APP_DIR%\/*}
 
 function get_project_source_path() {
+        local warehouse branch moudle
         cd .repo/manifests
-	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $2}'`
-        local moudle="$(ls default.xml -l)"
-        moudle="${moudle##* }"
+	warehouse=`git remote -v | head -2 | tail -1 | awk '{print $2}'`
         branch="$(git branch -a | sed -n '/->/p;')"
         branch="${branch##*-> }"
         branch="${branch##*/}"
+        cd ..
+        moudle="$(ls manifest.xml -l)"
+        moudle="${moudle##* manifests/}"
         echo repo init -u $warehouse -b $branch -m $moudle
 }
 

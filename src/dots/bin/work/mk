@@ -78,7 +78,9 @@ function mkmain() {
 
         # try find the Build.mk and run mma.
         local BUILD_DIR="$(getdir Build.mk)"
-        [ -d "$BUILD_DIR" ] && { cd $BUILD_DIR && mma1; return 0; }
+        if [ -d "$BUILD_DIR" ]; then
+            [ "$(guess_obj)" != "kernel" ] && { cd $BUILD_DIR; mma1; return 0; }
+        fi
 
         # goto project root directory if possible.
         cd_proj

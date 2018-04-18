@@ -113,7 +113,7 @@ function guess_obj() {
     # unknown
     [ -z "$project_type" ] && project_type="unknown"
 
-    echo "$project_type $project_path"
+    [ "x$1" == "x-a" ] && echo "$project_type $project_path" || echo "$project_type"
 
     [ "$project_type" == "unknown" ] && return -1 || return 0
 }
