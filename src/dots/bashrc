@@ -99,4 +99,4 @@ if ! shopt -oq posix; then
   fi
 fi
 
-source $HOME/.bin/base/batchExport
+[ -f ~/.v.bash ] && source ~/.v.bash

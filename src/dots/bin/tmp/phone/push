@@ -1,5 +1,0 @@
-#!/bin/bash
-
-if [ $# -gt 0 ]; then
-	adb push $1 /storage/sdcard1/常用手机软件
-fi

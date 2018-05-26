@@ -1,4 +1,33 @@
 
+function repo_get_source_path() {
+        local warehouse branch moudle
+        cd .repo/manifests
+	warehouse=`git remote -v | head -2 | tail -1 | awk '{print $2}'`
+        branch="$(git branch -a | sed -n '/->/p;')"
+        branch="${branch##*-> }"
+        branch="${branch##*/}"
+        cd ..
+        moudle="$(ls manifest.xml -l)"
+        moudle="${moudle##* manifests/}"
+        echo repo init -u $warehouse -b $branch -m $moudle
+}
+
+function git_push_to_gerrit() {
+        local branch
+	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $1}'`
+        branch="$(git branch | sed -n '/^\*/p')"
+        if [[ "$branch" =~ '(' || "$branch" =~ ' default' ]]; then
+                branch="$(git branch -a | sed -n '/->/p')"
+                branch=${branch##*-> }
+                branch=${branch#*/}
+        else
+                branch=${branch##* }
+                # branch=${branch##*/}
+        fi
+                echo git push $warehouse HEAD:refs/for/refs/heads/$branch
+                git push $warehouse HEAD:refs/for/refs/heads/$branch
+}
+
 function get_remote() {
 
 }

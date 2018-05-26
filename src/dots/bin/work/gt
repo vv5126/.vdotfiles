@@ -2,79 +2,11 @@
 
 source ~/.bin/lib/lib.base
 source ~/.bin/lib/lib.work
+source ~/.bin/lib/lib.git
 source ~/.bin/lib/lib.misc
 
 APP_DIR=$(which $0)
 APP_DIR=${APP_DIR%\/*}
-
-function get_project_source_path() {
-        local warehouse branch moudle
-        cd .repo/manifests
-	warehouse=`git remote -v | head -2 | tail -1 | awk '{print $2}'`
-        branch="$(git branch -a | sed -n '/->/p;')"
-        branch="${branch##*-> }"
-        branch="${branch##*/}"
-        cd ..
-        moudle="$(ls manifest.xml -l)"
-        moudle="${moudle##* manifests/}"
-        echo repo init -u $warehouse -b $branch -m $moudle
-}
-
-function git_push() {
-        local branch
-	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $1}'`
-        branch="$(git branch | sed -n '/^\*/p')"
-        if [[ "$branch" =~ '(' || "$branch" =~ ' default' ]]; then
-                branch="$(git branch -a | sed -n '/->/p')"
-                branch=${branch##*-> }
-                branch=${branch#*/}
-        else
-                branch=${branch##* }
-                # branch=${branch##*/}
-        fi
-                echo git push $warehouse HEAD:refs/for/refs/heads/$branch
-                git push $warehouse HEAD:refs/for/refs/heads/$branch
-
-}
-function make_git_push_file() {
-	local file
-	local mark
-        local branch
-	> git-push.sh
-	chmod +x git-push.sh
-	git status -s | {
-		while read line; do
-			[ -n "$line" -a "${line% *}" != "D" ] && {
-				line=${line##* }
-
-				file=$line
-				[ "${file:0-1}" == "/" ] && file=${file%/*}
-				file=${file##*/}
-
-				mark=1
-				while read ignore; do
-					[ "$file" == "$ignore" ] && { mark=0; break; }
-				done < "$APP_DIR/.gt_ignore"
-
-				[ "$mark" -eq 1 ] && echo "git add $line" >> git-push.sh
-			}
-		done
-	}
-
-	echo -e >> git-push.sh
-	echo git commit -m "\"xxx\"" >> git-push.sh
-
-	local warehouse=`git remote -v | head -2 | tail -1 | awk '{print $1}'`
-        git branch -a | {
-                while read line; do
-                        [[ "$line" =~ "->" ]] && {
-                                branch=${line##*-> }
-                                branch=${branch##*/}
-	                        echo git push $warehouse HEAD:refs/for/refs/heads/$branch >> git-push.sh
-                        }
-                done
-        }
-}
 
 function git_bak_list() {
 	local BAKDIR=''
@@ -197,7 +129,7 @@ if [ $# -gt 0 ];then
                                 git --git-dir .repo/manifests/.git/ tag
                                 ;;
                         'l')
-                                get_project_source_path
+                                repo_get_source_path
                                 ;;
                         *)
                                 repo "$@"
@@ -206,7 +138,7 @@ if [ $# -gt 0 ];then
         elif [ -d ".git" ]; then
                 case "$1" in
                         'push')
-		                git_push
+		                git_push_to_gerrit
                                 ;;
                         'baklist')
 		                git_bak_list $PWD

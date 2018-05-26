@@ -155,6 +155,15 @@ function mktag() {
 	}
 }
 
+function mk2sh() {
+    cat $1 | \
+        sed 's/\ *:=\ */=/g' - | \
+        sed 's/^ifeq\ *.*$(\(.*\)))\,\(.*\))/if [ "$\1" = "\2" ]; then/g' - | \
+        sed 's/^endif/fi/g' - | \
+        sed 's/[(|)]//g' - \
+        > $2
+}
+
 ############# will export ##############
 
 # case $(ps -q $$ -o comm=) in

@@ -7,7 +7,7 @@ export LOCAL_HOST=user@192.168.4.150
 # imgs #
 export VGL_BOARDS=/data1/home/wgao/work/local_debug/boards
 # json #
-export VGL_JSON_FILE=/data1/home/wgao/.bin/sources/ingenic.json
+export VGL_JSON_FILE=/data1/home/wgao/.bin/data/ingenic.json
 # export VGL_BOARDS="$WORK_SERVER_MAIN":/data1/home/wgao/work/local_debug/boards
 export CLONER_DIR='/home/user/.cloner'
 # build image #
@@ -44,7 +44,18 @@ add_path "$HOME/.bin/work"
 
     # VIM8
     # add_path "/data1/home/wgao/tools/vim8/bin"
-    add_path "/data1/home/wgao/tools/llvm/bin"
+
+    # GO
+    # add_path "/data1/home/wgao/tools/go/bin"
+    export GOROOT=/data1/home/wgao/tools/go
+    export GOPATH=/data1/home/wgao/tools/godir
+
+    # FZF
+    export FZF_DEFAULT_COMMAND='ag -g ""'
+    export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+
+    # OpenCV
+    export OpenCV_LIBS=~/.local/lib
 
     alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
     alias wiz='nohup $HOME/tools/wiz/src/WizNote > /dev/null &'
@@ -60,17 +71,17 @@ add_path "$HOME/.bin/work"
     export VGL_BOOKMARK='/data1/home/wgao/.vdotfiles/src/bookmark/bookmark.html'
     export VGLD_CRACK_DIR=/data1/home/wgao/v/bbb
 
+    export PKG_CONFIG_PATH=/data1/home/wgao/.local/usr/local/lib/pkgconfig
     export LD_LIBRARY_PATH=/data1/home/wgao/.local/lib
     export LD_RUN_PATH=/data1/home/wgao/.local/lib
-    export GOPATH=/data1/home/wgao/tools/godir
 
     # vim8 with python3
-    # ./configure --with-features=huge --enable-python3interp --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu/ --enable-rubyinterp --enable-luainterp --enable-perlinterp --with-python3-config-dir=/data1/home/wgao/tools/python3.6/lib/python3.6/config-3.6m-x86_64-linux-gnu/ --enable-multibyte --enable-cscope --prefix=/data1/home/wgao/tools/vim8/
+    # ./configure --with-features=huge --enable-python3interp --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu/ --enable-rubyinterp --enable-luainterp --enable-perlinterp --with-python3-config-dir=/data1/home/wgao/tools/python3.6/lib/python3.6/config-3.6m-x86_64-linux-gnu/ --enable-multibyte --enable-cscope --enable-gui=gtk2 --prefix=/data1/home/wgao/tools/vim8/
+    # export PYTHONPATH=/data1/home/wgao/.local/lib/python3.6
+
+    # add_path "/data1/home/wgao/tools/llvm/bin"
     clean_path "/usr/games"
     clean_path "/usr/local/games"
-
-    # OpenCV
-    export OpenCV_LIBS=~/.local/lib
 } || {
     alias vsync='rsync -rul wgao@192.168.4.15:~/.vdotfiles ~'
     alias vsync1='rsync -rl --exclude=bundle wgao@192.168.4.15:~/.vdotfiles ~'

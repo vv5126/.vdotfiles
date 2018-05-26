@@ -184,3 +184,10 @@ cmake -D CMAKE_INSTALL_PREFIX=~/.local BUILD_TIFF=ON ..
 
 ### 中文乱码解决
 iconv -f gb2312 -t utf-8 xxx > xxx
+
+fzf 安装：
+1.下载go：https://golang.org/dl/
+2.下载fzf库:https://github.com/junegunn/fzf
+3.下载fzf二进制: https://github.com/junegunn/fzf-bin/releases/download/0.17.3/fzf-0.17.3-linux_amd64.tgz
+4.执行install in fzf.
+
