@@ -103,6 +103,9 @@ aircrack='
 '
 
 unused='
+4 robbyrussell/oh-my-zsh.git'
+4 gpakosz/.tmux.git'
+4 erikw/tmux-powerline.git'
 # 2 eugeii/consolas-powerline-vim.git
 # 2 powerline/fonts.git
 1 kolourpaint

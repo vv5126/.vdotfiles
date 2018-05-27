@@ -50,15 +50,6 @@ endif
 " add my bundles here. {{{
 
     "==================================================
-    "外部库,借用Bundle.
-    " -------------------------------------------------
-    if ! isdirectory(expand("~/.vim/bundle/oh-my-zsh"))
-        Bundle 'robbyrussell/oh-my-zsh.git'
-        Bundle 'gpakosz/.tmux.git'
-        Bundle 'erikw/tmux-powerline.git'
-    endif
-    "==================================================
-
     " Brief help
     " :BundleList          - list configured bundles
     " :BundleInstall(!)    - install(update) bundles
@@ -113,7 +104,9 @@ endif
     Bundle 'airblade/vim-gitgutter'
     " -------------------------------------------------
     Bundle 'vv5126/wim'
-    source ~/.vim/bundle/wim/plugin/vfunc.vim
+    if isdirectory($HOME."/.vim/bundle/wim")
+        source ~/.vim/bundle/wim/plugin/vfunc.vim
+    endif
     " -------------------------------------------------
     " vim帮助中文版
     " Bundle 'becaning/vimdoccn'
@@ -1000,7 +993,10 @@ endif
         autocmd BufEnter * :syntax sync fromstart
         autocmd WinLeave * lclose
         "=====================================================
-        autocmd BufEnter * call CHECK_FILETYPE()
+        if isdirectory($HOME."/.vim/bundle/wim")
+            autocmd BufEnter * call CHECK_FILETYPE()
+        endif
+
         autocmd BufRead *.h set filetype=c
         autocmd BufRead *.help set filetype=markdown
         "=====================================================

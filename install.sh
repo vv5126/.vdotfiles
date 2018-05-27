@@ -26,6 +26,6 @@ be_sudoer() {
 generate_link
 source $HOME/.profile
 
-be_sudoer
+# be_sudoer
 
 echo " done!"

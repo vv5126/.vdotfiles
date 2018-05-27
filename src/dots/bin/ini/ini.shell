@@ -24,12 +24,7 @@ export LANG=en_US.utf8
 
 export EDITOR="$(which vim)"
 add_path "$HOME/.bin/lib"
-[[ $(uname -n) == 'ThinkPad-Yoga-260' ]] && {
-    add_path "$HOME/bin/python3.6/bin"
-}
-[[ $(uname -n) == 'lqchen-0B' ]] && {
-    add_path "$HOME/.local/bin"
-}
+add_path "$HOME/.local/bin"
 
 if [ -n "$(which dircolors)" ]; then
 	eval `dircolors -b $HOME/.dir_colors`
