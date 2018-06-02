@@ -23,6 +23,9 @@ export LANG=en_US.utf8
 # export PYTHONPATH=$PYTHONPATH:/usr/lib/python3/dist-packages/
 
 export EDITOR="$(which vim)"
+export VLIBS="$HOME/.bin/lib"
+export VBESUDO="$(check_sudo)"
+
 add_path "$HOME/.bin/lib"
 add_path "$HOME/.local/bin"
 

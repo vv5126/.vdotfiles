@@ -191,3 +191,6 @@ fzf 安装：
 3.下载fzf二进制: https://github.com/junegunn/fzf-bin/releases/download/0.17.3/fzf-0.17.3-linux_amd64.tgz
 4.执行install in fzf.
 
+
+sudo apt-get install aptitude
+/var/lib/dpkg/info

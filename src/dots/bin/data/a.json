@@ -1,0 +1,38 @@
+{
+	"module name": {
+		"method": [
+			"before: 0 go on, 1 error, 2 have"
+			, "get method"
+			, "install method"
+			, "depend on"
+			, "after"
+		]
+		, "Description":"NULL"
+	}
+
+	, "aptitude": {
+		"apt": [ "aptitude" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "git": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "vim": {
+		"aptitude": [ "vim" , "NULL" , "NULL" , "NULL" , "NULL" ],
+		"git": [ "vim/vim"
+			, "NULL"
+			, "NULL"
+			, "NULL"
+			, "print ('apt aptitude') if (be_sudoer == 0) else print ('hehe')"
+		]
+	}
+	, "base": {
+		"all": [ "NULL"
+			, "NULL"
+			, "NULL"
+			, "git gitk pip pip3 clang aptitude"
+			, "NULL"
+		]
+		, "Description":"first install"
+	}
+}

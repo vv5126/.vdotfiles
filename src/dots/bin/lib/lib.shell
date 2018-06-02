@@ -145,6 +145,11 @@ function lnn() {
     [ -n "$d" ] && ln -sf "$d" "$lnfile"
 }
 
+function check_sudo() {
+    local val="$(sudo -l | sed -n '/) ALL/p;' -)"
+    [ -z "$val" ] && echo 0 || echo 1
+}
+
 ############# will export ##############
 alias cd='quickcd'
 alias mm='mm1'

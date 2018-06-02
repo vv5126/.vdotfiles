@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ~/.bin/lib/lib.list
+source $VLIBS/lib.list
 
 NUM=0
 APP_DIR=$(which $0)
