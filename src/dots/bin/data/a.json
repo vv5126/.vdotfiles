@@ -17,15 +17,25 @@
 		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
 		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
 	}
-	, "vim": {
+	, "dfb": {
 		"aptitude": [ "vim" , "NULL" , "NULL" , "NULL" , "NULL" ],
-		"git": [ "vim/vim"
+		"git": [ "deniskropp/DirectFB"
+			, "source code"
+			, "NULL"
+			, "NULL"
+			, "print ('apt aptitude') if (be_sudoer == 0) else print ('hehe')"
+		]
+	}
+	, "libtool": {
+		"aptitude": [ "vim" , "NULL" , "NULL" , "NULL" , "NULL" ],
+		"wget": [ "http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.gz"
 			, "NULL"
 			, "NULL"
 			, "NULL"
 			, "print ('apt aptitude') if (be_sudoer == 0) else print ('hehe')"
 		]
 	}
+        
 	, "base": {
 		"all": [ "NULL"
 			, "NULL"

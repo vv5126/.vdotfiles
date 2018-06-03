@@ -1,0 +1,18 @@
+git 
+gcc
+vim
+make
+sudo apt-get install autoconf
+sudo apt-get install automake
+sudo apt-get install pkg-config
+sudo apt-get install libgtk-3-dev
+
+
+vim:
+You need to install a terminal library:
+sudo apt-get install libncurses5-dev
+Python.h: No such file or directory:
+sudo apt-get install python2.7-dev
+
+sudo apt install gitk
+

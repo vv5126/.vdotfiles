@@ -9,10 +9,11 @@ global install_mode
 global install_dir
 install_mode = 'signal'
 global tmp_dir
-tmp_dir = '/data1/home/wgao/.local/install'
+tmp_dir = '/home/user/.local/install'
 
 class Install(object):
     to_local = 0
+    config = {'Makefile':'pass', 'configure':'./configure', 'autogen.sh':'./autogen.sh' }
 
     def __init__(self, app, fjson, install_dir):
         self.app = app
@@ -41,35 +42,57 @@ class Install(object):
 
     def install(self):
         # get
-        resource = self.fjson[self.app]['resource']
-        for i in resource:
-            if i == 'git':
-                self._git(resource[i])
-                break
-            elif i == 'pip':
-                self._pip(resource[i])
-                break
-            elif i == 'pip3':
-                self._pip3(resource[i])
-                break
-            elif i == 'wget':
-                self._wget(resource[i])
-                break
-            else:
-                if install_mode == 'local':
-                    pass
+        # resource = self.fjson[self.app][self.getby][0]
+        # if self.getby == 'git':
+        #     self._git(resource)
+        # elif self.getby == 'pip':
+        #     self._pip(resource)
+        # elif self.getby == 'pip3':
+        #     self._pip3(resource)
+        # elif self.getby == 'wget':
+        #     self._wget(resource)
+        # else:
+        #     if install_mode == 'local':
+        #         pass
 
         # configure
+        self.normal_configure()
+    def normal_configure(self):
+        do_from = ''
+        for i in dict1:
+            if os.path.exists(i):
+                do_from = i
+                break
+
+        if do_from == 'Makefile':
+            pass
+        elif do_from == 'configure':
+            if os.system('./configure') == 0:
+            if os.path.exists('Makefile'):
+                pass
+            else:
+                # error
+        elif do_from == 'autogen.sh':
+            if os.system('./autogen.sh') == 0:
+                if os.path.exists('configure'):
+                    if os.system('./configure') == 0:
+                        if os.path.exists('Makefile'):
+                            pass
+        else:
+            # error
+
         if self.source_dir != '':
             os.chdir(self.source_dir)
             os.system()
+            if have autogen.sh:
+                if have
 
         # compile
 
         # install
 
     def clean(self):
-        eval(fjson['vim']['method'][4])
+        eval(self.fjson['vim']['method'][4])
 
     def _apt(self, name):
         os.system('sudo apt install', name)
@@ -77,11 +100,13 @@ class Install(object):
     # def _aptitude(self, name):
     #     os.system('sudo aptitude install', name)
 
-    def _wget(self, url, dst):
-        os.system('wget', url, dst)
+    def _wget(self, url, dst = tmp_dir):
+        self.source_dir = dst + '/' + self.app
+        os.system('wget' + url + self.source_dir)
 
     def _git(self, url, dst = tmp_dir):
         self.source_dir = dst + '/' + self.app
+        if os.path.exists(self.source_dir)
         os.system('git clone https://github.com/' + url + ' ' + self.source_dir)
 
     # def _pip(self, name):
@@ -117,13 +142,13 @@ def inst(app, fjson):
 
     if install_mode == 'signal':
         if os.environ["VBESUDO"] == '1':
-            tmp = input("install to system or local?[Y/n]")
+            tmp = input("install to system? or local.\n[\033[5;32;40mY\033[0m/n]")
             if tmp == 'n':
                 install_dir = 'local'
             else:
                 install_dir = 'system'
 
-            tmp = input("install follow app ALL same?[Y/n]")
+            tmp = input("install follow app ALL same?\n[\033[5;32;40mY\033[0m/n]")
             if tmp == 'y' or tmp == 'Y' or tmp == '':
                 install_mode = 'all'
 
@@ -144,14 +169,14 @@ def inst(app, fjson):
         print ("can't install \"", app, "\", some depend failed to installed!")
         return
 
-    try:
-        print ("will install \"" + app + "\" into", install_dir + '.')
-        ins.parpare()
-        ins.install()
-        ins.clean()
-    except:
-        print ("can't install \"", app, "\", failed!")
-        return
+    # try:
+    print ("will install \"" + app + "\" into", install_dir + '.')
+    ins.parpare()
+    ins.install()
+    ins.clean()
+    # except:
+    #     print ("can't install \"", app, "\", failed!")
+    #     return
 
 def main():
     # os.makedirs(tmp_dir)

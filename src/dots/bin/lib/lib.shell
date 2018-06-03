@@ -146,8 +146,14 @@ function lnn() {
 }
 
 function check_sudo() {
-    local val="$(sudo -l | sed -n '/) ALL/p;' -)"
-    [ -z "$val" ] && echo 0 || echo 1
+    user="$(whoami)"
+    local ret=0 val
+    val="$(cat /etc/group | sed -n '/^sudo:/p;' -)"
+    val=${val##*:}
+    val="$(cat /etc/group | sed -n '/^root:/p;' -),$val"
+    val=${val##*:}
+    [[ "$val" =~ "$user" ]] && ret=$(($ret|1))
+    echo $ret
 }
 
 ############# will export ##############
