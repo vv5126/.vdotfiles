@@ -35,7 +35,21 @@
 			, "print ('apt aptitude') if (be_sudoer == 0) else print ('hehe')"
 		]
 	}
-        
+	, "zlib": {
+		"aptitude": {"install":" aptitude install vim" }
+		, "wget": {"source":    "http://www.zlib.net/zlib-1.2.11.tar.gz"
+			,"get":       "wget"
+			,"tmp_dst":   "aaa.gz"
+			,"untar":     "tar -xf"
+			,"dst":       "~/.local/zlib-source"
+			,"configure": "autogen.sh; configure --prefix=...;"
+			,"make":      "make -j40"
+			,"install":   "dstdir=... make install"
+			,"clean":     "NULL"
+		}
+		, "checkfile": "libxenctrl-4.4.so"
+		, "depend": "libtool"
+	}
 	, "base": {
 		"all": [ "NULL"
 			, "NULL"
