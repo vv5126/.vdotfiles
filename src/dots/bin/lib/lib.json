@@ -24,3 +24,14 @@ function json_get_value()
 {
     jp -e kernel_img -k < $VGL_JSON_FILE
 }
+
+a b c d xxx
+xxx == tpye??
+-k
+-e
+
+output??
+
+
+
+

@@ -1,62 +1,36 @@
 {
-	"module name": {
-		"method": [
-			"before: 0 go on, 1 error, 2 have"
-			, "get method"
-			, "install method"
-			, "depend on"
-			, "after"
-		]
-		, "Description":"NULL"
-	}
-
-	, "aptitude": {
+	"aptitude": {
 		"apt": [ "aptitude" , "NULL" , "NULL" , "NULL" , "NULL" ]
 	}
 	, "git": {
 		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
 		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
 	}
-	, "dfb": {
-		"aptitude": [ "vim" , "NULL" , "NULL" , "NULL" , "NULL" ],
-		"git": [ "deniskropp/DirectFB"
-			, "source code"
-			, "NULL"
-			, "NULL"
-			, "print ('apt aptitude') if (be_sudoer == 0) else print ('hehe')"
-		]
-	}
 	, "libtool": {
-		"aptitude": [ "vim" , "NULL" , "NULL" , "NULL" , "NULL" ],
-		"wget": [ "http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.gz"
-			, "NULL"
-			, "NULL"
-			, "NULL"
-			, "print ('apt aptitude') if (be_sudoer == 0) else print ('hehe')"
-		]
+		"aptitude": {
+			"install": "libtool"
+		}
+		, "src": {"source": "http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.gz"
+		}
+		, "installed_flag": "libxenctrl-4.4.so"
+		, "depend": "zlib1"
+	}
+	, "zlib1": {
+		"aptitude": {"install": "vim" }
+		, "src":  {"source": "http://www.zlib.net/zlib-1.2.11.tar.gz" }
+		, "installed_flag": "libxenctrl-4.4.so"
 	}
 	, "zlib": {
-		"aptitude": {"install":" aptitude install vim" }
-		, "wget": {"source":    "http://www.zlib.net/zlib-1.2.11.tar.gz"
-			,"get":       "wget"
-			,"tmp_dst":   "aaa.gz"
-			,"untar":     "tar -xf"
-			,"dst":       "~/.local/zlib-source"
-			,"configure": "autogen.sh; configure --prefix=...;"
+		"aptitude": {"install": "vim" }
+		, "src":  {"source":    "https://github.com/madler/zlib"
+			,"flag":      "make code"
+			,"get":       "git clone https://github.com/madler/zlib"
+			,"tmp_dst":   "~/haha"
+			,"configure": "./configure; echo goooood"
 			,"make":      "make -j40"
-			,"install":   "dstdir=... make install"
-			,"clean":     "NULL"
+			,"clean":     " "
 		}
-		, "checkfile": "libxenctrl-4.4.so"
+		, "installed_flag": "libxenctrl-4.4.so"
 		, "depend": "libtool"
-	}
-	, "base": {
-		"all": [ "NULL"
-			, "NULL"
-			, "NULL"
-			, "git gitk pip pip3 clang aptitude"
-			, "NULL"
-		]
-		, "Description":"first install"
 	}
 }

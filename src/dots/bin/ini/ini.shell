@@ -24,6 +24,7 @@ export LANG=en_US.utf8
 
 export EDITOR="$(which vim)"
 export VLIBS="$HOME/.bin/lib"
+export VINIS="$HOME/.bin/ini"
 export VBESUDO="$(check_sudo)"
 
 add_path "$HOME/.bin/lib"

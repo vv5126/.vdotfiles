@@ -28,9 +28,9 @@ function git_push_to_gerrit() {
                 git push $warehouse HEAD:refs/for/refs/heads/$branch
 }
 
-function get_remote() {
+# function get_remote() {
 
-}
+# }
 
-function get_branch() {
-function get_() {
+# function get_branch() {
+# function get_() {}

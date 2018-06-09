@@ -21,10 +21,9 @@ def check_have(dict1, key1):
             return False
 
 class Install(object):
-    bys_with_sys = ['aptitude', 'apt', 'src', 'pip', 'pip3', 'python3', 'gdebi']
-    bys = ['src', 'pip', 'pip3', 'python3', 'gdebi']
+    bys_with_sys = ['aptitude', 'apt', 'gdebi','dpkg', 'pip', 'pip3', 'python3', 'src']
+    bys = ['pip', 'pip3', 'python3', 'src']
     package = ['.tar.gz', '.bz2.gz', 'tar' ,'rar', 'zip']
-    config = [['Makefile','make -j30'], ['configure','./configure'], ['autogen.sh','./autogen.sh']]
     tmp_dir = os.environ.get('HOME') + '/.local/install'
 
     def __init__(self, app, fjson, install_dir):
@@ -94,14 +93,17 @@ class Install(object):
                 self.source_dir = self.appdict['tmp_dst']
             else:
                 self.source_dir = self.tmp_dir
-                if self.source_dir[0:1] == '~':
-                    self.source_dir = self.source_dir.replace('~', os.environ.get('HOME'), 1)
+            if self.source_dir[0:1] == '~':
+                self.source_dir = self.source_dir.replace('~', os.environ.get('HOME'), 1)
 
             if 'https://github.com' in source:
                 self.getby = 'git'
                 self.sourcecode_dir = self.source_dir + '/' + source.split('/')[-1]
-            else:
+            elif source[0:4] == 'http':
                 self.getby = 'wget'
+                self.sourcecode_dir = self.source_dir
+            else:
+                self.getby = 'scp'
                 self.sourcecode_dir = self.source_dir
 
             for i in self.package:
@@ -111,6 +113,13 @@ class Install(object):
 
             self.needcompile = True
             self.needinstall = True
+        if 'flag' in self.appdict.keys():
+            if 'make' in self.appdict['flag']:
+                self.buildflag = 'make'
+            if 'code' in self.appdict['flag']:
+                pass
+            if 'tar' in self.appdict['flag']:
+                self.needtar = True
 
     def un_tar(self, file_name):
         print ('untar file_name', file_name)
@@ -122,13 +131,15 @@ class Install(object):
         tar.close()
 
     def normal_make(self, i = 0):
-        if i >= len(self.config):
+        config = [['Makefile','make -j30'], ['configure','./configure'], ['autogen.sh','./autogen.sh']]
+        if i >= len(config):
             return
-        if not os.path.exists(self.config[i][0]):
+        if not os.path.exists(config[i][0]):
             self.normal_make(i + 1)
-        os.system(self.config[i][1])
+        os.system(config[i][1])
 
     def clean(self):
+        print("clean dir : ", self.sourcecode_dir + '/..')
         if os.path.exists(self.sourcecode_dir):
             os.chdir(self.sourcecode_dir + '/..')
             shutil.rmtree(self.sourcecode_dir)
@@ -171,7 +182,9 @@ class Install(object):
                     print('Cannot guess file type!')
                 print('File extension: %s' % kind.extension)
 
+                os.system('pwd')
                 if kind.extension is 'gz':
+                    print(self.sourcename)
                     self.un_tar(self.sourcename)
                 elif kind.extension is '':
                     pass
@@ -187,6 +200,7 @@ class Install(object):
         # compile
 
         if self.needcompile == True:
+            print ('cc sdfljsldkfjkljto sourcecode_dir')
             if check_have(self.appdict, 'configure'):
                 os.system(self.appdict['configure'])
                 os.system(self.appdict['make'])
@@ -202,15 +216,16 @@ class Install(object):
 
         # clean
         if check_have(self.appdict, 'clean'):
+            print ('clean empty!!!')
             os.system(self.appdict['clean'])
-        else:
-            self.clean()
+        # else:
+        #     self.clean()
 
     def _apt(self, name):
         os.system('sudo apt install', name)
 
     def _aptitude(self, name):
-        os.system('sudo aptitude install', name)
+        os.system('sudo aptitude -y install', name)
 
     def _wget(self, url, dst):
         os.system('wget ' + url + ' -O '+ dst)
@@ -280,13 +295,13 @@ def inst(app, fjson):
     if ins.check_installed() == False:
         return
 
-    try:
-        for i in ins.depend():
-            print ('depend on ', i)
-            inst(i, fjson)
-    except:
-        print ("\033[31;40mcan't install \"", app, "\", some depend failed to installed!\033[0m")
-        return
+    # try:
+    for i in ins.depend():
+        print ('depend on ', i)
+        inst(i, fjson)
+    # except:
+    #     print ("\033[31;40mcan't install \"", app, "\", some depend failed to installed!\033[0m")
+    #     return
 
     # select install method
     ins.by()

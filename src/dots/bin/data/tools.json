@@ -1,74 +1,152 @@
 {
-	"1:apt | 2:wget | 3:pip3 | 4:git clone | 5:parent | 6:python3.5 | 7:gdebi |",
-	"base": {
-		"git": "apt",
-		"zsh": "apt",
-		"powerline": "apt",
-		"tmux": "apt",
-		"screen": "apt",
-		"teamviewer": "apt",
-		"xdotool": "apt",
-		"clang": "apt",
-		"gdebi": "apt",
-		"pip": "apt",
-		"pip3": "apt",
-		"fcitx-googlepinyin": "apt",
-		"pip3": "apt",
-		"adobe-fonts/source-code-pro": "git",
-		"https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz": "wget",
-		"vim/vim.git": "git",
-		"WizTeam/WizQTClient": "git",
-	},
-	"ftp": {
-		"vsftpd": "apt",
-	},
-	"goodproject": {
-		"sopel-irc/sopel": "git",
-		"acidvegas/irc": "git",
-		"houtianze/bypy": "git",
-		"sopel": "pip3",
-		"bypy": "pip3",
-		"rizsotto/Bear": "git",
-		"jpmens/jo": "git",
-		"keenerd/jshon": "git",
-		"http://www.pixelbeat.org/fslint/fslint-2.46.tar.xz": "wget",
-		"wmctrl": "apt",
-		"hackjutsu/Lepton #for gist": "git",
-		"ggreer/the_silver_searcher #ag": "git",
-	},
+	"module name": {
+		"aptitude": {"install": "vim" }
+		, "bys":  {
+			"source":     ""
+			,"get":       ""
+			,"tmp_dst":   ""
+			,"configure": ""
+			,"make":      ""
+			,"install":   ""
+			,"clean":     ""
+		}
+		, "installed_flag": "path of so or header"
+		, "depend": "other module "
+		, "Description": ""
+	}
+
+	, "aptitude": {
+		"apt": [ "aptitude" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "git": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "tmux": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "zsh": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "powerline": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "screen": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "teamviewer": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "xdotool": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "clang": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "gdebi": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "pip": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "pip3": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "fcitx-googlepinyin": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "vsftpd": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "cifs-utils": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "samba": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "samba-client": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "samba": {
+		"depend": "samba samba-client cifs-utils"
+	}
+	, "tftpd-hpa": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "tftp-hpa": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "tftp_server": {
+		"depend": "tftpd-hpa tftp-hpa"
+	}
+
+	, "gnome-panel": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "vnc4server": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "gnome-terminal": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "nautilus": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "metacity": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "gnome-settings-daemon": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "xrdp": {
+		"depend": "gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal vnc4server"
+	}
+	, "nethack": {
+		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
+		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	}
+	, "haproxy": { "src": {"source": "https://github.com/docker-library/haproxy" } }
+	, "source-code-pro": { "src": {"source": "https://github.com/adobe-fonts/source-code-pro" } }
+	, "vim": { "src": {"source": "https://github.com/vim/vim.git" } }
+	, "wiz": { "src": {"source": "https://github.com/WizTeam/WizQTClient" } }
+	, "irc": { "src": {"source": "https://github.com/acidvegas/irc" } }
+	, "bear": { "src": {"source": "https://github.com/rizsotto/Bear" } }
+	, "bypy": { "src": {"source": "https://github.com/houtianze/bypy" } }
+	, "jo": { "src": {"source": "https://github.com/jpmens/jo" } }
+	, "jshon": { "src": {"source": "https://github.com/keenerd/jshon" } }
+	, "fslint": { "src": {"source": "http://www.pixelbeat.org/fslint/fslint-2.46.tar.xz" } }
+	, "haproxy": { "src": {"source": "https://github.com/hackjutsu/Lepton #for gist" } }
+	, "ag": { "src": {"source": "https://github.com/ggreer/the_silver_searcher #ag" } }
+	, "qt": { "src": {"source": "https://github.com/http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run" } }
+	, "sogoupinyin64": { "src": {"source": "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64" } }
+	, "sogoupinyin32": { "src": {"source": "http://pinyin.sogou.com/linux/download.php?f=linux&bit=32" } }
+	, "pip": { "src": {"source": "https://github.com/https://bootstrap.pypa.io/get-pip.py" } }
 	"zsh": {
+		"wmctrl": "apt",
 		"wting/autojump": "git",
-	},
-	"qt": {
-		"http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run": "wget",
-	},
-	"sogoupinyin": {
-		"sogoupinyin64-http://pinyin.sogou.com/linux/download.php?f=linux&bit=64": "wget",
-		"sogoupinyin32-http://pinyin.sogou.com/linux/download.php?f=linux&bit=32": "wget",
-	},
-	"samba": {
-		"cifs-utils": "apt",
-		"samba": "apt",
-		"samba-client": "apt",
-	},
-	"game": {
-		"nethack": "apt",
-	},
-	"tftp_server": {
-		"tftpd-hpa": "apt",
-		"# tftp-hpa": "apt",
-	},
-	"xrdp": {
-		"metacity": "apt",
-		"nautilus": "apt",
-		"gnome-terminal": "apt",
-		"vnc4server": "apt",
-		"gnome-panel": "apt",
-		"gnome-settings-daemon": "apt",
-	},
-	"pip3": {
-		"get-pip.py": "python3.5",
-		"https://bootstrap.pypa.io/get-pip.py": "wget",
 	},
 	"aircrack": {
 		"aircrack-ng": "apt",
@@ -102,6 +180,15 @@
 		"LightTableLinux.tar.gz",
 		"pycharm-professional-4.5.4.tar.gz",
 		"shc-3.8.9.tgz",
-		"graphviz"
+		"wmctrl": "apt",
+		"sopel": "pip3",
+		"bypy": "pip3",
+		"get-pip.py": "python3.5",
+		"graphviz",
+		"make cmake"
+	}
+	, "base": {
+		, "depend": "git gitk pip pip3 clang aptitude"
+		, "Description":"first install"
 	}
 }
