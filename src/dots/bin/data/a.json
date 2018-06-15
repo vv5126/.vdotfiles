@@ -6,19 +6,30 @@
 		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
 		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
 	}
+	, "py-filetype": {
+		"pip": { "install": "filetype" }
+		,"pip3": { "install": "filetype" }
+		, "src": {"source": "https://github.com/h2non/filetype.py"
+			,"flag": "pycode"
+		}
+		, "installed_flag": "pip3 install filetype.py"
+	}
 	, "libtool": {
 		"aptitude": {
 			"install": "libtool"
 		}
 		, "src": {"source": "http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.gz"
+			,"flag": "make code"
 		}
-		, "installed_flag": "libxenctrl-4.4.so"
+		, "installed_flag": "l1ibxenctrl-4.4.so"
 		, "depend": "zlib1"
 	}
 	, "zlib1": {
 		"aptitude": {"install": "vim" }
-		, "src":  {"source": "http://www.zlib.net/zlib-1.2.11.tar.gz" }
-		, "installed_flag": "libxenctrl-4.4.so"
+		, "src":  {"source": "http://www.zlib.net/zlib-1.2.11.tar.gz" 
+			,"flag": "make code"
+		}
+		, "installed_flag": "libxenctrl-4.4.2.so"
 	}
 	, "zlib": {
 		"aptitude": {"install": "vim" }
@@ -30,7 +41,7 @@
 			,"make":      "make -j40"
 			,"clean":     " "
 		}
-		, "installed_flag": "libxenctrl-4.4.so"
-		, "depend": "libtool"
+		, "installed_flag": "libxenctrl-4.4.1.so"
+		, "depend": "libtool py-filetype"
 	}
 }

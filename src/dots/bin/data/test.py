@@ -36,6 +36,7 @@ class Install(object):
         self.app = app
         self.fjson = fjson;
         self.install_dir = install_dir
+        self.ins_py = False
 
         print ('app:', self.app)
         print ('install_dir:', self.install_dir)
@@ -65,6 +66,12 @@ class Install(object):
                 print ('installed_flag:', output.strip())
                 return True
 
+        if (checkfile[-3:] == '.py') == True:
+            (status, output) = subprocess.getstatusoutput('find /usr/lib /lib /data1/home/wgao/.local/lib -name ' + checkfile)
+            if output.strip():
+                pri.cprint ("320", 'wgao ---installed_flag:', output.strip())
+                return True
+
         return False
 
     def by(self):
@@ -87,7 +94,7 @@ class Install(object):
             self.needget = True
             self.source = source
             self.sourcename = source.split('/')[-1]
-            print ('self.sourcename', self.sourcename)
+            pri.cprint ("10", 'self.sourcename', self.sourcename)
 
             if check_have(self.appdict, 'tmp_dst'):
                 self.source_dir = self.appdict['tmp_dst']
@@ -111,16 +118,18 @@ class Install(object):
                     self.needtar = True
                     break
 
-            self.needcompile = True
             self.needinstall = True
         if 'flag' in self.appdict.keys():
             if 'make' in self.appdict['flag']:
-                self.buildflag = 'make'
+                self.needcompile = True
+                self.compileflag = 'make'
             if 'code' in self.appdict['flag']:
                 pass
             if 'tar' in self.appdict['flag']:
                 self.needtar = True
-
+            if 'pycode' in self.appdict['flag']:
+                self.ins_py = True
+# pip3 install --target=/data1/home/wgao/.local/lib filetype
     def un_tar(self, file_name):
         print ('untar file_name', file_name)
         tar = tarfile.open(file_name)
@@ -200,19 +209,24 @@ class Install(object):
         # compile
 
         if self.needcompile == True:
-            print ('cc sdfljsldkfjkljto sourcecode_dir')
-            if check_have(self.appdict, 'configure'):
-                os.system(self.appdict['configure'])
-                os.system(self.appdict['make'])
+            if self.compileflag == 'make':
+                pri.cprint ("20", 'cc sdfljsldkfjkljto sourcecode_dir')
+                if check_have(self.appdict, 'configure'):
+                    os.system(self.appdict['configure'])
+                    os.system(self.appdict['make'])
+                else:
+                    self.normal_make()
             else:
-                self.normal_make()
+                pass
 
         # install
         if self.needinstall == True:
             if check_have(self.appdict, 'install'):
                 os.system(self.appdict['install'])
             else:
-                pass
+                if self.ins_py == True:
+                    if os.path.exists('setup.py'):
+                        self._py_install()
 
         # clean
         if check_have(self.appdict, 'clean'):
@@ -220,6 +234,10 @@ class Install(object):
             os.system(self.appdict['clean'])
         # else:
         #     self.clean()
+
+        # pri.cprint("20", "hehe")
+    def _py_install(self):
+        os.system("python3.4 setup.py install --user")
 
     def _apt(self, name):
         os.system('sudo apt install', name)
@@ -292,7 +310,7 @@ def inst(app, fjson):
     ins = Install(app, fjson, install_dir)
 
     # check is have
-    if ins.check_installed() == False:
+    if ins.check_installed() == True:
         return
 
     # try:

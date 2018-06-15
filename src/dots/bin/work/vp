@@ -5,19 +5,21 @@ source ~/.bin/lib/lib.work
 source ~/.bin/lib/lib.misc
 
 host=user@192.168.4.150
+local_home=$(ssh $host "pwd")
+# adb="$local_home/.vdotfiles/src/dots/bin/local/adb"
+adb="/usr/bin/adb"
 
 function install_apk() {
     local src=$1
     local file=${src##*/}
-    local local_home=$(ssh $host "pwd")
     local ret=0
 
     scp $src $host:/tmp > /dev/null
 
-    ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb remount" > /dev/null 2>&1
-    ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb install -r /tmp/$file" > /dev/null 2>&1
+    ssh $host "$adb remount" > /dev/null 2>&1
+    ssh $host "$adb install -r /tmp/$file" > /dev/null 2>&1
     [ $? -eq 0 ] && ret=0 || ret=1
-    ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb shell sync" > /dev/null 2>&1
+    ssh $host "$adb shell sync" > /dev/null 2>&1
     ssh $host "rm /tmp/$file" > /dev/null 2>&1
     return $ret
 
@@ -27,15 +29,14 @@ function push_to_board() {
     local src=$1
     local dst=$2
     local file=${src##*/}
-    local local_home=$(ssh $host "pwd")
     local ret=0
 
     scp -r $src $host:/tmp > /dev/null
 
-    ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb remount" > /dev/null 2>&1
-    ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb push /tmp/$file $dst" > /dev/null 2>&1
-    [ $? -eq 0 ] && ret=0 || { ret=1; ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb push /tmp/$file $dst"; }
-    ssh $host "$local_home/.vdotfiles/src/dots/bin/local/adb shell sync" > /dev/null 2>&1
+    ssh $host "$adb remount" > /dev/null 2>&1
+    ssh $host "$adb push /tmp/$file $dst" > /dev/null 2>&1
+    [ $? -eq 0 ] && ret=0 || { ret=1; ssh $host "$adb push /tmp/$file $dst"; }
+    ssh $host "$adb shell sync" > /dev/null 2>&1
     ssh $host "rm /tmp/$file" > /dev/null 2>&1
     return $ret
 }
