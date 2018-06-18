@@ -15,13 +15,27 @@
 		, "Description": ""
 	}
 
-	, "aptitude": {
-		"apt": [ "aptitude" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	"aptitude": {
+		"apt": { "source": "aptitude" }
+		, "installed_flag": "aptitude"
 	}
-	, "git": {
-		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
-		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	, "pip3": {
+		"aptitude": { "source": "python3-pip" }
+		, "installed_flag": "pip3"
 	}
+	, "setuptools": {
+		"pip3": { "source": "setuptools" }
+	}
+	, "py-filetype": {
+		"pip": { "source": "filetype" }
+		,"pip3": { "source": "filetype" }
+		, "src": {"source": "https://github.com/h2non/filetype.py" ,"flag": "pycode" }
+		, "installed_flag": "filetype.py"
+	}
+	, "git": { "aptitude": { "source": "git" } }
+	, "gitk": { "aptitude": { "source": "gitk" } }
+	, "meld": { "aptitude": { "source": "meld" } }
+
 	, "tmux": {
 		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
 		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
@@ -51,14 +65,6 @@
 		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
 	}
 	, "gdebi": {
-		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
-		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
-	}
-	, "pip": {
-		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
-		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
-	}
-	, "pip3": {
 		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
 		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
 	}
@@ -124,10 +130,6 @@
 	, "xrdp": {
 		"depend": "gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal vnc4server"
 	}
-	, "nethack": {
-		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
-		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
-	}
 	, "haproxy": { "src": {"source": "https://github.com/docker-library/haproxy" } }
 	, "source-code-pro": { "src": {"source": "https://github.com/adobe-fonts/source-code-pro" } }
 	, "vim": { "src": {"source": "https://github.com/vim/vim.git" } }
@@ -141,8 +143,6 @@
 	, "haproxy": { "src": {"source": "https://github.com/hackjutsu/Lepton #for gist" } }
 	, "ag": { "src": {"source": "https://github.com/ggreer/the_silver_searcher #ag" } }
 	, "qt": { "src": {"source": "https://github.com/http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run" } }
-	, "sogoupinyin64": { "src": {"source": "http://pinyin.sogou.com/linux/download.php?f=linux&bit=64" } }
-	, "sogoupinyin32": { "src": {"source": "http://pinyin.sogou.com/linux/download.php?f=linux&bit=32" } }
 	, "pip": { "src": {"source": "https://github.com/https://bootstrap.pypa.io/get-pip.py" } }
 	"zsh": {
 		"wmctrl": "apt",

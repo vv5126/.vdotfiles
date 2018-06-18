@@ -30,6 +30,9 @@ export VBESUDO="$(check_sudo)"
 add_path "$HOME/.bin/lib"
 add_path "$HOME/.local/bin"
 
+export PKG_CONFIG_PATH=$HOME/.local/usr/local/lib/pkgconfig
+export LD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/usr/local/lib
+
 if [ -n "$(which dircolors)" ]; then
 	eval `dircolors -b $HOME/.dir_colors`
 fi

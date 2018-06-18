@@ -70,8 +70,6 @@ add_path "$HOME/.bin/work"
     export VGL_BOOKMARK='/data1/home/wgao/.vdotfiles/src/bookmark/bookmark.html'
     export VGLD_CRACK_DIR=/data1/home/wgao/v/bbb
 
-    export PKG_CONFIG_PATH=/data1/home/wgao/.local/usr/local/lib/pkgconfig
-    export LD_LIBRARY_PATH=/data1/home/wgao/.local/lib:/data1/home/wgao/.local/usr/local/lib
     export LD_RUN_PATH=/data1/home/wgao/.local/lib
 
     # vim8 with python3

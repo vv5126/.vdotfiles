@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import subprocess
+
 def select_list(list2, str1):
     list1 = range(1,len(list2) + 1)
     dict1 = dict(zip(list1,list2))
@@ -35,3 +37,11 @@ def cprint(color, *args):
         tmp = tmp + bc[int(color[-1:])]
 
     print("\033[" + tmp  + " ".join(args) + "\033[0m")
+
+def filetpye_guess(pfile):
+    (status, output) = subprocess.getstatusoutput('file ' + pfile)
+    if "gzip compressed data" in output:
+        return 'gzip'
+    elif "gzip compressed data" in output:
+        pass
+

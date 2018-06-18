@@ -1,19 +1,40 @@
 {
 	"aptitude": {
-		"apt": [ "aptitude" , "NULL" , "NULL" , "NULL" , "NULL" ]
+		"apt": { "source": "aptitude" }
+		, "installed_flag": "aptitude"
 	}
-	, "git": {
-		"aptitude": [ "git" , "NULL" , "NULL" , "NULL" , "lULL" ],
-		"apt": [ "git" , "NULL" , "NULL" , "NULL" , "NULL" ]
+	, "pip3": {
+		"aptitude": { "source": "python3-pip" }
+		, "installed_flag": "pip3"
+	}
+	, "setuptools": {
+		"pip3": { "source": "setuptools" }
 	}
 	, "py-filetype": {
-		"pip": { "install": "filetype" }
-		,"pip3": { "install": "filetype" }
-		, "src": {"source": "https://github.com/h2non/filetype.py"
-			,"flag": "pycode"
-		}
-		, "installed_flag": "pip3 install filetype.py"
+		"pip": { "source": "filetype" }
+		,"pip3": { "source": "filetype" }
+		, "src": {"source": "https://github.com/h2non/filetype.py" ,"flag": "pycode" }
+		, "installed_flag": "filetype.py"
 	}
+	, "git": { "aptitude": { "source": "git" } }
+	, "gitk": { "aptitude": { "source": "gitk" } }
+	, "meld": { "aptitude": { "source": "meld" } }
+	, "libpcre3-dev": {
+            "src": {"source": "ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.42.tar.gz"
+		, "install": "make install"
+                ,"flag": "make code"
+            }
+	}
+	, "ag": {
+		"aptitude": {"source": "silversearcher-ag" }
+		, "src":  {"source":    "https://github.com/ggreer/the_silver_searcher"
+			,"flag":      "make code"
+		}
+		, "installed_flag": "ag"
+		, "depend1": "automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev"
+	}
+
+
 	, "libtool": {
 		"aptitude": {
 			"install": "libtool"
@@ -26,7 +47,7 @@
 	}
 	, "zlib1": {
 		"aptitude": {"install": "vim" }
-		, "src":  {"source": "http://www.zlib.net/zlib-1.2.11.tar.gz" 
+		, "src":  {"source": "http://www.zlib.net/zlib-1.2.11.tar.gz"
 			,"flag": "make code"
 		}
 		, "installed_flag": "libxenctrl-4.4.2.so"

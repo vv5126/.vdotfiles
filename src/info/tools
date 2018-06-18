@@ -16,7 +16,6 @@ base='
 5 pip3
 1 fcitx-googlepinyin
 4 adobe-fonts/source-code-pro
-2 https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz
 4 vim/vim.git
 4 WizTeam/WizQTClient
 '
@@ -50,19 +49,10 @@ pip3='
 6 get-pip.py
 '
 
-sogoupinyin='
-2 sogoupinyin64-http://pinyin.sogou.com/linux/download.php?f=linux&bit=64
-2 sogoupinyin32-http://pinyin.sogou.com/linux/download.php?f=linux&bit=32
-'
-
 samba='
 1 cifs-utils
 1 samba
 1 samba-client
-'
-
-game='
-1 nethack
 '
 
 tftp_server='
