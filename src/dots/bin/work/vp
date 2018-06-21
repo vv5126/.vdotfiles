@@ -4,81 +4,174 @@ source ~/.bin/lib/lib.base
 source ~/.bin/lib/lib.work
 source ~/.bin/lib/lib.misc
 
-host=user@192.168.4.150
-local_home=$(ssh $host "pwd")
-# adb="$local_home/.vdotfiles/src/dots/bin/local/adb"
-adb="/usr/bin/adb"
+host_vp="$VLOCALHOME/.local/vp"
+is_push=1
+is_local=0
+dst_dir=''
 
 function install_apk() {
     local src=$1
     local file=${src##*/}
     local ret=0
 
-    scp $src $host:/tmp > /dev/null
+    scp $src $VLOCALSSH:/tmp > /dev/null
 
-    ssh $host "$adb remount" > /dev/null 2>&1
-    ssh $host "$adb install -r /tmp/$file" > /dev/null 2>&1
+    ssh $VLOCALSSH "$adb remount" > /dev/null 2>&1
+    ssh $VLOCALSSH "$adb install -r /tmp/$file" > /dev/null 2>&1
     [ $? -eq 0 ] && ret=0 || ret=1
-    ssh $host "$adb shell sync" > /dev/null 2>&1
-    ssh $host "rm /tmp/$file" > /dev/null 2>&1
-    return $ret
-
-}
-
-function push_to_board() {
-    local src=$1
-    local dst=$2
-    local file=${src##*/}
-    local ret=0
-
-    scp -r $src $host:/tmp > /dev/null
-
-    ssh $host "$adb remount" > /dev/null 2>&1
-    ssh $host "$adb push /tmp/$file $dst" > /dev/null 2>&1
-    [ $? -eq 0 ] && ret=0 || { ret=1; ssh $host "$adb push /tmp/$file $dst"; }
-    ssh $host "$adb shell sync" > /dev/null 2>&1
-    ssh $host "rm /tmp/$file" > /dev/null 2>&1
+    ssh $VLOCALSSH "$adb shell sync" > /dev/null 2>&1
+    ssh $VLOCALSSH "rm /tmp/$file" > /dev/null 2>&1
     return $ret
 }
 
+# 如果为本地，得到全路径；如果为板端，不做处理。
+function try_get() {
+    local file="$1"
 
-[ $# -eq 0 -o $# -gt 2 ] && exit
+    # [ "$file" != '/' ] && [ "${file: -1}" == '/' ] && file="${file:0:-1}"
+    [ "${file:0:4}" == '/tmp' ] && return 1
+    [ "${file:0:4}" == '/usr' ] && return 1
+    [ "${file:0:4}" == '/etc' ] && return 1
+    [ "$file" == '/' ] && return 1
 
-if [ -d "$1" ]; then
-    file="$1"
-elif [ -d "$(getdir .repo)/$1" ]; then
-        file="$(getdir .repo)/$1"
-elif [ -f "$1" ]; then
-    file="$1"
-elif [ -f "$(getdir .repo)/$1" ]; then
-        file="$(getdir .repo)/$1"
-fi
-
-if [ $# -eq 2 ]; then
-    dir="$2"
-else
-    if [[ "$file" =~ 'system' ]]; then
-        cd_proj
-        case "$(guess_obj)" in
-            'android')
-                dir="/system/${dir%/*}"
-                ;;
-            *)
-                dir="/${1##*/system/}"
-                dir="${dir%/*}"
-                ;;
-        esac
+    if [ "${file:0:1}" == '/' ]; then #absolute
+        [ -f "$1" -o -d "$1" ] && { echo $1; return 0; }
     fi
+
+    [ -f "$1" -o -d "$1" ] && { echo "$PWD/$1"; return 0; }
+
+    cddir '.git'
+    [ -f "$1" -o -d "$1" ] && { echo "$PWD/$1"; return 0; }
+
+    cddir '.repo'
+    [ -f "$1" -o -d "$1" ] && { echo "$PWD/$1"; return 0; }
+
+    return 1
+}
+
+function host_clean() {
+    echo ssh $VLOCALSSH "rm -r $host_vp/*" #> /dev/null 2>&1
+    ssh $VLOCALSSH "rm -r $host_vp/*" > /dev/null 2>&1
+}
+
+function clean_last_symbol() {
+        [ "$1" == '/' ] && { echo "$1"; return 0; }
+        [ "${1: -1}" == '/' ] && { echo "${1:0:-1}"; return 0; }
+        echo "$1"; return 0;
+}
+
+function parse_dst() {
+    local src_name="${1##*/}"
+    local src_dir="${1%/*}"
+
+    [[ "$src_dir" =~ '/usr/lib' ]] && { echo "/usr/lib${src_dir##*/usr/lib}"; return 0; }
+    [[ "$src_dir" =~ '/lib' ]] && { echo "/lib${src_dir##*/lib}"; return 0; }
+    [[ "$src_dir" =~ '/usr/bin' ]] && { echo "/usr/bin${src_dir##*/usr/bin}"; return 0; }
+    [[ "$src_dir" =~ '/bin' ]] && { echo "/bin${src_dir##*/bin}"; return 0; }
+    [[ "$src_dir" =~ '/etc' ]] && { echo "/etc${src_dir##*/etc}"; return 0; }
+    [[ "$src_name" =~ '.so' ]] && { echo "/usr/lib"; return 0; }
+    [ -x "$1" -a ! -d "$1" ] && { echo "/bin"; return 0; }
+}
+
+
+# need param
+[ $# -eq 0 ] && exit
+
+# judge if push or pull
+[ -z "$(try_get $1)" ] && is_push=0
+
+# echo $VHOSTID $VLOCALID
+[ $VHOSTID == $VLOCALID ] && is_local=1
+
+echo is_push = $is_push
+echo is_local = $is_local
+
+host_clean
+
+eval last=$'$'$#
+echo last = $last
+
+echo ssh $VLOCALSSH "adb remount" #> /dev/null 2>&1
+ssh $VLOCALSSH "adb remount" > /dev/null 2>&1
+if [ $is_push -eq 1 ]; then #push
+    [ -z "$(try_get $last)" -a "${last:0:1}" == '/' ] && dst_dir="$(clean_last_symbol $last)"
+    echo dst_dir = $dst_dir
+
+    for i in $@; do
+        # echo i $i
+        i="$(clean_last_symbol $i)"
+        # echo i $i
+
+        [ "$i" == '/' ] && continue
+        [ "$i" == "$dst_dir" ] && continue
+
+        src="$(try_get $i)"
+        # echo src = $src
+        if [ -n "$src" ]; then
+            # [ "${src: -1}" == '/' ] && src="${src:0:-1}"
+            src_name="${src##*/}"
+            # echo src_name = $src_name
+            if [ -z "$dst_dir" ]; then
+                dst="$(parse_dst "$src")"
+            else
+                [ "$dst_dir" != '/' ] && dst="$dst_dir"
+            fi
+
+            if [ $is_local -eq 0 ]; then
+                echo scp -r "$src" "$VLOCALSSH:$host_vp"
+                scp -r "$src" "$VLOCALSSH:$host_vp"
+
+                if [ -d "$src" ]; then
+                    echo ssh $VLOCALSSH "adb push $host_vp/$src_name $dst/$src_name" #> /dev/null 2>&1
+                    ssh $VLOCALSSH "adb push $host_vp/$src_name $dst/$src_name" > /dev/null 2>&1
+                else
+                    echo ssh $VLOCALSSH "adb push $host_vp/$src_name $dst" #> /dev/null 2>&1
+                    ssh $VLOCALSSH "adb push $host_vp/$src_name $dst" > /dev/null 2>&1
+                fi
+            else
+                echo adb push "$src" "$dst/$src_name"
+                adb push "$src" "$dst/$src_name"
+            fi
+        else
+            echo can\'t find $i
+        fi
+    done
+    echo ssh $VLOCALSSH "adb shell sync" #> /dev/null 2>&1
+    ssh $VLOCALSSH "adb shell sync" > /dev/null 2>&1
+else #pull
+    [ -n "$(try_get $last)" -o "${last:0:1}" != '/' ] && dst_dir="$(clean_last_symbol $last)"
+    echo dst_dir = $dst_dir
+
+    for i in $@; do
+        echo i $i
+        i="$(clean_last_symbol $i)"
+        echo i $i
+
+        [ "$i" == '/' ] && continue
+        [ "$i" == "$dst_dir" ] && continue
+
+        if [ "${i:0:1}" == '/' ]; then
+            src_name="${i##*/}"
+            echo src_name = $src_name
+            if [ -z "$dst_dir" ]; then
+                dst="."
+            else
+                dst="$dst_dir"
+            fi
+
+            if [ $is_local -eq 0 ]; then
+                echo ssh $VLOCALSSH "adb pull $i $host_vp/$src_name" #> /dev/null 2>&1
+                ssh $VLOCALSSH "adb pull $i $host_vp/$src_name" > /dev/null 2>&1
+                echo scp -r "$VLOCALSSH:$host_vp/$src_name" "$dst"
+                scp -r "$VLOCALSSH:$host_vp/$src_name" "$dst"
+            else
+                echo adb pull $i $dst/$src_name
+                adb pull $i $dst/$src_name
+            fi
+        else
+            echo unsupport file $i
+        fi
+    done
 fi
 
-[ -z "$file" -o -z "$dir" ] && { echo miss things; exit 255; }
-
-if [ "${file:0-4}" == '.apk' ]; then
-    install_apk "$file"
-else
-    push_to_board "$file" "$dir"
-fi
-[ $? == 0 ] && echo done! || { debug=1; echo fail!; }
-
-debug echo file = $file
-debug echo dir = $dir
+# echo $tmp

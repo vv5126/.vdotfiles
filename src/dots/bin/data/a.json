@@ -1,25 +1,5 @@
 {
-	"aptitude": {
-		"apt": { "source": "aptitude" }
-		, "installed_flag": "aptitude"
-	}
-	, "pip3": {
-		"aptitude": { "source": "python3-pip" }
-		, "installed_flag": "pip3"
-	}
-	, "setuptools": {
-		"pip3": { "source": "setuptools" }
-	}
-	, "py-filetype": {
-		"pip": { "source": "filetype" }
-		,"pip3": { "source": "filetype" }
-		, "src": {"source": "https://github.com/h2non/filetype.py" ,"flag": "pycode" }
-		, "installed_flag": "filetype.py"
-	}
-	, "git": { "aptitude": { "source": "git" } }
-	, "gitk": { "aptitude": { "source": "gitk" } }
-	, "meld": { "aptitude": { "source": "meld" } }
-	, "libpcre3-dev": {
+	"libpcre3-dev": {
             "src": {"source": "ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.42.tar.gz"
 		, "install": "make install"
                 ,"flag": "make code"

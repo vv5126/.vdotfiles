@@ -8,7 +8,7 @@ import tarfile
 import subprocess
 import shutil
 
-import vpri
+from vpri import cprint, select_list, filetpye_guess, is_suffix
 import vget
 import vinstall
 
@@ -25,8 +25,6 @@ def check_have(dict1, key1):
             return False
 
 class Install(object):
-    bys = ['pip', 'pip3', 'python3', 'src']
-    bys_with_sys = ['aptitude', 'apt', 'gdebi','dpkg'] + bys
     package = ['.tar.gz', '.bz2.gz', 'tar' ,'rar', 'zip', 'gzip']
     plocal = os.environ.get('HOME') + '/.local'
     tmp_dir = plocal + '/install'
@@ -55,37 +53,42 @@ class Install(object):
             return []
 
     def check_installed(self):
-        # t_lib = ['.so', '.py']
-        # c_lib = ['/lib', '/usr/lib', self.plocal + '/.local/lib']
-        # t_inc = ['.h']
-        # c_inc = ['/usr/include', self.plocal + '/.local/include']
+        t_lib = ['.so', '.py']
+        c_lib = ['/lib', '/usr/lib', self.plocal + '/lib']
+        t_inc = ['.h']
+        c_inc = ['/usr/include', self.plocal + '/include']
 
-        print ("check_installed")
         if 'installed_flag' not in self.fjson[self.app].keys():
-            print ('no installed flag')
-            return False
+            checkfile = self.app
+            # cprint ("10", 'no installed flag for:' + checkfile)
+            # return False
+        else:
+            checkfile = self.fjson[self.app]['installed_flag']
 
-        possible = [
-                '/usr/lib', '/lib', self.plocal + '/.local/lib',
-                '/usr/include', self.plocal + '/.local/include',
-                '/bin', '/usr/bin', self.plocal + '/.local/bin',
-        ]
-        checkfile = self.fjson[self.app]['installed_flag']
-
-        (status, output) = subprocess.getstatusoutput('find ' + ' '.join(possible) + ' -name ' + checkfile)
+        if is_suffix(checkfile, t_lib) == True:
+            (status, output) = subprocess.getstatusoutput('find ' + ' '.join(c_lib) + ' -name ' + checkfile)
+        elif is_suffix(checkfile, t_inc) == True:
+            (status, output) = subprocess.getstatusoutput('find ' + ' '.join(c_inc) + ' -name ' + checkfile)
+        else:
+            (status, output) = subprocess.getstatusoutput('which ' + checkfile)
         if output.strip():
-            vpri.cprint ("320", 'wgao ---have installed at:', output.strip())
+            cprint ("20", 'check installed ' + checkfile + 'at:', output.strip())
             return True
 
+        cprint ("10", 'check installed failed: ' + checkfile)
         return False
 
     def by(self):
+        bys = ['pip', 'pip3', 'src']
+        bys_with_sys = ['aptitude', 'apt', 'gdebi','dpkg'] + bys
+
         if self.install_dir == 'system':
-            tmp_list = list(set(self.bys_with_sys).intersection(set(self.fjson[self.app].keys())))
+            tmp_list = list(set(bys_with_sys).intersection(set(self.fjson[self.app].keys())))
         else:
-            tmp_list = list(set(self.bys).intersection(set(self.fjson[self.app].keys())))
+            tmp_list = list(set(bys).intersection(set(self.fjson[self.app].keys())))
+
         if tmp_list:
-            self.method = vpri.select_list(tmp_list, "\033[5;32;40m请选择: \033[0m")
+            self.method = select_list(tmp_list, "\033[5;32;40m请选择: \033[0m")
             self.appdict = self.fjson[self.app][self.method]
         else:
             raise Exception('method list is empty!')
@@ -94,10 +97,15 @@ class Install(object):
 
     # parse
     def parse(self):
-        if self.method == 'apt' or self.method == 'aptitude':
+        if self.method == 'apt' \
+        or self.method == 'aptitude' \
+        or self.method == 'pip' \
+        or self.method == 'pip3':
             self.needinstall = True
             if 'source' in self.appdict.keys():
                 self.source = self.appdict['source']
+            else:
+                self.source = self.app
 
         elif self.method == 'src':
             if 'source' in self.appdict.keys():
@@ -105,7 +113,7 @@ class Install(object):
                 self.needget = True
                 self.source = source
                 self.sourcename = source.split('/')[-1]
-                vpri.cprint ("10", 'self.sourcename', self.sourcename)
+                cprint ("20", 'sourcename: ', self.sourcename)
 
                 if check_have(self.appdict, 'tmp_dst'):
                     self.source_dir = self.appdict['tmp_dst']
@@ -126,6 +134,8 @@ class Install(object):
                 self.compileflag = 'make'
             if 'code' in self.appdict['flag']:
                 pass
+            if 'git' in self.appdict['flag']:
+                self.getby = 'git'
             if 'tar' in self.appdict['flag']:
                 self.needtar = True
             if 'pycode' in self.appdict['flag']:
@@ -147,6 +157,7 @@ class Install(object):
 
 
     def un_tar(self, file_name):
+        # ok
         print ('untar file_name', file_name)
         tar = tarfile.open(file_name)
         names = tar.getnames()
@@ -156,6 +167,7 @@ class Install(object):
         tar.close()
 
     def normal_make(self, i = 0):
+        # ok
         if install_dir == 'system':
             config = [['Makefile','make -j30'], ['configure','./configure'], ['autogen.sh','./autogen.sh']]
         else:
@@ -167,6 +179,7 @@ class Install(object):
         os.system(config[i][1])
 
     def clean(self):
+        # ok
         print("clean dir : ", self.sourcecode_dir + '/..')
         if os.path.exists(self.sourcecode_dir):
             os.chdir(self.sourcecode_dir + '/..')
@@ -207,11 +220,12 @@ class Install(object):
 # get sourcecode_dir
 
             # tar
+            # ok
             # if os.path.exists(self.sourcecode_dir):
             #     shutil.rmtree(self.sourcecode_dir)
 
             if os.path.isfile(self.sourcename):
-                kind = vpri.filetpye_guess(self.sourcename)
+                kind = filetpye_guess(self.sourcename)
                 if kind in self.package:
                     print('File extension: %s' % kind)
                     # self.needtar = True:
@@ -221,7 +235,7 @@ class Install(object):
                     elif kind is '':
                         pass
             elif os.path.isdir(self.sourcename):
-                vpri.cprint ("20", 'cc sourcecode_dir' + self.sourcecode_dir)
+                cprint ("20", 'app sourcecode_dir' + self.sourcecode_dir)
                 self.sourcecode_dir = self.sourcename
 
             if os.path.exists(self.sourcecode_dir):
@@ -232,17 +246,18 @@ class Install(object):
                 return
 
 
-        # configure & compile
+            # configure & compile
+            # ok
 
-        if self.needcompile == True:
-            if self.compileflag == 'make':
-                if check_have(self.appdict, 'configure'):
-                    os.system(self.appdict['configure'])
-                    os.system(self.appdict['make'])
+            if self.needcompile == True:
+                if self.compileflag == 'make':
+                    if check_have(self.appdict, 'configure'):
+                        os.system(self.appdict['configure'])
+                        os.system(self.appdict['make'])
+                    else:
+                        self.normal_make()
                 else:
-                    self.normal_make()
-            else:
-                pass
+                    pass
 
 
         # install
@@ -255,6 +270,10 @@ class Install(object):
                         vinstall.py_install()
                 elif self.method == 'aptitude':
                     vinstall.aptitude(self.source)
+                elif self.method == 'pip':
+                    vinstall.pip(install_dir[0:1], self.source)
+                elif self.method == 'pip3':
+                    vinstall.pip3(install_dir[0:1], self.source)
 
 
         # clean
@@ -264,14 +283,14 @@ class Install(object):
         # else:
         #     self.clean()
 
-        # vpri.cprint("20", "hehe")
+        # cprint("20", "hehe")
 
 def inst(app, fjson):
     global install_mode
     global install_dir
 
     if app not in fjson:
-        vpri.cprint("10", "can't find \"", app, "\" in json file.")
+        cprint("10", "can't find \"", app, "\" in json file.")
         return
 
     if install_mode == 'single':
@@ -317,7 +336,8 @@ def inst(app, fjson):
     #     return
 
 def main():
-    file_in = open("a.json")
+    # file_in = open("a.json")
+    file_in = open("tools.json")
     fjson = json.loads(file_in.read())
     file_in.close()
 

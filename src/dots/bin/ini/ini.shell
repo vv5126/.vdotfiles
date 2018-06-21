@@ -26,9 +26,14 @@ export EDITOR="$(which vim)"
 export VLIBS="$HOME/.bin/lib"
 export VINIS="$HOME/.bin/ini"
 export VBESUDO="$(check_sudo)"
+export VHOSTID="$USER@$HOSTNAME"
 
-add_path "$HOME/.bin/lib"
+add_path "$VLIBS"
+add_path "$HOME/.bin/base"
 add_path "$HOME/.local/bin"
+
+clean_path "/usr/games"
+clean_path "/usr/local/games"
 
 export PKG_CONFIG_PATH=$HOME/.local/usr/local/lib/pkgconfig
 export LD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/usr/local/lib

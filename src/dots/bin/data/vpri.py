@@ -45,3 +45,15 @@ def filetpye_guess(pfile):
     elif "gzip compressed data" in output:
         pass
 
+def is_suffix(str1, list1):
+    for i in list1:
+        if i == str1[-len(i):]:
+            return True
+    return False
+
+def is_prefix(str1, list1):
+    for i in list1:
+        if i == str1[0:len(i)]:
+            return True
+    return False
+

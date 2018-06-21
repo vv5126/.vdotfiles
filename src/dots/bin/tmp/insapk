@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ "$VGL_LOCAL_USER" = $HOSTNAME ] && {
+[ "$VHOSTID" == "$VLOCALID" ] && {
 	[ $# -eq 1 ] && {
 		while :
 		do

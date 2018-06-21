@@ -2,13 +2,13 @@
 
 import os
 
-def scp(self, url, dst):
+def scp(url, dst):
     os.system('scp -r ' + url + dst)
 
-def wget(self, url, dst):
+def wget(url, dst):
     os.system('wget ' + url + ' -O '+ dst)
 
-def git(self, url, dst = ''):
+def git(url, dst = ''):
     if url[0:4] == 'http':
         os.system('git clone ' + url + ' ' + dst)
     else:

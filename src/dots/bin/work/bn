@@ -49,12 +49,12 @@ function processBar()
 }
 
 function analysis_and_get() {
-    eval $(ssh $LOCAL_HOST "cat ~/.cloner/.cloner_info")
+    eval $(ssh $VLOCALSSH "cat ~/.cloner/.cloner_info")
     d_cfgs="$CLONER_DIR/$cloner_version/configs"
-    scp "$LOCAL_HOST:$d_cfgs/$f_platform_name" . >/dev/null
+    scp "$VLOCALSSH:$d_cfgs/$f_platform_name" . >/dev/null
     local cfg_name="$(sed -n -e 's/^board=//p;' $f_platform_name)"
-    local cfg_file="$(ssh $LOCAL_HOST "find "$d_cfgs" -name $cfg_name")"
-    scp "$LOCAL_HOST:$cfg_file" "$f_cfg_name" >/dev/null
+    local cfg_file="$(ssh $VLOCALSSH "find "$d_cfgs" -name $cfg_name")"
+    scp "$VLOCALSSH:$cfg_file" "$f_cfg_name" >/dev/null
 
     # key_frist_location="$(get_key_frist_location "$f_platform_name" "current" "board")"
     # sed -i "$key_frist_location s/.*/board=$f_cfg_name/" $f_platform_name
@@ -91,7 +91,7 @@ function correct_cfg() {
 }
 
 function restore() {
-    ssh $LOCAL_HOST "cp .local/$f_platform_name $d_cfgs" &
+    ssh $VLOCALSSH "cp .local/$f_platform_name $d_cfgs" &
 }
 
 function set_burn_type() {
@@ -107,16 +107,16 @@ function start_burner() {
 
     # backup old
     trap restore 1 2 3 15
-    ssh $LOCAL_HOST "cp $d_cfgs/$f_platform_name .local/"
+    ssh $VLOCALSSH "cp $d_cfgs/$f_platform_name .local/"
     # scp new.
     soc="$(sed -n -e 's/^platform=.*,//' -e 's/\"$//p;' $f_platform_name)"
-    scp "$f_cfg_name" "$LOCAL_HOST:$d_cfgs/$soc" >/dev/null
-    scp "$f_platform_name" "$LOCAL_HOST:$d_cfgs" >/dev/null
+    scp "$f_cfg_name" "$VLOCALSSH:$d_cfgs/$soc" >/dev/null
+    scp "$f_platform_name" "$VLOCALSSH:$d_cfgs" >/dev/null
 
     # burner
-    ssh $LOCAL_HOST "killall core_32" 2>/dev/null
+    ssh $VLOCALSSH "killall core_32" 2>/dev/null
 
-    ssh -X $LOCAL_HOST "cd "$CLONER_DIR"/"$cloner_version"; "./$core" 2>&1" | while read line; do
+    ssh -X $VLOCALSSH "cd "$CLONER_DIR"/"$cloner_version"; "./$core" 2>&1" | while read line; do
 	[ "$line" == 'start burner' ] && echo -e "info start"
 	[ "$line" == 'delete 0 sucess' ] && { echo -e "info done"; bar_color=${color[$((RANDOM%7+1))]}; }
 

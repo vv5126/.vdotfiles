@@ -15,7 +15,7 @@ done
 
 unset base
 
-if [ -d "$HOME/.bin/account/$(whoami)@$(uname -n)" ]; then
-    add_path "$HOME/.bin/account/$(whoami)@$(uname -n)"
-    source "$HOME/.bin/account/$(whoami)@$(uname -n)/init"
+if [ -d "$HOME/.bin/account/$USER@$HOSTNAME" ]; then
+    add_path "$HOME/.bin/account/$USER@$HOSTNAME"
+    source "$HOME/.bin/account/$USER@$HOSTNAME/init"
 fi
