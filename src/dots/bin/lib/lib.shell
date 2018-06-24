@@ -138,11 +138,23 @@ function change_toolchain(){
     add_path "$var"
 }
 
+# 在当前目录创建app下文件的链接
 function lnn() {
+    local _pwd _d tmp1 tmp2 i
     local lnfile="$1"
     local searchdir="${2:-"$HOME/.bin"}"
     local d="$(find "$searchdir/" -name "$lnfile" | head -1)"
-    [ -n "$d" ] && ln -sf "$d" "$lnfile"
+    [ -n "$d" ] && {
+        eval _pwd='('${PWD//\//\ }')'
+        eval _d='('${d//\//\ }')'
+            for i in $(seq 0 $((${#_pwd[@]}-1))); do
+            [ "x${_pwd[$i]}" != "x${_d[$i]}" ] && tmp1="../"$tmp1
+        done
+        for i in $(seq 0 $((${#_d[@]}-1))); do
+            [ "x${_pwd[$i]}" != "x${_d[$i]}" ] && tmp2=$tmp2"/${_d[$i]}"
+        done
+    }
+    ln -sf "$tmp1${tmp2:1}" "$lnfile"
 }
 
 function check_sudo() {
@@ -173,6 +185,7 @@ case $(ps -p $$ -o comm=) in
         ;;
     *)
         export -f change_toolchain
+        export -f lnn
         ;;
 esac
 
