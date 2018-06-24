@@ -1,1 +1,17 @@
-source $VINIS/ini.ingenic
+include $VINIS/ini.ingenic
+
+export VGL_MNTFIlE="$VACCOUNT/$VHOSTID/mnt_conf"
+
+be_sudoer() {
+    # sudoer check
+    if [[ "$(cat /etc/group | sed -n '/^sudo:/p;')" =~ "$(whoami)" ]]; then
+        [ ! -f '/etc/sudoers.d/vsudoer' ] && ln -s /home/user/.bin/local/vsudoer /etc/sudoers.d/vsudoer
+        chown root /etc/sudoers.d/vsudoer
+        chgrp root /etc/sudoers.d/vsudoer
+    fi
+}
+
+if [ ! -f "$VACCOUNT/.inited" ]; then
+    be_sudoer
+    echo '' > "$VACCOUNT/.inited"
+fi

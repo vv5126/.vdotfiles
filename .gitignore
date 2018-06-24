@@ -1,4 +1,4 @@
-src/dots/vim/bundle
+src/dots/vim/bundle/
 src/dots/vim/.netrwhist
 src/dots/vim/autoload/
 src/dots/vim/plugin/
@@ -13,3 +13,5 @@ src/dots/vhelper/log/
 src/dots/vhelper/tmp/
 src/dots/vim/view/
 src/dots/bin/lib/ReadMe
+src/dots/bin/account/.inited
+src/dots/bin/lib/py3/__pycache__/

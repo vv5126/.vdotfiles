@@ -2,20 +2,29 @@
 
 [[ $(ps -p $$ -o comm=) == 'zsh' ]] && HOSTNAME="$HOST"
 
+function include() {
+    [[ "$VINCS" =~ "$1" ]] || {
+        source $1
+        VINCS="$VINCS$1:"
+    }
+}
+
+export -f include
+
 base=(
-.bin/lib/lib.shell
-.bin/ini/ini.shell
+$HOME/.bin/lib/lib.shell
+$HOME/.bin/ini/ini.shell
 )
 
 for line in ${base[@]}; do
-    if [ -f "$HOME/$line" ]; then
-        source "$HOME/$line"
+    if [ -f "$line" ]; then
+        include "$line"
     fi
 done
 
 unset base
 
-if [ -d "$HOME/.bin/account/$USER@$HOSTNAME" ]; then
-    add_path "$HOME/.bin/account/$USER@$HOSTNAME"
-    source "$HOME/.bin/account/$USER@$HOSTNAME/init"
+if [ -d "$VACCOUNT/$VHOSTID" ]; then
+    add_path "$VACCOUNT/$VHOSTID"
+    source "$VACCOUNT/$VHOSTID/init"
 fi

@@ -27,6 +27,7 @@ export VLIBS="$HOME/.bin/lib"
 export VINIS="$HOME/.bin/ini"
 export VBESUDO="$(check_sudo)"
 export VHOSTID="$USER@$HOSTNAME"
+export VACCOUNT="$HOME/.bin/account"
 
 add_path "$VLIBS"
 add_path "$HOME/.bin/base"

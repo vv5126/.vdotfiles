@@ -1,9 +1,0 @@
-#!/bin/bash
-
-VGL_NOTIFY=/tmp/.notify_pipe
-
-[ ! -f "$VGL_NOTIFY" ] && mknod "$VGL_NOTIFY" pipe
-while true; do
-    str=$(cat $VGL_NOTIFY)
-    notify-send $str
-done

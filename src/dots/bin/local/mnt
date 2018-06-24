@@ -3,16 +3,15 @@
 source ~/.bin/lib/lib.list
 
 DEST=0
-APP_DIR=$(which $0)
-APP_DIR=${APP_DIR%\/*}
+[ -z "$VGL_MNTFIlE" ] && { echo "no conf file!"; exit; }
 
 if [ $# -eq 1 ]; then
 	expr $1 + 0 &>/dev/null
 	if [ $? -eq 0 ]; then
-		DEST=$(getline $APP_DIR/.mnt_conf $1)
+		DEST=$(getline $VGL_MNTFIlE $1)
 	fi
 else
-	DEST=$(showlist_with_tab $APP_DIR/.mnt_conf 4 "go where ??")
+	DEST=$(showlist_with_tab $VGL_MNTFIlE 4 "go where ??")
 fi
 
 if [ "$DEST" != 0 ]; then

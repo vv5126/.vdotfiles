@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ~/.bin/lib/lib.list
+include ~/.bin/lib/lib.list
 
 function mm1 {
     unalias mm

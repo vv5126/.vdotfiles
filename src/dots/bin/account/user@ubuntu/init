@@ -1,1 +1,5 @@
-source $VINIS/ini.home
+include $VINIS/ini.home
+
+if [ ! -f "$VACCOUNT/.inited" ]; then
+    echo '' > "$VACCOUNT/.inited"
+fi

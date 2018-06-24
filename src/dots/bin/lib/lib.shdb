@@ -2,9 +2,9 @@
 # shdb_add shdb_name $para
 # para: -a add; -g get the key line; -d delete;
 
-source ~/.bin/lib/lib.misc
-source ~/.bin/lib/lib.base
-source ~/.bin/lib/lib.str
+include ~/.bin/lib/lib.base
+include ~/.bin/lib/lib.misc
+include ~/.bin/lib/lib.str
 
 debug=0
 

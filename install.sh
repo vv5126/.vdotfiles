@@ -12,20 +12,12 @@ generate_link() {
     done
 }
 
-be_sudoer() {
-    # sudoer check
-    if [[ "$(cat /etc/group | sed -n '/^sudo:/p;')" =~ "$(whoami)" ]]; then
-        [ ! -f '/etc/sudoers.d/vsudoer' ] && ln -s /home/user/.bin/local/vsudoer /etc/sudoers.d/vsudoer
-        chown root /etc/sudoers.d/vsudoer
-        chgrp root /etc/sudoers.d/vsudoer
-    fi
-}
-
 #======================== MAIN
 
 generate_link
-source $HOME/.profile
+echo '[ -f ~/.v.bash ] && source ~/.v.bash' >> ~/.bashrc
+[ -f "$VACCOUNT/.inited" ] && rm "$VACCOUNT/.inited"
 
-# be_sudoer
+source $HOME/.profile
 
 echo " done!"

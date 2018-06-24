@@ -8,6 +8,8 @@ import tarfile
 import subprocess
 import shutil
 
+sys.path.append(os.environ.get('HOME') + "/.bin/lib/py3")
+
 from vpri import cprint, select_list, filetpye_guess, is_suffix
 import vget
 import vinstall
