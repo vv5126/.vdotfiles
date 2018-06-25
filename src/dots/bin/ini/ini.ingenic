@@ -30,7 +30,7 @@ export VGLD_MKDATA=$HOME/.bin/work/mkdata
 export VGLD_CLIPBOARD="$WORK_SERVER_SSH":/home/wgao/.local/.clipboard/global
 export VGLD_LOCALCLIPBOARD=$HOME/.local/.clipboard/local
 
-export VGL_ASD_FILE="$WORK_SERVER_SSH":"$HOME"/.bin/work/.asd
+export VGL_ASD_FILE="$WORK_SERVER_SSH":"$VGL_DATA"/.asd
 export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
 
 add_path "$HOME/.bin/work"

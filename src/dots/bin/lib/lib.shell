@@ -138,23 +138,37 @@ function change_toolchain(){
     add_path "$var"
 }
 
-# 在当前目录创建app下文件的链接
+# 在当前目录创建指定文件的链接
 function lnn() {
-    local _pwd _d tmp1 tmp2 i
     local lnfile="$1"
-    local searchdir="${2:-"$HOME/.bin"}"
+    local searchdir="$HOME/.bin"
+    local target="$lnfile"
+    local tmp
+
+    [ -z "$1" ] && return 1
+
+    if [ -n "$2" ]; then
+        eval tmp="$2"
+        [ -d "$tmp" ] && searchdir="$tmp" || target="$tmp"
+    fi
+    if [ -n "$3" ]; then
+        eval tmp="$3"
+        [ -d "$tmp" ] && searchdir="$tmp" || target="$tmp"
+    fi
+
     local d="$(find "$searchdir/" -name "$lnfile" | head -1)"
-    [ -n "$d" ] && {
-        eval _pwd='('${PWD//\//\ }')'
-        eval _d='('${d//\//\ }')'
-            for i in $(seq 0 $((${#_pwd[@]}-1))); do
-            [ "x${_pwd[$i]}" != "x${_d[$i]}" ] && tmp1="../"$tmp1
-        done
-        for i in $(seq 0 $((${#_d[@]}-1))); do
-            [ "x${_pwd[$i]}" != "x${_d[$i]}" ] && tmp2=$tmp2"/${_d[$i]}"
-        done
-    }
-    ln -sf "$tmp1${tmp2:1}" "$lnfile"
+    if [ -n "$d" ]; then
+        [ -f "$target" ] && rm "$target"
+        [[ $d =~ "$HOME" ]] && ln -sfr "$d" "$target" || ln -sf "$d" "$target"
+    fi
+}
+
+# 在当前目录创建指定文件列表的所有链接
+function lnn_file() {
+    local line
+    while read line; do
+        [ -n "$line" -a "${line:0:1}" != '#' ] && lnn $line
+    done < $1
 }
 
 function check_sudo() {

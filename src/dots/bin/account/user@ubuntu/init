@@ -1,5 +1,9 @@
 include $VINIS/ini.home
 
 if [ ! -f "$VACCOUNT/.inited" ]; then
+    (
+	cd "$VACCOUNT/$VHOSTID"
+	lnn_file ln_list
+    )
     echo '' > "$VACCOUNT/.inited"
 fi

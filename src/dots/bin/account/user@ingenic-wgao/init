@@ -12,6 +12,10 @@ be_sudoer() {
 }
 
 if [ ! -f "$VACCOUNT/.inited" ]; then
+    (
+	cd "$VACCOUNT/$VHOSTID"
+	lnn_file ln_list
+    )
     be_sudoer
     echo '' > "$VACCOUNT/.inited"
 fi

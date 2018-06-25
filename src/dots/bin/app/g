@@ -3,21 +3,19 @@
 source ~/.bin/lib/lib.list
 
 DEST=0
-APP_DIR=$(which $0)
-APP_DIR=${APP_DIR%\/*}
 
 if [ $# -eq 1 ]; then
 	expr $1 + 0 &>/dev/null
 	if [ $? -eq 0 ]; then
-		DEST=$(getline $APP_DIR/.go_conf $1)
+		DEST=$(getline $VGL_DATA/.go_conf $1)
 	else
 		if [[ "$1" =~ "@" ]]; then
-			echo $1 >> $APP_DIR/.go_conf
+			echo $1 >> $VGL_DATA/.go_conf
 			DEST=$1
 		fi
 	fi
 else
-	DEST=$(showlist $APP_DIR/.go_conf "go where ??")
+	DEST=$(showlist $VGL_DATA/.go_conf "go where ??")
 fi
 
 if [ "$DEST" != 0 ]; then
