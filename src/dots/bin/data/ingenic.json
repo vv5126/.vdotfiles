@@ -1,4 +1,22 @@
 {
+	"people": {
+		"wgao": {
+			"mail": "wei.gao@ingenic.com"
+		}
+	},
+	"mk_sub": {
+		"kernel": "k.sh",
+		"tizen": "t.sh",
+		"uboot": "u.sh",
+		"android": "a.sh",
+		"buildroot": "br.sh",
+		"ucos": "uc.sh",
+		"bootrom": "br.sh",
+		"manhattan": "mht.sh",
+		"mozart": "mzt.sh",
+		"project": "p.sh",
+		"other": "o.sh"
+	},
 	"arch": [
 		"x1000",
 		"x2000",
@@ -6,11 +24,6 @@
 		"m150",
 		"jz4775"
 	],
-	"people": {
-		"wgao": {
-			"mail": "wei.gao@ingenic.com"
-		}
-	},
 	"platform": {
 		"halley2": {
 			"flash": "sfcnor",
@@ -34,7 +47,23 @@
 		},
 		"dorado_v22": {
 			"flash": "mmc",
-			"ddr_type": ["lpddr2", "lpddr3"]
+			"ddr_type": ["lpddr2", "lpddr3"],
+			"mmc": {
+				"uboot": "0x0",
+				"kernel": "0x300000",
+				"rootfs": "0xc800000",
+				"data": "0x0000000"
+			}
+		},
+		"halley2_pro_v10": {
+			"flash": "mmc",
+			"ddr_type": ["lpddr2"],
+			"mmc": {
+				"uboot": "0x0",
+				"kernel": "0x300000",
+				"rootfs": "0xc800000",
+				"data": "0x0000000"
+			}
 		}
 	},
 	"kernel_img": {
@@ -44,29 +73,18 @@
 		"android": "arch/mips/boot/zcompressed/zImage",
 		"mozart": "arch/mips/boot/zcompressed/xImage",
 		"tizen": "arch/mips/boot/uImage",
-		"buildroot": "the_image"
+		"buildroot": "the_image",
+		"xImage": "arch/mips/boot/zcompressed/xImage",
+		"zImage": "arch/mips/boot/zcompressed/zImage",
+		"uImage": "arch/mips/boot/uImage"
 	},
 	"load_type": [
 		"burner",
 		"push"
 	],
-	"mk_sub": {
-		"kernel": "k.sh",
-		"tizen": "t.sh",
-		"uboot": "u.sh",
-		"android": "a.sh",
-		"buildroot": "br.sh",
-		"ucos": "uc.sh",
-		"bootrom": "br.sh",
-		"manhattan": "mht.sh",
-		"mozart": "mzt.sh",
-		"project": "p.sh",
-		"other": "o.sh"
-	},
 	"surport_boards": [
 		"dorado_v22",
 		"dorado_v21",
-		"mercury_v02",
 		"newton2",
 		"solar",
 		"halley2",
@@ -88,31 +106,5 @@
 		"buildroot": "x",
 		"manhattan": "x",
 		"mozart": "x"
-	},
-	"init": {
-		"ThinkPad-Yoga-260": {
-			".bin/lib/lib.shell": "x",
-			".bin/ini/ini.shell": "x",
-			".bin/ini/ini.home": "x",
-			".bin/lib/lib.clipboard": "x"
-		},
-		"sw": {
-			".bin/lib/lib.shell": "x",
-			".bin/ini/ini.shell": "x",
-			".bin/ini/ini.ingenic": "x",
-			".bin/lib/lib.clipboard": "x"
-		},
-		"lqchen-0B": {
-			".bin/lib/lib.shell": "x",
-			".bin/ini/ini.shell": "x",
-			".bin/ini/ini.ingenic": "x",
-			".bin/lib/lib.clipboard": "x"
-		},
-		"ingenic-wgao": {
-			".bin/lib/lib.shell": "x",
-			".bin/ini/ini.shell": "x",
-			".bin/ini/ini.ingenic": "x",
-			".bin/lib/lib.clipboard": "x"
-		}
 	}
 }

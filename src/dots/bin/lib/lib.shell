@@ -149,11 +149,13 @@ function lnn() {
 
     if [ -n "$2" ]; then
         eval tmp="$2"
-        [ -d "$tmp" ] && searchdir="$tmp" || target="$tmp"
+        tmp="$(clean_last_symbol $tmp)"
+        [ -d "$tmp" -o -d "$PWD/$tmp" ] && searchdir="$tmp" || target="$tmp"
     fi
     if [ -n "$3" ]; then
         eval tmp="$3"
-        [ -d "$tmp" ] && searchdir="$tmp" || target="$tmp"
+        tmp="$(clean_last_symbol $tmp)"
+        [ -d "$tmp" -o -d "$PWD/$tmp" ] && searchdir="$tmp" || target="$tmp"
     fi
 
     local d="$(find "$searchdir/" -name "$lnfile" | head -1)"

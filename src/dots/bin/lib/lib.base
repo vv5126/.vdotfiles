@@ -88,6 +88,13 @@ function cd_repo() {
     [ -n $TARGET ] && cd $TARGET
 }
 
+# 清理字符串末尾的"/"
+function clean_last_symbol() {
+        [ "$1" == '/' ] && { echo "$1"; return 0; }
+        [ "${1: -1}" == '/' ] && { echo "${1:0:-1}"; return 0; }
+        echo "$1"; return 0;
+}
+
 ############# will export ##############
 
 case $(ps -p $$ -o comm=) in

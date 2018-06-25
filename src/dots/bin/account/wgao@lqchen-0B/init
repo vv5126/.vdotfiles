@@ -6,4 +6,5 @@ if [ ! -f "$VACCOUNT/.inited" ]; then
 	lnn_file ln_list
     )
     echo '' > "$VACCOUNT/.inited"
+    echo init done.
 fi

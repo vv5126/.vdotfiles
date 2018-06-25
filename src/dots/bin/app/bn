@@ -1,9 +1,10 @@
 #!/bin/bash
 
-. ~/.bin/lib/lib.misc
-. ~/.bin/ini/ini.work
-. ~/.bin/lib/lib.work
-. ~/.bin/lib/lib.shdb
+include $VLIBS/lib.misc
+include $VINIS/ini.work
+include $VLIBS/lib.work
+include $VLIBS/lib.shdb
+include $VLIBS/lib.burnercfg
 
 # function get_session_start() {
 #         local file="$1"
@@ -49,16 +50,49 @@ function processBar()
 }
 
 function analysis_and_get() {
-    eval $(ssh $VLOCALSSH "cat ~/.cloner/.cloner_info")
+    eval $(ssh $VLOCALSSH "cat ~/.cloner/.cloner_info") # get cloner_version
     d_cfgs="$CLONER_DIR/$cloner_version/configs"
-    scp "$VLOCALSSH:$d_cfgs/$f_platform_name" . >/dev/null
-    local cfg_name="$(sed -n -e 's/^board=//p;' $f_platform_name)"
+
+    scp "$VLOCALSSH:$d_cfgs/$f_platform_name" "$f_platform_name" >/dev/null
+
+    local cfg_name="$(sed -n -e 's/^board=//p;' "$f_platform_name")"
     local cfg_file="$(ssh $VLOCALSSH "find "$d_cfgs" -name $cfg_name")"
+    f_cfg_name="$cfg_name"
     scp "$VLOCALSSH:$cfg_file" "$f_cfg_name" >/dev/null
 
-    # key_frist_location="$(get_key_frist_location "$f_platform_name" "current" "board")"
-    # sed -i "$key_frist_location s/.*/board=$f_cfg_name/" $f_platform_name
+    # up .project_info
+    set_burn_type
+}
+
+function cfg_update() {
     sed -i "s/^board=.*/board=$f_cfg_name/1" $f_platform_name
+    soc="$(sed -n -e 's/^platform=.*,//p;' $f_platform_name | sed -n 's/\"$//p;')"
+    scp "$f_cfg_name" "$VLOCALSSH:$d_cfgs/$soc" >/dev/null
+    scp "$f_platform_name" "$VLOCALSSH:$d_cfgs" >/dev/null
+}
+
+# function check_cfg() {
+# }
+
+function add_pro_policy() {
+    dir=$(cd_proj; echo $PWD)
+    local attribute="$dir/$the_image"
+    local label="$project_type"_"$customer"
+    local flash_type=$(get_flash_type "$f_cfg_name")
+    local ops=$(get_flash_id $flash_type)
+    local offset="$(jp -e "platform" -e "$forBOARD" -e "$flash_type" -e "$(guess_obj)" < $VGL_JSON_FILE)"
+
+    rm_policy_by_label "$label" "$f_cfg_name"
+    add_policy "$f_cfg_name"
+    cfg_update
+}
+
+function set_burn_type() {
+    burner="
+	# [burner]
+	cloner_version="$cloner_version"
+    "
+    shdb -f ".pro/project_info" -a "$burner"
 }
 
 function correct_cfg() {
@@ -67,6 +101,7 @@ function correct_cfg() {
     local label=($(sed -n -e 's/^label=//p;' $f_cfg_name))
 
     num=0
+    str=''
     for i in $(sed -n -e '/^\[policy[0-9].*\]/p;' $f_cfg_name); do
 	if [ -n "${label[$num]}" ] && [ -n "${attribute[$num]}" ]; then
 	    [ "${enabled[$num]}" -eq 1 ] && str="$str ${label[$num]} ${attribute[$num]#*boards/} on" \
@@ -80,40 +115,25 @@ function correct_cfg() {
     sel="$(cat .tmp_bn)"
     rm .tmp_bn
 
-    for i in $(sed -n -e 's/^label=//p;' $f_cfg_name); do
-	line_num="$(($(sed -n "/label=$i/=" $f_cfg_name)-1))"
-	if [[ "$sel" =~ "$i" ]]; then
-	    sed -i "$line_num s/^enabled=.*/enabled=1/" $f_cfg_name
-	else
-	    sed -i "$line_num s/^enabled=.*/enabled=0/" $f_cfg_name
-	fi
+    clear_enable "$f_cfg_name"
+    for i in $sel; do
+	set_enable_by_label "$i" "1" "$f_cfg_name"
     done
+
+    cfg_update
 }
 
-function restore() {
-    ssh $VLOCALSSH "cp .local/$f_platform_name $d_cfgs" &
-}
-
-function set_burn_type() {
-    burner="
-	# [burner]
-	cloner_version="$cloner_version"
-    "
-    shdb -f ".project_info" -a "$burner"
-}
+# function restore() {
+#     ssh $VLOCALSSH "cp .local/$f_platform_name $d_cfgs" &
+# }
 
 function start_burner() {
     local core='bin/32bit/core_32'
 
     # backup old
-    trap restore 1 2 3 15
-    ssh $VLOCALSSH "cp $d_cfgs/$f_platform_name .local/"
-    # scp new.
-    soc="$(sed -n -e 's/^platform=.*,//' -e 's/\"$//p;' $f_platform_name)"
-    scp "$f_cfg_name" "$VLOCALSSH:$d_cfgs/$soc" >/dev/null
-    scp "$f_platform_name" "$VLOCALSSH:$d_cfgs" >/dev/null
+    # trap restore 1 2 3 15
+    # ssh $VLOCALSSH "cp $d_cfgs/$f_platform_name .local/"
 
-    # burner
     ssh $VLOCALSSH "killall core_32" 2>/dev/null
 
     ssh -X $VLOCALSSH "cd "$CLONER_DIR"/"$cloner_version"; "./$core" 2>&1" | while read line; do
@@ -130,7 +150,6 @@ function start_burner() {
 	    echo -e "info ${line%%;*}"
 	fi
     done
-
 }
 
 function show_msg() {
@@ -144,36 +163,44 @@ function show_msg() {
 }
 
 # main
+if_need_add=1
+if [ $# -eq 1 ]; then
+    # [ "$1" -eq 'add' ] && if_need_add=1
+    [ "$1" == '1' ] && if_need_cfg=1
+    [ "$1" == 'vim' ] && if_vim=1
+else
+    if_need_burn=1
+fi
+
 # goto project root directory if possible.
 cd_proj
-[ ! -f ".pro" ] && exit
-
-[ -f ".project_info" ] && source .project_info || { echo no project info!; exit; }
+[ -d ".pro" ] && cd .pro || exit
+[ -f "project_info" ] && source project_info || { echo no project info!; exit; }
 
 f_platform_name="platforms.cfg"
-f_cfg_name="$feature-$project_type.cfg"
-d_cfgs="$CLONER_DIR/$cloner_version/configs"
+# f_cfg_name="$feature-$project_type.cfg"
+[ -f "$f_platform_name" ] && f_cfg_name="$(sed -n -e 's/^board=//p;' "$f_platform_name")"
 
-if [ ! -f "$f_platform_name" ]; then
-    # frist, get info form ..., scp config form ...
-    # gen_new_config and info.
-    analysis_and_get
+# frist, get info form ..., scp config form ...
+# 首先，需要在本地启动图形burner，进行初步配置。
+[ ! -f "$f_platform_name" -o ! -f "$f_cfg_name" ] && analysis_and_get
 
-    # show a select to config
-    correct_cfg
+[ -n "$cloner_version" ] && d_cfgs="$CLONER_DIR/$cloner_version/configs" || { echo can\'t get cloner version!; exit; }
 
-    # up .project_info
-    set_burn_type
-    echo init done
-else
-    # show a select to config
-    [[  "$#" -eq 1 && "$1" != "vim" ]] && { correct_cfg; exit; }
-fi
+# [ "$(check_cfg)" -eq 1 ] &&{ echo please reconfig use local burner!; exit; }
 
-if [[  "$#" -eq 1 && "$1" == "vim" ]]; then
-    start_burner >&1
-else
-    color=($(seq 40 47))
-    bar_color=${color[$((RANDOM%7+1))]}
-    start_burner | show_msg
-fi
+# add project.
+[ "$if_need_add" == 1 ] && add_pro_policy
+
+# show a select to config.
+[ "$if_need_cfg" == 1 ] && correct_cfg
+
+# for vim.
+[  "$if_vim" == 1 ] && start_burner >&1
+
+# for burn.
+[ "$if_need_burn" == 1 ] && {
+	color=($(seq 40 47))
+	bar_color=${color[$((RANDOM%7+1))]}
+	start_burner | show_msg
+}

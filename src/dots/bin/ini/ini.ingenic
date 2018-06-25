@@ -16,10 +16,10 @@ export VGL_BOARDS=/data1/home/wgao/work/local_debug/boards
 export VGL_JSON_FILE=/data1/home/wgao/.bin/data/ingenic.json
 
 # cloner #
-export CLONER_DIR='$VLOCALHOME/.cloner'
+export CLONER_DIR="$VLOCALHOME/.cloner"
 
 # mk #
-export VGLD_MKDATA=$HOME/.bin/work/mkdata
+export VGLD_MKDATA=$VGL_DATA/mk
 
 # build android image #
 [ "x$SUPPORT_ANDROID" == "x" ] &&{

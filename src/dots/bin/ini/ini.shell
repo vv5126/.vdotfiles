@@ -17,6 +17,7 @@ alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.utf8
+# export LANG=zh_CN.UTF-8
 
 # export PYTHON_LIBRARIES="/usr/lib/python2.7"
 # export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"

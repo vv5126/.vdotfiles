@@ -15,7 +15,7 @@ vhtml
 
 mk        "$HOME/.bin/app"
 vp
-bn
+bn        "$HOME/.bin/app"
 
 # fasd
 # vhelper

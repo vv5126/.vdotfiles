@@ -242,7 +242,7 @@ function shdb() {
         echo "" > $shdb
     fi
 
-    str="$(get_param '-a' "$@")" # add
+    local str="$(get_param '-a' "$@")" # add
     if [ $? -gt 0 -a $? -lt 100 ]; then
         line=$(get_param '-l' $@)
         if [ $? -gt 0 -a $? -lt 100 ]; then

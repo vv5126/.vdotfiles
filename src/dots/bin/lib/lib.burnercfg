@@ -1,0 +1,102 @@
+#!/bin/bash
+
+include $VLIBS/lib.shdb
+
+function clear_enable() {
+    local file=$1
+    sed -i "s/^enabled=.*/enabled=0/" $file
+}
+
+function set_enable_by_label() {
+    local label=$1
+    local _enable=$2
+    local file=$3
+    local line_num
+
+    for i in $(sed -n -e 's/^label=//p;' $file); do
+        if [ "$label" == "$i" ]; then
+            line_num="$(($(sed -n "/^label=$i$/=" $file)-1))"
+            [ "$_enable" == 1 ] && sed -i "$line_num s/^enabled=.*/enabled=1/" $file
+            [ "$_enable" == 0 ] && sed -i "$line_num s/^enabled=.*/enabled=0/" $file
+        fi
+    done
+}
+
+function get_policy_count() {
+    local file="$1"
+    echo $(sed -n 's/^policy_count=//p;' $file)
+}
+
+function set_policy_count() {
+    local num="$1"
+    local file="$2"
+    sed -i "s/^policy_count=.*/policy_count=$num/" $file
+}
+
+function change_policy_count() {
+    local num="$1"
+    local file="$2"
+    local policy_count_line_num=$(get_policy_count $file)
+
+    [ "${num:0:1}" != '-' ] && num='+'$num
+    set_policy_count "$(($policy_count_line_num$num))" $file
+}
+
+function is_have_title() {
+    local title="$1" file=$2
+    [ -n "$(sed -n "/^\[$title\]$/=;" $file)" ] && echo 0 || echo 1
+}
+
+function get_flash_type() {
+    local file="$1"
+    local list_id=('12,6,0' '6,2,0' '13,6,1')
+    local list_name=('nor' 'mmc' 'nand')
+    local i j
+
+    for i in $(sed -n -e 's/^ops=//p;' $file); do
+        for j in $(seq 0 $((${#list_id[@]}-1))); do
+            eval i="$i"
+            [ "$i" == "${list_id[$j]}" ] && { echo ${list_name[$j]}; break 2; }
+        done
+    done
+}
+
+function get_flash_id() {
+    local name="$1"
+    local list_id=('12,6,0' '6,2,0' '13,6,1')
+    local list_name=('nor' 'mmc' 'nand')
+    local i
+
+    for i in $(seq 0 $((${#list_name[@]}-1))); do
+        [ "$name" == "${list_name[$i]}" ] && { echo ${list_id[$i]}; break; }
+    done
+}
+
+function add_policy() {
+    local file=$1
+    local count=$(get_policy_count "$file")
+
+    policy="
+[policy$count]
+attribute="$attribute"
+enabled=1
+label="$label"
+offset=$offset
+ops=\"$ops\"
+type=0"
+
+    echo "$policy" >> $file
+
+    change_policy_count "1" $file
+}
+
+function rm_policy_by_label() {
+    local label="$1"
+    local file="$2"
+    local line_num="$(($(sed -n "/^label=$label$/=" $file)-1))"
+    [ "$line_num" -ge 1 ] && {
+        sed -i "$(($line_num-3)),$(($line_num+4))d" "$file"
+        change_policy_count "-1" $file
+    }
+}
+
