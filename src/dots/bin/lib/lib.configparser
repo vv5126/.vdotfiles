@@ -1,0 +1,45 @@
+#!/bin/bash
+
+function c_add_section() {
+    configparser add_key --section "$1" --key_value "$2" -f "$3"
+}
+
+function c_add_key() {
+    configparser add_key --section "$1" --key "$2" --value "$3" -f "$4"
+}
+
+function c_del_section() {
+    configparser del_section --section "$1" -f "$3"
+}
+
+function c_del_key() {
+    configparser del_key --section "$1" --key "$2" -f "$3"
+}
+
+function c_change_value() {
+    configparser change_value --section "$1" --key "$2" --value "$3" -f "$4"
+}
+
+function c_change_section() {
+    configparser get_value --section "$1" --new_section "$2" -f "$3"
+}
+
+function c_get_sections() {
+    configparser get_sections -f "$1"
+}
+
+function c_get_value() {
+    configparser get_value --section "$1" --key "$2" -f "$3"
+}
+
+function c_get_section() {
+    configparser get_section --section "$1" -f "$2"
+}
+
+function c_is_have_section() {
+    configparser get_section --section "$1" -f "$2"
+}
+
+function c_is_have_key() {
+    configparser get_section --section "$1" --key "$2" -f "$3"
+}

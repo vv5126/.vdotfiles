@@ -1,8 +1,0 @@
-#! /bin/bash
-
-DATE=$1
-HOUR=$((DATE/100))
-MIN=$((DATE%100))
-[  "$HOUR" -ne 0 ] && {
-	echo 'user' | sudo  -S date -s $HOUR:$MIN:00 >/dev/null 2>&1
-}

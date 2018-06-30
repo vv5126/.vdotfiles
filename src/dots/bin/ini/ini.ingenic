@@ -1,5 +1,5 @@
 
-source ~/.bin/lib/lib.misc
+include $VLIBS/lib.misc
 
 # SUPPORT_ANDROID=1
 
@@ -22,7 +22,7 @@ export CLONER_DIR="$VLOCALHOME/.cloner"
 export VGLD_MKDATA=$VGL_DATA/mk
 
 # build android image #
-[ "x$SUPPORT_ANDROID" == "x" ] &&{
+[ "x$SUPPORT_ANDROID" != "x" ] && {
     export VGL_BUILD_BOOTIMAGE="$WORK_SERVER_SSH":/data1/home/wgao/work/tool/build_bootimage.tar.gz
 }
 
@@ -76,9 +76,9 @@ add_path "$HOME/.bin/work"
     complete -W "push bak baklist cover" gt
 
     export VGL_BOOKMARK='/data1/home/wgao/.vdotfiles/src/info/bookmark/bookmark.html'
-    # export VGLD_CRACK_DIR=/data1/home/wgao/v/bbb
+    # export VGLD_CRACK_DIR="$HOME/v/bbb"
 
-    export LD_RUN_PATH=/data1/home/wgao/.local/lib
+    export LD_RUN_PATH="$HOME/.local/lib"
 
     # vim8 with python3
     # ./configure --with-features=huge --enable-python3interp --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu/ --enable-rubyinterp --enable-luainterp --enable-perlinterp --with-python3-config-dir=/data1/home/wgao/tools/python3.6/lib/python3.6/config-3.6m-x86_64-linux-gnu/ --enable-multibyte --enable-cscope --enable-gui=gtk2 --prefix=/data1/home/wgao/tools/vim8/

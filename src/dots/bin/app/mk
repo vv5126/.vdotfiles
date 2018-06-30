@@ -12,7 +12,7 @@ source ~/.bin/lib/lib.misc
 function try_get_obj()
 {
     local tmp="$(guess_obj)"
-    [ "${tmp%% *}" != "unknown" ] && eval echo "$(jp -e "mk_sub" -e "${tmp%% *}" < $VGL_JSON_FILE)"
+    [ "${tmp%% *}" != "unknown" ] && eval echo "$(jsonparser --get_key -k "mk_sub ${tmp%% *}" -f $VGL_JSON_FILE)"
 }
 
 function checkver()
@@ -31,7 +31,7 @@ function mkinit()
         # only for mozart now
         [ "$dest" == 'mzt.sh' -a -d "mozart" ] && cd mozart
 
-        local project_list="$(jp -e mk_sub -k < $VGL_JSON_FILE)"
+        local project_list="$(jsonparser --get_keys -k 'mk_sub' -f $VGL_JSON_FILE)"
         [ -z "$dest" ] && dest=$(user_select 'what project type do you want init' "${project_list[@]}")
 
 	if [ ! -f ".pro/.$dest" ]; then
@@ -74,7 +74,7 @@ function tagbuild() {
 function mkmain() {
         # try find the a.sh and run.
         local A_DIR="$(getdir a.sh)"
-        [ -f "$A_DIR/a.sh" ] && { cd $A_DIR && chmod +x a.sh && ./a.sh; return 0; }
+        [ -f "$A_DIR/a.sh" ] && { cd "$A_DIR" && chmod +x a.sh && ./a.sh; return 0; }
 
         # try find the Build.mk and run mma.
         local BUILD_DIR="$(getdir Build.mk)"

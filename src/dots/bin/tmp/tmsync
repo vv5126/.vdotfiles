@@ -1,6 +1,8 @@
 #!/bin/bash
 
-real_time=$(ssh wgao@192.168.4.15 date)
+include $VINIS/ini.ingenic
+
+real_time=$(ssh $WORK_SERVER_SSH date)
 
 if [ $? = 0 ]; then
 	real_time=$(echo $real_time | awk '{print $4}')

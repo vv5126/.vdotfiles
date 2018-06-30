@@ -180,11 +180,11 @@ function init(){
         fi
 
         if [ -z "$forOS" ]; then
-            local surport_os="$(jp -e surport_os -k < $VGL_JSON_FILE)"
+            local surport_os="$(jsonparser --get_keys -k 'surport_os' -f $VGL_JSON_FILE)"
             tmp=$(user_select 'what OS' "${surport_os[@]}")
             forOS="${tmp:=none}"
 
-            the_image="$(jp -e "kernel_img" -e "$project_type" < $VGL_JSON_FILE)"
+            the_image="$(jsonparser --get_key -k "kernel_img $project_type" -f $VGL_JSON_FILE)"
             # case $project_type in
             #     'kernel3.0.8')
             #         the_image=arch/mips/boot/compressed/uImage
@@ -194,7 +194,7 @@ function init(){
             #         ;;
             # esac
 
-            [ -z "the_image" ] && the_image="$(jp -e "kernel_img" -e "$forOS" < $VGL_JSON_FILE)"
+            [ -z "the_image" ] && the_image="$(jsonparser --get_key -k "kernel_img $forOS" -f $VGL_JSON_FILE)"
             # case $forOS in
             #     'android'*)
             #         the_image=arch/mips/boot/zcompressed/zImage

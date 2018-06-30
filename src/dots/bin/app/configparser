@@ -1,0 +1,113 @@
+#!/usr/bin/env python3
+
+import configparser
+import argparse
+
+cfg = configparser.ConfigParser()    #创建对象
+
+def add_section(cfg, section, key_value):
+    cfg.add_section("eeee")
+    cfg.set("eeee","baud_rate","abc")     #修改参数（第一个参数为节点名称）
+
+def del_section(cfg, section):
+    cfg.remove_section(section)       #删除节
+
+def add_key(cfg, section, key, value):
+    cfg.add_option(section, key, value)    #删除节内参数
+
+def del_key(cfg, section, key):
+    cfg.remove_option(section, key)    #删除节内参数
+
+def change_value(cfg, section, key, value):
+    cfg.set(section, key, value)
+
+def change_section(cfg, section, new_section):
+    pass
+
+def get_sections(cfg):
+    print(cfg.sections())   #读取所有节
+
+def get_value(cfg, section, key):
+    print(cfg.get(section, key))
+
+def get_section(cfg, section):
+    print(cfg.items(section))
+
+def is_have_section(cfg, section):
+    sections = cfg.sections()
+    if section in sections:
+        print('0')
+    else:
+        print('1')
+
+def is_have_key(cfg, section, key):
+    keys = cfg.items(section)
+    if key in keys:
+        print('0')
+    else:
+        print('1')
+
+# print (cfg.set("info","baud_rate","abc"))     #修改参数（第一个参数为节点名称）
+# cfg.update()
+
+def main():
+    parser = argparse.ArgumentParser(description='manual to this script')
+    parser.add_argument('--add_section',    type=bool, nargs='?', const=True, default=False)
+    parser.add_argument('--del_section',    type=bool, nargs='?', const=True, default=False)
+
+    parser.add_argument('--add_key',         type=bool, nargs='?', const=True, default=False)
+    parser.add_argument('--del_key',         type=bool, nargs='?', const=True, default=False)
+
+    parser.add_argument('--change_value',    type=bool, nargs='?', const=True, default=False)
+    parser.add_argument('--change_section',  type=bool, nargs='?', const=True, default=False)
+
+    parser.add_argument('--get_sections',    type=bool, nargs='?', const=True, default=False)
+    parser.add_argument('--get_section',     type=bool, nargs='?', const=True, default=False)
+    parser.add_argument('--get_value',       type=bool, nargs='?', const=True, default=False)
+    parser.add_argument('--is_have_section', type=bool, nargs='?', const=True, default=False)
+    parser.add_argument('--is_have_key',     type=bool, nargs='?', const=True, default=False)
+
+    parser.add_argument('-s',  '--section',     type = str, default = None)
+    parser.add_argument('-ns', '--new_section', type = str, default = None)
+    parser.add_argument('-k',  '--key',         type = str, default = None)
+    parser.add_argument('-v',  '--value',       type = str, default = None)
+    parser.add_argument('-kv', '--key_value',   type = str, default = None)
+    parser.add_argument('-f',  '--configfile',  type = str, default = None)
+
+    args = parser.parse_args()
+
+    if args.configfile != None:
+        cfg.read(args.configfile)     #读取ini配置文件
+        # f = open(args.configfile, 'w')
+    else:
+        print('error!!!')
+        return -1
+
+    if args.add_section == True:
+        add_section(cfg, args.section, args.key_value)
+    elif args.del_section == True:
+        del_section(cfg, args.section)
+    elif args.add_key == True:
+        add_key(cfg, args.section, args.key, args.value)
+    elif args.del_key == True:
+        del_key(cfg, args.section, args.key)
+    elif args.change_value == True:
+        change_value(cfg, args.section, args.key, args.value)
+    elif args.change_section == True:
+        change_section(cfg, args.section, args.new_section)
+    elif args.get_sections == True:
+        get_sections(cfg)
+    elif args.get_value == True:
+        get_value(cfg, args.section, args.key)
+    elif args.get_section == True:
+        get_section(cfg, args.section)
+    elif args.is_have_section == True:
+        is_have_section(cfg, args.section)
+    elif args.is_have_key == True:
+        is_have_section(cfg, args.section, args.key)
+
+    # cfg.write(f)
+    # f.close()
+
+if __name__ == '__main__':
+    main()

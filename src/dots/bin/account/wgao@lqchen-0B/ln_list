@@ -12,6 +12,7 @@ ins
 ack
 vgitdiff
 vhtml
+configparser
 
 mk        "$HOME/.bin/app"
 vp

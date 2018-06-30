@@ -171,6 +171,14 @@ function gen_lib_info() {
     vim -c "1,$(sed -n '$=' "$lib_dir/ReadMe")EasyAlign :" "$lib_dir/ReadMe"
 }
 
+function win2shdb() {
+    sed 's/^\[/# [/g' -i $1 # ... [] to # []
+    sed 's/\ *=\ */=/g' -i $1 # ... ' ' = ' ' to ' '=' '
+}
+
+function shdb2win() {
+    sed 's/^# *\[/[/g' -i $1 # ... [] to []
+}
 
 ############# will export ##############
 

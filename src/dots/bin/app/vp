@@ -1,13 +1,14 @@
 #!/bin/bash
 
-source ~/.bin/lib/lib.base
-source ~/.bin/lib/lib.work
-source ~/.bin/lib/lib.misc
+include $VLIBS/lib.base
+include $VLIBS/lib.work
+include $VLIBS/lib.misc
 
 host_vp="$VLOCALHOME/.local/vp"
 is_push=1
 is_local=0
 dst_dir=''
+ret1=0
 
 function install_apk() {
     local src=$1
@@ -50,7 +51,7 @@ function try_get() {
 }
 
 function host_clean() {
-    echo ssh $VLOCALSSH "rm -r $host_vp/*" #> /dev/null 2>&1
+    # echo ssh $VLOCALSSH "rm -r $host_vp/*" #> /dev/null 2>&1
     ssh $VLOCALSSH "rm -r $host_vp/*" > /dev/null 2>&1
 }
 
@@ -77,19 +78,19 @@ function parse_dst() {
 # echo $VHOSTID $VLOCALID
 [ $VHOSTID == $VLOCALID ] && is_local=1
 
-echo is_push = $is_push
-echo is_local = $is_local
+# echo is_push = $is_push
+# echo is_local = $is_local
 
 host_clean
 
 eval last=$'$'$#
-echo last = $last
+# echo last = $last
 
-echo ssh $VLOCALSSH "adb remount" #> /dev/null 2>&1
+# echo ssh $VLOCALSSH "adb remount" #> /dev/null 2>&1
 ssh $VLOCALSSH "adb remount" > /dev/null 2>&1
 if [ $is_push -eq 1 ]; then #push
     [ -z "$(try_get $last)" -a "${last:0:1}" == '/' ] && dst_dir="$(clean_last_symbol $last)"
-    echo dst_dir = $dst_dir
+    # echo dst_dir = $dst_dir
 
     for i in $@; do
         # echo i $i
@@ -112,41 +113,45 @@ if [ $is_push -eq 1 ]; then #push
             fi
 
             if [ $is_local -eq 0 ]; then
-                echo scp -r "$src" "$VLOCALSSH:$host_vp"
-                scp -r "$src" "$VLOCALSSH:$host_vp"
+                # echo scp -r "$src" "$VLOCALSSH:$host_vp"
+                scp -r "$src" "$VLOCALSSH:$host_vp" > /dev/null 2>&1
 
                 if [ -d "$src" ]; then
-                    echo ssh $VLOCALSSH "adb push $host_vp/$src_name $dst/$src_name" #> /dev/null 2>&1
+                    # echo ssh $VLOCALSSH "adb push $host_vp/$src_name $dst/$src_name" #> /dev/null 2>&1
                     ssh $VLOCALSSH "adb push $host_vp/$src_name $dst/$src_name" > /dev/null 2>&1
+                    [ $? -eq 0 ] || { echo push $src_name to $dst failed!; ret1=1; }
                 else
-                    echo ssh $VLOCALSSH "adb push $host_vp/$src_name $dst" #> /dev/null 2>&1
+                    # echo ssh $VLOCALSSH "adb push $host_vp/$src_name $dst" #> /dev/null 2>&1
                     ssh $VLOCALSSH "adb push $host_vp/$src_name $dst" > /dev/null 2>&1
+                    [ $? -eq 0 ] || { echo push $src_name to $dst failed!; ret1=1; }
                 fi
             else
-                echo adb push "$src" "$dst/$src_name"
+                # echo adb push "$src" "$dst/$src_name"
                 adb push "$src" "$dst/$src_name"
+                [ $? -eq 0 ] || { echo push $src to $dst failed!; ret1=1; }
             fi
+            [ $ret1 -eq 0 ] && echo done! # || echo failed!
         else
             echo can\'t find $i
         fi
     done
-    echo ssh $VLOCALSSH "adb shell sync" #> /dev/null 2>&1
+    # echo ssh $VLOCALSSH "adb shell sync" #> /dev/null 2>&1
     ssh $VLOCALSSH "adb shell sync" > /dev/null 2>&1
 else #pull
     [ -n "$(try_get $last)" -o "${last:0:1}" != '/' ] && dst_dir="$(clean_last_symbol $last)"
-    echo dst_dir = $dst_dir
+    # echo dst_dir = $dst_dir
 
     for i in $@; do
-        echo i $i
+        # echo i $i
         i="$(clean_last_symbol $i)"
-        echo i $i
+        # echo i $i
 
         [ "$i" == '/' ] && continue
         [ "$i" == "$dst_dir" ] && continue
 
         if [ "${i:0:1}" == '/' ]; then
             src_name="${i##*/}"
-            echo src_name = $src_name
+            # echo src_name = $src_name
             if [ -z "$dst_dir" ]; then
                 dst="."
             else
@@ -154,14 +159,21 @@ else #pull
             fi
 
             if [ $is_local -eq 0 ]; then
-                echo ssh $VLOCALSSH "adb pull $i $host_vp/$src_name" #> /dev/null 2>&1
+                # echo ssh $VLOCALSSH "adb pull $i $host_vp/$src_name" #> /dev/null 2>&1
                 ssh $VLOCALSSH "adb pull $i $host_vp/$src_name" > /dev/null 2>&1
-                echo scp -r "$VLOCALSSH:$host_vp/$src_name" "$dst"
-                scp -r "$VLOCALSSH:$host_vp/$src_name" "$dst"
+                if [ $? -eq 0 ]; then
+                    # echo scp -r "$VLOCALSSH:$host_vp/$src_name" "$dst"
+                    scp -r "$VLOCALSSH:$host_vp/$src_name" "$dst" > /dev/null 2>&1
+                else
+                    echo pull $src_name to $dst failed!
+                    ret1=1
+                fi
             else
-                echo adb pull $i $dst/$src_name
+                # echo adb pull $i $dst/$src_name
                 adb pull $i $dst/$src_name
+                [ $? -eq 0 ] || { echo pull $i to $dst failed!; ret1=1; }
             fi
+            [ $ret1 -eq 0 ] && echo done! # || echo failed!
         else
             echo unsupport file $i
         fi

@@ -30,7 +30,7 @@ if [ "$DEST" != 0 ]; then
             else
                 sudo mkdir -p $dest
             fi
-			echo 'user' | sudo sshfs $src $dest -o uid=1000,gid=1000,allow_other || sudo rm -rf $dest
+			echo 'user' | sudo sshfs $src $dest -o uid=$UID,gid=$GROUPS,allow_other || sudo rm -rf $dest
 	    fi
 		;;
 	'win')

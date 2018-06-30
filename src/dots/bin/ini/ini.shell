@@ -1,6 +1,6 @@
-
+# alias #
 alias ll='ls -AlFh --color'
-alias ll='ls -alF'
+# alias ll='ls -alF'
 alias llh='ls -lh'
 alias la='ls -A'
 alias l='ls'
@@ -12,7 +12,6 @@ alias du='du -h -d 1'
 alias grep='grep --color --exclude-dir=".git"'
 alias ag='ag --noheading --smart-case -t'
 alias libmk='lib.misc gen_lib_info ~/.bin/lib'
-
 alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
 
 export LC_ALL=en_US.UTF-8
@@ -31,16 +30,19 @@ export VHOSTID="$USER@$HOSTNAME"
 export VACCOUNT="$HOME/.bin/account"
 export VGL_DATA="$HOME/.bin/data"
 
+export PKG_CONFIG_PATH=$HOME/.local/usr/local/lib/pkgconfig
+export LD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/usr/local/lib
+
+# add path #
 add_path "$VLIBS"
 add_path "$HOME/.bin/base"
 add_path "$HOME/.local/bin"
 
+# rm path #
 clean_path "/usr/games"
 clean_path "/usr/local/games"
 
-export PKG_CONFIG_PATH=$HOME/.local/usr/local/lib/pkgconfig
-export LD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/usr/local/lib
-
+# --------- #
 if [ -n "$(which dircolors)" ]; then
 	eval `dircolors -b $HOME/.dir_colors`
 fi

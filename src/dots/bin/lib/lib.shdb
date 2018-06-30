@@ -233,6 +233,7 @@ function shdb_del() {
 }
 
 function shdb() {
+    local str shdb
     [ $# -eq 0 ] && { echo "need param"; return -1; }
 
     shdb="$(get_param '-f' "$@")" # file
@@ -242,7 +243,7 @@ function shdb() {
         echo "" > $shdb
     fi
 
-    local str="$(get_param '-a' "$@")" # add
+    str="$(get_param '-a' "$@")" # add
     if [ $? -gt 0 -a $? -lt 100 ]; then
         line=$(get_param '-l' $@)
         if [ $? -gt 0 -a $? -lt 100 ]; then

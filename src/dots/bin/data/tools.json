@@ -39,6 +39,20 @@
 	, "tmux": { "aptitude": {}
 		, "src": {"source": "tmux/tmux" ,"flag": "git" }
 	}
+	, "nodejs": {
+		, "src": {"source": "https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.xz" 
+			,"flag": "pycode"
+			,"install":   "cp bin to .local; cp include to .local; cp lib to .local;npm config set registry https://registry.npm.taobao.org"
+			,"config": "npm install -g cnpm --registry=https://registry.npm.taobao.org"
+		}
+	}
+	, "gitbook": {
+		, "src": {"flag": "pycode"
+			,"install":   "cnpm install gitbook-cli -g"
+			,"config": "gitbook init"
+		}
+		, "depend": "nodejs "
+	}
 	, "zsh": {
 	}
 	, "powerline": {

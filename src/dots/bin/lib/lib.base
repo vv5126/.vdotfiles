@@ -100,7 +100,6 @@ function clean_last_symbol() {
 case $(ps -p $$ -o comm=) in
     'zsh')
         export ZSH_EXPORTED_FUNCTIONS="$(functions \
-            # getdir_git_repo \
             # is_local \
             # smkdir \
             # srm \

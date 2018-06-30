@@ -3,7 +3,7 @@
 [[ $(ps -p $$ -o comm=) == 'zsh' ]] && HOSTNAME="$HOST"
 
 function include() {
-    [[ "$VINCS" =~ "$1" ]] || {
+    [[ "$VINCS" =~ "$1:" ]] || {
         source $1
         VINCS="$VINCS$1:"
     }
