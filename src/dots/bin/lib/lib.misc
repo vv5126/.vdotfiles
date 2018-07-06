@@ -180,6 +180,19 @@ function shdb2win() {
     sed 's/^# *\[/[/g' -i $1 # ... [] to []
 }
 
+function time_sync() {
+    include $VINIS/ini.ingenic
+    real_time="$(ssh $WORK_SERVER_SSH date)"
+
+    if [ $? = 0 ]; then
+        real_time="$(echo $real_time | awk '{print $5}')"
+        echo 'user' | sudo  -S date -s "$real_time" >/dev/null 2>&1
+        echo time sync $real_time OK!
+    else
+        echo time sync FAIL!
+    fi
+}
+
 ############# will export ##############
 
 # case $(ps -q $$ -o comm=) in

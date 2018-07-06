@@ -1,6 +1,6 @@
 include $VINIS/ini.ingenic
 
-export VGL_MNTFIlE="$VACCOUNT/$VHOSTID/mnt_conf"
+export VGL_MNTFIlE="$VUSER/mnt_conf"
 
 be_sudoer() {
     # sudoer check
