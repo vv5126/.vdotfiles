@@ -54,7 +54,7 @@ function git_bak() {
                 sign="$(get_segment_from_line "x$line" 1)"
                 file="$(get_segment_from_line "x$line" 2)"
                 case "$sign" in
-                        "x??" | "xM")
+                        "x??" | "xA"* | "xM"* )
                                 [[ "$file" =~ "/" ]] && {
                                         dir_t=${file%/*} && mkdir -p $bakdir/$dir_t
                                         [ ${file:0-1} = "/" ] && cp -rf $file/* $bakdir/$dir_t/ || cp $file $bakdir/$dir_t

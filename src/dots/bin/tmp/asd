@@ -7,7 +7,6 @@ dst=$VGL_ASD_FILE
 is_local $dst
 if [ $? = 0 ]; then
     gedit $dst &
-    # emacs ~/.bin/work/.asd &
 else
     ssh -X ${dst%:*} "gedit ${dst##*:}" &
 fi

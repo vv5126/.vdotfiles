@@ -529,8 +529,7 @@ endif
             "*/
 
             nnoremap <F1> :YcmForceCompileAndDiagnostics<CR>
-            let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_conf/ycm_extra_conf_c.py'
-            " ~/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py
+            let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py'
             let g:syntastic_always_populate_loc_list = 1
             let g:ycm_always_populate_location_list =1
 

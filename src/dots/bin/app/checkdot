@@ -32,6 +32,10 @@ dot_templat=(
 .vhelper
 -----------------------------
 # 确定忽略 #
+.v.bash
+.fzf
+.fzf.bash
+.fasd
 .AndroidStudio1.2
 .AndroidStudioPreview2.1
 .gradle

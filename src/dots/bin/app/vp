@@ -59,6 +59,7 @@ function parse_dst() {
     local src_name="${1##*/}"
     local src_dir="${1%/*}"
 
+    [[ "$src_dir" =~ '/system' ]] && { echo "/system${src_dir##*/system}"; return 0; }
     [[ "$src_dir" =~ '/usr/lib' ]] && { echo "/usr/lib${src_dir##*/usr/lib}"; return 0; }
     [[ "$src_dir" =~ '/lib' ]] && { echo "/lib${src_dir##*/lib}"; return 0; }
     [[ "$src_dir" =~ '/usr/bin' ]] && { echo "/usr/bin${src_dir##*/usr/bin}"; return 0; }

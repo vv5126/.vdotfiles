@@ -9,11 +9,11 @@ export VLOCALSSH="user@192.168.4.150"
 export VLOCALHOME="/home/user"
 
 # imgs #
-export VGL_BOARDS=/data1/home/wgao/work/local_debug/boards
-# export VGL_BOARDS="$WORK_SERVER_SSH":/data1/home/wgao/work/local_debug/boards
+# export VGL_BOARDS=$HOME/work/local_debug/boards
+# export VGL_BOARDS="$WORK_SERVER_SSH":$HOME/work/local_debug/boards
 
 # json #
-export VGL_JSON_FILE=/data1/home/wgao/.bin/data/ingenic.json
+export VGL_JSON_FILE=$HOME/.bin/data/ingenic.json
 
 # cloner #
 export CLONER_DIR="$VLOCALHOME/.cloner"
@@ -23,12 +23,12 @@ export VGLD_MKDATA=$VGL_DATA/mk
 
 # build android image #
 [ "x$SUPPORT_ANDROID" != "x" ] && {
-    export VGL_BUILD_BOOTIMAGE="$WORK_SERVER_SSH":/data1/home/wgao/work/tool/build_bootimage.tar.gz
+    export VGL_BUILD_BOOTIMAGE="$WORK_SERVER_SSH":$HOME/work/tool/build_bootimage.tar.gz
 }
 
 # clipboard #
-export VGLD_CLIPBOARD="$WORK_SERVER_SSH":/home/wgao/.local/.clipboard/global
-export VGLD_LOCALCLIPBOARD=$HOME/.local/.clipboard/local
+# export VGLD_CLIPBOARD="$WORK_SERVER_SSH":/home/wgao/.local/.clipboard/global
+# export VGLD_LOCALCLIPBOARD=$HOME/.local/.clipboard/local
 
 export VGL_ASD_FILE="$WORK_SERVER_SSH":"$VGL_DATA"/.asd
 export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
@@ -75,19 +75,24 @@ add_path "$HOME/.bin/work"
     complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk
     complete -W "push bak baklist cover" gt
 
-    export VGL_BOOKMARK='/data1/home/wgao/.vdotfiles/src/info/bookmark/bookmark.html'
+    export VGL_BOOKMARK='$HOME/.vdotfiles/src/info/bookmark/bookmark.html'
     # export VGLD_CRACK_DIR="$HOME/v/bbb"
 
     export LD_RUN_PATH="$HOME/.local/lib"
 
     # vim8 with python3
     # ./configure --with-features=huge --enable-python3interp --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu/ --enable-rubyinterp --enable-luainterp --enable-perlinterp --with-python3-config-dir=/data1/home/wgao/tools/python3.6/lib/python3.6/config-3.6m-x86_64-linux-gnu/ --enable-multibyte --enable-cscope --enable-gui=gtk2 --prefix=/data1/home/wgao/tools/vim8/
-    # export PYTHONPATH=/data1/home/wgao/.local/lib/python3.6
+    # export PYTHONPATH=$HOME/.local/lib/python3.6
+    # export PYTHON_LIBRARIES="/usr/lib/python2.7"
+    # export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"
+    # export PYTHONPATH=$PYTHONPATH:/usr/lib/python3/dist-packages/
 
-    # add_path "/data1/home/wgao/tools/llvm/bin"
+    add_path "$HOME/tools/Qt5.7.0/5.7/gcc_64/bin"
+
+    # add_path "$HOME/tools/llvm/bin"
 } || {
-    alias vsync='rsync -rul wgao@192.168.4.15:~/.vdotfiles ~'
-    alias vsync1='rsync -rl --exclude=bundle wgao@192.168.4.15:~/.vdotfiles ~'
+    alias vsync='rsync -rul $WORK_SERVER_SSH:~/.vdotfiles ~'
+    alias vsync1='rsync -rl --exclude=bundle $WORK_SERVER_SSH:~/.vdotfiles ~'
 }
 
 # 4.10 #

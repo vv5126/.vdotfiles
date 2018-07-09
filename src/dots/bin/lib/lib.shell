@@ -1,7 +1,6 @@
 #!/bin/bash
 
 include ~/.bin/lib/lib.base
-include ~/.bin/lib/lib.work
 
 # 反转上一次操作
 function ccd(){
@@ -107,37 +106,6 @@ function add_path() {
     [ -d "$1" ] && PATH="$1":"$PATH"
 }
 
-# 工具链切换
-function change_toolchain(){
-
-    paths="
-    # GCC for Android
-    /data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin
-    /data1/home/wgao/tools/toolchains/mips64el-linux-android-4.9/bin
-    # debug for thync
-    # /data1/home/wgao/thync/mips-gcc472-glibc216/bin
-    # export CROSS_COMPILE=mips-linux-gnu-gcc-4.7.2
-    # export CROSS_COMPILE=mips64el-linux-android- # for android
-    /data1/home/wgao/tools/toolchains/mips-gcc520-glibc222
-    /pdev/chains/mips-gcc472-glibc216/bin
-    /pdev/chains/mips-gcc520-glibc222/bin
-    /pdev/chains/mips-linux-gnu/bin
-    /data1/home/wgao/tools/toolchains/mipsel-gcc472-glibc216-mips32/bin
-    # mozart
-    /data1/home/wgao/tools/toolchains/mipseltools-gcc412-glibc261/bin"
-
-    OLD_IFS="$IFS"
-    IFS=$'\n'
-
-    select var in $(echo "$paths" | sed -n "/^\ \+\#/!p;" | sed -n "s/^\ \+//p;"); do
-        break
-    done
-
-    IFS="$OLD_IFS"
-
-    add_path "$var"
-}
-
 # 在当前目录创建指定文件的链接
 function lnn() {
     local lnfile="$1"
@@ -186,8 +154,6 @@ function check_sudo() {
 
 ############# will export ##############
 alias cd='quickcd'
-alias mm='mm1'
-alias mma='mma1'
 alias vi='svi'
 alias fd='find1'
 alias ..='vcd'
@@ -200,8 +166,6 @@ case $(ps -p $$ -o comm=) in
             )"
         ;;
     *)
-        export -f change_toolchain
-        export -f lnn
         ;;
 esac
 

@@ -2,9 +2,9 @@
 
 # for manhattan project
 
-. ~/.bin/ini/ini.work
-. ~/.bin/lib/lib.work
-. ~/.bin/lib/lib.shdb
+include $VINIS/ini.work
+include $VLIBS/lib.work
+include $VLIBS/lib.shdb
 
 function make_info_file() {
     local file=$1

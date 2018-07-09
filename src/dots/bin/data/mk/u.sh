@@ -1,9 +1,9 @@
 #!/bin/bash
 
-. ~/.bin/lib/lib.misc
-. ~/.bin/ini/ini.work
-. ~/.bin/lib/lib.work
-. ~/.bin/lib/lib.shdb
+include $VLIBS/lib.misc
+include $VINIS/ini.work
+include $VLIBS/lib.work
+include $VLIBS/lib.shdb
 
 debug=1
 
@@ -122,7 +122,7 @@ function init(){
             fi
         fi
             forOS="${tmp:=none}"
-	# git_remote="$(git remote -v | head -2 | tail -1 | awk '{print $2}')"
+	git_remote="$(git remote -v | head -2 | tail -1 | awk '{print $2}')"
 	git_branch="$(git branch | grep '*' | awk '{print $2}')"
         if [[ "$git_branch" =~ '(' ]]; then
             tmp=$(git branch -a | grep -o '\->.*$')
