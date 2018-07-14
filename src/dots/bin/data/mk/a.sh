@@ -2,7 +2,6 @@
 
 # for android project
 
-include $VINIS/ini.work
 include $VLIBS/lib.work
 include $VLIBS/lib.shdb
 

@@ -8,6 +8,7 @@
 ### 改capslock->ctrl
 * sudo vim /etc/default/keyboard 修改下面这一行：XKBOPTIONS="ctrl:nocaps" # "ctrl:swapcaps"
 * sudo dpkg-reconfigure keyboard-configuration 出现如下图像（全部选默认的)
+* sudo sed 's/^XKBOPTIONS=.*/XKBOPTIONS=\"ctrl:nocaps\"/' -i /etc/default/keyboard
 unused: xmodmap /home/user/.Xmodmap
 Ubuntu 14.04 下通过 XKB 修改键盘映射, 实现自定义按键
 https://github.com/Chunlin-Li/Chunlin-Li.github.io/blob/master/blogs/linux/ubuntu-xkb-keyboard-remap.md
@@ -58,7 +59,7 @@ change 'SELINUX=enforcing' to 'SELINUX=disabled'
 * python3.6 setup.py install
 
 ### 远程桌面
-install xrdp
+sudo apt-get install xrdp vnc4server tightvncserver
 vncserver :1
 cat > vim .vnc/xstartup << EOF
 #!/bin/sh
@@ -74,6 +75,25 @@ EOF
 
 vncserver -kill :1
 vncserver :1
+
+设置xrdp
+echo "gnome-session --session=gnome-classic" > ~/.xsession
+重启 xrdp
+sudo /etc/init.d/xrdp restart
+
+#### xrdp 访问 ubuntu 只看到背景，看不到菜单栏的解决办法
+方法：安装gnome-panel
+sudo apt-get install gnome-panel
+
+#### xrdp支持不了13.10的gnome了，解决办法是装个xfce界面，
+sudo apt-get install xubuntu-desktop
+然后： echo xfce4-session >~/.xsession
+再设置配置文件
+sudo gedit /etc/xrdp/startwm.sh
+在. /etc/X11/Xsession 前一行插入 xfce4-session
+重启xrdp
+sudo service xrdp restart
+
 
 ### ftp
 install vsftpd
@@ -194,3 +214,42 @@ fzf 安装：
 
 sudo apt-get install aptitude
 /var/lib/dpkg/info
+
+### for mount win dir!!!
+cifs-utils
+
+### new sources list
+deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
+
+### system backup
+sudo su
+tar -cvpzf /tmp/mnt/4.15/4.150-sysbak.tar.gz --exclude=/proc --exclude=/tmp --exclude=/lost+found --exclude=/media --exclude=/mnt --exclude=/run --exclude=/sys --exclude=/home --exclude=/swapfile /
+
+# RECOVERY
+# on system:
+ <!-- tar还原是只会覆盖相同的文件 -->
+tar -xvpzf /media/Disk/myDisk/ubuntu_boot_backup@2016-6-6.tar.gz -C /
+
+# live CD:
+mkdir /mnt/sys
+mount /dev/sdaX /mnt/sys
+tar -xvpzf /media/myDisk/ubuntu_boot_backup@2016-6-6.tar.gz -C /mnt/sys
+
+mkdir /proc /tmp /lost+found /media /mnt /run /home /sys
+
+
+### Copy-Paste in terminal adds 0~ and 1~
+<!-- The issue is that your terminal is in bracketed paste mode, but doesn’t seem to support it properly. The issue was fixed in VTE, but xfce4-terminal is still using an old and unmaintained version of it. -->
+<!-- You can try temporarily turning bracketed paste mode off by using: -->
+printf "\e[?2004l"
+
+

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ttys=$(ls -l /dev/serial/by-id 2>/dev/null | tac | grep -o 'tty.*$')
+ttys=$(ls -l /dev/serial/by-id 2>/dev/null | tac | grep -o 'ttyUSB.*$\|ttyS.*$')
 [ -z "$ttys" ] && { echo "no uart!"; exit; }
 
 baudrate='

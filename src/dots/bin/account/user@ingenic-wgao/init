@@ -5,17 +5,20 @@ export VGL_MNTFIlE="$VUSER/mnt_conf"
 be_sudoer() {
     # sudoer check
     if [[ "$(cat /etc/group | sed -n '/^sudo:/p;')" =~ "$(whoami)" ]]; then
-        [ ! -f '/etc/sudoers.d/vsudoer' ] && ln -s /home/user/.bin/local/vsudoer /etc/sudoers.d/vsudoer
-        chown root /etc/sudoers.d/vsudoer
-        chgrp root /etc/sudoers.d/vsudoer
+            if [ ! -f '/etc/sudoers.d/vsudoer' ]; then
+                    chmod 440 $VGL_DATA/vsudoer
+                    sudo chown root $VGL_DATA/vsudoer
+                    sudo chgrp root $VGL_DATA/vsudoer
+                    sudo ln -Pf $VGL_DATA/vsudoer /etc/sudoers.d/
+            fi
     fi
 }
 
 if [ ! -f "$VACCOUNT/.inited" ]; then
     (
-	cd "$VACCOUNT/$VHOSTID"
+	cd "$VUSER"
 	lnn_file ln_list
     )
-    be_sudoer
+    # be_sudoer
     echo '' > "$VACCOUNT/.inited"
 fi

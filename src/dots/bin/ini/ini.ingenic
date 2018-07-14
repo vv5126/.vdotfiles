@@ -31,7 +31,7 @@ export VGLD_MKDATA=$VGL_DATA/mk
 # export VGLD_LOCALCLIPBOARD=$HOME/.local/.clipboard/local
 
 export VGL_ASD_FILE="$WORK_SERVER_SSH":"$VGL_DATA"/.asd
-export GREP_OPTIONS="--exclude-dir=.git --exclude=cscope*"
+alias grep='grep -a --exclude-dir=.git --exclude=cscope*'
 
 add_path "$HOME/.bin/work"
 
@@ -75,7 +75,7 @@ add_path "$HOME/.bin/work"
     complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk
     complete -W "push bak baklist cover" gt
 
-    export VGL_BOOKMARK='$HOME/.vdotfiles/src/info/bookmark/bookmark.html'
+    export VGL_BOOKMARK="$HOME/.vdotfiles/src/info/bookmark/bookmark.html"
     # export VGLD_CRACK_DIR="$HOME/v/bbb"
 
     export LD_RUN_PATH="$HOME/.local/lib"
@@ -117,7 +117,7 @@ add_path "$HOME/.bin/work"
     # source ~/.bin/local/vlogin
     alias VB='VirtualBox --startvm $HOME/.VirtualBox/xp/xp.vbox &'
     alias sm='thunderbird -compose'
-    alias ch='(cd $HOME/.vdotfiles; git checkout src/dots/bin/local/launch-chrome3.ica;); nohup /opt/Citrix/ICAClient/wfica -icaroot /opt/Citrix/ICAClient /home/user/.bin/local/launch-chrome3.ica > /dev/null &'
+    alias ch='(cd $HOME/.vdotfiles; git checkout src/dots/bin/account/user@ingenic-wgao/launch-chrome3.ica;); nohup /opt/Citrix/ICAClient/wfica -icaroot /opt/Citrix/ICAClient $VUSER/launch-chrome3.ica > /dev/null &'
 }
 
 [ "$VHOSTID" != "$VLOCALID" ] && {

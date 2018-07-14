@@ -126,6 +126,8 @@ function lnn() {
         [ -d "$tmp" -o -d "$PWD/$tmp" ] && searchdir="$tmp" || target="$tmp"
     fi
 
+    [ -f "$lnfile"  ] && rm "$lnfile"
+
     local d="$(find "$searchdir/" -name "$lnfile" | head -1)"
     if [ -n "$d" ]; then
         [ -f "$target" ] && rm "$target"

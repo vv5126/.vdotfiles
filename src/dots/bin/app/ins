@@ -74,7 +74,7 @@ class Install(object):
         else:
             (status, output) = subprocess.getstatusoutput('which ' + checkfile)
         if output.strip():
-            cprint ("20", 'check installed ' + checkfile + 'at:', output.strip())
+            cprint ("20", 'check installed ' + checkfile + ' at:', output.strip())
             return True
 
         cprint ("10", 'check installed failed: ' + checkfile)
@@ -339,7 +339,7 @@ def inst(app, fjson):
 
 def main():
     # file_in = open("a.json")
-    file_in = open("tools.json")
+    file_in = open(os.environ.get('VGL_DATA') + "/tools.json")
     fjson = json.loads(file_in.read())
     file_in.close()
 

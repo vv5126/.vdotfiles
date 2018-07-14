@@ -1,7 +1,6 @@
 #!/bin/bash
 
 include $VLIBS/lib.misc
-include $VINIS/ini.work
 include $VLIBS/lib.work
 include $VLIBS/lib.shdb
 
