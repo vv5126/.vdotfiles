@@ -107,6 +107,7 @@ function mkmain() {
                 )
             ;;
         *)
+            break
             if [ -n "$the_img_dir" ]; then
                 echo -e "\n  the out img: $the_img_dir" >&2
                 smkdir $the_img_dir

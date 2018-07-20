@@ -1,7 +1,7 @@
 
 include $VLIBS/lib.misc
 
-# SUPPORT_ANDROID=1
+SUPPORT_ANDROID=1
 
 WORK_SERVER_SSH=wgao@192.168.4.15
 export VLOCALID="user@ingenic-wgao"
@@ -64,7 +64,7 @@ add_path "$HOME/.bin/work"
     # OpenCV
     export OpenCV_LIBS=~/.local/lib
 
-    alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
+    # alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
     alias wiz='nohup $HOME/tools/wiz > /dev/null &'
     alias vdiff='vgitdiff ~/.vdotfiles; meld git.diff.add git.diff.rm'
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'

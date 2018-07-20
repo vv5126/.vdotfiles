@@ -55,6 +55,13 @@ function del_file_in_list() {
 # 删除所有子目录指定类型文件
 
 
+function del_file_zero() {
+	find "$1" -name "*" -type f -size 0c | xargs -n 1 rm -f
+}
+
+function del_dir_zero() {
+	find "$1" -name "*" -type d -empty | xargs -n 1 rm -fr
+}
 
 # 文件->目录
 

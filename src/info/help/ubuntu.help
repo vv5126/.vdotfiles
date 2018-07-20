@@ -42,6 +42,7 @@ change 'SELINUX=enforcing' to 'SELINUX=disabled'
 * mkfontdir
 * fc-cache -vf
 * rm ~/.vim/bundle/vim-powerline/*.cache
+直接使用tweak最方便...
 
 ### Ubuntu取消自动更新命令
 * vi /etc/apt/apt.conf.d/50unattended-upgrades
@@ -252,4 +253,22 @@ mkdir /proc /tmp /lost+found /media /mnt /run /home /sys
 <!-- You can try temporarily turning bracketed paste mode off by using: -->
 printf "\e[?2004l"
 
+
+### SYSBAK
+#### backup
+sudo su
+cd /; tar -cvpzf /tmp/mnt/4.15/4.150-sysbak.tar.gz --exclude=/proc --exclude=/tmp --exclude=/lost+found --exclude=/media --exclude=/mnt --exclude=/run --exclude=/sys --exclude=/home --exclude=/swapfile
+
+#### recovery
+mkdir /mnt/sys
+mount /dev/sdaX /mnt/sys
+tar -xvpzf /media/myDisk/4.150-sysbak.tar.gz -C /mnt/sys
+
+##### mkdir
+mkdir /proc /tmp /lost+found /media /mnt /run /home /sys
+dev opt root srv
+
+### uninstall libreoffice, use wps.
+sudo apt-get remove --purge libreoffice*
+http://community.wps.cn/download/
 

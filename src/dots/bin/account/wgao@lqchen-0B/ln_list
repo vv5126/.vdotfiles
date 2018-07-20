@@ -6,13 +6,15 @@ g
 checkdot
 vcp
 gt
-rmm
+mr
 star
 ins
 ack
 vgitdiff
 vhtml
 configparser
+jsonparser
+irc
 
 mk        "$HOME/.bin/app"
 vp

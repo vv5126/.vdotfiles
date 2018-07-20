@@ -14,9 +14,3 @@ src/dots/vhelper/tmp/
 
 src/dots/bin/lib/ReadMe
 src/dots/bin/lib/py3/__pycache__/
-
-src/dots/bin/account/
-# src/dots/bin/account/.inited
-# src/dots/bin/account/user@ingenic-wgao/
-# src/dots/bin/account/user@ubuntu/
-# src/dots/bin/account/wgao@lqchen-0B/

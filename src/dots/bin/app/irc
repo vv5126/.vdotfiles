@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3
 # IRC Bot Skeleton
 # Developed by acidvegas in Python
 # https://github.com/acidvegas/irc
@@ -6,6 +6,11 @@
 
 import socket
 import time
+import sys
+import os
+
+sys.path.append(os.environ.get('HOME') + "/.bin/lib/py3")
+from vmisc import clip_copy,clip_paste
 
 # Connection
 server     = 'irc.ubuntu.com'
@@ -281,7 +286,10 @@ class IRC(object):
 		self.raw(f'TOPIC {chan} :{text}')
 
 	def vdeal(self, nick, msg):
-		print ('wgao ' + msg)
+		# print ('wgao ' + msg)
+		# vmisc.kb_unicode(msg)
+		clip_copy(msg)
+		# clip_paste(msg)
 		self.sendmsg(nick, 'It works!')
 # Main
 if proxy:

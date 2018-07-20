@@ -1,0 +1,30 @@
+function time2frequency ()
+{
+	local val="$1"
+	local unit="$2"
+	case "$unit" in
+		'm'|'ms')
+			val="$(echo "scale=4;1000/$val" | bc)"
+			;;
+		'u'|'us')
+			val="$(echo "scale=4;1000*1000/$val" | bc)"
+			;;
+		'n'|'ns')
+			val="$(echo "scale=4;1000*1000*1000/$val" | bc)"
+			;;
+		'p'|'ps')
+			val="$(echo "scale=4;1000*1000*1000*1000/$val" | bc)"
+			;;
+		*)
+			val="$(echo "scale=4;$val" | bc)"
+			;;
+	esac
+
+	Clean_zero "$val" HZ
+	Clean_zero "$val/1000" kHZ
+	Clean_zero "$val/1000/1000" MHz
+	Clean_zero "$val/1000/1000/1000" GHz
+	return 0
+}
+
+

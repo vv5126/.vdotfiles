@@ -66,11 +66,12 @@ function mkmain() {
         target_name=$target_name.img
         [ "$needclean" = "1" ] && make distclean
         [ -f $the_image ] && rm $the_image
-        make $board_config -j32 > .tmp && {
-            echo the out img: $target_dir/$target_name >&2
-            smkdir $target_dir
-            scp $the_image $target_dir/$target_name
-        }
+        make $board_config -j32 > .tmp
+        # make $board_config -j32 > .tmp && {
+        #     echo the out img: $target_dir/$target_name >&2
+        #     smkdir $target_dir
+        #     scp $the_image $target_dir/$target_name
+        # }
 }
 
 
