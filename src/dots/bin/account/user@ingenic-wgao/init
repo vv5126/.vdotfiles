@@ -1,7 +1,3 @@
-include $VINIS/ini.ingenic
-
-export VGL_MNTFIlE="$VUSER/mnt_conf"
-
 be_sudoer() {
     # sudoer check
     if [[ "$(cat /etc/group | sed -n '/^sudo:/p;')" =~ "$(whoami)" ]]; then
@@ -14,11 +10,11 @@ be_sudoer() {
     fi
 }
 
-if [ ! -f "$VACCOUNT/.inited" ]; then
-    (
-	cd "$VUSER"
-	lnn_file ln_list
-    )
+#================================================#
+if [ $1 == "init" ]; then
     # be_sudoer
-    echo '' > "$VACCOUNT/.inited"
+    > /dev/null
+else
+    include $VINIS/ini.ingenic
+    export VGL_MNTFIlE="$VUSER/mnt_conf"
 fi

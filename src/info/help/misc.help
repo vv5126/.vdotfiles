@@ -40,12 +40,6 @@ LANG=c < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};echo;
 快速创建一个文件的备份（扩展名是.bkp）:
 cp some_file_name{,.bkp}
 
-运行history中的命令 (这里在history中的第100个):
-!100
-
-输入多行文字 (按 CTRL + d 退出):
-cat > test.txt
-
 netstat 显示所有IPv4的TCP监听的端口:
 netstat -lnt4 | awk '{print $4}' | cut -f2 -d: | grep -o '[0-9]*'
 

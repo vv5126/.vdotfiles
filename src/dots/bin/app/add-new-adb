@@ -1,11 +1,30 @@
 #!/bin/bash
-
 #添加新的设备 完整版
+
+include $VLIBS/lib.misc
+
+if [ $# -eq 0 ]; then
+    dev=$(lsusb | grep 'Google Inc.' - | awk '{print $6}')
+    count=$(element_count "$dev")
+    case "$dev" in
+    0)
+	echo "请插入待识别设备!"
+	;;
+    1)
+	;;
+    *)
+	echo -n "select one: "
+	read dev
+	;;
+    esac
+else
+    dev="$1"
+fi
 
 ADB=$(which adb)
 
-t1=${1%%:*}
-t2=${1#*:}
+t1=${dev%%:*}
+t2=${dev#*:}
 
 echo t1=$t1
 echo t2=$t2

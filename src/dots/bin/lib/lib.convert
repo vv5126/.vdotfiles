@@ -1,3 +1,4 @@
+# 时间转频率
 function time2frequency ()
 {
 	local val="$1"
@@ -26,5 +27,4 @@ function time2frequency ()
 	Clean_zero "$val/1000/1000/1000" GHz
 	return 0
 }
-
 

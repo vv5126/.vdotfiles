@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ~/.bin/lib/lib.base
+include $VLIBS/lib.base
 
 dst=$VGL_ASD_FILE
 

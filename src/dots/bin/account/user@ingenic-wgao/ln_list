@@ -1,18 +1,20 @@
-cloner
-mnt
-star
 adb
-vp
+add-new-adb
+checkdot
 com
+cloner
+diff-so-fancy
 g go
 ins
-# gt
-checkdot
-diff-so-fancy
+kill_process
+mnt
 mr
+star
+vp
 vcp
 vhelper
 
+# gt
 # ack
 # asd
 # qq

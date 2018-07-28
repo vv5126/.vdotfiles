@@ -146,6 +146,20 @@ function col()
       awk -v col=$1 '{print $col}'
 }
 
+# 计算元素数量
+function element_count() {
+	local num=0
+        for i in $1; do
+            num=$((num+=1))
+        done
+	echo $num
+}
+
+# 获得当前路径深度
+function get_path_depth() {
+    pwd | grep -o '/' | wc -l
+}
+
 # 生成指定目录下所有脚本功能信息
 function gen_lib_info() {
     local func_name func_desc line lines i j lib_dir files

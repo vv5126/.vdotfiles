@@ -272,3 +272,8 @@ dev opt root srv
 sudo apt-get remove --purge libreoffice*
 http://community.wps.cn/download/
 
+### xdotool类似与autoit
+demo: retry=5
+while ! xdotool search --name "$TITLE"  mousemove 30 50 click 1; do
+    sleep 1; ((retry--)) || break
+done </dev/null &>/dev/null

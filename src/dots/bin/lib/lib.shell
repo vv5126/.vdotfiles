@@ -154,6 +154,14 @@ function check_sudo() {
     echo $ret
 }
 
+# 删除失效的链接文件
+function clean_invalid_ln() {
+    local file
+    for file in $(find $1 -type l); do
+        [ ! -e $file ] && rm -f $file
+    done
+}
+
 ############# will export ##############
 alias cd='quickcd'
 alias vi='svi'

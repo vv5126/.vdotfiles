@@ -1,11 +1,8 @@
-include $VINIS/ini.ingenic
-include $VLIBS/lib.work
 
-if [ ! -f "$VACCOUNT/.inited" ]; then
-    (
-	cd "$VACCOUNT/$VHOSTID"
-	lnn_file ln_list
-    )
-    echo '' > "$VACCOUNT/.inited"
-    echo init done.
+#================================================#
+if [ $1 == "init" ]; then
+    > /dev/null
+else
+    include $VINIS/ini.ingenic
+    include $VLIBS/lib.work
 fi

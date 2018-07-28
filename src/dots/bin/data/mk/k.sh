@@ -72,24 +72,24 @@ function mkmain() {
     # [ "$use_repo" -eq 1 -a -n "$repo_info" ] && source $repo_info
     # the_image=$KERNEL_IMAGE_PATH/$KERNEL_TARGET_IMAGE
 
-        [ "$needclean" = "1" ] && make clean
-        [ -f "$the_image" ] && rm $the_image
-	case "${the_image##*/}" in
-	'xImage')
-		make xImage -j32
-		;;
-	'zImage')
-		make zImage -j32
-		;;
-	'uImage')
-		make uImage -j32
-		;;
-	esac
+    [ "$needclean" = "1" ] && make clean
+    [ -f "$the_image" ] && rm $the_image
+    case "${the_image##*/}" in
+        'xImage')
+            make xImage -j32
+            ;;
+        'zImage')
+            make zImage -j32
+            ;;
+        'uImage')
+            make uImage -j32
+            ;;
+    esac
 
-	if [ -f $the_image ]; then
-	    case "$forOS" in
-                'android'*)
-                    [ ! -d "$build_bootimage_dir" ] && {
+    if [ -f $the_image ]; then
+        case "$forOS" in
+            'android'*)
+                [ ! -d "$build_bootimage_dir" ] && {
                     scp $VGL_BUILD_BOOTIMAGE .
                     tar -xf $build_bootimage_tar && rm $build_bootimage_tar
                 }
@@ -107,7 +107,6 @@ function mkmain() {
                 )
             ;;
         *)
-            break
             if [ -n "$the_img_dir" ]; then
                 echo -e "\n  the out img: $the_img_dir" >&2
                 smkdir $the_img_dir
