@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [[ "$VHOSTID" == 'wgao@lqchen-0B' ]]; then
+    gedit "$VGL_DATA"/.asd &
+else
+    ssh -X "$WORK_SERVER_SSH" 'source $HOME/.v.bash; gedit $VGL_DATA/.asd' &
+fi

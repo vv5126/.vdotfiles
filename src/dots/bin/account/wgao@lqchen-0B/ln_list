@@ -2,6 +2,7 @@ make      gmake /usr/bin
 gawk-x64  gawk
 diff-so-fancy
 repo
+asd
 g
 checkdot
 vcp

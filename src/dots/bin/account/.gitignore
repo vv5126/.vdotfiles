@@ -1,6 +1,8 @@
 .inited
 ack
+asd
 adb
+add-new-adb
 auto-sync
 bn
 checkdot
@@ -20,6 +22,7 @@ happybox
 ins
 irc
 jsonparser
+kill_process
 lib
 mk
 make
