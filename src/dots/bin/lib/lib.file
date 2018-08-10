@@ -1,5 +1,6 @@
 #!/bin/bash
 
+include $VLIBS/lib.base
 # NF=14
 # awk '{$NF="'$PWD/'"$NF; print}' $1
 
@@ -7,18 +8,40 @@
 
 # done start
 
-function find_file_by_suffix() {
-	local tmp i
-	for i in $1; do
+function find_file__by_suffix() {
+	local path="$1" suffix="$2" tmp i
+	for i in $suffix; do
 		tmp="$tmp"'|\.'"$i"'\'
 	done
-
-	find . -iregex ".*\(${tmp:1})$"
+	find "$path" -iregex ".*\(${tmp:1})$"
 }
-# function find_file_by_type() { }
-# function find_file_by_executable() { }
+# function find_files__by_type() { }
+# function find_files__by_executable() { }
+# function find_files__by_attr() { }
 # function find_subdir_by_dir() { }
-# function find_file_by_attr() { }
+
+# 拷贝文件，根据列表文件，并保持目录结构
+function cp_files__by_listfile_with_arch() {
+	local file="$1" dst="$2" line line1 path
+	while read line; do
+		[ -z "$line" ] && continue
+		line1=./$(clean_last_symbol "$line")
+		path=${line1%/*}
+		mkdir -p "$dst/$path"
+		cp -rf "$line1" "$dst/$path"
+	done < "$file"
+}
+
+# 生成目录结构，根据列表文件
+function gen_arch__by_listfile() {
+	local file="$1" dst="$2" line line1 path
+	while read line; do
+		[ -z "$line" ] && continue
+		line1=./$(clean_last_symbol "$line")
+		path=${line1%/*}
+		mkdir -p "$dst/$path"
+	done < "$file"
+}
 
 # done end
 

@@ -15,7 +15,7 @@ generate_link() {
 #======================== MAIN
 
 generate_link
-echo '[ -f ~/.v.bash ] && source ~/.v.bash' >> ~/.bashrc
+echo '[ -z "$VHOSTID" -a -f ~/.v.bash ] && source ~/.v.bash' >> ~/.bashrc
 [ -f "$VACCOUNT/.inited" ] && rm "$VACCOUNT/.inited"
 
 source $HOME/.profile

@@ -207,6 +207,36 @@ function time_sync() {
     fi
 }
 
+# 得到快速的文件特征值
+function md1sum() {
+    echo "$(stat $1 | grep -E 'Size:|Modify:' | tr "\n" " " | awk '{print $2,$12}' | sed 's/\ .*\.//g')"
+}
+
+function canup() {
+    (cd $HOME/.vdotfiles
+    [ x"$(git log --oneline -1 remotes/origin/master | awk '{print $1}')" != x"$(git log --oneline -1 | awk '{print $1}')" ] && echo can! || echo bad!)
+}
+
+# 计算耗时
+function timepass() {
+    # 参数由date +%s.%N获得
+    start=$1
+    end=$2
+    # echo $start
+    # echo $end
+
+    start_s=`echo $start | cut -d '.' -f 1`
+    start_ns=`echo $start | cut -d '.' -f 2`
+    end_s=`echo $end | cut -d '.' -f 1`
+    end_ns=`echo $end | cut -d '.' -f 2`
+
+    time_micro=$(( (10#$end_s-10#$start_s)*1000000 + (10#$end_ns/1000 - 10#$start_ns/1000) ))
+    time_ms=`expr $time_micro/1000  | bc `
+
+    echo "$time_micro microseconds"
+    echo "$time_ms ms"
+}
+
 ############# will export ##############
 
 # case $(ps -q $$ -o comm=) in

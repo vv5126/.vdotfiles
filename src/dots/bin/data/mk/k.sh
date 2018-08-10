@@ -315,16 +315,21 @@ function mk_gcc_file() {
                 [ -f '.tagfile' ] && ctags -L .tagfile || echo failed!
 		;;
         'ycm_conf')
-                mkdir .tag
-                mk_gcc_file .tag/gcc
-                get_c_from_gcc .tag/gcc > .tag/c
-                get_h_from_c .tag/c > .tag/h
-                get_include_from_gcc .tag/gcc > .tag/include
-                clean_duplicate_lines .tag/include
-                get_h_from_include .tag/include >> .tag/h
-                cat .tag/c .tag/h > .tag/fortag
-                clean_duplicate_lines .tag/fortag
-                ctags -L .tag/fortag
+                cp ~/.vim/bundle/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py .
+                # [ -f compile_commands.json ] && rm compile_commands.json
+		make clean
+                bear make -j > /dev/null
+                [ -f compile_commands.json ] && sed "/^compilation_database_folder =.*/compilation_database_folder = \'$PWD\'" -i .ycm_extra_conf.py
+                # mkdir .tag
+                # mk_gcc_file .tag/gcc
+                # get_c_from_gcc .tag/gcc > .tag/c
+                # get_h_from_c .tag/c > .tag/h
+                # get_include_from_gcc .tag/gcc > .tag/include
+                # clean_duplicate_lines .tag/include
+                # get_h_from_include .tag/include >> .tag/h
+                # cat .tag/c .tag/h > .tag/fortag
+                # clean_duplicate_lines .tag/fortag
+                # ctags -L .tag/fortag
                 # ycmadd file_include
                 ;;
 	*)

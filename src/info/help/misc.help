@@ -150,3 +150,5 @@ precise-server-cloudimg-amd64-disk1.raw
 检查xml格式：
 xmllint --noout file.xml
 
+截取最后一列
+awk '{print $NF}

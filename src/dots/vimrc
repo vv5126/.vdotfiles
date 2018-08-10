@@ -574,6 +574,17 @@ endif
 
             " let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/bundle/wim/UltiSnips']
 
+            let g:ycm_filetype_blacklist = {
+                        \ 'tagbar' : 1,
+                        \ 'qf' : 1,
+                        \ 'notes' : 1,
+                        \ 'markdown' : 1,
+                        \ 'unite' : 1,
+                        \ 'text' : 1,
+                        \ 'vimwiki' : 1,
+                        \ 'gitcommit' : 1,
+                        \}
+
             " 影响回车
             let g:UltiSnipsExpandTrigger="<TAB>"
             let g:UltiSnipsJumpForwardTrigger="<c-j>"

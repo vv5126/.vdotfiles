@@ -87,23 +87,31 @@ function vcd(){
 	[ -n $TARGET ] && cd $TARGET
 }
 
-function clean_path() {
-    if [[ "$PATH" =~ ":$1:" ]]; then
-        tmp="${PATH//:$1:/:}"
-    elif [[ "$PATH" =~ ":$1" ]]; then
-        tmp="${PATH//:$1/}"
-    elif [[ "$PATH" =~ "$1:" ]]; then
-        tmp="${PATH//$1:/}"
-    else
-        tmp="$PATH"
-    fi
-    PATH=$tmp
+# ev = 'environment variables'
+# 删除环境变量
+function clean_ev() {
+    local tmp
+    eval tmp=\$"$1"
+    tmp="$(echo ${tmp//$2/} | sed 's/:\{1,\}/:/g')"
+    export $1="$tmp"
 }
 
 # 添加环境变量
+function add_ev() {
+    clean_ev "$1" "$2"
+    local tmp
+    eval tmp=\$"$1"
+    export $1="$2${tmp:+:$tmp}"
+}
+
+# 删除环境变量PATH
+function clean_path() {
+    clean_ev PATH "$1"
+}
+
+# 添加环境变量PATH
 function add_path() {
-    clean_path "$1"
-    [ -d "$1" ] && PATH="$1":"$PATH"
+    [ -d "$1" ] && { clean_ev PATH "$1"; add_ev PATH "$1"; }
 }
 
 # 在当前目录创建指定文件的链接

@@ -5,9 +5,9 @@
 # 2.check kernel version.
 # 3.add creat new project.
 
-source ~/.bin/lib/lib.base
-source ~/.bin/lib/lib.work
-source ~/.bin/lib/lib.misc
+include $VLIBS/lib.base
+include $VLIBS/lib.work
+include $VLIBS/lib.misc
 
 function try_get_obj()
 {

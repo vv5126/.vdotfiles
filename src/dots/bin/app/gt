@@ -1,12 +1,17 @@
 #!/bin/bash
 
-source ~/.bin/lib/lib.base
-source ~/.bin/lib/lib.work
-source ~/.bin/lib/lib.git
-source ~/.bin/lib/lib.misc
+include $VLIBS/lib.base
+include $VLIBS/lib.work
+include $VLIBS/lib.file
+include $VLIBS/lib.git
+include $VLIBS/lib.misc
 
 APP_DIR=$(which $0)
 APP_DIR=${APP_DIR%\/*}
+
+text(){
+    [ -n "$2" ] && echo "[  OK  ] $1=$2" || echo "[ FAIL ] $1=$2"
+}
 
 function git_bak_list() {
 	local BAKDIR=''
@@ -29,6 +34,62 @@ function git_cover() {
 		echo "NO BAKDIR"
 	fi
 	exit
+}
+
+function git_recovery() {
+	src=$1
+	dest=${src%%.tar.gz*}
+	tar -xf $src
+	echo src = $src
+	echo dest = $dest
+	cd $dest
+	dest=${dest%%_whole_bak*}
+	source ./info
+	git clone $remote $dest
+	cd $dest
+	git checkout $branch
+	git reset --hard $commit
+	patch -p 1 < ../patch
+	echo cover done!
+	return
+}
+
+function git_bak2() {
+	local git_remote git_branch git_commit tmp dummy_branch
+	local bakdir="$1"
+
+        echo "baking project: $PWD"
+        echo -n "to $bakdir ...... "
+
+	[ -d "$bakdir" ] && rm $bakdir -rf
+        mkdir -p "$bakdir"
+
+	git_remote="$(git remote -v | head -2 | tail -1 | awk '{print $2}')"
+
+	tmp="HEAD"
+	while true; do
+		dummy_branch="$(git name-rev --name-only $tmp)"
+		if [ ${dummy_branch: -2} == '~1' ]; then
+			git_branch=${dummy_branch%%~*}
+			git_commit=$(git log --pretty=format:"%h" -1 $tmp)
+			break
+		fi
+		tmp=$tmp^
+	done
+
+	echo -e "git_remote=$git_remote\ngit_branch=$git_branch\ngit_commit=$git_commit\n" > git.info
+	git log --stat -5 > git.log
+	git status > git.status
+
+	echo "$(git diff --name-only $git_commit)" > .tmp_listfile
+	echo "$(git status -s | grep -o "^?? .*" | awk '{print $2}')" >> .tmp_listfile
+	echo -e ".config\n.pro\n" >> .tmp_listfile
+
+	cp_files__by_listfile_with_arch .tmp_listfile "$bakdir"
+
+	rm git.log git.status git.info .tmp_listfile
+
+        echo "backup done!"
 }
 
 function git_bak() {
@@ -107,6 +168,14 @@ function repo_bak() {
 cd_proj
 
 if [ $# -gt 0 ];then
+	case "$1" in
+		'recovery')
+			[ $# -eq 2 ] && git_recovery $2
+			exit
+			;;
+		*)
+			;;
+	esac
         if [ -d ".repo" ]; then
                 case "$1" in
                         'bak')
@@ -143,16 +212,17 @@ if [ $# -gt 0 ];then
                         'baklist')
 		                git_bak_list $PWD
                                 ;;
-                        'cover')
-		                [ $# -eq 2 ] && git_cover $PWD $2
-                                ;;
                         'tag')
                                 git tag | grep ingenic
                                 ;;
                         'bak')
                                 BAKDIR=${PWD%\/*}/git_bak/${PWD##*\/}/${PWD##*\/}_$(date +%Y%m%d_%H-%M)
                                 [ $# -eq 2 ] && BAKDIR=$BAKDIR-$2 || BAKDIR=$BAKDIR-no-up-git-push-file
-                                git_bak $BAKDIR
+                                # git_bak $BAKDIR
+                                git_bak2 $BAKDIR
+                                ;;
+                        'cover')
+		                [ $# -eq 2 ] && git_cover $PWD $2
                                 ;;
                         *)
                                 git "$@"
