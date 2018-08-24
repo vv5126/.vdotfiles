@@ -209,7 +209,7 @@ function time_sync() {
 
 # 得到快速的文件特征值
 function md1sum() {
-    echo "$(stat $1 | grep -E 'Size:|Modify:' | tr "\n" " " | awk '{print $2,$12}' | sed 's/\ .*\.//g')"
+    echo "$(stat $1 | grep -E 'Size:|Modify:' | tr "\n" " " | awk '{print $2,$(NF-1)}' | sed 's/\ .*\.//g')"
 }
 
 function canup() {

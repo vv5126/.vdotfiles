@@ -110,7 +110,7 @@ add_path "$HOME/.bin/work"
 }
 
 # 4.150 #
-[ "$VHOSTID" == "$VLOCALID" ] && {
+[[ "$VHOSTID" == "$VLOCALID" ]] && {
     export VGL_NOTIFY=/tmp/.notify_pipe
     export ZSH=$HOME/.vim/bundle/oh-my-zsh
     add_path "$HOME/.bin/local"
@@ -122,7 +122,7 @@ add_path "$HOME/.bin/work"
     alias ch1='(cd $HOME/.vdotfiles; git checkout src/dots/bin/account/user@ingenic-wgao/chrome1;); nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file $VUSER/chrome1 > /dev/null &'
 }
 
-[ "$VHOSTID" != "$VLOCALID" ] && {
+[[ "$VHOSTID" != "$VLOCALID" ]] && {
     # java jdk
     JAVA_HOME=${JAVA_HOME:=/usr/lib/jvm/java}
     export JRE_HOME=${JAVA_HOME}/jre

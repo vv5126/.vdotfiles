@@ -26,6 +26,7 @@ export VHOSTID="$USER@$HOSTNAME"
 export VACCOUNT="$HOME/.bin/account"
 export VUSER="$VACCOUNT/$VHOSTID"
 export VGL_DATA="$HOME/.bin/data"
+export TMUX_PLUGIN="$HOME/.vdotfiles/src/plugins/tmux-plugin"
 
 export PKG_CONFIG_PATH=$HOME/.local/usr/local/lib/pkgconfig
 export LD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/usr/local/lib

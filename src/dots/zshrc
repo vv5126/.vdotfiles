@@ -57,7 +57,8 @@ ZSH_THEME="w"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
-source $HOME/.bin/base/batchExport
+[ -f ~/.v.bash ] && source ~/.v.bash
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # for autojump
 [[ -s /home/user/.autojump/etc/profile.d/autojump.sh ]] && source /home/user/.autojump/etc/profile.d/autojump.sh

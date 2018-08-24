@@ -1015,3 +1015,9 @@ git pull --rebase origin master
 
 Git push 新的branch到远程:
 git push -u origin mynewfeature
+
+
+git name-rev --name-only $i
+git log --pretty=format:"%h" -1 $i^
+git diff --name-only $git_remote_branch
+echo git archive -o $bakdir/updated.zip HEAD $bak_files1
