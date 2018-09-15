@@ -173,7 +173,7 @@ function clean_invalid_ln() {
 ############# will export ##############
 alias cd='quickcd'
 alias vi='svi'
-alias fd='find1'
+alias fd='set -f; find1'
 alias ..='vcd'
 alias ...='cd_repo'
 

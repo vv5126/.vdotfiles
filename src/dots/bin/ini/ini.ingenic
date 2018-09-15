@@ -33,18 +33,9 @@ export VGLD_MKDATA=$VGL_DATA/mk
 export VGL_ASD_FILE="$WORK_SERVER_SSH":"$VGL_DATA"/.asd
 alias grep='grep -a --exclude-dir=.git --exclude=cscope*'
 
-add_path "$HOME/.bin/work"
-
 # 4.15 #
 [[ "$VHOSTID" == 'wgao@lqchen-0B' ]] && {
     # [ "$(ps -p $$ -o comm=)" != 'zsh' -a -x '/data1/home/wgao/.local/bin/zsh' ] && exec /data1/home/wgao/.local/bin/zsh
-
-    # JDK
-    # add_path "/data1/home/wgao/tools/JDK-1.5.0/jdk1.6.0_31/bin"
-    # export JAVA_HOME="/data1/home/wgao/tools/jdk1.6.0_31"
-    export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
-    # export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
-    # export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
 
     # GCC for Android
     add_path "/data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin"
@@ -111,23 +102,31 @@ add_path "$HOME/.bin/work"
 
 # 4.150 #
 [[ "$VHOSTID" == "$VLOCALID" ]] && {
-    export VGL_NOTIFY=/tmp/.notify_pipe
+    # export VGL_NOTIFY=/tmp/.notify_pipe
     export ZSH=$HOME/.vim/bundle/oh-my-zsh
-    add_path "$HOME/.bin/local"
-    # source ~/.bin/local/vlogin
     # alias VB='VirtualBox --startvm $HOME/.VirtualBox/xp/xp.vbox &'
     alias VB='VirtualBox --comment xp --startvm 8dd637a7-8dff-4247-896c-001f700d7b40 --no-startvm-errormsgbox &'
     alias sm='thunderbird -compose'
-    alias ch='(cd $HOME/.vdotfiles; git checkout src/dots/bin/account/user@ingenic-wgao/chrome3;); nohup /opt/Citrix/ICAClient/wfica -icaroot /opt/Citrix/ICAClient $VUSER/chrome3 > /dev/null &'
-    alias ch1='(cd $HOME/.vdotfiles; git checkout src/dots/bin/account/user@ingenic-wgao/chrome1;); nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file $VUSER/chrome1 > /dev/null &'
+    alias ch='(cd $HOME/.vdotfiles; git checkout src/dots/bin/account/user@ingenic-wgao/data/chrome3;); nohup /opt/Citrix/ICAClient/wfica -icaroot /opt/Citrix/ICAClient $VUSER/chrome3 > /dev/null &'
+    alias ch1='(cd $HOME/.vdotfiles; git checkout src/dots/bin/account/user@ingenic-wgao/data/chrome1;); nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file $VUSER/chrome1 > /dev/null &'
+    alias sync_hw_pdf='[ -d "/tmp/mnt/hw" -a -d "/home/user/local_debug/pdf/hw" ] && rsync -av --exclude-from="$VUSER/hw_pdf.sync" /tmp/mnt/hw/ /home/user/local_debug/pdf/hw'
+    alias sync_hw_pcb='[ -d "/tmp/mnt/hw" -a -d "/home/user/local_debug/pcb" ] && rsync -av --exclude-from="$VUSER/hw_pcb.sync" /tmp/mnt/hw/ /home/user/local_debug/pcb'
 }
 
 [[ "$VHOSTID" != "$VLOCALID" ]] && {
-    # java jdk
-    JAVA_HOME=${JAVA_HOME:=/usr/lib/jvm/java}
-    export JRE_HOME=${JAVA_HOME}/jre
-    export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
-    add_path "${JAVA_HOME}/bin"
+    # JDK
+    clean_ev JAVA_HOME
+    add_ev JAVA_HOME "/data1/home/wgao/tools/jdk1.8.0_65"
+    add_ev JAVA_HOME "/usr/lib/jvm/java"
+    add_ev JRE_HOME "${JAVA_HOME}/jre"
+    add_ev CLASSPATH ".:${JAVA_HOME}/lib:${JRE_HOME}/lib"
+    add_path "/data1/home/wgao/tools/jdk1.8.0_65/bin"
+    # add_path "/data1/home/wgao/tools/JDK-1.5.0/jdk1.6.0_31/bin"
+    # export JAVA_HOME="/data1/home/wgao/tools/jdk1.6.0_31"
+    # export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
+    # export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+    # export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
+
 }
 
 # clear

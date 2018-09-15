@@ -41,12 +41,12 @@ if [ -d "$VACCOUNT/$VHOSTID" ]; then
         listfile_md1="$(md1sum ln_list | awk '{print $1}')"
         if [ "x$(cat ../.inited)" != "x$listfile_md1" ]; then
             find $1 -type l -delete
-            [ -f "ln_list" ] && lnn_file ln_list
+            [ -f "ln_list" -a -d "bin" ] && (cd bin; lnn_file ../ln_list)
             echo $listfile_md1 > "../.inited"
             echo reset - "$VHOSTID" done! >&2
         fi
     )
     # clean_invalid_ln "$VACCOUNT/$VHOSTID"
-    add_path "$VACCOUNT/$VHOSTID"
+    [ -d "$VACCOUNT/$VHOSTID/bin" ] && add_path "$VACCOUNT/$VHOSTID/bin"
     [ -f "$VACCOUNT/$VHOSTID/init" ] && source "$VACCOUNT/$VHOSTID/init" "load"
 fi

@@ -1,4 +1,4 @@
 [[ "$(time_check y_y_00_00_1-6)" == '0' ]] && {
-    rsync -rul $HOME/work/tools-bak wgao@192.168.4.10:/home1/wgao/backup/tools-from-4.15
+    rsync -av $HOME/work/tools-bak wgao@192.168.4.10:/home/wicom/work/document/user/wgao/tools-bak
     [ $? -eq 0 ] && _log "bak tools at $(date)."
 }
