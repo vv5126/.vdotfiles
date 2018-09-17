@@ -1,0 +1,8 @@
+
+#================================================#
+if [[ $1 == "init" ]]; then
+    > /dev/null
+else
+    include $VINIS/ini.ingenic
+    include $VLIBS/lib.work
+fi

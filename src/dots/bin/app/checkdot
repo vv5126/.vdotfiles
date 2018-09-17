@@ -32,6 +32,15 @@ dot_templat=(
 .vhelper
 -----------------------------
 # 确定忽略 #
+.hosts
+.stm32cubemx
+.stmcufinder
+.npm
+.node-gyp
+.node-red
+.node_repl_history
+.npminstall_tarball
+.pip
 .v.bash
 .fzf
 .fzf.bash

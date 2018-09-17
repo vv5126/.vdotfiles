@@ -44,7 +44,7 @@ function showlist(){
 		echo >&2
 		NO=1
 		while read line; do
-			if [ -n "$line" ]; then
+			if [ -n "$line" -a "${line:0:1}" != '#' ]; then
 				echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$line\033[0m">&2
 				NO=$[$NO+1]
 			fi
@@ -59,7 +59,7 @@ function showlist(){
 	if [ $? -eq 0 ]; then
 		NO=1
 		while read line; do
-			if [ -n "$line" ]; then
+			if [ -n "$line" -a "${line:0:1}" != '#' ]; then
 				if [ $NUM -eq $NO ]; then
 					DEST=$line
 					break
@@ -92,7 +92,17 @@ function addlist(){
 }
 
 function getline(){
-	echo $(head -$2 $1 | tail -1)
+	# echo $(head -$2 $1 | tail -1)
+        expr $2 + 0 &>/dev/null
+        if [ $? -eq 0 ]; then
+            NO=1
+            while read line; do
+                if [ -n "$line" -a "${line:0:1}" != '#' ]; then
+                    [ $2 -eq $NO ] && echo "$line"
+                    NO=$[$NO+1]
+                fi
+            done < "$1"
+        fi
 }
 
 function showlist_with_value(){
@@ -108,7 +118,7 @@ function showlist_with_value(){
 		echo >&2
 		NO=1
 		while read line; do
-			if [ -n "$line" ]; then
+			if [ -n "$line" -a "${line:0:1}" != '#' ]; then
 				line=${line%%=*}
 				echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$line\033[0m">&2
 				NO=$[$NO+1]
@@ -124,7 +134,7 @@ function showlist_with_value(){
 	if [ $? -eq 0 ]; then
 		NO=1
 		while read line; do
-			if [ -n "$line" ]; then
+			if [ -n "$line" -a "${line:0:1}" != '#' ]; then
 				if [ $NUM -eq $NO ]; then
 					line=${line#*=}
 					DEST=$line
@@ -191,7 +201,7 @@ function showlist_with_tab(){
 		echo >&2
 		NO=1
 		while read line; do
-			if [ -n "$line" ]; then
+			if [ -n "$line" -a "${line:0:1}" != '#' ]; then
 				line="$(echo $line | awk '{print '$tab'}')"
 				echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$line\033[0m">&2
 				NO=$[$NO+1]
@@ -207,7 +217,7 @@ function showlist_with_tab(){
 	if [ $? -eq 0 ]; then
 		NO=1
 		while read line; do
-			if [ -n "$line" ]; then
+			if [ -n "$line" -a "${line:0:1}" != '#' ]; then
 				if [ $NUM -eq $NO ]; then
 					DEST="$line"
 					break
@@ -217,29 +227,28 @@ function showlist_with_tab(){
 		done < "$file"
 	fi
 	[ -n "$DEST" ] && {
+                set -f
 		echo $DEST
+                set +f
 		return 0
 	} || return 1
 }
 
 
 
-############# will export ##############
+############# export ##############
 
-# case $(ps -q $$ -o comm=) in
-#     'zsh')
-#         ;;
-#     *)
-#         export -f showlist
-#         export -f onlyshowlist
-#         export -f addlist
-#         export -f getline
-#         export -f showlist_with_value
-#         export -f user_select
-#         export -f showlist_with_tab
-#         ;;
-# esac
+# if [ -n "$ZSH" ]; then
+# else
+#     export -f showlist
+#     export -f onlyshowlist
+#     export -f addlist
+#     export -f getline
+#     export -f showlist_with_value
+#     export -f user_select
+#     export -f showlist_with_tab
+# fi
 
-########### will export end ############
+########### export end ############
 
 [[ "${0##*/}" =~ "lib.list" ]] && $@

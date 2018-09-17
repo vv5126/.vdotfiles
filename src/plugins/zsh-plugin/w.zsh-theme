@@ -15,11 +15,11 @@ GREEN_START_P1="${PR_RESET}${GREEN_BASE_START}${PR_RESET} "
 local HOST_COLOR
 
 if [[ "$USER" == 'user' && "$HOST" == 'ThinkPad-Yoga-260' ]]; then
-    HOST_COLOR="%{$fg[yellow]%}"
+    HOST_COLOR="%{$fg[magenta]%}"
 elif [[ "$USER" == 'wgao' && "$HOST" == 'sw' ]]; then
     HOST_COLOR="%{$fg[blue]%}"
 elif [[ "$USER" == 'wgao' && "$HOST" == 'lqchen-0B' ]]; then
-    HOST_COLOR="%{$fg[magenta]%}"
+    HOST_COLOR="%{$fg[yellow]%}"
 elif [[ "$USER" == 'user' && "$HOST" == 'ingenic-wgao' ]]; then
     HOST_COLOR="%{$fg[orange]%}"
 fi

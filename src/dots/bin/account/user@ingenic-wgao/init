@@ -17,4 +17,11 @@ if [ $1 == "init" ]; then
 else
     include $VINIS/ini.ingenic
     export VGL_MNTFIlE="$VUSER/data/mnt.conf"
+
+    # export VGL_NOTIFY=/tmp/.notify_pipe
+    # alias VB='VirtualBox --startvm $HOME/.VirtualBox/xp/xp.vbox &'
+    alias VB='VirtualBox --comment xp --startvm 8dd637a7-8dff-4247-896c-001f700d7b40 --no-startvm-errormsgbox &'
+    alias sm='thunderbird -compose'
+    alias ch='(cd $HOME/.vdotfiles; git checkout src/dots/bin/account/user@ingenic-wgao/data/chrome3;); nohup /opt/Citrix/ICAClient/wfica -icaroot /opt/Citrix/ICAClient $VUSER/data/chrome3 > /dev/null &'
+    alias ch1='(cd $HOME/.vdotfiles; git checkout src/dots/bin/account/user@ingenic-wgao/data/chrome1;); nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file $VUSER/data/chrome1 > /dev/null &'
 fi

@@ -118,6 +118,7 @@
 	, "qt": { "src": {"source": "https://github.com/http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run" } }
 	, "pip": { "src": {"source": "https://github.com/https://bootstrap.pypa.io/get-pip.py" } }
 	, "termtosvg": { "src": {"source": "https://github.com/nbedos/termtosvg" } }
+	, "CubeMX2Makefile": { "src": {"source": "https://github.com/baoshi/CubeMX2Makefile" } }
 	, "zsh": {
 		"wmctrl": "apt",
 		"wting/autojump": "git"

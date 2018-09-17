@@ -92,6 +92,9 @@ function _untar() {
 	*rpm)
 	    unrpm $file_name
 	    ;;
+	*rar)
+	    unrar -x $file_name
+	    ;;
 	*)
 	    ;;
     esac

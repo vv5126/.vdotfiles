@@ -237,21 +237,18 @@ function timepass() {
     echo "$time_ms ms"
 }
 
-############# will export ##############
+############# export ##############
 
-# case $(ps -q $$ -o comm=) in
-#     'zsh')
-#         ;;
-#     *)
-#         export -f get_script_dir
-#         export -f mem
-#         export -f read_key
-#         export -f nicemount
-#         export -f ls_file
-#         export -f ls_dir
-#         ;;
-# esac
+# if [ -n "$ZSH" ]; then
+# else
+#     export -f get_script_dir
+#     export -f mem
+#     export -f read_key
+#     export -f nicemount
+#     export -f ls_file
+#     export -f ls_dir
+# fi
 
-########### will export end ############
+########### export end ############
 
 [[ "${0##*/}" =~ "lib.misc" ]] && $@

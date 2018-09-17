@@ -8,12 +8,8 @@ function is_num() {
 
 ############# will export ##############
 
-# case $(ps -q $$ -o comm=) in
-#     'zsh')
-#         ;;
-#     *)
-#         export -f is_num
-#         ;;
-# esac
+# if [ -n "$ZSH" ]; then
+# else
+# fi
 
 ########### will export end ############

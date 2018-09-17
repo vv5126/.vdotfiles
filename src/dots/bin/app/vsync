@@ -1,0 +1,40 @@
+#!/bin/bash
+
+source $VLIBS/lib.base
+source $VLIBS/lib.list
+
+DEST=''
+[ -z "$VUSER_DATA/sync.conf" ] && { echo "no conf file!"; exit; }
+
+if [ $# -eq 1 ]; then
+	expr $1 + 0 &>/dev/null
+	if [ $? -eq 0 ]; then
+		DEST=$(getline $VUSER_DATA/sync.conf $1)
+	fi
+else
+	DEST="$(showlist_with_tab $VUSER_DATA/sync.conf 1 "Backup you want")"
+fi
+
+if [ -n "$DEST" ]; then
+	set -f
+	eval param="$(echo $DEST | awk '{print $2}')"
+	eval exclude="$(echo $DEST | awk '{print $3}')"
+	eval src="$(echo $DEST | awk '{print $4}')"
+	eval dst="$(echo $DEST | awk '{print $5}')"
+	if [ "$exclude" == '*' ]; then
+		exclude=''
+	elif [ -f "$exclude" ]; then
+		exclude=" --exclude-from=$exclude"
+	else
+		exclude=" --exclude=$exclude"
+	fi
+	set +f
+	if [ "$(is_exsit $src)" -eq 1 -a "$(is_exsit $dst)" -eq 1 ]; then
+		rsync -$param $exclude "$src" "$dst"
+	else
+		echo "dir error!"
+	fi
+else
+	echo "wrong number"
+	echo 
+fi

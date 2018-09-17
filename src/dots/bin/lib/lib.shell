@@ -69,11 +69,12 @@ function svi(){
 
 # find的增强版
 function find1(){
-	if [ $# -ne 0 ]; then
-		STR=${1%%:*}
-		FILE=${STR##*/}
-                eval find "${2:+\"$2\" }"-name \""$FILE"\"
-	fi
+    set +f
+    if [ $# -ne 0 ]; then
+        STR=${1%%:*}
+        FILE=${STR##*/}
+        eval find "${2:+\"$2\" }"-name \""$FILE"\"
+    fi
 }
 
 # .., 智能目录回退
@@ -176,15 +177,9 @@ alias vi='svi'
 alias fd='set -f; find1'
 alias ..='vcd'
 alias ...='cd_repo'
+alias vvsync="rsync -url 'wgao@192.168.4.15:\$HOME/.vdotfiles' $HOME"
 
-case $(ps -p $$ -o comm=) in
-    'zsh')
-        export ZSH_EXPORTED_FUNCTIONS="$(functions \
-            change_toolchain \
-            )"
-        ;;
-    *)
-        ;;
-esac
+# if [ -n "$ZSH" ]; then
+# fi
 
-########### will export end ############
+########### export end ############

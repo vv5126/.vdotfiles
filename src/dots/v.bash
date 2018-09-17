@@ -1,7 +1,5 @@
 #!/bin/bash
 
-[[ $(ps -p $$ -o comm=) == 'zsh' ]] && HOSTNAME="$HOST"
-
 function include() {
     [[ "$VINCS" =~ "$1:" ]] || {
         source $1
@@ -9,7 +7,8 @@ function include() {
     }
 }
 
-if [[ "$(ps -p $$ -o comm=)" == 'zsh' ]]; then
+if [ -n "$ZSH" ]; then
+    HOSTNAME="$HOST"
     export ZSH_EXPORTED_FUNCTIONS="$(functions include)"
 else
     export -f include

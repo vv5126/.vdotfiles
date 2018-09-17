@@ -30,7 +30,7 @@ export VUSER_DATA="$VACCOUNT/$VHOSTID/data"
 export TMUX_PLUGIN="$HOME/.vdotfiles/src/plugins/tmux-plugin"
 
 export PKG_CONFIG_PATH=$HOME/.local/usr/local/lib/pkgconfig
-export LD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/usr/local/lib
+export LD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/usr/local/lib:$HOME/.local/usr/lib64
 add_ev C_INCLUDE_PATH "$HOME/.local/include"
 
 # history #

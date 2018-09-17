@@ -5,6 +5,8 @@ SUPPORT_ANDROID=1
 
 export WORK_SERVER_SSH="wgao@192.168.4.15"
 export VLOCALID="user@ingenic-wgao"
+export VMAINID="wgao@lqchen-0B"
+
 export VLOCALSSH="user@192.168.4.150"
 export VLOCALHOME="/home/user"
 
@@ -33,86 +35,12 @@ export VGLD_MKDATA=$VGL_DATA/mk
 export VGL_ASD_FILE="$WORK_SERVER_SSH":"$VGL_DATA"/.asd
 alias grep='grep -a --exclude-dir=.git --exclude=cscope*'
 
-# 4.15 #
-[[ "$VHOSTID" == 'wgao@lqchen-0B' ]] && {
-    # [ "$(ps -p $$ -o comm=)" != 'zsh' -a -x '/data1/home/wgao/.local/bin/zsh' ] && exec /data1/home/wgao/.local/bin/zsh
-
-    # GCC for Android
-    add_path "/data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin"
-
-    # VIM8
-    # add_path "/data1/home/wgao/tools/vim8/bin"
-
-    # GO
-    # add_path "/data1/home/wgao/tools/go/bin"
-    export GOROOT=/data1/home/wgao/tools/go
-    export GOPATH=/data1/home/wgao/tools/godir
-
-    # FZF
-    export FZF_DEFAULT_COMMAND='ag -g ""'
-    export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
-
-    # OpenCV
-    export OpenCV_LIBS=~/.local/lib
-
-    # alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
-    alias wiz='nohup $HOME/tools/wiz > /dev/null &'
-    alias vdiff='vgitdiff ~/.vdotfiles; meld git.diff.add git.diff.rm'
-    alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
-    alias vh='nohup vhelper > /dev/null &'
-    alias c='ctags -R .'
-
-    complete -W "diff bak" vhtml
-    complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk
-    complete -W "push bak baklist cover" gt
-
-    export VGL_BOOKMARK="$HOME/.vdotfiles/src/info/bookmark/bookmark.html"
-    # export VGLD_CRACK_DIR="$HOME/v/bbb"
-
-    export LD_RUN_PATH="$HOME/.local/lib"
-
-    # vim8 with python3
-    # ./configure --with-features=huge --enable-python3interp --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu/ --enable-rubyinterp --enable-luainterp --enable-perlinterp --with-python3-config-dir=/data1/home/wgao/tools/python3.6/lib/python3.6/config-3.6m-x86_64-linux-gnu/ --enable-multibyte --enable-cscope --enable-gui=gtk2 --prefix=/data1/home/wgao/tools/vim8/
-    # export PYTHONPATH=$HOME/.local/lib/python3.6
-    # export PYTHON_LIBRARIES="/usr/lib/python2.7"
-    # export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"
-    # export PYTHONPATH=$PYTHONPATH:/usr/lib/python3/dist-packages/
-
-    add_path "$HOME/tools/Qt5.7.0/5.7/gcc_64/bin"
-
-    # add_path "$HOME/tools/llvm/bin"
-} || {
-    alias vsync='rsync -rul $WORK_SERVER_SSH:~/.vdotfiles ~'
-    alias vsync1='rsync -rl --exclude=bundle $WORK_SERVER_SSH:~/.vdotfiles ~'
+[[ "$VHOSTID" != 'wgao@lqchen-0B' ]] && {
+    alias vsync1='rsync -rul $WORK_SERVER_SSH:~/.vdotfiles ~'
+    alias vsync2='rsync -rl --exclude=bundle $WORK_SERVER_SSH:~/.vdotfiles ~'
 }
 
-# 4.10 #
-[[ $VHOSTID == 'wgao@sw' ]] && {
-    # JDK
-
-    # GCC
-    PATH=/pdev/chains/mips-gcc472-glibc216/bin:$PATH
-    PATH=/pdev/chains/mips-gcc472-glibc216-r1.0/bin:$PATH
-    PATH=/pdev/chains/mips-gcc472-glibc216-r2.2/bin:$PATH
-    PATH=/pdev/chains/mips-gcc520-glibc222/bin:$PATH
-
-    # GCC for Android
-    PATH=/pdev/chains/mipsel-linux-android-4.7/bin:$PATH
-}
-
-# 4.150 #
-[[ "$VHOSTID" == "$VLOCALID" ]] && {
-    # export VGL_NOTIFY=/tmp/.notify_pipe
-    export ZSH=$HOME/.vim/bundle/oh-my-zsh
-    # alias VB='VirtualBox --startvm $HOME/.VirtualBox/xp/xp.vbox &'
-    alias VB='VirtualBox --comment xp --startvm 8dd637a7-8dff-4247-896c-001f700d7b40 --no-startvm-errormsgbox &'
-    alias sm='thunderbird -compose'
-    alias ch='(cd $HOME/.vdotfiles; git checkout src/dots/bin/account/user@ingenic-wgao/data/chrome3;); nohup /opt/Citrix/ICAClient/wfica -icaroot /opt/Citrix/ICAClient $VUSER/chrome3 > /dev/null &'
-    alias ch1='(cd $HOME/.vdotfiles; git checkout src/dots/bin/account/user@ingenic-wgao/data/chrome1;); nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file $VUSER/chrome1 > /dev/null &'
-    alias sync_hw_pdf='[ -d "/tmp/mnt/hw" -a -d "/home/user/local_debug/pdf/hw" ] && rsync -av --exclude-from="$VUSER/hw_pdf.sync" /tmp/mnt/hw/ /home/user/local_debug/pdf/hw'
-    alias sync_hw_pcb='[ -d "/tmp/mnt/hw" -a -d "/home/user/local_debug/pcb" ] && rsync -av --exclude-from="$VUSER/hw_pcb.sync" /tmp/mnt/hw/ /home/user/local_debug/pcb'
-}
-
+# ! 4.150 #
 [[ "$VHOSTID" != "$VLOCALID" ]] && {
     # JDK
     clean_ev JAVA_HOME
@@ -126,12 +54,4 @@ alias grep='grep -a --exclude-dir=.git --exclude=cscope*'
     # export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
     # export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
     # export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
-
 }
-
-# clear
-
-# [unused]
-# rm ~/.bash_history* >/dev/null 2>&1
-# tizen #
-# alias gbsa='gbs -v build -A mipsel'

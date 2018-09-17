@@ -4,10 +4,19 @@
 function is_local() {
     para=$*
     if [[ "$para" =~ "@" ]] && [[ "$para" =~ ":" ]]; then
-        return 1
+        echo 1
     else
-        return 0
+        echo 0
     fi
+}
+
+function is_exsit() {
+	if [ "$(is_local $1)" -eq 0  ]; then
+		[ -e "$1" ] && echo 1 || echo 0
+	else
+		ssh "${1%%:*}" "[ -e ${1#*:} ]"
+		[ "$?" -eq 0 ] && echo 1 || echo 0
+	fi
 }
 
 # 智能创建文件夹(远程or本地)
@@ -57,6 +66,8 @@ function getdir() {
     local BASE_DIR=~/
     local DIR=$PWD
 
+    [[ "$DIR" =~ "$BASE_DIR" ]] || return
+
     while [ "$BASE_DIR" != "$DIR/" ];do
         [ -f "$DIR/$TARGET" -o -d "$DIR/$TARGET" ] && { PROJECT_DIR=$DIR; break; } || PROJECT_DIR=
         DIR=${DIR%\/*}
@@ -95,26 +106,30 @@ function clean_last_symbol() {
         echo "$1"; return 0;
 }
 
-############# will export ##############
+function log() {
+    for i in $@; do
+        eval echo "$i = \$$i"
+    done
+}
 
-case $(ps -p $$ -o comm=) in
-    'zsh')
-        export ZSH_EXPORTED_FUNCTIONS="$(functions \
-            # is_local \
-            # smkdir \
-            # srm \
-            # smv \
-            )"
-        ;;
-    *)
-        export -f getdir
-        # export -f cd_proj
-        # export -f cd_repo
-        # export -f is_local
-        # export -f smkdir
-        # export -f srm
-        # export -f smv
-        ;;
-esac
 
-########### will export end ############
+############# export ##############
+
+if [ -n "$ZSH" ]; then
+  export ZSH_EXPORTED_FUNCTIONS="$(functions \
+    # is_local \
+    # smkdir \
+    # srm \
+    # smv \
+    )"
+else
+  export -f getdir
+  # export -f cd_proj
+  # export -f cd_repo
+  # export -f is_local
+  # export -f smkdir
+  # export -f srm
+  # export -f smv
+fi
+
+########### export end ############
