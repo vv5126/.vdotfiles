@@ -1,14 +1,18 @@
 
-include $VLIBS/lib.misc
-
 SUPPORT_ANDROID=1
 
-export WORK_SERVER_SSH="wgao@192.168.4.15"
-export VLOCALID="user@ingenic-wgao"
-export VMAINID="wgao@lqchen-0B"
+add_server WORK1 "lqchen-0B"    "wgao" "192.168.4.15"  "/data1/home/wgao"
+add_server WORK2 "ubuntu3"      "wgao" "192.168.3.3"   "/backup/home/wgao"
+add_server WORK3 "ingenic-wgao" "user" "192.168.4.150" "/home/user"
 
-export VLOCALSSH="user@192.168.4.150"
-export VLOCALHOME="/home/user"
+export VMAINID="$WORK1_ID"
+export WORK_SERVER_SSH="$WORK1_SSH"
+
+export VLOCALID="$WORK3_ID"
+export VLOCALSSH="$WORK3_SSH"
+export VLOCALHOME="$WORK3_HOME"
+
+WORKSPACE="$HOME"
 
 # imgs #
 export VGL_BOARDS=$HOME/work/local_debug/images
@@ -35,23 +39,7 @@ export VGLD_MKDATA=$VGL_DATA/mk
 export VGL_ASD_FILE="$WORK_SERVER_SSH":"$VGL_DATA"/.asd
 alias grep='grep -a --exclude-dir=.git --exclude=cscope*'
 
-[[ "$VHOSTID" != 'wgao@lqchen-0B' ]] && {
+[[ "$VHOSTID" != "$VMAINID" ]] && {
     alias vsync1='rsync -rul $WORK_SERVER_SSH:~/.vdotfiles ~'
     alias vsync2='rsync -rl --exclude=bundle $WORK_SERVER_SSH:~/.vdotfiles ~'
-}
-
-# ! 4.150 #
-[[ "$VHOSTID" != "$VLOCALID" ]] && {
-    # JDK
-    clean_ev JAVA_HOME
-    add_ev JAVA_HOME "/data1/home/wgao/tools/jdk1.8.0_65"
-    add_ev JAVA_HOME "/usr/lib/jvm/java"
-    add_ev JRE_HOME "${JAVA_HOME}/jre"
-    add_ev CLASSPATH ".:${JAVA_HOME}/lib:${JRE_HOME}/lib"
-    add_path "/data1/home/wgao/tools/jdk1.8.0_65/bin"
-    # add_path "/data1/home/wgao/tools/JDK-1.5.0/jdk1.6.0_31/bin"
-    # export JAVA_HOME="/data1/home/wgao/tools/jdk1.6.0_31"
-    # export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
-    # export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
-    # export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
 }

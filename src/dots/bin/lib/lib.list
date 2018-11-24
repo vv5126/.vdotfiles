@@ -234,7 +234,76 @@ function showlist_with_tab(){
 	} || return 1
 }
 
+function get_value_from_table() {
+    local row=$2 column=$3
+    echo "$(cat $1 | sed -n '/^#p\|^$/!p' | sed -n "$row p" | awk -F'|' "{print \$$column}" | awk 'gsub(/^ *| *$/,"")')"
+}
 
+# conf文件解析
+function vconf() { # 要求：名字必须.conf结尾，第一行为magic code，#开头; 其他"#"开头为注释，有效行以空格分隔每项。
+    trap "set +f" 1 2 3 15; set -f
+
+    include $VLIBS/lib.misc
+
+    local num i tmp title
+    local column=$(get_param -c $@)
+    local row=$(get_param -r $@)
+    local get=$(get_param -g $@)
+    local conf_file=$(get_param -f $@)
+
+    [ "${conf_file: -5}" == '.conf' -a -f $conf_file ] || return
+
+    title="$(head -n 1 $conf_file)"
+    list=(${title:2})
+    num=1
+    for i in ${title:2}; do
+        eval $i="$num"
+        ((num+=1))
+    done
+
+    if [ -n "$column" -a -n "$row" ]; then
+	eval tmp=\$"$column"
+	num=1
+	for i in $(cat $conf_file | sed -n '/^#/!p;' | awk "{print \$$tmp}"); do
+	    if [ "$i" == "$row" ]; then
+		tmp="$(cat $conf_file | sed -n '/^#/!p;' | sed -n $num'p;')"
+		num=0
+		if [ -n "$get" ]; then
+		    for i in $tmp; do
+			[ "${list[$num]}" == "$get" ] && { echo "$i"; break; }
+			((num+=1))
+
+                        num=1
+                        for i in ${title:2}; do
+                            eval unset $i
+                            ((num+=1))
+                        done
+		    done
+		else
+		    for i in $tmp; do
+			eval ${list[$num]}="\$i"
+			((num+=1))
+		    done
+		fi
+		return
+	    fi
+	    ((num+=1))
+	done
+    elif [ -n "$column" ]; then
+	eval tmp=\$"$column"
+        echo $(cat $conf_file | sed -n '/^#/!p;' | awk "{print \$$tmp}")
+
+        num=1
+        for i in ${title:2}; do
+            eval unset $i
+            ((num+=1))
+        done
+        return
+    else
+        echo "unsupport!"
+        return
+    fi
+}
 
 ############# export ##############
 

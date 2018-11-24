@@ -34,18 +34,19 @@ wifi no mac:
 ctags -R .  -exclude=./Documentation/ -exclude=./.git/ -exclude=./arch/ -recurse=./arch/mips/xburst/
 ctags -vR * --exclude="./arch/" --exclude="./drivers/"
 -------------------------------------------------------------------------------
-arecord -d 10 -f S16_LE -t wav -c 1 -D hw0,0 -r 16000 foobar.wav
+arecord -d 10 -f S16_LE -t wav -c 1 -D hw:0,0 -r 16000 foobar.wav
 
 amixer cset numid=6,iface=MIXER,name='Mic Volume' 4
 
 amixer cset numid=1 10; aplay /tmp/1Khz.wav &
 
-
+amixer controls
 -------------------------------------------------------------------------------
 insmod GPU
 
 insmod galcore.ko registerMemBase=0x13040000 irqLine=71 contiguousSize=0x800000
 -------------------------------------------------------------------------------
+mount -t debugfs debugfs /a
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------

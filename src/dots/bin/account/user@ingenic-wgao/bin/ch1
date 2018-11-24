@@ -1,0 +1,31 @@
+#!/bin/bash
+
+TITLE="Windows 登录"
+retry=10
+
+val=$(xdotool search --name "$TITLE")
+if [ -z "$val" ]; then
+	(cd $HOME/.vdotfiles; git checkout src/dots/bin/account/user@ingenic-wgao/data/chrome1;); nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file $VUSER/data/chrome1 > /dev/null &''
+	while true; do
+		val=$(xdotool search --name "$TITLE")
+		echo val = $val
+		if [ -n "$val" ]; then
+			xdotool windowfocus $val
+			xdotool key shift
+			xdotool key w g a o shift+minus b j
+			xdotool key Tab
+			xdotool key a s d 4 5 6 shift+1 shift+2 shift+3
+			xdotool key KP_Enter
+			break
+		fi
+		((retry--)) || break
+		sleep 1
+	done
+else
+	xdotool windowfocus $val
+	xdotool key shift
+	xdotool key w g a o shift+minus b j
+	xdotool key Tab
+	xdotool key a s d 4 5 6 shift+1 shift+2 shift+3
+	xdotool key KP_Enter
+fi

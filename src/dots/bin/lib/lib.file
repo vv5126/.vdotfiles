@@ -85,13 +85,12 @@ function del_file_in_list() {
 # 合并文件
 
 # 删除所有子目录指定类型文件
-
 function del_file_zero() {
-	find "$1" -name "*" -type f -size 0c | xargs -n 1 rm -f
+	find "$1" -type f -size 0c | xargs -i rm -r {}
 }
 
 function del_dir_zero() {
-	find "$1" -name "*" -type d -empty | xargs -n 1 rm -fr
+	find "$1" -type d -empty | xargs -i rm -r {}
 }
 
 # 统计文件个数

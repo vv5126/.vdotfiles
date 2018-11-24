@@ -10,9 +10,8 @@ alias SL='ls'
 alias ax='chmod +x'
 alias du='du -h -d 1'
 alias grep='grep --color --exclude-dir=".git"'
-alias ag='ag --noheading --smart-case -t'
-alias libmk='lib.misc gen_lib_info ~/.bin/lib'
-alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
+alias libmk='lib.misc gen_lib_info $HOME/.bin/lib'
+alias rm='rm_mv=$HOME/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.utf8
@@ -28,10 +27,6 @@ export VUSER="$VACCOUNT/$VHOSTID"
 export VGL_DATA="$HOME/.bin/data"
 export VUSER_DATA="$VACCOUNT/$VHOSTID/data"
 export TMUX_PLUGIN="$HOME/.vdotfiles/src/plugins/tmux-plugin"
-
-export PKG_CONFIG_PATH=$HOME/.local/usr/local/lib/pkgconfig
-export LD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/usr/local/lib:$HOME/.local/usr/lib64
-add_ev C_INCLUDE_PATH "$HOME/.local/include"
 
 # history #
 HISTTIMEFORMAT="%m-%d %H:%M "
@@ -50,10 +45,5 @@ add_path "$HOME/.local/bin"
 # rm path #
 clean_path "/usr/games"
 clean_path "/usr/local/games"
-
-# --------- #
-if [ -n "$(which dircolors)" ]; then
-	eval `dircolors -b $HOME/.dir_colors`
-fi
 
 stty -ixon

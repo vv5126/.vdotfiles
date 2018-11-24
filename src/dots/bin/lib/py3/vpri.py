@@ -40,10 +40,13 @@ def cprint(color, *args):
 
 def filetpye_guess(pfile):
     (status, output) = subprocess.getstatusoutput('file ' + pfile)
+    # print('output = ', output)
     if "gzip compressed data" in output:
         return 'gzip'
     elif "gzip compressed data" in output:
         pass
+    elif "PNG image data" in output:
+        return 'png'
 
 def is_suffix(str1, list1):
     for i in list1:

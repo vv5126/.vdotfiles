@@ -7,11 +7,11 @@ function set_dir() {
 	if [ -d "$tmp_prefix" ]; then
 	    [ "$(ls -A $tmp_prefix)" == "" ] && { prefix="$tmp_prefix"; break; } || { tmp_prefix="$prefix-$num"; ((num+=1)); }
 	else
-		{ prefix="$tmp_prefix"; break; }
+	    { prefix="$tmp_prefix"; break; }
 	fi
     done
 
-    echo "$prefix"
+    [ "$prefix" != "$1" ] && echo "$prefix"
 }
 
 function set_name() {
@@ -68,32 +68,35 @@ function _untar() {
     pkg="${suffix##*.}"
     [ $# -ge 2 ] && prefix="$2"
     dir=$(set_dir $prefix)
-    [ ! -d $dir ] && mkdir -p $dir
+    [ -n "$dir" -a ! -d "$dir" ] && mkdir -p $dir
 
     case "$pkg" in
 	*xz)
 	    tar -xvf $file_name  -C $dir
 	    ;;
 	*tar)
-	    tar -xvf $file_name  -C $dir
+	    [ -n "$dir" ] && tar -xvf $file_name  -C $dir || tar -xvf $file_name
 	    ;;
 	*gz)
-	    tar -xvf $file_name  -C $dir
+	    [ -n "$dir" ] && tar -xvf $file_name  -C $dir || tar -xvf $file_name
 	    ;;
 	*bz2)
-	    tar -xvf $file_name  -C $dir
+	    [ -n "$dir" ] && tar -xvf $file_name  -C $dir || tar -xvf $file_name
 	    ;;
 	*tbz)
-	    tar -xvf $file_name  -C $dir
+	    [ -n "$dir" ] && tar -xvf $file_name  -C $dir || tar -xvf $file_name
 	    ;;
 	*zip)
-	    unzip $file_name -d $dir
+	    [ -n "$dir" ] && unzip $file_name -d $dir || unzip $file_name
 	    ;;
 	*rpm)
 	    unrpm $file_name
 	    ;;
 	*rar)
-	    unrar -x $file_name
+	    unrar x $file_name
+	    ;;
+	*7z)
+	    7z x $file_name
 	    ;;
 	*)
 	    ;;

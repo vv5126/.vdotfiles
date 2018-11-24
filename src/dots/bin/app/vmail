@@ -1,7 +1,11 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import sys
+import json
+import os
 import argparse
+sys.path.append(os.environ.get('HOME') + "/.bin/lib/py3")
 from vpri import cprint, select_list, filetpye_guess, is_suffix
 
 # send
@@ -18,53 +22,6 @@ from email.parser import Parser
 from email.header import decode_header
 from email.utils import parseaddr
 
-from_addr = "wei.gao@ingenic.com"
-password = "asd123456"
-to_addr = "wei.gao@ingenic.com"
-smtp_server = "mail.ingenic.com"
-smtp_port = 25
-
-
-def sendmail():
-    if multipart == True:
-        msg = MIMEMultipart()
-    else:
-        msg = MIMEText('hello, send by Python...', 'plain', 'utf-8')
-
-    msg['From'] = u'Python爱好者 <wei.gao@ingenic.com>'
-    msg['To'] = u'管理员 <"wei.gao@ingenic.com">'
-    msg['Subject'] = Header(u'来自SMTP的问候……', 'utf-8').encode()
-
-    server = smtplib.SMTP(smtp_server, smtp_port)
-    if need_tls == True:
-        server.starttls()
-    server.set_debuglevel(1)
-    server.login(from_addr, password)
-    server.sendmail(from_addr, [to_addr], msg.as_string())
-    server.quit()
-
-# add file:
-    if attach:
-        msg.attach(MIMEText('send with file...', 'plain', 'utf-8'))
-        # msg.attach(MIMEText('<html><body><h1>Hello</h1>' +
-        #     '<p>send by <a href="http://www.python.org">Python</a>...</p>' +
-        #     '</body></html>', 'html', 'utf-8'))
-
-        kind = filetpye_guess(attach)
-        if kind is 'png':
-            with open('./wash_mode_bg.png', 'rb') as f:
-                mime = MIMEBase('image', 'png', filename=attach)
-        elif kind is '':
-            pass
-        mime.add_header('Content-Disposition', 'attachment', filename=attach)
-        mime.add_header('Content-ID', '<0>')
-        mime.add_header('X-Attachment-Id', '0')
-        mime.set_payload(f.read())
-        encoders.encode_base64(mime)
-        msg.attach(mime)
-
-'''
-# get
 def guess_charset(msg):
     charset = msg.get_charset()
     if charset is None:
@@ -109,35 +66,84 @@ def print_info(msg, indent=0):
         else:
             print('%sAttachment: %s' % ('  ' * indent, content_type))
 
-# email = raw_input('Email: ')
-# password = raw_input('Password: ')
-# pop3_server = raw_input('POP3 server: ')
-email1 = "wei.gao@ingenic.com"
-password = "asd123456"
-pop3_server = "mail.ingenic.com"
+class MAIL(object):
+    def __init__(self):
+        self.from_addr = 'wei.gao@ingenic.com'
+        self.password = 'asd123456'
+        self.smtp_server = 'mail.ingenic.com'
+        self.smtp_port = 25
+        self.use_tls = False
+        self.to_addr = 'wei.gao@ingenic.com'
+        self.multipart = True
+        self.attach = ''
 
-server = poplib.POP3(pop3_server)
-#server.set_debuglevel(1)
-print(server.getwelcome())
-# 认证:
-server.user(email1)
-server.pass_(password)
-print('Messages: %s. Size: %s' % server.stat())
-resp, mails, octets = server.list()
-# 获取最新一封邮件, 注意索引号从1开始:
-resp, lines, octets = server.retr(len(mails))
-# 解析邮件:
-print(type(lines))
-for i in lines:
-    if "b'Message-ID" in str(i):
-        print(i)
-        break
-msg = Parser().parsestr('\r\n'.join('%s' %id for id in lines))
-# 打印邮件内容:
-print(msg)
-# Message-ID: <5B7D1B78.9080704@ingenic.com>
-server.quit()
-'''
+    def test(self):
+        print(self.from_addr, self.to_addr)
+
+    def sendmail(self):
+        if self.multipart == True:
+            msg = MIMEMultipart()
+        # else:
+        #     msg = MIMEText('hello, send by Python...', 'plain', 'utf-8')
+
+        msg['From'] = u'Python爱好者 ' + self.from_addr
+        msg['To'] = u'管理员 ' + self.to_addr
+        msg['Subject'] = Header(u'hello', 'utf-8').encode()
+
+        msg.attach(MIMEText('xxx xxx', 'plain', 'utf-8'))
+        msg.attach(MIMEText('<html><body><h1>Hello</h1>' +
+            '<p>send by <a href="http://www.python.org">Python</a>...</p>' +
+            '</body></html>', 'html', 'utf-8'))
+
+        if self.attach:
+            with open(self.attach, 'rb') as f:
+                kind = filetpye_guess(self.attach)
+                if kind is 'png':
+                    mime = MIMEBase('image', kind, filename=self.attach)
+                elif kind is '':
+                    mime = MIMEBase('unknown', 'unknown', filename=self.attach)
+                    pass
+                mime.add_header('Content-Disposition', 'attachment', filename=self.attach)
+                mime.add_header('Content-ID', '<0>')
+                mime.add_header('X-Attachment-Id', '0')
+                mime.set_payload(f.read())
+                encoders.encode_base64(mime)
+                msg.attach(mime)
+
+        server = smtplib.SMTP(self.smtp_server, self.smtp_port)
+        if self.use_tls == True:
+            server.starttls()
+        server.set_debuglevel(1)
+        server.login(self.from_addr, self.password)
+        server.sendmail(self.from_addr, [self.to_addr], msg.as_string())
+        server.quit()
+
+    def getmail(self):
+        email = "wei.gao@ingenic.com"
+        password = "asd123456"
+        pop3_server = "mail.ingenic.com"
+
+        server = poplib.POP3(pop3_server)
+        #server.set_debuglevel(1)
+        # print(server.getwelcome())
+        # 认证:
+        server.user(email)
+        server.pass_(password)
+        print('Messages: %s. Size: %s' % server.stat())
+        resp, mails, octets = server.list()
+        # 获取最新一封邮件, 注意索引号从1开始:
+        resp, lines, octets = server.retr(len(mails))
+        # 解析邮件:
+        print(type(lines))
+        for i in lines:
+            if "b'Message-ID" in str(i):
+                print(i)
+                break
+        msg = Parser().parsestr('\r\n'.join('%s' %id for id in lines))
+        # 打印邮件内容:
+        print(msg)
+        # Message-ID: <5B7D1B78.9080704@ingenic.com>
+        server.quit()
 
 def main():
     parser = argparse.ArgumentParser(description='manual to this script')
@@ -154,28 +160,32 @@ def main():
 
     args = parser.parse_args()
 
-    if args.configfile == None:
-        print('error!!!')
-        return -1
+    # if args.configfile == None:
+    #     print('error!!!')
+    #     return -1
+
+    mail = MAIL();
 
     if args.from_addr:
-        from_addr = args.from_addr
-    elif args.to:
-        to_addr = args.to
-    elif args.password:
-        password = args.password
-    elif args.smtp_server:
-        smtp_server = args.smtp_server
-    elif args.smtp_port:
-        smtp_port = args.smtp_port
-    elif args.tls:
-        need_tls = args.tls
-    elif args.multipart:
-        multipart = args.multipart
-    elif args.attach:
-        attach = args.attach
+        mail.from_addr = args.from_addr
+    if args.to:
+        mail.to = args.to
+    if args.password:
+        mail.password = args.password
+    if args.smtp_server:
+        mail.smtp_server = args.smtp_server
+    if args.smtp_port:
+        mail.smtp_port = args.smtp_port
+    if args.tls:
+        mail.use_tls = args.tls
+    if args.multipart:
+        mail.multipart = args.multipart
+    if args.attach:
+        mail.attach = args.attach
 
-    sendmail()
+    mail.test()
+    mail.sendmail()
+    # mail.getmail()
 
 if __name__ == '__main__':
     main()

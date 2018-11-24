@@ -119,6 +119,7 @@
 	, "pip": { "src": {"source": "https://github.com/https://bootstrap.pypa.io/get-pip.py" } }
 	, "termtosvg": { "src": {"source": "https://github.com/nbedos/termtosvg" } }
 	, "CubeMX2Makefile": { "src": {"source": "https://github.com/baoshi/CubeMX2Makefile" } }
+	, "fzf": { "src": {"source": "https://github.com/junegunn/fzf.git" } }
 	, "zsh": {
 		"wmctrl": "apt",
 		"wting/autojump": "git"

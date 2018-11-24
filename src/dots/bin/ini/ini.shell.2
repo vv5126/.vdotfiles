@@ -1,0 +1,15 @@
+[ -n "$(type ag)" ] && alias ag='ag --noheading --smart-case -t'
+
+# FZF
+if [ -n "$(which fzf)" ]; then
+    export FZF_DEFAULT_COMMAND='ag -g ""'
+    export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+fi
+
+if [ -n "$(which dircolors)" ]; then
+	eval `dircolors -b $HOME/.dir_colors`
+fi
+
+if [ -d "$HOME/.local/usr/local/lib/pkgconfig" ]; then
+    export PKG_CONFIG_PATH=$HOME/.local/usr/local/lib/pkgconfig
+fi

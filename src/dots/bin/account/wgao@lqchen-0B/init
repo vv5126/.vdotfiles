@@ -5,52 +5,59 @@ if [[ $1 == "init" ]]; then
 else
     include $VINIS/ini.ingenic
     include $VLIBS/lib.work
-    # VIM8
-    # add_path "/data1/home/wgao/tools/vim8/bin"
+    include $VLIBS/lib.misc
 
     # GO
     # add_path "/data1/home/wgao/tools/go/bin"
-    export GOROOT=/data1/home/wgao/tools/go
-    export GOPATH=/data1/home/wgao/tools/godir
+    # export GOROOT=/data1/home/wgao/tools/go
+    # export GOPATH=/data1/home/wgao/tools/godir
 
     # OpenCV
     export OpenCV_LIBS=~/.local/lib
 
-    # arm
-    add_path "/data1/home/wgao/stm32/tools/gcc-arm-none-eabi-7-2018-q2-update/bin"
-
-    # [ "$(ps -p $$ -o comm=)" != 'zsh' -a -x '/data1/home/wgao/.local/bin/zsh' ] && exec /data1/home/wgao/.local/bin/zsh
-
-    # FZF
-    export FZF_DEFAULT_COMMAND='ag -g ""'
-    export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
-
-    # alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
-    alias wiz='nohup $HOME/tools/wiz > /dev/null &'
-    alias vdiff='vgitdiff ~/.vdotfiles; meld git.diff.add git.diff.rm'
-    alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
-    alias vh='nohup vhelper > /dev/null &'
-    alias c='ctags -R .'
-
-    complete -W "diff bak" vhtml
-    complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk
-    complete -W "push bak baklist cover" gt
-
-    export VGL_BOOKMARK="$HOME/.vdotfiles/src/info/bookmark/bookmark.html"
-    # export VGLD_CRACK_DIR="$HOME/v/bbb"
-
-    export LD_RUN_PATH="$HOME/.local/lib"
-
-    # vim8 with python3
-    # ./configure --with-features=huge --enable-python3interp --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu/ --enable-rubyinterp --enable-luainterp --enable-perlinterp --with-python3-config-dir=/data1/home/wgao/tools/python3.6/lib/python3.6/config-3.6m-x86_64-linux-gnu/ --enable-multibyte --enable-cscope --enable-gui=gtk2 --prefix=/data1/home/wgao/tools/vim8/
+    # PYTHON
+    # add_path "$HOME/.local/lib/python3.4/site-packages/bin"
     # export PYTHONPATH=$HOME/.local/lib/python3.6
     # export PYTHON_LIBRARIES="/usr/lib/python2.7"
     # export PYTHON_INCLUDE_DIRS="/usr/include/python2.7"
     # export PYTHONPATH=$PYTHONPATH:/usr/lib/python3/dist-packages/
+    export PYTHONPATH=$PYTHONPATH:/data1/home/wgao/.local/lib/python3.4/site-packages/lib/python3.6/site-packages
 
+    # ARM
+    add_path "/data1/home/wgao/stm32/tools/gcc-arm-none-eabi-7-2018-q2-update/bin"
+
+    # JDK
+    clean_ev JAVA_HOME
+    add_ev JAVA_HOME "/data1/home/wgao/tools/jdk1.8.0_65"
+    add_ev JAVA_HOME "/usr/lib/jvm/java"
+    add_ev JRE_HOME "${JAVA_HOME}/jre"
+    # export JAVA_HOME="/data1/home/wgao/tools/jdk1.6.0_31"
+    # export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
+    # export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+    # export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
+    add_ev CLASSPATH ".:${JAVA_HOME}/lib:${JRE_HOME}/lib"
+    add_path "/data1/home/wgao/tools/jdk1.8.0_65/bin"
+    # add_path "/data1/home/wgao/tools/JDK-1.5.0/jdk1.6.0_31/bin"
+
+    # MISC
+    # alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
+    alias wiz='nohup $HOME/tools/wiz > /dev/null &'
+    alias vh='nohup vhelper > /dev/null &'
+    alias c='ctags -R .'
+    complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk
+    complete -W "push bak baklist cover" gt
+    # export VGLD_CRACK_DIR="$HOME/v/bbb"
+    export LD_RUN_PATH="$HOME/.local/lib"
     add_path "$HOME/tools/Qt5.7.0/5.7/gcc_64/bin"
     # add_path "/data1/home/wgao/depot_tools/depot_tools"
-    # add_path "$HOME/.local/lib/python3.4/site-packages/bin"
-
     # add_path "$HOME/tools/llvm/bin"
+
+    export -f win2unix
+
+    export VGL_BOOKMARK="$HOME/.vdotfiles/src/info/bookmark/bookmark.html"
+    complete -W "diff bak" vhtml
+
+    alias vdiff='vgitdiff ~/.vdotfiles; meld git.diff.add git.diff.rm'
+    alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
+    export -f canup
 fi

@@ -103,6 +103,12 @@ function mem() {
 	echo mem > /sys/power/state
 }
 
+function set_local_compile_envrionment() {
+    add_ev LD_LIBRARY_PATH "$HOME/.local/lib"
+    add_ev LD_LIBRARY_PATH "$HOME/.local/usr/local/lib"
+    add_ev LD_LIBRARY_PATH "$HOME/.local/usr/lib64"
+    add_ev C_INCLUDE_PATH "$HOME/.local/include"
+}
 
 function read_key() {
 	local key=$1
@@ -210,6 +216,15 @@ function time_sync() {
 # 得到快速的文件特征值
 function md1sum() {
     echo "$(stat $1 | grep -E 'Size:|Modify:' | tr "\n" " " | awk '{print $2,$(NF-1)}' | sed 's/\ .*\.//g')"
+}
+
+function win2unix() {
+    local i
+    [ $# -eq 0 ] && return
+    for i in $@; do
+        iconv -f gb2312 -t utf-8 $i > /tmp/win2unix.tmp 2>/dev/null
+        [ $? -eq 0 ] && mv /tmp/win2unix.tmp $i
+    done
 }
 
 function canup() {

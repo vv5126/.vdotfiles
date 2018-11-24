@@ -1,5 +1,7 @@
 #!/bin/bash
 
+trap "set +f" 1 2 3 15; set -f
+
 source $VLIBS/lib.base
 source $VLIBS/lib.list
 
@@ -16,7 +18,6 @@ else
 fi
 
 if [ -n "$DEST" ]; then
-	set -f
 	eval param="$(echo $DEST | awk '{print $2}')"
 	eval exclude="$(echo $DEST | awk '{print $3}')"
 	eval src="$(echo $DEST | awk '{print $4}')"
@@ -28,7 +29,7 @@ if [ -n "$DEST" ]; then
 	else
 		exclude=" --exclude=$exclude"
 	fi
-	set +f
+
 	if [ "$(is_exsit $src)" -eq 1 -a "$(is_exsit $dst)" -eq 1 ]; then
 		rsync -$param $exclude "$src" "$dst"
 	else

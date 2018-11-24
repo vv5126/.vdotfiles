@@ -68,8 +68,9 @@ function git_bak2() {
 
 	tmp="HEAD"
 	while true; do
+		[ -z "$git_remote" ] && break
 		dummy_branch="$(git name-rev --name-only $tmp)"
-		if [ ${dummy_branch: -2} == '~1' ]; then
+		if [ "${dummy_branch: -2}" == '~1' ]; then
 			git_branch=${dummy_branch%%~*}
 			git_commit=$(git log --pretty=format:"%h" -1 $tmp)
 			break

@@ -15,36 +15,41 @@ function ccd(){
 
 # cd的增强版
 function quickcd() {
-    alias cd='cd'
-    local tmp
+    local tmp dir=''
     for i in 1; do
         if [ "$#" -eq 0 ]; then
             local try_old_dir="$(history | tail -n 2 | head -1)"
             try_old_dir="${try_old_dir##* }"
             [[ "${try_old_dir:0:1}" == '~' ]] && try_old_dir="$HOME${try_old_dir:1}"
             if [ -d "$try_old_dir" ]; then
-                cd "$try_old_dir"
+                dir="$try_old_dir"
             else
-                cd ~
+                dir="${WORKSPACE:-$HOME}"
             fi
         elif [ -d "$1" ]; then
-            cd "$1"
+            dir="$1"
         else
-            [ -d "${1%\/*}" ] && { cd "${1%\/*}"; continue; }
-            [[ "$1" =~ ":~" ]] && { cd $HOME"${1##*:~}"; continue; }
-            [[ "$1" =~ ":" ]] && { cd "${1##*:}"; continue; }
-            [ $1 = "-" ] && { cd $OLDPWD; continue; }
+            [ -d "${1%\/*}" ] && { dir="${1%\/*}"; continue; }
+            [[ "$1" =~ ":~" ]] && { dir=$HOME"${1##*:~}"; continue; }
+            [[ "$1" =~ ":" ]] && { dir="${1##*:}"; continue; }
+            [ $1 = "-" ] && { dir=$OLDPWD; continue; }
             [ $1 = "clean" ] && { > ~/.cdlist; continue; }
-            [ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" >> ~/.cdlist; continue; }
+            tmp="$HOME/.cdlist.tmp"
+            [ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" > "$tmp"; cat "$HOME/.cdlist" >> "$tmp"; mv "$tmp" > "$HOME/.cdlist"; continue; }
             [ $# -eq 1 -a -f "$HOME/.cdlist" ] && {
-            while read line; do
-                [ $1 = "${line% *}" ] && { cd ${line#* }; continue 2; }
-                done < ~/.cdlist
+                while read line; do
+                    [ $1 = "${line% *}" ] && { dir=${line#* }; continue 2; }
+                done < "$HOME/.cdlist"
             }
-            tmp="$(find -maxdepth 1 -type d -name "$1*")"; [ $? -eq 0 -a -d "$tmp" ] && { cd "$tmp"; continue; }
+            tmp="$(find -maxdepth 1 -type d -name "$1*")"; [ $? -eq 0 -a -d "$tmp" ] && { dir="$tmp"; continue; }
         fi
     done
-    alias cd='quickcd'
+
+    if [ -n "$dir" ]; then
+        alias cd='cd'
+        cd "$dir"
+        alias cd='quickcd'
+    fi
 }
 
 # vim的增强版
@@ -171,7 +176,31 @@ function clean_invalid_ln() {
     done
 }
 
-############# will export ##############
+complete_for_lib() {
+    local cur prev tmp
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    # _get_comp_words_by_ref cur
+
+    tmp="$(sed -n -r 's/^function\ (.*)\(.*/\1/p;' $HOME/.bin/lib/$1)"
+    if [[ "$tmp" =~ "$prev" ]]; then
+        _filedir
+    else
+        COMPREPLY=( $( compgen -W "$tmp" -- "$cur" ) )
+    fi
+}
+
+function add_server() { # NAME HOST ID IP HOME
+    local NAME=$1 HOST=$2 ID=$3 IP=$4 HOME=$5
+    # eval export "$NAME"_HOST="$HOST"
+    eval export "$NAME"_ID="$ID@$HOST"
+    # eval export "$NAME"_IP="$IP"
+    eval export "$NAME"_SSH="$ID@$IP"
+    eval export "$NAME"_HOME="$HOME"
+}
+
+############# export ##############
 alias cd='quickcd'
 alias vi='svi'
 alias fd='set -f; find1'

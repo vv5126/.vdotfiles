@@ -277,3 +277,10 @@ demo: retry=5
 while ! xdotool search --name "$TITLE"  mousemove 30 50 click 1; do
     sleep 1; ((retry--)) || break
 done </dev/null &>/dev/null
+
+# VIM8 with python3
+# ./configure --with-features=huge --enable-python3interp --enable-pythoninterp --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu/ --enable-rubyinterp --enable-luainterp --enable-perlinterp --with-python3-config-dir=/data1/home/wgao/tools/python3.6/lib/python3.6/config-3.6m-x86_64-linux-gnu/ --enable-multibyte --enable-cscope --enable-gui=gtk2 --prefix=/data1/home/wgao/tools/vim8/
+
+### 关闭输入法左shift
+$HOME/.config/fcitx/config
+并修改为只读权限
