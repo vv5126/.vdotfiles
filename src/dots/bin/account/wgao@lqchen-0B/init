@@ -48,6 +48,10 @@ else
     complete -W "push bak baklist cover" gt
     # export VGLD_CRACK_DIR="$HOME/v/bbb"
     export LD_RUN_PATH="$HOME/.local/lib"
+
+    # LD_LIBRARY_PATH Specifies the directories that are to be searched for libraries at run time.
+    # LD_RUN_PATH Specifies the directories that are to be searched for libraries at both link and run time.
+
     add_path "$HOME/tools/Qt5.7.0/5.7/gcc_64/bin"
     # add_path "/data1/home/wgao/depot_tools/depot_tools"
     # add_path "$HOME/tools/llvm/bin"

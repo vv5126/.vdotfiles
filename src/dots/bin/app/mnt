@@ -2,56 +2,48 @@
 
 source ~/.bin/lib/lib.list
 
-DEST=0
 [ -z "$VGL_MNTFIlE" ] && { echo "no conf file!"; exit; }
 
 if [ $# -eq 1 ]; then
 	expr $1 + 0 &>/dev/null
-	if [ $? -eq 0 ]; then
-		DEST=$(getline $VGL_MNTFIlE $1)
-	fi
+	[ $? -eq 0 ] && vconf -r "$1" -f $VGL_MNTFIlE
 else
-	DEST=$(showlist_with_tab $VGL_MNTFIlE 4 "go where ??")
+	showlist_with_tab $VGL_MNTFIlE "title" "go where ??"
 fi
 
-if [ "$DEST" != 0 ]; then
-	mnt_type="$(echo $DEST | awk '{print $1}')"
-	src="$(echo $DEST | awk '{print $2}')"
-	dest="$(echo $DEST | awk '{print $3}')"
-	case $mnt_type in
-	'sshfs')
-        mount | grep "$src on $dest" - > /dev/null
-        if [ $? = 0 ]; then
-            echo 'user' | sudo fusermount -u $dest 2>/dev/null
-            [ $(ls $dest|wc -l)  == "0" ] && sudo rm -rf $dest
-        else
-		    if [ -d $dest ]; then
-                [ $(ls $dest|wc -l)  != "0" ] && { echo "the dest dir isn't empty!"; exit 1; }
-            else
-                sudo mkdir -p $dest
-            fi
-			echo 'user' | sudo sshfs $src $dest -o uid=$UID,gid=$GROUPS,allow_other || sudo rm -rf $dest
-	    fi
-		;;
-	'win')
-        mount | grep "$src on $dest" - > /dev/null
-        if [ $? = 0 ]; then
-			echo 'user' | sudo umount $dest 2>/dev/null
-            [ $(ls $dest|wc -l)  == "0" ] && sudo rm -rf $dest
+if [ "${title-"null"}" != "null" ]; then
+    case $type in
+    'sshfs')
+	mount | grep "$url on $to_path" - > /dev/null
+	if [ $? = 0 ]; then
+	    echo 'user' | sudo fusermount -u $to_path 2>/dev/null
+	    [ $(ls $to_path|wc -l)  == "0" ] && sudo rm -rf $to_path
+	else
+	    if [ -d $to_path ]; then
+		[ $(ls $to_path|wc -l)  != "0" ] && { echo "the to_path dir isn't empty!"; exit 1; }
 	    else
-		    if [ -d $dest ]; then
-                [ $(ls $dest|wc -l)  != "0" ] && { echo "the dest dir isn't empty!"; exit 1; }
+		sudo mkdir -p $to_path
+	    fi
+	    echo 'user' | sudo sshfs $url $to_path -o uid=$UID,gid=$GROUPS,allow_other || sudo rm -rf $to_path
+	fi
+	;;
+    'win')
+        mount | grep "$url on $to_path" - > /dev/null
+        if [ $? = 0 ]; then
+			echo 'user' | sudo umount $to_path 2>/dev/null
+            [ $(ls $to_path|wc -l)  == "0" ] && sudo rm -rf $to_path
+	    else
+		    if [ -d $to_path ]; then
+                [ $(ls $to_path|wc -l)  != "0" ] && { echo "the to_path dir isn't empty!"; exit 1; }
             else
-                sudo mkdir -p $dest
+                sudo mkdir -p $to_path
             fi
-			echo 'user' | sudo mount -t cifs $src $dest -o username=wgao_bj,rw,dir_mode=0777,file_mode=0777 || sudo rm -rf $dest
+	    [ "$pw" != '-' ] && ps="password=$(vdc $pw)" || ps=''
+	    echo 'user' | sudo mount -t cifs $url $to_path -o username=wgao_bj,$ps,rw,dir_mode=0777,file_mode=0777 || sudo rm -rf $to_path
         fi
 		;;
 	esac
-#	echo DEST = $DEST
 else
 	echo "wrong number"
 	echo 
 fi
-
-

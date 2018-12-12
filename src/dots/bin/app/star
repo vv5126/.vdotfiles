@@ -71,19 +71,7 @@ function _untar() {
     [ -n "$dir" -a ! -d "$dir" ] && mkdir -p $dir
 
     case "$pkg" in
-	*xz)
-	    tar -xvf $file_name  -C $dir
-	    ;;
-	*tar)
-	    [ -n "$dir" ] && tar -xvf $file_name  -C $dir || tar -xvf $file_name
-	    ;;
-	*gz)
-	    [ -n "$dir" ] && tar -xvf $file_name  -C $dir || tar -xvf $file_name
-	    ;;
-	*bz2)
-	    [ -n "$dir" ] && tar -xvf $file_name  -C $dir || tar -xvf $file_name
-	    ;;
-	*tbz)
+	*xz|*tar|*gz|*bz2|*tbz)
 	    [ -n "$dir" ] && tar -xvf $file_name  -C $dir || tar -xvf $file_name
 	    ;;
 	*zip)

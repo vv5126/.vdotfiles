@@ -51,3 +51,7 @@ fi
 include $HOME/.bin/ini/ini.shell.2
 
 [ -f "$HOME/.tmp_init" ] && include "$HOME/.tmp_init"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+echo init done

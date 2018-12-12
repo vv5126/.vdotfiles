@@ -213,6 +213,14 @@ function time_sync() {
     fi
 }
 
+function vec() {
+    echo "$1" | base64 -i
+}
+
+function vdc() {
+    echo "$1" | base64 -d
+}
+
 # 得到快速的文件特征值
 function md1sum() {
     echo "$(stat $1 | grep -E 'Size:|Modify:' | tr "\n" " " | awk '{print $2,$(NF-1)}' | sed 's/\ .*\.//g')"

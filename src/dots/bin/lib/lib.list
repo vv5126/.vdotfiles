@@ -190,9 +190,9 @@ function showlist_with_tab(){
 	local NO=0
 	local DEST=''
 	local maybe_num=${@##* }
-	local file=$1
-	local tab='$'"$2"
-	local for_user=$3
+	local file="$1"
+	local tab="$2"
+	local for_user="$3"
 
 	expr $maybe_num + 0 &>/dev/null
 	if [ $? -eq 0 ]; then
@@ -200,13 +200,10 @@ function showlist_with_tab(){
 	else
 		echo >&2
 		NO=1
-		while read line; do
-			if [ -n "$line" -a "${line:0:1}" != '#' ]; then
-				line="$(echo $line | awk '{print '$tab'}')"
-				echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$line\033[0m">&2
-				NO=$[$NO+1]
-			fi
-		done < "$file"
+		for i in $(vconf -c "$tab" -f $file); do
+		    echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$i\033[0m">&2
+		    NO=$[$NO+1]
+		done
 		echo -en "\n  $for_user  >>> ">&2
 		read NUM
 	fi
@@ -214,24 +211,7 @@ function showlist_with_tab(){
 	echo >&2
 
 	expr $NUM + 0 &>/dev/null
-	if [ $? -eq 0 ]; then
-		NO=1
-		while read line; do
-			if [ -n "$line" -a "${line:0:1}" != '#' ]; then
-				if [ $NUM -eq $NO ]; then
-					DEST="$line"
-					break
-				fi
-				NO=$[$NO+1]
-			fi
-		done < "$file"
-	fi
-	[ -n "$DEST" ] && {
-                set -f
-		echo $DEST
-                set +f
-		return 0
-	} || return 1
+	[ $? -eq 0 ] && vconf -r "$NUM" -f $file
 }
 
 function get_value_from_table() {
@@ -245,18 +225,25 @@ function vconf() { # 要求：名字必须.conf结尾，第一行为magic code�
 
     include $VLIBS/lib.misc
 
-    local num i tmp title
+    local num i tmp vconf_title
     local column=$(get_param -c $@)
     local row=$(get_param -r $@)
     local get=$(get_param -g $@)
     local conf_file=$(get_param -f $@)
+    local conf_opt=$(get_param -o $@)
 
     [ "${conf_file: -5}" == '.conf' -a -f $conf_file ] || return
+    if [ "$conf_opt" == 'reset' ]; then
+	sed -i 's/^#\ /__/g' $conf_file
+	vim -c "1,$(sed -n '$=' "$conf_file")EasyAlign *\ " -c "exit" "$conf_file"
+	sed -i 's/^__/#\ /g' $conf_file
+	return
+    fi
 
-    title="$(head -n 1 $conf_file)"
-    list=(${title:2})
+    vconf_title="$(head -n 1 $conf_file)"
+    list=(${vconf_title:2})
     num=1
-    for i in ${title:2}; do
+    for i in ${vconf_title:2}; do
         eval $i="$num"
         ((num+=1))
     done
@@ -274,7 +261,7 @@ function vconf() { # 要求：名字必须.conf结尾，第一行为magic code�
 			((num+=1))
 
                         num=1
-                        for i in ${title:2}; do
+                        for i in ${vconf_title:2}; do
                             eval unset $i
                             ((num+=1))
                         done
@@ -293,12 +280,24 @@ function vconf() { # 要求：名字必须.conf结尾，第一行为magic code�
 	eval tmp=\$"$column"
         echo $(cat $conf_file | sed -n '/^#/!p;' | awk "{print \$$tmp}")
 
-        num=1
-        for i in ${title:2}; do
+        for i in ${vconf_title:2}; do
             eval unset $i
-            ((num+=1))
         done
         return
+    elif [ -n "$row" ]; then
+        for i in ${vconf_title:2}; do
+            eval unset $i
+        done
+
+	expr $row + 0 &>/dev/null
+	if [ $? -eq 0 ]; then
+	    tmp="$(cat $conf_file | sed -n '/^#/!p;' | sed -n $row'p;')"
+	    num=0
+	    for i in $tmp; do
+		eval ${list[$num]}="\$i"
+		((num+=1))
+	    done
+	fi
     else
         echo "unsupport!"
         return
