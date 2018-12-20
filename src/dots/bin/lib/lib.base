@@ -122,14 +122,14 @@ if [ -n "$ZSH" ]; then
     # srm \
     # smv \
     )"
-else
-  export -f getdir
-  # export -f cd_proj
-  # export -f cd_repo
-  # export -f is_local
-  # export -f smkdir
-  # export -f srm
-  # export -f smv
+# else
+    # export -f getdir
+    # export -f cd_proj
+    # export -f cd_repo
+    # export -f is_local
+    # export -f smkdir
+    # export -f srm
+    # export -f smv
 fi
 
 ########### export end ############

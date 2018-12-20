@@ -736,6 +736,7 @@ endif
         set nobackup                       " 覆盖文件时不备份
         set backupcopy=yes                 " 设置备份时的行为为覆盖
         set nowritebackup                  " 不写入备份文件
+        set t_BE=
         set shell=/bin/bash
         set mousehide                      " 输入文件时隐藏鼠标
         set nospell

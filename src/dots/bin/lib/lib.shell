@@ -1,7 +1,5 @@
 #!/bin/bash
 
-include ~/.bin/lib/lib.base
-
 # 反转上一次操作
 function ccd(){
         for i in {1..3}; do
@@ -35,7 +33,7 @@ function quickcd() {
             [ $1 = "-" ] && { dir=$OLDPWD; continue; }
             [ $1 = "clean" ] && { > ~/.cdlist; continue; }
             tmp="$HOME/.cdlist.tmp"
-            [ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" > "$tmp"; cat "$HOME/.cdlist" >> "$tmp"; mv "$tmp" > "$HOME/.cdlist"; continue; }
+            [ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" > "$tmp"; cat "$HOME/.cdlist" >> "$tmp"; mv "$tmp" "$HOME/.cdlist"; continue; }
             [ $# -eq 1 -a -f "$HOME/.cdlist" ] && {
                 while read line; do
                     [ $1 = "${line% *}" ] && { dir=${line#* }; continue 2; }
@@ -70,6 +68,7 @@ function svi(){
 
         [ -f "$FILE" ] && vim $FILE ${LINE:+$LINE}
     fi
+    # printf "\e[?2004l"
 }
 
 # find的增强版
@@ -84,6 +83,8 @@ function find1(){
 
 # .., 智能目录回退
 function vcd(){
+	include $VLIBS/lib.base
+
 	local DIR=~
 	local TARGET=
 	[ -d "$DIR/$1" ] && TARGET=$1
@@ -198,6 +199,14 @@ function add_server() { # NAME HOST ID IP HOME
     # eval export "$NAME"_IP="$IP"
     eval export "$NAME"_SSH="$ID@$IP"
     eval export "$NAME"_HOME="$HOME"
+}
+
+function ci() {
+	include $VLIBS/lib.list
+
+	DEST=0
+	DEST=$(showlist $VGL_DATA/go.conf "copy ID to where ??")
+	[ "$DEST" != 0 ] && ssh-copy-id $DEST
 }
 
 ############# export ##############

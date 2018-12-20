@@ -5,4 +5,27 @@ if [[ $1 == "init" ]]; then
 else
     include $VINIS/ini.ingenic
     include $VLIBS/lib.work
+
+    # FZF
+    if [ -n "$(which fzf)" ]; then
+	export FZF_DEFAULT_COMMAND='ag -g ""'
+	export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+    fi
+
+    # JDK
+    clean_ev JAVA_HOME
+    add_ev JAVA_HOME "/backup/home/wgao/jvm/java-1.7.0-openjdk-amd64"
+    # export JAVA_HOME="/data1/home/wgao/tools/jdk1.6.0_31"
+    # export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
+    # export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+    # export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_45
+    # add_ev JAVA_HOME "/usr/lib/jvm/java"
+    add_ev JRE_HOME "${JAVA_HOME}/jre"
+    add_ev CLASSPATH ".:${JAVA_HOME}/lib:${JRE_HOME}/lib"
+    # add_path "/data1/home/wgao/tools/jdk1.8.0_65/bin"
+    # add_path "/data1/home/wgao/tools/JDK-1.5.0/jdk1.6.0_31/bin"
+    export LD_RUN_PATH="/backup/home/wgao/.local/lib"
+    export LD_LIBRARY_PATH="/backup/home/wgao/.local/lib"
+
+    add_path /backup/home/wgao/v/stm32/tools/gcc-arm-none-eabi-7-2018-q2-update
 fi
