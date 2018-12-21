@@ -21,10 +21,7 @@ https://github.com/Chunlin-Li/Chunlin-Li.github.io/blob/master/blogs/linux/ubunt
 
 ### vsudoer
 add vsudoer to /etc/sudoers use sudo visudo, or :
-* sudo chgrp root vsudoer
-* sudo chown root vsudoer
-* sudo chmod 440 vsudoer
-* sudo ln -Pf /home/user/.bin/local/vsudoer /etc/sudoers.d/
+* cd $HOME/.bin/account/$VHOSTID; sudo chgrp root vsudoer && sudo chown root vsudoer && sudo chmod 440 vsudoer && sudo ln -Pf $HOME/.bin/account/$VHOSTID/vsudoer /etc/sudoers.d
 
 ### add samba
 * edit /etc/samba/smb.conf to add the smb-dir.
@@ -284,3 +281,6 @@ done </dev/null &>/dev/null
 ### 关闭输入法左shift
 $HOME/.config/fcitx/config
 并修改为只读权限
+
+### first init
+aptitude vim ag gitk git google-piyin meld xdotool 

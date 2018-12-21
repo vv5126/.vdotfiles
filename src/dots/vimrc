@@ -103,10 +103,11 @@ endif
     " 显示git diff的插件
     Bundle 'airblade/vim-gitgutter'
     " -------------------------------------------------
-    Bundle 'vv5126/wim'
-    if isdirectory($HOME."/.vim/bundle/wim")
-        source ~/.vim/bundle/wim/plugin/vfunc.vim
+    if ! isdirectory($HOME."/.vim/bundle/wim")
+	:!ln -sf $HOME/.vdotfiles/src/plugins/vim-plugin/wim $HOME/.vim/bundle/wim
     endif
+    Bundle 'wim'
+    source ~/.vim/bundle/wim/plugin/vfunc.vim
     " -------------------------------------------------
     " vim帮助中文版
     " Bundle 'becaning/vimdoccn'

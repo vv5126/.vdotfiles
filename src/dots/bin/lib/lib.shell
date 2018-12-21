@@ -123,6 +123,8 @@ function add_path() {
 
 # 在当前目录创建指定文件的链接
 function lnn() {
+    include $VLIBS/lib.base
+
     local lnfile="$1"
     local searchdir="$HOME/.bin"
     local target="$lnfile"

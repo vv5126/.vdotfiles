@@ -5,12 +5,16 @@ if [[ $1 == "init" ]]; then
 else
     include $VINIS/ini.ingenic
     include $VLIBS/lib.work
+    include $VLIBS/lib.misc
 
     # FZF
     if [ -n "$(which fzf)" ]; then
 	export FZF_DEFAULT_COMMAND='ag -g ""'
 	export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
     fi
+
+    # ARM
+    add_path "/backup/home/wgao/v/stm32/tools/gcc-arm-none-eabi-7-2018-q2-update"
 
     # JDK
     clean_ev JAVA_HOME
@@ -27,5 +31,30 @@ else
     export LD_RUN_PATH="/backup/home/wgao/.local/lib"
     export LD_LIBRARY_PATH="/backup/home/wgao/.local/lib"
 
-    add_path /backup/home/wgao/v/stm32/tools/gcc-arm-none-eabi-7-2018-q2-update
+    # MISC
+    # alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
+    # alias wiz='nohup $HOME/tools/wiz > /dev/null &'
+    # alias vh='nohup vhelper > /dev/null &'
+    # export VGLD_CRACK_DIR="$HOME/v/bbb"
+
+    # LD_LIBRARY_PATH Specifies the directories that are to be searched for libraries at run time.
+    # LD_RUN_PATH Specifies the directories that are to be searched for libraries at both link and run time.
+    export LD_RUN_PATH="$HOME/.local/lib"
+
+    # add_path "$HOME/tools/Qt5.7.0/5.7/gcc_64/bin"
+    # add_path "/data1/home/wgao/depot_tools/depot_tools"
+    # add_path "$HOME/tools/llvm/bin"
+    add_path "/backup/home/wgao/tools/toolchain/mipsel-gcc472-glibc216-mips32/bin"
+
+    export -f win2unix
+
+    # special
+
+    ## vdot update
+    alias vdiff='vgitdiff ~/.vdotfiles; meld git.diff.add git.diff.rm'
+    alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
+    export -f canup
+
+    export VGL_BOOKMARK="$HOME/.vdotfiles/src/info/bookmark/bookmark.html"
+    complete -W "diff bak" vhtml
 fi

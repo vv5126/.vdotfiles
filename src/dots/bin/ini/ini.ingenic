@@ -5,8 +5,8 @@ add_server WORK1 "lqchen-0B"    "wgao" "192.168.4.15"  "/data1/home/wgao"
 add_server WORK2 "ubuntu3"      "wgao" "192.168.3.3"   "/backup/home/wgao"
 add_server WORK3 "ingenic-wgao" "user" "192.168.4.150" "/home/user"
 
-export VMAINID="$WORK1_ID"
-export WORK_SERVER_SSH="$WORK1_SSH"
+export VMAINID="$WORK2_ID"
+export WORK_SERVER_SSH="$WORK2_SSH"
 
 export VLOCALID="$WORK3_ID"
 export VLOCALSSH="$WORK3_SSH"
@@ -43,3 +43,7 @@ alias grep='grep -a --exclude-dir=.git --exclude=cscope*'
     alias vsync1='rsync -rul $WORK_SERVER_SSH:~/.vdotfiles ~'
     alias vsync2='rsync -rl --exclude=bundle $WORK_SERVER_SSH:~/.vdotfiles ~'
 }
+
+complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk
+complete -W "push bak baklist cover" gt
+alias c='ctags -R .'

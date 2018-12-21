@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# 为消息加个框 ***
 function show_message(){
     local max=0
     for i in $1; do
@@ -21,7 +22,7 @@ function show_message(){
 }
 
 
-
+# 带指示的输入
 function get_input(){
     local input
     echo -en "$1 >>> " >&2

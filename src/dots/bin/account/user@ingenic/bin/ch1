@@ -5,7 +5,12 @@ retry=10
 
 val=$(xdotool search --name "$TITLE")
 if [ -z "$val" ]; then
-	(cd $HOME/.vdotfiles; git checkout src/dots/bin/account/user@ingenic-wgao/data/chrome1;); nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file $VUSER/data/chrome1 > /dev/null &''
+	(
+	cd $VUSER
+	git checkout data/chrome1
+	nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file $VUSER/data/chrome1 > /dev/null &
+	)
+
 	while true; do
 		val=$(xdotool search --name "$TITLE")
 		echo val = $val
