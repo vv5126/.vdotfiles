@@ -21,7 +21,6 @@ function show_message(){
     echo -e "\e[40;33m"${kuang// /*}"\033[0m"
 }
 
-
 # 带指示的输入
 function get_input(){
     local input
@@ -30,279 +29,54 @@ function get_input(){
     [ -n "$input" ] && echo "$input"
 }
 
-
 #showlist file title
 function showlist(){
-	local NUM=0
-	local NO=0
-	local DEST=''
-	local maybe_num=${@##* }
-
-	expr $maybe_num + 0 &>/dev/null
-	if [ $? -eq 0 ]; then
-		NUM=$maybe_num
-	else
-		echo >&2
-		NO=1
-		while read line; do
-			if [ -n "$line" -a "${line:0:1}" != '#' ]; then
-				echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$line\033[0m">&2
-				NO=$[$NO+1]
-			fi
-		done < "$1"
-		echo -en "\n  $2  >>> ">&2
-		read NUM
-	fi
-
-	echo >&2
-
-	expr $NUM + 0 &>/dev/null
-	if [ $? -eq 0 ]; then
-		NO=1
-		while read line; do
-			if [ -n "$line" -a "${line:0:1}" != '#' ]; then
-				if [ $NUM -eq $NO ]; then
-					DEST=$line
-					break
-				fi
-				NO=$[$NO+1]
-			fi
-		done < "$1"
-	fi
-	[ -n "$DEST" ] && echo $DEST || echo 0
-}
-
-function onlyshowlist(){
-	echo >&2
-	NO=1
-	while read line; do
-		if [ -n "$line" ]; then
-			echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$line\033[0m">&2
-			NO=$[$NO+1]
-		fi
-	done < "$1"
-	echo >&2
-}
-
-function addlist(){
-	local lastargs=${!#}
-	while [ $# -gt 1 ]; do
-		echo $1 >> $lastargs
-		shift
+    local NO=1 line i
+    echo >&2
+    while read line; do
+	for i in $line; do
+	    echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$i\033[0m">&2
+	    NO=$[$NO+1]
 	done
-}
-
-function getline(){
-	# echo $(head -$2 $1 | tail -1)
-        expr $2 + 0 &>/dev/null
-        if [ $? -eq 0 ]; then
-            NO=1
-            while read line; do
-                if [ -n "$line" -a "${line:0:1}" != '#' ]; then
-                    [ $2 -eq $NO ] && echo "$line"
-                    NO=$[$NO+1]
-                fi
-            done < "$1"
-        fi
-}
-
-function showlist_with_value(){
-	local NUM=0
-	local NO=0
-	local DEST=''
-	local maybe_num=${@##* }
-
-	expr $maybe_num + 0 &>/dev/null
-	if [ $? -eq 0 ]; then
-		NUM=$maybe_num
-	else
-		echo >&2
-		NO=1
-		while read line; do
-			if [ -n "$line" -a "${line:0:1}" != '#' ]; then
-				line=${line%%=*}
-				echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$line\033[0m">&2
-				NO=$[$NO+1]
-			fi
-		done < "$1"
-		echo -en "\n  $2  >>> ">&2
-		read NUM
-	fi
-
-	echo >&2
-
-	expr $NUM + 0 &>/dev/null
-	if [ $? -eq 0 ]; then
-		NO=1
-		while read line; do
-			if [ -n "$line" -a "${line:0:1}" != '#' ]; then
-				if [ $NUM -eq $NO ]; then
-					line=${line#*=}
-					DEST=$line
-					break
-				fi
-				NO=$[$NO+1]
-			fi
-		done < "$1"
-	fi
-	[ -n "$DEST" ] && {
-		echo $DEST
-		return 0
-	} || return 1
+    done <&0
+    echo >&2
 }
 
 function user_select() {
-	local NUM=0
-	local NO=0
-	local DEST=
-	local value=
-	local info="$1"
-        local custom="$([ $# -eq 3 ] && echo $3)" # 是否允许自定义 1,0
+    local NUM=0 info="$1"
 
-        set "$2"
-	echo >&2
-	NO=1
-	for value in $@; do
-		echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$value\033[0m">&2
-		NO=$[$NO+1]
-	done
-	echo -en "\n  $info  >>> ">&2
-	read NUM
+    set "$2"
+    echo $@ | showlist
+    NUM="$(get_input "$info")"
 
-	expr $NUM + 0 &>/dev/null
-	if [ $? -eq 0 ]; then
-		NO=1
-		for value in $@; do
-			if [ $NUM -eq $NO ]; then
-				DEST=$value
-				break
-			fi
-			NO=$[$NO+1]
-		done
-	        [ -n "$DEST" ] && { echo $DEST; return 0; }
-        elif [ "$custom" == '1' ]; then
-            echo "$NUM"
-            return -1
-	fi
+    expr $NUM + 0 &>/dev/null
+    if [ $? -eq 0 ]; then
+	echo "$(echo "$@" | sed -n '/^$/!p;' | sed -n $NUM'p;')"
+    fi
 }
 
-function showlist_with_tab(){
-	local NUM=0
-	local NO=0
-	local DEST=''
-	local maybe_num=${@##* }
-	local file="$1"
-	local tab="$2"
-	local for_user="$3"
+function showlist_with_input(){
+    local NUM=0
+    local maybe_num="${@## *}"
+    local file="$1"
+    local tab="$2"
+    local for_user="$3"
 
-	expr $maybe_num + 0 &>/dev/null
-	if [ $? -eq 0 ]; then
-		NUM=$maybe_num
-	else
-		echo >&2
-		NO=1
-		for i in $(vconf -c "$tab" -f $file); do
-		    echo -e "  \e[40;33m$NO\033[0m >> \033[40;32m$i\033[0m">&2
-		    NO=$[$NO+1]
-		done
-		echo -en "\n  $for_user  >>> ">&2
-		read NUM
-	fi
+    expr $maybe_num + 0 &>/dev/null
+    if [ $? -eq 0 ]; then
+	NUM=$maybe_num
+    else
+	vconf "$file" -c "$tab" | showlist
+	NUM="$(get_input $for_user)"
+    fi
 
-	echo >&2
-
-	expr $NUM + 0 &>/dev/null
-	[ $? -eq 0 ] && vconf -r "$NUM" -f $file
+    expr $NUM + 0 &>/dev/null
+    [ $? -eq 0 ] && vconf "$file" -rn "$NUM"
 }
 
 function get_value_from_table() {
     local row=$2 column=$3
     echo "$(cat $1 | sed -n '/^#p\|^$/!p' | sed -n "$row p" | awk -F'|' "{print \$$column}" | awk 'gsub(/^ *| *$/,"")')"
-}
-
-# conf文件解析
-function vconf() { # 要求：名字必须.conf结尾，第一行为magic code，#开头; 其他"#"开头为注释，有效行以空格分隔每项。
-    trap "set +f" 1 2 3 15; set -f
-
-    include $VLIBS/lib.misc
-
-    local num i tmp vconf_title
-    local column=$(get_param -c $@)
-    local row=$(get_param -r $@)
-    local get=$(get_param -g $@)
-    local conf_file=$(get_param -f $@)
-    local conf_opt=$(get_param -o $@)
-
-    [ "${conf_file: -5}" == '.conf' -a -f $conf_file ] || return
-    if [ "$conf_opt" == 'reset' ]; then
-	sed -i 's/^#\ /__/g' $conf_file
-	vim -c "1,$(sed -n '$=' "$conf_file")EasyAlign *\ " -c "exit" "$conf_file"
-	sed -i 's/^__/#\ /g' $conf_file
-	return
-    fi
-
-    vconf_title="$(head -n 1 $conf_file)"
-    list=(${vconf_title:2})
-    num=1
-    for i in ${vconf_title:2}; do
-        eval $i="$num"
-        ((num+=1))
-    done
-
-    if [ -n "$column" -a -n "$row" ]; then
-	eval tmp=\$"$column"
-	num=1
-	for i in $(cat $conf_file | sed -n '/^#/!p;' | awk "{print \$$tmp}"); do
-	    if [ "$i" == "$row" ]; then
-		tmp="$(cat $conf_file | sed -n '/^#/!p;' | sed -n $num'p;')"
-		num=0
-		if [ -n "$get" ]; then
-		    for i in $tmp; do
-			[ "${list[$num]}" == "$get" ] && { echo "$i"; break; }
-			((num+=1))
-
-                        num=1
-                        for i in ${vconf_title:2}; do
-                            eval unset $i
-                            ((num+=1))
-                        done
-		    done
-		else
-		    for i in $tmp; do
-			eval ${list[$num]}="\$i"
-			((num+=1))
-		    done
-		fi
-		return
-	    fi
-	    ((num+=1))
-	done
-    elif [ -n "$column" ]; then
-	eval tmp=\$"$column"
-        echo $(cat $conf_file | sed -n '/^#/!p;' | awk "{print \$$tmp}")
-
-        for i in ${vconf_title:2}; do
-            eval unset $i
-        done
-        return
-    elif [ -n "$row" ]; then
-        for i in ${vconf_title:2}; do
-            eval unset $i
-        done
-
-	expr $row + 0 &>/dev/null
-	if [ $? -eq 0 ]; then
-	    tmp="$(cat $conf_file | sed -n '/^#/!p;' | sed -n $row'p;')"
-	    num=0
-	    for i in $tmp; do
-		eval ${list[$num]}="\$i"
-		((num+=1))
-	    done
-	fi
-    else
-        echo "unsupport!"
-        return
-    fi
 }
 
 ############# export ##############

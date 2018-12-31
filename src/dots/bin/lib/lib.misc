@@ -1,5 +1,11 @@
 #!/bin/bash
 
+function is_num() {
+    [ -z $1 ] && return
+    expr $1 + 0 &>/dev/null
+    [ $? -eq 0 ] && echo 1 || echo 0
+}
+
 # 是否为合法IP
 function is_ip() {
     echo $1 | grep -oP "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$" >/dev/null
@@ -50,40 +56,38 @@ function get_segment_from_line() {
 
 # 获取指定参数的值
 function get_param() {
-        # 不支持参数带空格哦
-        # 参数必须以'-'开始，且只能是一个字母，好像数字也行
-
         [ $# -lt 2 ] && return -1;
 
         local got=0
-        local success=0
-        local param_num=0
-        local keyword=${1:1}
-        local p
-        local para
+        local keyword="$1"
+        local p para
         shift
 
+        local keypair=0
+
         for p in "$@"; do
-                if [ "${p:0:1}" == '-' ]; then
-                        while [ -n "${p:1:1}" ]; do
-                                if [ "${p:1:1}" == "$keyword" ]; then
-                                        got=1
-                                        success=1
-                                else
-                                        got=0
-                                fi
-                                p=${p:1}
-                        done
-                else
-                        if [ "$got" -eq 1 ]; then
-                                para="$para $p"
-                                ((param_num+=1))
+                if [ "${p:0:2}" == '--' ]; then
+                        if [ "$p" == "$keyword" ]; then
+                                para="true"
+                                break
                         fi
+                elif [ "$got" == 0 -a "${p:0:1}" == '-' ]; then
+                        keypair=1
+                        [ "$p" == "$keyword" ] && got=1
+                elif [ "$got" == 1 ]; then
+                        [ "${p:0:1}" != '-' -a "${p:0:2}" != '--' ] && para="$p" || para="no_set"
+                        break
+                elif [ "$keypair" == 1 ]; then
+                        keypair=0
+                elif [ "$keyword" == "" ]; then
+                        para="$p"
+                        break
                 fi
         done
+        [ "$got" == 1 ] && para=${para:-no_set}
 
-        [ -n "$para" ] && echo "${para:1}"
-        [ $success -eq 0 ] && return -1 || return $param_num
+        [ -n "$para" ] && { echo "$para"; return 0; }
+        return -1
 }
 
 # 获取当前执行脚本的真实路径
