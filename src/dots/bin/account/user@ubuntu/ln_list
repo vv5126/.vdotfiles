@@ -11,6 +11,7 @@ star
 ins
 # ack
 vgitdiff
+mnt
 # vhtml
 
 # mk        "$HOME/.bin/app"
@@ -26,4 +27,4 @@ vgitdiff
 # tmux-zoom
 # crack
 # asd
-# irc
+irc

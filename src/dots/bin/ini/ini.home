@@ -1,5 +1,0 @@
-
-alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
-alias vdiff='vgitdiff ~/.vdotfiles'
-# export ZSH=$HOME/.vim/bundle/oh-my-zsh
-add_path "$HOME/bin/mips-gcc472-glibc216-64/bin"

@@ -3,5 +3,17 @@
 if [ $1 == "init" ]; then
     > /dev/null
 else
-    include $VINIS/ini.home
+    include $VLIBS/lib.misc
+    export VGL_MNTFIlE="$VUSER/data/mnt.conf"
+
+    add_path "/home/user/tools/gcc-arm-none-eabi-7-2018-q2-update/bin"
+    # add_path "$HOME/bin/mips-gcc472-glibc216-64/bin"
+
+    # export ZSH=$HOME/.vim/bundle/oh-my-zsh
+    export -f win2unix
+
+    ## vdot update
+    alias vdiff='vgitdiff ~/.vdotfiles'
+    alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
+    export -f canup
 fi

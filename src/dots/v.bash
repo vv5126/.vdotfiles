@@ -32,8 +32,9 @@ if [ -d "$VACCOUNT/$VHOSTID" ]; then
         listfile_md1="$(md1sum ln_list | awk '{print $1}')"
         if [ "x$(cat ../.inited)" != "x$listfile_md1" ]; then
             find $1 -type l -delete
-            [ -f "ln_list" -a -d "bin" ] && (cd bin; lnn_file ../ln_list)
-            rm "$HOME/.bin/user" > /dev/null
+            [ -d "bin" ] || mkdir bin
+            [ -f "ln_list" ] && (cd bin; lnn_file ../ln_list)
+            # [ -f "$HOME/.bin/user" ] && mr "$HOME/.bin/user"
             ln -sf "$VACCOUNT/$VHOSTID" "$HOME/.bin/user"
             echo $listfile_md1 > "../.inited"
             echo reset - "$VHOSTID" done! >&2
