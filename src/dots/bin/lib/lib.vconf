@@ -14,6 +14,7 @@ function vconf_filter() {
         '2') # vconf_filter_mode2 只滤列
             cat $in_f \
                 | sed '1 s/^#/ /' \
+                | sed '/^$/d;' \
                 | sed 's/^#\ /_/' \
                 | sed 's/[^_]/+ &/' \
                 | awk '{for(i=0;++i<=NF;)a[i]=a[i]?a[i] FS $i:$i}END{for(i=0;i++<NF;)print a[i]}' \
@@ -28,6 +29,7 @@ function vconf_filter() {
         '3') # vconf_filter_mode3 行列都滤
             cat $in_f \
                 | sed '1 s/^#/ /' \
+                | sed '/^$/d;' \
                 | sed -n '/^#/!p;' \
                 | awk '{for(i=0;++i<=NF;)a[i]=a[i]?a[i] FS $i:$i}END{for(i=0;i++<NF;)print a[i]}' \
                 | sed -n '/^#/!p;' \
@@ -79,11 +81,6 @@ function vconf_format() {
     sed -i 's/^__/#\ /g' $1
 }
 
-function get_value_from_table() {
-    local row=$2 column=$3
-    echo "$(cat $1 | sed -n '/^#p\|^$/!p' | sed -n "$row p" | awk -F'|' "{print \$$column}" | awk 'gsub(/^ *| *$/,"")')"
-}
-
 # vconf文件解析
 function vconf() { # 要求：名字必须.conf结尾，第一行为magic code，#开头; 其他"#"开头为注释，有效行以空格分隔每项。
     trap "set +f" 1 2 3 15; set -f
@@ -103,7 +100,7 @@ function vconf() { # 要求：名字必须.conf结尾，第一行为magic code�
 
     [ "${file: -6}" == '.vconf' -a -f $file ] || return
 
-    vconf_file=vconf_$(cat /dev/urandom | LC_CTYPE=C tr -dc '0-9a-zA-Z' | fold -w 6 | head -n 1)
+    vconf_file=/tmp/vconf_$(cat /dev/urandom | LC_CTYPE=C tr -dc '0-9a-zA-Z' | fold -w 6 | head -n 1)
     vconf_filter 3 $file > $vconf_file
     lines=$(sed -n '$=' "$vconf_file")
 
@@ -168,7 +165,7 @@ function vconf() { # 要求：名字必须.conf结尾，第一行为magic code�
     else
         echo "unsupport!"
     fi
-
+    rm $vconf_file
     [ -n "$format" ] && vconf_format $file
 
     if [ -z "$exp" ]; then
@@ -179,3 +176,13 @@ function vconf() { # 要求：名字必须.conf结尾，第一行为magic code�
 
     return $ret
 }
+
+############# export ##############
+
+# if [ -n "$ZSH" ]; then
+# else
+# fi
+
+########### export end ############
+
+[[ "${0##*/}" =~ "lib.vconf" ]] && $@

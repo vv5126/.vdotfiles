@@ -5,14 +5,9 @@ trap "set +f" 1 2 3 15; set -f
 source $VLIBS/lib.base
 source $VLIBS/lib.list
 
-[ -z "$VUSER_DATA/sync.conf" ] && { echo "no conf file!"; exit; }
+[ -z "$VUSER_DATA/sync.vconf" ] && { echo "no conf file!"; exit; }
 
-if [ $# -eq 1 ]; then
-	expr $1 + 0 &>/dev/null
-	[ $? -eq 0 ] && vconf -r "$1" -f $VUSER_DATA/sync.conf
-else
-	showlist_with_tab $VUSER_DATA/sync.conf "name" "Backup you want"
-fi
+showlist_with_input $VUSER_DATA/sync.vconf "name" "Backup you want" $@
 
 if [ "${name-"null"}" != "null" ]; then
 	eval src=$src

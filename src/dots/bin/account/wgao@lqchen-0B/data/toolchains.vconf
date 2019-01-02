@@ -1,0 +1,11 @@
+# toolchain_version               toolchain_path
+# export                            CROSS_COMPILE=mips-linux-gnu-gcc-4.7.2
+# export                            CROSS_COMPILE=mips64el-linux-android-
+mipseltools-gcc412-glibc261-local /data1/home/wgao/tools/toolchains/mipseltools-gcc412-glibc261/bin"
+mips64el-gcc472                   /pdev/chains/mips-gcc472-glibc216/bin
+mipsel-gcc472-glibc216            /data1/home/wgao/tools/toolchains/mipsel-gcc472-glibc216-mips32/bin
+mips64el-gcc520-glibc222          /pdev/chains/mips-gcc520-glibc222/bin
+mips64el-gcc520-glibc222-local    /data1/home/wgao/tools/toolchains/mips-gcc520-glibc222
+# /pdev/chains/mips-linux-gnu/bin
+mips64el-android-4.7              /data1/home/wgao/tools/toolchains/mipsel-linux-android-4.7/bin
+mips64el-android-4.9              /data1/home/wgao/tools/toolchains/mips64el-linux-android-4.9/bin

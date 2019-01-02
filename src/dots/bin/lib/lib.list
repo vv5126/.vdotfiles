@@ -62,6 +62,8 @@ function showlist_with_input(){
     local tab="$2"
     local for_user="$3"
 
+    include ~/.bin/lib/lib.vconf
+
     expr $maybe_num + 0 &>/dev/null
     if [ $? -eq 0 ]; then
 	NUM=$maybe_num
@@ -84,12 +86,8 @@ function get_value_from_table() {
 # if [ -n "$ZSH" ]; then
 # else
 #     export -f showlist
-#     export -f onlyshowlist
-#     export -f addlist
-#     export -f getline
-#     export -f showlist_with_value
+#     export -f showlist_with_input
 #     export -f user_select
-#     export -f showlist_with_tab
 # fi
 
 ########### export end ############

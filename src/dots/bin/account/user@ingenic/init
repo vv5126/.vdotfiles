@@ -16,7 +16,7 @@ if [ $1 == "init" ]; then
     > /dev/null
 else
     include $VINIS/ini.ingenic
-    export VGL_MNTFIlE="$VUSER/data/mnt.conf"
+    export VGL_MNTFIlE="$VUSER/data/mnt.vconf"
 
     # export VGL_NOTIFY=/tmp/.notify_pipe
     # alias VB='VirtualBox --startvm $HOME/.VirtualBox/xp/xp.vbox &'

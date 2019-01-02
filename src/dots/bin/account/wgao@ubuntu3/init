@@ -14,7 +14,7 @@ else
     fi
 
     # ARM
-    add_path "/backup/home/wgao/v/stm32/tools/gcc-arm-none-eabi-7-2018-q2-update"
+    add_path "/backup/home/wgao/tools/toolchain/gcc-arm-none-eabi-7-2018-q2-update/bin"
 
     # JDK
     clean_ev JAVA_HOME

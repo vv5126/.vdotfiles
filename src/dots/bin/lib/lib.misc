@@ -264,6 +264,9 @@ function timepass() {
     echo "$time_ms ms"
 }
 
+alias random_1='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9' | fold -w 8 | head -n 1'
+alias random_2='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9a-zA-Z' | fold -w 6 | head -n 1'
+
 ############# export ##############
 
 # if [ -n "$ZSH" ]; then

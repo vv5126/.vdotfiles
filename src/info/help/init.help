@@ -1,0 +1,48 @@
+aptitude
+
+openssh-server
+silversearcher-ag
+cifs-utils
+xdotool
+vim
+gitk
+git
+meld
+fcitx
+sshfs
+cmake
+libusb-1.0.0-dev
+
+sogou
+sogoupinyin_2.2.0.0108_amd64.deb
+rm fcitx-qimpanel
+配置 快捷键
+
+
+icaclient_13.5.0.10185126_amd64.deb
+libwebkit-1.0-2
+
+有待添加
+route to rc.local
+
+numlockx
+sudo vi /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+add "greeter-setup-script=/usr/bin/numlockx on"
+
+wps-office_10.1.0.6757_amd64.deb
+
+vsudoer
+
+/* win */
+cifs-utils
+font
+gnome-tweak-tool
+ssh-keygen
+
+tar cvpzf 4.152-bak.tgz --exclude=/tmp --exclude=/proc --exclude=/lost+found/ --exclude=/sys --exclude=/mnt --exclude=/media --exclude=/dev --exclude=/var /
+mkdir -p tmp proc lost+found sys mnt media dev var
+
+gsettings set org.gnome.settings-daemon.plugins.power button-power suspend
+
+
+
