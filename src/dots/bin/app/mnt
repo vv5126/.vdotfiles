@@ -1,15 +1,10 @@
 #!/bin/bash
 
-source ~/.bin/lib/lib.list
+source $VLIBS/lib.list
 
-[ -z "$VGL_MNTFIlE" ] && { echo "no conf file!"; exit; }
+[ -z "$VUSER_DATA/mnt.vconf" ] && { echo "no conf file!"; exit; }
 
-if [ $# -eq 1 ]; then
-	expr $1 + 0 &>/dev/null
-	[ $? -eq 0 ] && vconf -r "$1" -f $VGL_MNTFIlE
-else
-	showlist_with_tab $VGL_MNTFIlE "title" "go where ??"
-fi
+showlist_with_input $VUSER_DATA/mnt.vconf "title" "go where ??" $@
 
 if [ "${title-"null"}" != "null" ]; then
     case $type in

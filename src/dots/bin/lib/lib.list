@@ -43,26 +43,25 @@ function showlist(){
 }
 
 function user_select() {
+    include $VLIBS/lib.misc
+
     local NUM=0 info="$1"
 
     set "$2"
-    echo $@ | showlist
+    echo "$@" | showlist
     NUM="$(get_input "$info")"
-
-    expr $NUM + 0 &>/dev/null
-    if [ $? -eq 0 ]; then
-	echo "$(echo "$@" | sed -n '/^$/!p;' | sed -n $NUM'p;')"
-    fi
+    [ "$(is_num $NUM)" == 1 ] && echo "$(echo "$@" | sed -n -e 's/^[\ ]*//' -e '/^$/!p;' | sed -n $NUM'p;')"
 }
 
 function showlist_with_input(){
     local NUM=0
-    local maybe_num="${@## *}"
+    local tmp="$@"
+    local maybe_num="${tmp##* }"
     local file="$1"
     local tab="$2"
     local for_user="$3"
 
-    include ~/.bin/lib/lib.vconf
+    include $VLIBS/lib.vconf
 
     expr $maybe_num + 0 &>/dev/null
     if [ $? -eq 0 ]; then

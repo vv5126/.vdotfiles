@@ -82,7 +82,7 @@ function vconf_format() {
 }
 
 # vconf文件解析
-function vconf() { # 要求：名字必须.conf结尾，第一行为magic code，#开头; 其他"#"开头为注释，有效行以空格分隔每项。
+function vconf() { # 要求：名字必须.vconf结尾，第一行为magic code，#开头; 其他"#"开头为注释，有效行以空格分隔每项。
     trap "set +f" 1 2 3 15; set -f
 
     include $VLIBS/lib.misc

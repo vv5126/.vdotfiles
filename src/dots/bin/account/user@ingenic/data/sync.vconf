@@ -6,11 +6,11 @@ vdotfiles1 r     bundle                    $WORK_SERVER_SSH:'$HOME/.vdotfiles' $
 #
 # 改查
 #
-# vconf -c "name" -f file.conf
+# vconf -c "name" -f file.vconf
 # hw_pcb hw_pdf vdotfiles
 #
-# vconf -c "name" -r "vdotfiles" -f file.conf
+# vconf -c "name" -r "vdotfiles" -f file.vconf
 # set name=vdotfiles     param=url exclude=* src="$WORK_SERVER_SSH:'$HOME/.vdotfiles'" dst=$HOME
 #
-# vconf -g "param" -c "name" -r "vdotfiles" -f file.conf
+# vconf -g "param" -c "name" -r "vdotfiles" -f file.vconf
 # return "url"

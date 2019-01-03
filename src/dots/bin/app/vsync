@@ -2,8 +2,8 @@
 
 trap "set +f" 1 2 3 15; set -f
 
-source $VLIBS/lib.base
-source $VLIBS/lib.list
+include $VLIBS/lib.base
+include $VLIBS/lib.list
 
 [ -z "$VUSER_DATA/sync.vconf" ] && { echo "no conf file!"; exit; }
 

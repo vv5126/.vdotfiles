@@ -206,9 +206,8 @@ function add_server() { # NAME HOST ID IP HOME
 function ci() {
 	include $VLIBS/lib.list
 
-	DEST=0
-	DEST=$(showlist $VGL_DATA/go.conf "copy ID to where ??")
-	[ "$DEST" != 0 ] && ssh-copy-id $DEST
+	showlist_with_input $VGL_DATA/go.vconf "dest" "copy ID to where ??" $@
+	[ -n "$dest" ] && ssh-copy-id $dest
 }
 
 ############# export ##############

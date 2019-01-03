@@ -2,9 +2,9 @@
 # shdb_add shdb_name $para
 # para: -a add; -g get the key line; -d delete;
 
-include ~/.bin/lib/lib.base
-include ~/.bin/lib/lib.misc
-include ~/.bin/lib/lib.str
+include $VLIBS/lib.base
+include $VLIBS/lib.misc
+include $VLIBS/lib.str
 
 debug=0
 
@@ -244,7 +244,7 @@ function shdb() {
     fi
 
     str="$(get_param '-a' "$@")" # add
-    if [ $? -gt 0 -a $? -lt 100 ]; then
+    if [ $? -eq 0 ]; then
         line=$(get_param '-l' $@)
         if [ $? -gt 0 -a $? -lt 100 ]; then
             shdb_add "$shdb" "$str" "$line"
