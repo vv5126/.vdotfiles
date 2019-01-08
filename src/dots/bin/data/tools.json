@@ -163,7 +163,9 @@
 		"python3.6-dev",
 		"libncurses5-dev -> for vim",
 		"python2.7-dev",
-		"easy_install"
+		"easy_install",
+		"https://github.com/iikira/BaiduPCS-Go",
+		"https://github.com/alexanderepstein/Bash-Snippets"
 		],
 		"wmctrl": "apt",
 		"sopel": "pip3",

@@ -62,39 +62,41 @@ function _tar() {
 function _untar() {
     local file_name suffix prefix dir pkg
 
-    file_name="$1"
-    [ -f "$file_name" ] && { prefix=${file_name%%.*}; suffix=${file_name#*.}; } || { echo error; exit; }
+    for i in "$@"; do
+	file_name="$i"
+	[ -f "$file_name" ] && { prefix=${file_name%%.*}; suffix=${file_name#*.}; } || { echo error; exit; }
 
-    pkg="${suffix##*.}"
-    [ $# -ge 2 ] && prefix="$2"
-    dir=$(set_dir $prefix)
-    [ -n "$dir" -a ! -d "$dir" ] && mkdir -p $dir
+	pkg="${suffix##*.}"
+	[ $# -ge 2 ] && prefix="$2"
+	dir=$(set_dir $prefix)
+	[ -n "$dir" -a ! -d "$dir" ] && mkdir -p $dir
 
-    case "$pkg" in
-	*xz|*tar|*gz|*bz2|*tbz)
-	    [ -n "$dir" ] && tar -xvf $file_name  -C $dir || tar -xvf $file_name
-	    ;;
-	*zip)
-	    [ -n "$dir" ] && unzip $file_name -d $dir || unzip $file_name
-	    ;;
-	*rpm)
-	    unrpm $file_name
-	    ;;
-	*rar)
-	    unrar x $file_name
-	    ;;
-	*7z)
-	    7z x $file_name
-	    ;;
-	*)
-	    ;;
-    esac
+	case "$pkg" in
+	    *xz|*tar|*gz|*bz2|*tbz)
+		[ -n "$dir" ] && tar -xvf $file_name  -C $dir || tar -xvf $file_name
+		;;
+	    *zip)
+		[ -n "$dir" ] && unzip $file_name -d $dir || unzip $file_name
+		;;
+	    *rpm)
+		unrpm "$file_name"
+		;;
+	    *rar)
+		unrar x "$file_name"
+		;;
+	    *7z)
+		7z x "$file_name"
+		;;
+	    *)
+		;;
+	esac
+    done
 }
 
-if [ $# -ge 1 ]; then
-	if [ -d $1 ]; then
-		_tar $@
-	elif [ -f $1 ]; then
-		_untar $@
+if [ "$#" -ge 1 ]; then
+	if [ -d "$1" ]; then
+		_tar "$@"
+	elif [ -f "$1" ]; then
+		_untar "$@"
 	fi
 fi

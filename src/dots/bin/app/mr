@@ -1,5 +1,7 @@
 #!/bin/bash
 
+include $VLIBS/lib.misc
+
 alias rm='rm'
 
 function dump_tree() {
@@ -16,11 +18,9 @@ function dump_tree() {
 			tmp=${line:(-1)}
 			[ $tmp != "." ] && {
 				size=${line%M*}
-				expr $size + 0 &>/dev/null
-				[ $? -eq 0 ] && [ $size > 10 ] && dump_tree "$line"
+				[ "$(is_num $size)" == 1 ] && [ $size > 10 ] && dump_tree "$line"
 				size=${line%G*}
-				expr $size + 0 &>/dev/null
-				[ $? -eq 0 ] && dump_tree "$line"
+				[ "$(is_num $size)" == 1 ] && dump_tree "$line"
 			}
 		done
 	}

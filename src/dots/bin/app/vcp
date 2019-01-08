@@ -8,17 +8,18 @@ if [ $# -eq 0 ]; then
 	exit
 fi
 
-FILES="$@"
 LAST="${!#}"
 
 if [[ "$LAST" =~ "@" ]]; then # target
 	DEST="$LAST"
-	FILES="${FILES% *}"
+	SKIP=1
 	echo "$DEST" >> $VGL_DATA/vcp.vconf
 else # normal file
 	showlist_with_input $VGL_DATA/vcp.vconf "dest" "cp to" $@
 	DEST="$dest"
-	[ "$(is_num "$LAST")" -eq "1" ] && FILES="${FILES% *}"
+	[ "$(is_num "$LAST")" -eq "1" ] && SKIP=1
 fi
 
-scp -r $FILES $DEST
+for i in "$@"; do
+    [ -n "$SKIP" -a "$i" == "$LAST" ] || scp -r "$i" "$DEST"
+done

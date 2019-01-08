@@ -4,7 +4,7 @@ include $VLIBS/lib.misc
 include $VLIBS/lib.work
 include $VLIBS/lib.shdb
 
-debug=1
+debug=0
 
 function get_repo_dir() {
     repo_info=''

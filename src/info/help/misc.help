@@ -1,29 +1,30 @@
 依赖
 
+> 有效的
 
-
-
-
-检查远程端口是否对bash开放：
-echo >/dev/tcp/8.8.8.8/53 && echo "open"
+按行将两个文件中的对应行合并显示:
+paste test.txt test1.txt
 
 产生随机的十六进制数，其中n是字符数：
 openssl rand -hex n
 
-SSH debug 模式:
-ssh -vvv user@ip_address
+获取文本的md5 hash：
+echo -n "text" | md5sum
+
+列出包括子进程的进程树：
+ps axwef
+
+以读写模式挂载根文件系统:
+mount -o remount,rw /
+
+
+
 
 使用pem key的进行SSH连接：
 ssh user@ip_address -i key.pem
 
 用wget抓取完整的网站目录结构，存放到本地目录中：
 wget -r --no-parent --reject "index.html*" http://hostname/ -P /home/user/dirs
-
-列出包括子进程的进程树：
-ps axwef
-
-获取文本的md5 hash：
-echo -n "text" | md5sum
 
 使用curl获取HTTP头信息：
 curl -I http://www.example.com
@@ -49,17 +50,11 @@ watch ps -ef
 显示所有用户:
 getent passwd
 
-以读写模式挂载根文件系统:
-mount -o remount,rw /
-
 挂载目录 (适合于符号链接不能工作的情况下):
 mount --bind /source /destination
 
 发送DNS动态更新给DNS:
 nsupdate <<EOF update add $HOST 86400 A $IP send EOF
-
-递归grep所有目录
-grep -r "some_text" /path/to/dir
 
 列出10个最大的系统中已打开的文件:
 lsof / | awk '{ if($7 > 1048576) print $7/1048576 "MB "$9 }' | sort -n -u | tail
@@ -96,9 +91,6 @@ kill -9 $$
 
 扫描网络来找出开放的端口:
 nmap -p 8081 172.20.0.0/16
-
-按行将两个文件中的对应行合并显示:
-paste test.txt test1.txt
 
 shell中的进度条:
 pv data.log

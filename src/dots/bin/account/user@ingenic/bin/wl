@@ -1,0 +1,21 @@
+wlan="wlp3s0"
+lan="enp2s0"
+
+wlan_ip=$(ifconfig $wlan | sed -n '/inet\ addr/p;' | awk '{print $2}' | awk -F':' '{print $2}')
+lan_ip=$(ifconfig $lan | sed -n '/inet\ addr/p;' | awk '{print $2}' | awk -F':' '{print $2}')
+
+if [ -n "$wlan_ip" ]; then
+	while true; do
+		sudo route del default > /dev/null 2>&1
+		[ "$?" -ne 0 ] && break
+	done
+	sudo route add default gw ${wlan_ip%.*}.1 $wlan > /dev/null 2>&1
+	sudo route add -net 192.168.0.0 netmask 255.255.0.0 gw 192.168.4.1  > /dev/null 2>&1
+else
+	while true; do
+		sudo route del default > /dev/null 2>&1
+		[ "$?" -ne 0 ] && break
+	done
+	sudo route add default gw ${lan_ip%.*}.1 $lan  > /dev/null 2>&1
+fi
+

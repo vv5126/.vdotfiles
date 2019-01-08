@@ -246,7 +246,7 @@ function shdb() {
     str="$(get_param '-a' "$@")" # add
     if [ $? -eq 0 ]; then
         line=$(get_param '-l' $@)
-        if [ $? -gt 0 -a $? -lt 100 ]; then
+	if [ $? -eq 0 ]; then
             shdb_add "$shdb" "$str" "$line"
          return $?
         else
@@ -256,9 +256,9 @@ function shdb() {
     fi
 
     str="$(get_param '-g' "$@")" # get the line
-    [ $? -gt 0 -a $? -lt 100 ] && { get_session_start "$shdb" "$str"; return $?; }
+    [ $? -eq 0 ] && { get_session_start "$shdb" "$str"; return $?; }
 
     str="$(get_param '-d' "$@")" # del
-    [ $? -gt 0 -a $? -lt 100 ] && { shdb_del "$shdb" $str; return $?; }
+    [ $? -eq 0 ] && { shdb_del "$shdb" $str; return $?; }
 
 }

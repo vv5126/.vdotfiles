@@ -61,18 +61,17 @@ function showlist_with_input(){
     local tab="$2"
     local for_user="$3"
 
+    include $VLIBS/lib.misc
     include $VLIBS/lib.vconf
 
-    expr $maybe_num + 0 &>/dev/null
-    if [ $? -eq 0 ]; then
+    if [ "$(is_num $maybe_num)" == 1 ]; then
 	NUM=$maybe_num
     else
 	vconf "$file" -c "$tab" | showlist
 	NUM="$(get_input $for_user)"
     fi
 
-    expr $NUM + 0 &>/dev/null
-    [ $? -eq 0 ] && vconf "$file" -rn "$NUM"
+    [ "$(is_num $NUM)" == 1 ] && vconf "$file" -rn "$NUM"
 }
 
 function get_value_from_table() {

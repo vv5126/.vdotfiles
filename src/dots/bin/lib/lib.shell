@@ -8,6 +8,7 @@ function ccd(){
                 local para2=$(echo $try_old_dir | awk '{print $3}')
                 local para3=$(echo $try_old_dir | awk '{print $4}')
                 [ -n "$para2" -a -n "$para3" ] && { $para1 $para3 $para2; return; }
+		# only mv ??
         done
 }
 
@@ -63,7 +64,7 @@ function svi(){
         [ $? -eq 0 ] && LINE="+$LINE" || LINE=''
 
         STR=''
-        [ ! -f $FILE -a $PWD != "$HOME" ] && STR="$(fd $FILE)"
+        [ ! -f "$FILE" -a "$PWD" != "$HOME" ] && STR="$(fd $FILE)"
         [ -n "$STR" ] && FILE="$STR"
 
         [ -f "$FILE" ] && vim $FILE ${LINE:+$LINE}
