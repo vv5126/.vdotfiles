@@ -3,6 +3,8 @@
 include ~/.bin/lib/lib.list
 
 function mm1 {
+    [ "$(guess_obj)" == "uboot" -o "$(guess_obj)" == "kernel" ] && { cd $BUILD_DIR; mma1; return 0; }
+
     unalias mm
     type mm >/dev/null 2>&1
     [ "$?" -eq 0 ] && mm | tee /tmp/.mk_tmp || {

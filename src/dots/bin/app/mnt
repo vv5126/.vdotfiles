@@ -4,7 +4,7 @@ source $VLIBS/lib.list
 
 [ -z "$VUSER_DATA/mnt.vconf" ] && { echo "no conf file!"; exit; }
 
-showlist_with_input $VUSER_DATA/mnt.vconf "title" "go where ??" $@
+showlist_with_input $VUSER_DATA/mnt.vconf "title" "which need mount ??" $@
 
 if [ "${title-"null"}" != "null" ]; then
     case $type in

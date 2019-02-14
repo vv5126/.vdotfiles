@@ -1,8 +1,7 @@
 #!/bin/bash
 
 generate_link() {
-    #origin_list="
-    origin_dir="$HOME/.local/.origin" # bak for old
+    origin_dir="$HOME/.local/.olddot" # bak for old
 
     [ ! -d "$origin_dir" ] && mkdir -p "$origin_dir"
 
@@ -12,7 +11,7 @@ generate_link() {
     done
 }
 
-#======================== MAIN
+# ======================== MAIN
 
 generate_link
 

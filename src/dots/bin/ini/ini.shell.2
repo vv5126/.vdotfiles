@@ -7,7 +7,7 @@ if [ -n "$(which fzf)" ]; then
 fi
 
 if [ -n "$(which dircolors)" ]; then
-	eval `dircolors -b $HOME/.dir_colors`
+	eval $(dircolors -b "$VGL_DATA"/dir_colors)
 fi
 
 if [ -d "$HOME/.local/usr/local/lib/pkgconfig" ]; then

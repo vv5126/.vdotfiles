@@ -32,13 +32,13 @@ function quickcd() {
             [[ "$1" =~ ":~" ]] && { dir=$HOME"${1##*:~}"; continue; }
             [[ "$1" =~ ":" ]] && { dir="${1##*:}"; continue; }
             [ $1 = "-" ] && { dir=$OLDPWD; continue; }
-            [ $1 = "clean" ] && { > ~/.cdlist; continue; }
-            tmp="$HOME/.cdlist.tmp"
-            [ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" > "$tmp"; cat "$HOME/.cdlist" >> "$tmp"; mv "$tmp" "$HOME/.cdlist"; continue; }
-            [ $# -eq 1 -a -f "$HOME/.cdlist" ] && {
+            [ $1 = "clean" ] && { > $VTMP/cdlist; continue; }
+            tmp="$VTMP/cdlist.tmp"
+            [ $# -eq 2 ] && [ $1 = "add" ] && { echo "$2 `pwd`" > "$tmp"; cat "$VTMP/cdlist" >> "$tmp"; mv "$tmp" "$VTMP/cdlist"; continue; }
+            [ $# -eq 1 -a -f "$VTMP/cdlist" ] && {
                 while read line; do
                     [ $1 = "${line% *}" ] && { dir=${line#* }; continue 2; }
-                done < "$HOME/.cdlist"
+                done < "$VTMP/cdlist"
             }
             tmp="$(find -maxdepth 1 -type d -name "$1*")"; [ $? -eq 0 -a -d "$tmp" ] && { dir="$tmp"; continue; }
         fi

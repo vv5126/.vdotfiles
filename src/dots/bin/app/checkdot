@@ -1,6 +1,10 @@
 #!/bin/bash
 
 dot_templat=(
+.lesshst
+.repoconfig
+.repo_.gitconfig.json
+.stmcube
 .cmus
 .selected_editor
 .pam_environment
@@ -21,6 +25,12 @@ dot_templat=(
 .freerdp
 .cscope.vim
 -----------------------------
+# 不关心 #
+-----------------------------
+# OK #
+.nfs_disk
+.tools
+.tmp
 -----------------------------
 # 可以忽略 #
 .xinputrc
@@ -41,7 +51,6 @@ dot_templat=(
 .node_repl_history
 .npminstall_tarball
 .pip
-.v.bash
 .fzf
 .fzf.bash
 .fasd
@@ -65,8 +74,6 @@ dot_templat=(
 .bin
 .cache
 .config.bak
-.cloner-0.27.2-ubuntu-14.04-32bit_release
-.cloner-1.0.0-ubuntu-14.04-32bit_release
 .desktop
 .getmail
 .origin

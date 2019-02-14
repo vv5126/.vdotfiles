@@ -1,18 +1,17 @@
 
 # vim
-src/dots/vim/bundle/
+src/dots/vim/bundle
+src/dots/vim/colors
+src/dots/vim/sessions
+src/dots/vim/view
 src/dots/vim/.netrwhist
-src/dots/vim/autoload/
-src/dots/vim/plugin/
-src/dots/vim/buffer
-src/dots/vim/ycm_conf/ycm_extra_conf_c.pyc
-src/dots/vim/sessions/
-src/dots/vim/view/
 
-src/dots/vhelper/log/
-src/dots/vhelper/tmp/
+src/dots/vhelper/log
+src/dots/vhelper/tmp
 
 src/dots/bin/lib/ReadMe
-src/dots/bin/lib/py3/__pycache__/
+src/dots/bin/lib/py3/__pycache__
 src/dots/bin/data/.asd~
 src/dots/bin/user
+
+tmp

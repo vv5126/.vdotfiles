@@ -76,18 +76,12 @@ return $ret
 
 function htmlbak(){
 
-src=$VGL_BOOKMARK
-dst=${1:-$(ls ~/bookmarks_*.html)}
-out=./bookmarks_diff
+    dst=${1:-$(ls ~/bookmarks_*.html)}
+    out=./bookmarks_diff
 
-[ -f "$out" ] && rm "$out"
+    [ -f "$out" ] && rm "$out"
 
-tmp_dir=${src%\/*}
-tmp_file=${src##*\/}
-mv $src $tmp_dir/.$tmp_file.bak
-
-mv $dst $src
-
+    mv $dst $VGL_BOOKMARK
 }
 
 
@@ -106,4 +100,5 @@ case "$1" in
         [ $ret == 2 -o $ret == 3 ] && echo "please check it by hand~"
         ;;
 esac
+
 echo "$ret done!"

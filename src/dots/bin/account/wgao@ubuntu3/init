@@ -57,6 +57,6 @@ else
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
     export -f canup
 
-    export VGL_BOOKMARK="$HOME/.vdotfiles/src/info/bookmark/bookmark.html"
+    VGL_BOOKMARK="$HOME/.vdotfiles/src/info/bookmark.html"
     complete -W "diff bak" vhtml
 fi

@@ -68,7 +68,7 @@ function showlist_with_input(){
 	NUM=$maybe_num
     else
 	vconf "$file" -c "$tab" | showlist
-	NUM="$(get_input $for_user)"
+	NUM="$(get_input "$for_user")"
     fi
 
     [ "$(is_num $NUM)" == 1 ] && vconf "$file" -rn "$NUM"

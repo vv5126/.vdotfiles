@@ -1,3 +1,16 @@
+diff --git a/.vimrc b/.vimrc
+index 8ee2322..aacac9e 100644
+--- a/.vimrc
++++ b/.vimrc
+@@ -1094,7 +1094,7 @@
+ 
+     " Initialize directories {
+     function! InitializeDirectories()
+-        let parent = $HOME
++        let parent = $HOME . '/.local/v/vim'
+         let prefix = 'vim'
+         let dir_list = {
+                     \ 'backup': 'backupdir',
 diff --git a/.vimrc.bundles b/.vimrc.bundles
 index 997ae96..a9b160b 100644
 --- a/.vimrc.bundles
