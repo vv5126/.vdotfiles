@@ -169,7 +169,7 @@ function mk2sh() {
 # 工具链切换
 function change_toolchain(){
     showlist_with_input $VUSER_DATA/toolchains.vconf "toolchain_version" "go where ??" $@
-    add_path "$toolchain_path"
+    eval add_path "$toolchain_path"
 }
 
 function setwork() {

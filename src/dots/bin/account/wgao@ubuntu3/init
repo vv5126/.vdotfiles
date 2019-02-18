@@ -7,14 +7,8 @@ else
     include $VLIBS/lib.work
     include $VLIBS/lib.misc
 
-    ### FZF
-    if [ -n "$(which fzf)" ]; then
-	export FZF_DEFAULT_COMMAND='ag -g ""'
-	export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
-    fi
-
     ### ARM
-    add_path "$HOME/tools/toolchain/gcc-arm-none-eabi-7-2018-q2-update/bin"
+    add_path "$VTMP/tools/toolchain/gcc-arm-none-eabi-7-2018-q2-update/bin"
 
     ### JDK
     # JAVA_1="java-1.7.0-openjdk-amd64"
@@ -25,7 +19,7 @@ else
 
     if [ -n "$JAVA_1" ]; then
 	clean_ev JAVA_HOME
-	add_ev JAVA_HOME "$HOME/tools/jvm/$JAVA_1"
+	add_ev JAVA_HOME "$VTMP/tools/jvm/$JAVA_1"
 	add_ev JRE_HOME "${JAVA_HOME}/jre"
 	add_ev CLASSPATH ".:${JAVA_HOME}/lib:${JRE_HOME}/lib"
 	add_path "${JAVA_HOME}/bin"
@@ -34,7 +28,7 @@ else
 
     ### MISC
     # alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
-    # alias wiz='nohup $HOME/tools/wiz > /dev/null &'
+    # alias wiz='nohup $VTMP/tools/wiz > /dev/null &'
     # alias vh='nohup vhelper > /dev/null &'
     # export VGLD_CRACK_DIR="$HOME/v/bbb"
 

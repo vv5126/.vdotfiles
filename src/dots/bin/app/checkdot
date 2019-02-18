@@ -1,58 +1,54 @@
 #!/bin/bash
 
 dot_templat=(
-.lesshst
-.repoconfig
-.repo_.gitconfig.json
-.stmcube
-.cmus
-.selected_editor
-.pam_environment
-.gitconfig
-.bash_logout
 -----------------------------
-# 当前用户的配置主要在 #
+# OK #
+.bashrc
+.bin
+.rm
+.profile
+
+.nfs_disk
+.v
+.vdotfiles
+.vim
+.vimrc
 .local
-.config
-.gconf
+-----------------------------
+# 确定忽略 #
+.ssh
+.cache
+.dbus
+.Xauthority
+.Trash-1000
+-----------------------------
+# 不关心 #
+.stmcube
+.stm32cubemx
+.stmcufinder
+.java
+.oracle_jre_usage
 -----------------------------
 # 其他 #
 .bash_logout
 .emacs.d
-.viminfo
 .xsession
 .vnc
 .freerdp
 .cscope.vim
------------------------------
-# 不关心 #
------------------------------
-# OK #
-.nfs_disk
-.tools
-.tmp
------------------------------
-# 可以忽略 #
 .xinputrc
 .gnupg
 .gnome
 .gnome2
 .gnome2_private
 .WizNote
-.vhelper
------------------------------
-# 确定忽略 #
 .hosts
-.stm32cubemx
-.stmcufinder
 .npm
 .node-gyp
 .node-red
 .node_repl_history
 .npminstall_tarball
 .pip
-.fzf
-.fzf.bash
 .fasd
 .AndroidStudio1.2
 .AndroidStudioPreview2.1
@@ -60,8 +56,6 @@ dot_templat=(
 .screenrc
 .sdcv_history
 .PyCharm40
-.java
-.oracle_jre_usage
 .docker.sh
 .zcompdump
 .gvfs
@@ -69,37 +63,15 @@ dot_templat=(
 .gstreamer-0.10
 .repopickle_.gitconfig
 .zsh-update
-.bash_history
-.bashrc
-.bin
-.cache
 .config.bak
 .desktop
 .getmail
 .origin
 .minirc.ttyUSB0
 .minirc.ttyUSB1
-.ssh
 .thumbnails
 .thunderbird
 .android
-.profile
-.tmux.conf
-.tmux.conf.local
-.tmux-powerlinerc
-.zcompdump-ubuntu-5.0.2
-.VADD
-.vdotfiles
-.vim
-.vimrc
-.vimbackup
-.vim-fuf-data
-.viminfo,!
-.viminfo.tmp
-.vimrc_new
-.vimswap
-.vimviews
-.vimundo
 .VirtualBox
 .Xmodmap
 .zsh_history
@@ -109,22 +81,15 @@ dot_templat=(
 .gksu.lock
 .xsession.bak
 .ICAClient
-.rm
 .rpmdb
-.Trash-1000
-.cdlist
 .boards
 .gbs.conf
-.Xauthority
 .subversion
-.dbus
 .dmrc
-.fonts
 .pki
 .wiznote
 .sopel
 .bypy
-.dir_colors
 )
 
 #文件方式

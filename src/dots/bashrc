@@ -1,6 +1,5 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
 
 # If not running interactively, don't do anything
 case $- in
@@ -18,6 +17,23 @@ shopt -s histappend # 用户打开多个终端（产生多个session）情况下
 
 HISTSIZE=1000      # 定义了 history 命令输出的记录数.
 HISTFILESIZE=10000 # 定义了在 .bash_history 中保存命令的记录总数.
+
+export HISTFILE=$HOME/.v/.bash_history
+export LESSHISTFILE=$HOME/.v/.lesshst
+
+# Where user-specific configurations should be written (analogous to /etc).
+# Should default to $HOME/.config.
+export XDG_CONFIG_HOME=$HOME/.v/config
+
+# Where user-specific non-essential (cached) data should be written (analogous to /var/cache).
+# Should default to $HOME/.cache.
+export XDG_CACHE_HOME=$HOME/.v/.cache
+
+# Where user-specific data files should be written (analogous to /usr/share).
+# Should default to $HOME/.local/share.
+export XDG_DATA_HOME=$HOME/.local/share
+
+export FONTCONFIG_FILE="$XDG_CONFIG_HOME/fontconfig/fonts.conf"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.

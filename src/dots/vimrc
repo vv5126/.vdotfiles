@@ -1083,4 +1083,5 @@ endif
     " set fileformat=unix                " 以UNIX的换行符格式保存文件，注意是去掉一个^M
     " -------------------------------------------------
 " }}}
+    set viminfo+='1000,n$VTMP/.viminfo
 " }}}

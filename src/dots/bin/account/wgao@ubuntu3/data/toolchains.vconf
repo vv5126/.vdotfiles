@@ -1,5 +1,5 @@
 # toolchain_version toolchain_path
-mips64el-android-4.7 /backup/home/wgao/.tools/toolchain/mipsel-linux-android-4.7/bin
-mips64el-android-4.9 /backup/home/wgao/.tools/toolchain/mips64el-linux-android-4.9/bin
-mips64el-gcc520      /backup/home/wgao/.tools/toolchain/mips-gcc520-glibc222/bin
-mips64el-gcc472      /backup/home/wgao/.tools/toolchain/mipsel-gcc472-glibc216-mips32/bin
+mips64el-android-4.7 $VTMP/tools/toolchain/mipsel-linux-android-4.7/bin
+mips64el-android-4.9 $VTMP/tools/toolchain/mips64el-linux-android-4.9/bin
+mips64el-gcc520      $VTMP/tools/toolchain/mips-gcc520-glibc222/bin
+mips64el-gcc472      $VTMP/tools/toolchain/mipsel-gcc472-glibc216-mips32/bin

@@ -1,4 +1,8 @@
-[ -n "$(type ag)" ] && alias ag='ag --noheading --smart-case -t'
+if [ -n "$(type ag)" ]; then
+    alias ag='ag --hidden --ignore tags -p $HOME/.v/.agignore --noheading --smart-case -t'
+    # alias ag='ag --hidden -p $HOME/.v/.agignore --noheading --smart-case -t'
+    # alias ag='ag --hidden --ignore tags -p $HOME/.v/.agignore'
+fi
 
 # FZF
 if [ -n "$(which fzf)" ]; then
