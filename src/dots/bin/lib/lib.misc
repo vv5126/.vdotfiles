@@ -230,20 +230,6 @@ function md1sum() {
     echo "$(stat $1 | grep -E 'Size:|Modify:' | tr "\n" " " | awk '{print $2,$(NF-1)}' | sed 's/\ .*\.//g')"
 }
 
-function win2unix() {
-    local i
-    [ $# -eq 0 ] && return
-    for i in $@; do
-        iconv -f gb2312 -t utf-8 $i > /tmp/win2unix.tmp 2>/dev/null
-        [ $? -eq 0 ] && mv /tmp/win2unix.tmp $i
-    done
-}
-
-function canup() {
-    (cd $HOME/.vdotfiles
-    [ x"$(git log --oneline -1 remotes/origin/master | awk '{print $1}')" != x"$(git log --oneline -1 | awk '{print $1}')" ] && echo can! || echo bad!)
-}
-
 # 计算耗时
 function timepass() {
     # 参数由date +%s.%N获得
@@ -262,6 +248,18 @@ function timepass() {
 
     echo "$time_micro microseconds"
     echo "$time_ms ms"
+}
+
+ask() {
+  while true; do
+    read -p "$1 ([y]/n) " -r
+    REPLY=${REPLY:-"y"}
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      return 1
+    elif [[ $REPLY =~ ^[Nn]$ ]]; then
+      return 0
+    fi
+  done
 }
 
 alias random_1='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9' | fold -w 8 | head -n 1'

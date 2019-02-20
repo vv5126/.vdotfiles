@@ -1,11 +1,9 @@
-asd
 adb
 add-new-adb
 checkdot
 com
 cloner
 diff-so-fancy
-g go
 ins
 kill_process
 mnt
@@ -18,8 +16,13 @@ vsync
 
 # gt
 # ack
-# asd
 # qq
 # fasd      fasd
 # happybox
 # vgitdiff
+
+vbox svi
+vbox win2unix
+vbox ci
+vbox asd
+vbox g

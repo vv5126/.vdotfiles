@@ -42,14 +42,12 @@ else
     # add_path "$HOME/tools/llvm/bin"
     add_path "$HOME/tools/toolchain/mips-gcc520-glibc222/bin"
 
-    export -f win2unix
 
     ### special
 
     ## vdot update
     alias vdiff='vgitdiff ~/.vdotfiles; meld git.diff.add git.diff.rm'
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
-    export -f canup
 
     VGL_BOOKMARK="$HOME/.vdotfiles/src/info/bookmark.html"
     complete -W "diff bak" vhtml

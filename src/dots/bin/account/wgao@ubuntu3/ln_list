@@ -2,8 +2,6 @@ make      gmake /usr/bin
 gawk-x64  gawk
 diff-so-fancy
 repo
-asd
-g
 checkdot
 vcp
 gt
@@ -34,3 +32,10 @@ xclip-x64 xclip
 # asd
 # irc
 tm
+
+vbox canup
+vbox svi
+vbox win2unix
+vbox ci
+vbox asd
+vbox g

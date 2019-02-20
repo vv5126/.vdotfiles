@@ -52,27 +52,6 @@ function quickcd() {
     fi
 }
 
-# vim的增强版
-function svi(){
-    local STR FILE LINE
-    if [ $# -ne 0 ]; then
-        STR=$1
-        FILE=${STR%%:*}
-        LINE=${STR#*:}
-        LINE=${LINE%%:*}
-
-        expr $LINE + 0 &>/dev/null
-        [ $? -eq 0 ] && LINE="+$LINE" || LINE=''
-
-        STR=''
-        [ ! -f "$FILE" -a "$PWD" != "$HOME" ] && STR="$(fd $FILE)"
-        [ -n "$STR" ] && FILE="$STR"
-
-        [ -f "$FILE" ] && vim $FILE ${LINE:+$LINE}
-    fi
-    # printf "\e[?2004l"
-}
-
 # find的增强版
 function find1(){
     set +f
@@ -205,22 +184,10 @@ function add_server() { # NAME HOST ID IP HOME
     eval export "$NAME"_HOME="$HOME"
 }
 
-function ci() {
-	include $VLIBS/lib.list
-
-	showlist_with_input $VGL_DATA/go.vconf "dest" "copy ID to where ??" $@
-	[ -n "$dest" ] && ssh-copy-id $dest
-}
-
 ############# export ##############
-alias cd='quickcd'
-alias vi='svi'
-alias fd='set -f; find1'
-alias ..='vcd'
-alias ...='cd_repo'
-alias vvsync="rsync -url 'wgao@192.168.4.15:\$HOME/.vdotfiles' $HOME"
 
-# if [ -n "$ZSH" ]; then
-# fi
+if [ -n "$ZSH" ]; then
+    export -f ccd
+fi
 
 ########### export end ############

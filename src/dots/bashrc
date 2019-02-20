@@ -48,7 +48,7 @@ shopt -s checkwinsize
 
 [ -x /usr/bin/tput ] && PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\] \$ '
 
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+# alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 shopt -s expand_aliases
 
@@ -84,7 +84,7 @@ if [ -d "$VUSER" ]; then
             find $1 -type l -delete
             [ -d "bin" ] || mkdir bin
             [ -f "ln_list" ] && (cd bin; lnn_file ../ln_list)
-            # [ -f "$HOME/.bin/user" ] && mr "$HOME/.bin/user"
+            [ -L "$HOME/.bin/user" ] && rm "$HOME/.bin/user"
             ln -sf "$VUSER" "$HOME/.bin/user"
             echo $listfile_md1 > "../.inited"
             echo reset - "$VHOSTID" done! >&2

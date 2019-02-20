@@ -12,6 +12,12 @@ alias du='du -h -d 1'
 alias grep='grep --color --exclude-dir=".git"'
 alias libmk='lib.misc gen_lib_info $HOME/.bin/lib'
 alias rm='rm_mv=$HOME/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
+alias cd='quickcd'
+alias vi='svi'
+alias fd='set -f; find1'
+alias ..='vcd'
+alias ...='cd_repo'
+alias vvsync="rsync -url 'wgao@192.168.4.15:\$HOME/.vdotfiles' $HOME"
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.utf8

@@ -49,6 +49,45 @@ insmod galcore.ko registerMemBase=0x13040000 irqLine=71 contiguousSize=0x800000
 mount -t debugfs debugfs /a
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
+extern void dump_cpm_reg1(void);
+dump_cpm_reg1();
+
+if (strcmp(__clk_get_name(clk), "dout_msc0"))
+
+setenv bootcmd tftpboot 0x80f00000 user/wgao/android-fpga/boot.img; boota mem 0x80f00000
+setenv bootargs console=ttyS0,115200 mem=256M@0x0 mem=256M@0x30000000 ip=192.168.10.205:192.168.10.1:192.168.10.1:255.255.255.0 root=/dev/ram0 rw rdinit=/init
+
+#ifdef WGAO_DEBUG
+        {
+                unsigned int i, w=100, h = 100;
+                unsigned char *p = input_image;
+                for (w=0;w< 100;w++) {
+                        for (h=0;h< 100;h++)
+                                printf("%x ", *p++);
+                        printf("\n");
+                }
+        }
+#endif
+
+
+问题
+ddr_training_space是什么？
+nfi nemc pdma
+set_smp_ctrl
+set_smp_reim
+__write_32bit_c0_register($12, 7, 0);
+start.S 的初始化部分
+ddr bypassmode
+
+DEVNAME (i), DEVOFFSET (i), ENVSIZE (i), DEVESIZE (i), ENVSECTORS (i));
+/dev/mtd1   0x38000         0x1000      0x1000          8
+
+	environment.image = addr0;
+rc = flash_write_buf(dev_target, fd_target, environment.image,
+        CUR_ENVSIZE, DEVOFFSET(dev_target),
+        DEVTYPE(dev_target));
+flash_write_buf (int dev, int fd, void *buf, size_t count,
+        off_t offset, uint8_t mtd_type)
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------

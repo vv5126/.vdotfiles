@@ -1094,7 +1094,7 @@
 
     " Initialize directories {
     function! InitializeDirectories()
-        let parent = $HOME
+        let parent = $VTMP
         let prefix = 'vim'
         let dir_list = {
                     \ 'backup': 'backupdir',
