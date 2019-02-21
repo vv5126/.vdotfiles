@@ -25,9 +25,9 @@ git diff > $tmp_frist_diff
 cd - > /dev/null
 
 while read line; do
-    [ "${line:0:3}" == "---" -o "${line:0:3}" == "+++" ] && continue
-        [ "${line:0:1}" == "+" ] && echo "${line:1}" >> $tmp_add--
-        [ "${line:0:1}" == "-" ] && echo "${line:1}" >> $tmp_rm--
+    [ "x${line:0:3}" == "x---" -o "x${line:0:3}" == "x+++" ] && continue
+        [ "x${line:0:1}" == "x+" ] && echo "${line:1}" >> $tmp_add--
+        [ "x${line:0:1}" == "x-" ] && echo "${line:1}" >> $tmp_rm--
 done < $tmp_frist_diff
 
 cat $tmp_add-- | grep -oP '[^" ].*' - > $tmp_add-

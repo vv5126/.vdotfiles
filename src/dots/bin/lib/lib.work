@@ -166,12 +166,6 @@ function mk2sh() {
         > $2
 }
 
-# 工具链切换
-function change_toolchain(){
-    showlist_with_input $VUSER_DATA/toolchains.vconf "toolchain_version" "go where ??" $@
-    eval add_path "$toolchain_path"
-}
-
 function setwork() {
     WORKSPACE=$PWD
 }
@@ -183,7 +177,6 @@ alias mma='mma1'
 
 # if [ -n "$ZSH" ]; then
 #     export ZSH_EXPORTED_FUNCTIONS="$(functions \
-#         change_toolchain \
 #         )"
 # else
 # fi

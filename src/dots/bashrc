@@ -7,18 +7,69 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-# HISTCONTROL=erasedups       # 使用HISTCONTROL清除整个命令历史中的重复条目
+# Export once
+(type include > /dev/null 2>&1) && EXP=0 || EXP=1
+
+if [ "$EXP" -eq 1 ]; then
+
+    function include() {
+	[[ "$VINCS" =~ "$1:" ]] || {
+	    source $1
+	    VINCS="$VINCS$1:"
+	}
+    }
+
+    if [ -n "$ZSH" ]; then
+	HOSTNAME="$HOST"
+	export ZSH_EXPORTED_FUNCTIONS="$(functions include)"
+    else
+	export -f include
+    fi
+fi
 
 # append to the history file, don't overwrite it
 shopt -s histappend # 用户打开多个终端（产生多个session）情况下，共享history
 
-HISTSIZE=1000      # 定义了 history 命令输出的记录数.
-HISTFILESIZE=10000 # 定义了在 .bash_history 中保存命令的记录总数.
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+# shopt -s checkwinsize
 
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+[ -x /usr/bin/tput ] && PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\] \$ '
+
+include $HOME/.bin/lib/lib.shell
+# include $HOME/.bin/ini/ini.shell.1
+
+if [ "$EXP" -eq 1 ]; then
+# export EDITOR="$(which vim)"
+export VLIBS="$HOME/.bin/lib"
+export VINIS="$HOME/.bin/ini"
+export VHOSTID="$USER@$HOSTNAME"
+export VACCOUNT="$HOME/.bin/account"
+export VUSER="$VACCOUNT/$VHOSTID"
+export VGL_DATA="$HOME/.bin/data"
+export VUSER_DATA="$VACCOUNT/$VHOSTID/data"
+export VTMP="$HOME/.v"
+
+# history #
+export HISTTIMEFORMAT="%m-%d %H:%M "
+export PROMPT_COMMAND="history -a" # 实时追加history，不必等用户退出才将内存中的history记录到文件
 export HISTFILE=$HOME/.v/.bash_history
+
+# don't put duplicate lines or lines starting with space in the history.
+export HISTCONTROL=ignoreboth
+# export HISTCONTROL=erasedups       # 使用HISTCONTROL清除整个命令历史中的重复条目
+
+export HISTSIZE=1000      # 定义了 history 命令输出的记录数.
+export HISTFILESIZE=10000 # 定义了在 .bash_history 中保存命令的记录总数.
+
+# export HISTFILE=/data1/home/wgao/.local/history/$(date +%m%d).log
 export LESSHISTFILE=$HOME/.v/.lesshst
 
 # Where user-specific configurations should be written (analogous to /etc).
@@ -35,39 +86,28 @@ export XDG_DATA_HOME=$HOME/.local/share
 
 export FONTCONFIG_FILE="$XDG_CONFIG_HOME/fontconfig/fonts.conf"
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
+# add path #
+add_path "$VLIBS"
+add_path "$HOME/.bin/base"
+add_path "$HOME/.local/bin"
 
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+# rm path #
+clean_path "/usr/games"
+clean_path "/usr/local/games"
 
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-[ -x /usr/bin/tput ] && PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\] \$ '
-
-# alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-shopt -s expand_aliases
-
-function include() {
-    [[ "$VINCS" =~ "$1:" ]] || {
-        source $1
-        VINCS="$VINCS$1:"
-    }
-}
-
-if [ -n "$ZSH" ]; then
-    HOSTNAME="$HOST"
-    export ZSH_EXPORTED_FUNCTIONS="$(functions include)"
-else
-    export -f include
+# FZF
+if [ -n "$(which fzf)" ]; then
+    export FZF_DEFAULT_COMMAND='ag -g ""'
+    export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 fi
 
-include $HOME/.bin/lib/lib.shell
-include $HOME/.bin/ini/ini.shell.1
+if [ -d "$HOME/.local/usr/local/lib/pkgconfig" ]; then
+    export PKG_CONFIG_PATH=$HOME/.local/usr/local/lib/pkgconfig
+fi
+# ---------
+
+fi
+# EXPORT ONCE END
 
 if [ -d "$VUSER" ]; then
     (
@@ -99,10 +139,65 @@ if [ -d "$VUSER" ]; then
     [ -f "$VUSER/init" ] && source "$VUSER/init" "load"
 fi
 
-include $HOME/.bin/ini/ini.shell.2
+# include $HOME/.bin/ini/ini.shell.2
 
 [ -f "$VTMP/init" ] && include "$VTMP/init"
 
 [ -f $VTMP/.fzf.bash ] && source $VTMP/.fzf.bash
+
+# export LC_ALL=en_US.UTF-8
+# export LANG=en_US.utf8
+# export LANG=zh_CN.UTF-8
+
+# export TMUX_PLUGIN="$HOME/.vdotfiles/src/plugins/tmux-plugin"
+export VBESUDO="$(lib.misc check_sudo)"
+
+stty -ixon
+
+if [ -n "$(which dircolors)" ]; then
+	eval $(dircolors -b "$VGL_DATA"/dir_colors)
+fi
+
+tput init
+# ---------
+# alias #
+shopt -s expand_aliases
+
+alias ll='ls -AlFh --color'
+alias llh='ls -lh'
+alias la='ls -A'
+alias ls='ls --color=auto'
+alias l='ls'
+alias sl='ls'
+alias LS='ls'
+alias SL='ls'
+alias ax='chmod +x'
+alias du='du -h -d 1'
+alias grep='grep --color --exclude-dir=".git"'
+alias grep='grep -a --exclude-dir=.git --exclude=cscope*'
+alias libmk='lib.misc gen_lib_info $HOME/.bin/lib'
+alias rm='rm_mv=$HOME/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
+alias cd='quickcd'
+alias vi='svi'
+alias fd='set -f; find1'
+alias ..='vcd'
+alias ...='cd_repo'
+alias vvsync="rsync -url 'wgao@192.168.4.15:\$HOME/.vdotfiles' $HOME"
+# alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+if [ -n "$(type ag)" ]; then
+    alias ag='ag --hidden --ignore tags -p $HOME/.v/.agignore --noheading --smart-case -t'
+    # alias ag='ag --hidden -p $HOME/.v/.agignore --noheading --smart-case -t'
+    # alias ag='ag --hidden --ignore tags -p $HOME/.v/.agignore'
+fi
+
+# if [ "$EXP" -eq 1 ]; then
+# fi
+
+if shopt -q progcomp && [ -r /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+fi
+
+unset EXP
 
 echo init done

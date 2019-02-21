@@ -1,17 +1,5 @@
 #!/bin/bash
 
-# 反转上一次操作
-function ccd(){
-        for i in {1..3}; do
-                local try_old_dir="$(history | tail -n $((i+1)) | head -1)"
-                local para1=$(echo $try_old_dir | awk '{print $2}')
-                local para2=$(echo $try_old_dir | awk '{print $3}')
-                local para3=$(echo $try_old_dir | awk '{print $4}')
-                [ -n "$para2" -a -n "$para3" ] && { $para1 $para3 $para2; return; }
-		# only mv ??
-        done
-}
-
 # cd的增强版
 function quickcd() {
     local tmp dir='' list="$VTMP/.cdlist"
@@ -25,7 +13,20 @@ function quickcd() {
                 dir="$try_old_dir"
             else
                 dir="${WORKSPACE:-$HOME}"
+		if [ "$dir" == "$HOME" -a -f $VTMP/.lastdir ]; then
+		    dir=$(cat $VTMP/.lastdir)
+		    rm $VTMP/.lastdir
+		    continue
+		fi
             fi
+	    [ -f $VTMP/.lastdir ] && rm $VTMP/.lastdir
+        elif [ "$1" == '.' ]; then
+	    if [ -f "$VTMP/.trydir" ]; then
+		dir="$(cat $VTMP/.trydir)"
+		rm $VTMP/.trydir
+	    else
+		echo $PWD > $VTMP/.trydir
+	    fi
         elif [ -d "$1" ]; then
             dir="$1"
         else
@@ -49,16 +50,6 @@ function quickcd() {
         alias cd='cd'
         cd "$dir"
         alias cd='quickcd'
-    fi
-}
-
-# find的增强版
-function find1(){
-    set +f
-    if [ $# -ne 0 ]; then
-        STR=${1%%:*}
-        FILE=${STR##*/}
-        eval find "${2:+\"$2\" }"-name \""$FILE"\"
     fi
 }
 
@@ -99,65 +90,15 @@ function clean_path() {
 
 # 添加环境变量PATH
 function add_path() {
-    [ -d "$1" ] && { clean_ev PATH "$1"; add_ev PATH "$1"; }
+    [ -d "$1" ] && add_ev PATH "$1"
 }
 
-# 在当前目录创建指定文件的链接
-function lnn() {
-    include $VLIBS/lib.base
+# 工具链切换
+function change_toolchain(){
+    include ~/.bin/lib/lib.list
 
-    local lnfile="$1"
-    local searchdir="$HOME/.bin"
-    local target="$lnfile"
-    local tmp
-
-    [ -z "$1" ] && return 1
-
-    if [ -n "$2" ]; then
-        eval tmp="$2"
-        tmp="$(clean_last_symbol $tmp)"
-        [ -d "$tmp" -o -d "$PWD/$tmp" ] && searchdir="$tmp" || target="$tmp"
-    fi
-    if [ -n "$3" ]; then
-        eval tmp="$3"
-        tmp="$(clean_last_symbol $tmp)"
-        [ -d "$tmp" -o -d "$PWD/$tmp" ] && searchdir="$tmp" || target="$tmp"
-    fi
-
-    [ -f "$lnfile"  ] && rm "$lnfile"
-
-    local d="$(find "$searchdir/" -name "$lnfile" | head -1)"
-    if [ -n "$d" ]; then
-        [ -f "$target" ] && rm "$target"
-        [[ $d =~ "$HOME" ]] && ln -sfr "$d" "$target" || ln -sf "$d" "$target"
-    fi
-}
-
-# 在当前目录创建指定文件列表的所有链接
-function lnn_file() {
-    local line
-    while read line; do
-        [ -n "$line" -a "${line:0:1}" != '#' ] && lnn $line
-    done < $1
-}
-
-function check_sudo() {
-    user="$(whoami)"
-    local ret=0 val
-    val="$(cat /etc/group | sed -n '/^sudo:/p;' -)"
-    val=${val##*:}
-    val="$(cat /etc/group | sed -n '/^root:/p;' -),$val"
-    val=${val##*:}
-    [[ "$val" =~ "$user" ]] && ret=$(($ret|1))
-    echo $ret
-}
-
-# 删除失效的链接文件
-function clean_invalid_ln() {
-    local file
-    for file in $(find $1 -type l); do
-        [ ! -e $file ] && rm -f $file
-    done
+    showlist_with_input $VUSER_DATA/toolchains.vconf "toolchain_version" "go where ??" $@
+    eval add_path "$toolchain_path"
 }
 
 complete_for_lib() {
@@ -183,11 +124,3 @@ function add_server() { # NAME HOST ID IP HOME
     eval export "$NAME"_SSH="$ID@$IP"
     eval export "$NAME"_HOME="$HOME"
 }
-
-############# export ##############
-
-if [ -n "$ZSH" ]; then
-    export -f ccd
-fi
-
-########### export end ############

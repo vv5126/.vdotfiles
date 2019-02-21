@@ -262,6 +262,64 @@ ask() {
   done
 }
 
+# 在当前目录创建指定文件的链接
+function lnn() {
+    include $VLIBS/lib.base
+
+    local lnfile="$1"
+    local searchdir="$HOME/.bin"
+    local target="$lnfile"
+    local tmp
+
+    [ -z "$1" ] && return 1
+
+    if [ -n "$2" ]; then
+        eval tmp="$2"
+        tmp="$(clean_last_symbol $tmp)"
+        [ -d "$tmp" -o -d "$PWD/$tmp" ] && searchdir="$tmp" || target="$tmp"
+    fi
+    if [ -n "$3" ]; then
+        eval tmp="$3"
+        tmp="$(clean_last_symbol $tmp)"
+        [ -d "$tmp" -o -d "$PWD/$tmp" ] && searchdir="$tmp" || target="$tmp"
+    fi
+
+    [ -f "$lnfile"  ] && rm "$lnfile"
+
+    local d="$(find "$searchdir/" -name "$lnfile" | head -1)"
+    if [ -n "$d" ]; then
+        [ -f "$target" ] && rm "$target"
+        [[ $d =~ "$HOME" ]] && ln -sfr "$d" "$target" || ln -sf "$d" "$target"
+    fi
+}
+
+# 在当前目录创建指定文件列表的所有链接
+function lnn_file() {
+    local line
+    while read line; do
+        [ -n "$line" -a "${line:0:1}" != '#' ] && lnn $line
+    done < $1
+}
+
+# 删除失效的链接文件
+function clean_invalid_ln() {
+    local file
+    for file in $(find $1 -type l); do
+        [ ! -e $file ] && rm -f $file
+    done
+}
+
+function check_sudo() {
+    user="$(whoami)"
+    local ret=0 val
+    val="$(cat /etc/group | sed -n '/^sudo:/p;' -)"
+    val=${val##*:}
+    val="$(cat /etc/group | sed -n '/^root:/p;' -),$val"
+    val=${val##*:}
+    [[ "$val" =~ "$user" ]] && ret=$(($ret|1))
+    echo $ret
+}
+
 alias random_1='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9' | fold -w 8 | head -n 1'
 alias random_2='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9a-zA-Z' | fold -w 6 | head -n 1'
 

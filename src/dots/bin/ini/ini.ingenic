@@ -1,5 +1,5 @@
 
-SUPPORT_ANDROID=1
+SUPPORT_ANDROID=0
 
 add_server WORK1 "lqchen-0B"    "wgao" "192.168.4.15"  "/data1/home/wgao"
 add_server WORK2 "ubuntu3"      "wgao" "192.168.3.3"   "/backup/home/wgao"
@@ -37,12 +37,11 @@ export VGLD_MKDATA=$VGL_DATA/mk
 # export VGLD_LOCALCLIPBOARD=$HOME/.local/.clipboard/local
 
 export VGL_ASD_FILE="$WORK_SERVER_SSH":"$VGL_DATA"/.asd
-alias grep='grep -a --exclude-dir=.git --exclude=cscope*'
 
-[[ "$VHOSTID" != "$VMAINID" ]] && {
-    alias vsync1='rsync -rul $WORK_SERVER_SSH:~/.vdotfiles ~'
-    alias vsync2='rsync -rl --exclude=bundle $WORK_SERVER_SSH:~/.vdotfiles ~'
-}
+# [[ "$VHOSTID" != "$VMAINID" ]] && {
+#     alias vsync1='rsync -rul $WORK_SERVER_SSH:~/.vdotfiles ~'
+#     alias vsync2='rsync -rl --exclude=bundle $WORK_SERVER_SSH:~/.vdotfiles ~'
+# }
 
 complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk
 complete -W "push bak baklist cover" gt

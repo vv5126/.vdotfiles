@@ -4,8 +4,6 @@ if [[ $1 == "init" ]]; then
     > /dev/null
 else
     include $VINIS/ini.ingenic
-    include $VLIBS/lib.work
-    include $VLIBS/lib.misc
 
     ### ARM
     add_path "$VTMP/tools/toolchain/gcc-arm-none-eabi-7-2018-q2-update/bin"
@@ -37,11 +35,10 @@ else
     export LD_RUN_PATH="$HOME/.local/lib"
     export LD_LIBRARY_PATH="$HOME/.local/lib"
 
-    # add_path "$HOME/tools/Qt5.7.0/5.7/gcc_64/bin"
+    # add_path "$VTMP/tools/Qt5.7.0/5.7/gcc_64/bin"
     # add_path "/data1/home/wgao/depot_tools/depot_tools"
-    # add_path "$HOME/tools/llvm/bin"
-    add_path "$HOME/tools/toolchain/mips-gcc520-glibc222/bin"
-
+    # add_path "$VTMP/tools/llvm/bin"
+    add_path "$VTMP/tools/toolchain/mips-gcc520-glibc222/bin"
 
     ### special
 
