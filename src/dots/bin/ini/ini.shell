@@ -1,0 +1,31 @@
+# alias #
+alias ll='ls -AlFh --color'
+alias llh='ls -lh'
+alias la='ls -A'
+alias ls='ls --color=auto'
+alias l='ls'
+alias sl='ls'
+alias LS='ls'
+alias SL='ls'
+alias ax='chmod +x'
+alias du='du -h -d 1'
+alias grep='grep --color --exclude-dir=".git"'
+alias grep='grep -a --exclude-dir=.git --exclude=cscope*'
+alias libmk='lib.misc gen_lib_info $HOME/.bin/lib'
+alias rm='rm_mv=$HOME/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
+alias cd='quickcd'
+alias vi='svi'
+alias fd='set -f; find1'
+alias ..='vcd'
+alias ...='cd $($VLIBS/lib.base getdir .repo)'
+
+alias vvsync="rsync -url 'wgao@192.168.4.15:\$HOME/.vdotfiles' $HOME"
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+if [ -n "$(type ag)" ]; then
+    alias ag='ag --hidden --ignore tags -p $HOME/.v/.agignore --noheading --smart-case -t'
+    # alias ag='ag --hidden -p $HOME/.v/.agignore --noheading --smart-case -t'
+    # alias ag='ag --hidden --ignore tags -p $HOME/.v/.agignore'
+fi
+
+

@@ -34,6 +34,7 @@ function cp_files__by_listfile_with_arch() {
 	local file="$1" dst="$2" line line1 path
 	while read line; do
 		[ -z "$line" ] && continue
+		[ -f "$line" -o -d "$line" ] || continue
 		line1=./$(clean_last_symbol "$line")
 		path=${line1%/*}
 		mkdir -p "$dst/$path"

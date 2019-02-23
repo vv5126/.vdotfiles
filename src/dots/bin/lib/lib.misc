@@ -320,6 +320,28 @@ function check_sudo() {
     echo $ret
 }
 
+function check_ln() {
+    include $VLIBS/lib.misc
+    cd "$VUSER"
+
+    if [ ! -f "../.inited" ]; then
+	[ -f "init" ] && source "./init" "init"
+	> "../.inited"
+    fi
+
+    listfile_md1="$(md1sum ln_list | awk '{print $1}')"
+    if [ "x$(cat ../.inited)" != "x$listfile_md1" ]; then
+	find $1 -type l -delete
+	# clean_invalid_ln "$VUSER"
+	[ -d "bin" ] || mkdir bin
+	[ -f "ln_list" ] && (cd bin; lnn_file ../ln_list)
+	[ -L "$HOME/.bin/user" ] && rm "$HOME/.bin/user"
+	ln -sf "$VUSER" "$HOME/.bin/user"
+	echo $listfile_md1 > "../.inited"
+	echo reset - "$VHOSTID" done! >&2
+    fi
+}
+
 alias random_1='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9' | fold -w 8 | head -n 1'
 alias random_2='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9a-zA-Z' | fold -w 6 | head -n 1'
 

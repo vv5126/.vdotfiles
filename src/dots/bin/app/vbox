@@ -28,7 +28,7 @@ function svi(){
         [ $? -eq 0 ] && LINE="+$LINE" || LINE=''
 
         STR=''
-        [ ! -f "$FILE" -a "$PWD" != "$HOME" ] && STR="$(fd $FILE)"
+        [ ! -f "$FILE" -a "$PWD" != "$HOME" ] && STR="$(find1 $FILE)"
         [ -n "$STR" ] && FILE="$STR"
 
         [ -f "$FILE" ] && vim $FILE ${LINE:+$LINE}
@@ -90,6 +90,54 @@ function find1(){
         FILE=${STR##*/}
         eval find "${2:+\"$2\" }"-name \""$FILE"\"
     fi
+}
+
+function quickcd_clean(){
+    cd_list="$VTMP/.cd_list"
+    cd_quicklist="$VTMP/.cd_quicklist"
+    cd_cache="$VTMP/.cd_cache"
+    new_quicklist=$HOME/fff
+    tmp=$HOME/fff1
+    # cd_final="$VTMP/.cd_final"
+    # last_100="$VTMP/.cd_last_100"
+    # cd_noexist="$VTMP/.cd_noexist"
+    # local tmp dir=''
+
+    # reset quicklist
+    tac $cd_quicklist > $new_quicklist
+    > $cd_quicklist
+    > $tmp
+    while read line; do
+	lin="${line%%]*}"
+	lin="${lin##*[}"
+	grep -oP "^\|\[$lin" $tmp > /dev/null 2>&1
+	[ $? -eq 0 ] && continue
+	echo "$line" >> $tmp
+    done < $new_quicklist
+    tac $tmp > $cd_quicklist
+
+    tac $cd_quicklist > $new_quicklist
+    > $cd_quicklist
+    > $tmp
+    while read line; do
+	lin="${line:6}"
+	grep -m 1 -oP "$lin$" $tmp > /dev/null 2>&1
+	[ $? -eq 0 ] && continue
+	echo "$line" >> $tmp
+    done < $new_quicklist
+    tac $tmp > $cd_quicklist
+    rm $tmp
+
+    cat $cd_cache > $new_quicklist
+
+    tac $cd_cache | head -n 10 | while read line; do
+	for i in {1..10}; do
+	    echo "$line" >> $new_quicklist
+	done
+    done
+
+    cat $new_quicklist | sort | uniq -c |sort -rnb | awk -F'|' '{$1=null;print}' > $cd_list
+    rm $new_quicklist
 }
 
 eval $(basename $0) $@

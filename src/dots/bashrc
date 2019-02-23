@@ -7,14 +7,14 @@ case $- in
       *) return;;
 esac
 
-# Export once
+### Export once
 (type include > /dev/null 2>&1) && EXP=0 || EXP=1
 
 if [ "$EXP" -eq 1 ]; then
 
     function include() {
 	[[ "$VINCS" =~ "$1:" ]] || {
-	    source $1
+	    source $@
 	    VINCS="$VINCS$1:"
 	}
     }
@@ -25,37 +25,21 @@ if [ "$EXP" -eq 1 ]; then
     else
 	export -f include
     fi
+
+    export VLIBS="$HOME/.bin/lib"
+    export VINIS="$HOME/.bin/ini"
+    export VHOSTID="$USER@$HOSTNAME"
+    export VACCOUNT="$HOME/.bin/account"
+    export VUSER="$VACCOUNT/$VHOSTID"
+    export VGL_DATA="$HOME/.bin/data"
+    export VUSER_DATA="$VACCOUNT/$VHOSTID/data"
+    export VTMP="$HOME/.v"
+    export VBESUDO="$($VLIBS/lib.misc check_sudo)"
 fi
 
-# append to the history file, don't overwrite it
-shopt -s histappend # 用户打开多个终端（产生多个session）情况下，共享history
-
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-# shopt -s checkwinsize
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
-
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-[ -x /usr/bin/tput ] && PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\] \$ '
-
-include $HOME/.bin/lib/lib.shell
-# include $HOME/.bin/ini/ini.shell.1
 
 if [ "$EXP" -eq 1 ]; then
 # export EDITOR="$(which vim)"
-export VLIBS="$HOME/.bin/lib"
-export VINIS="$HOME/.bin/ini"
-export VHOSTID="$USER@$HOSTNAME"
-export VACCOUNT="$HOME/.bin/account"
-export VUSER="$VACCOUNT/$VHOSTID"
-export VGL_DATA="$HOME/.bin/data"
-export VUSER_DATA="$VACCOUNT/$VHOSTID/data"
-export VTMP="$HOME/.v"
 
 # history #
 export HISTTIMEFORMAT="%m-%d %H:%M "
@@ -86,10 +70,20 @@ export XDG_DATA_HOME=$HOME/.local/share
 
 export FONTCONFIG_FILE="$XDG_CONFIG_HOME/fontconfig/fonts.conf"
 
+# export LC_ALL=en_US.UTF-8
+# export LANG=en_US.utf8
+# export LANG=zh_CN.UTF-8
+# export TMUX_PLUGIN="$HOME/.vdotfiles/src/plugins/tmux-plugin"
+fi
+
+include $HOME/.bin/lib/lib.shell
+
+if [ "$EXP" -eq 1 ]; then
 # add path #
 add_path "$VLIBS"
 add_path "$HOME/.bin/base"
 add_path "$HOME/.local/bin"
+[ -d "$VUSER" ] && add_path "$VUSER/bin"
 
 # rm path #
 clean_path "/usr/games"
@@ -104,99 +98,51 @@ fi
 if [ -d "$HOME/.local/usr/local/lib/pkgconfig" ]; then
     export PKG_CONFIG_PATH=$HOME/.local/usr/local/lib/pkgconfig
 fi
-# ---------
 
 fi
-# EXPORT ONCE END
+### EXPORT ONCE END
+
+### set current shell
+shopt -s expand_aliases
+
+# append to the history file, don't overwrite it
+shopt -s histappend # 用户打开多个终端（产生多个session）情况下，共享history
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+# shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+# [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+[ -x /usr/bin/tput ] && PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\] \$ '
+# tput init
+
+for i in $(ls $VLIBS); do
+    complete -F complete_for_lib $i
+done
 
 if [ -d "$VUSER" ]; then
-    (
-        include $VLIBS/lib.misc
-        cd "$VUSER"
-
-        if [ ! -f "../.inited" ]; then
-            [ -f "init" ] && source "./init" "init"
-            > "../.inited"
-        fi
-
-        listfile_md1="$(md1sum ln_list | awk '{print $1}')"
-        if [ "x$(cat ../.inited)" != "x$listfile_md1" ]; then
-            find $1 -type l -delete
-            [ -d "bin" ] || mkdir bin
-            [ -f "ln_list" ] && (cd bin; lnn_file ../ln_list)
-            [ -L "$HOME/.bin/user" ] && rm "$HOME/.bin/user"
-            ln -sf "$VUSER" "$HOME/.bin/user"
-            echo $listfile_md1 > "../.inited"
-            echo reset - "$VHOSTID" done! >&2
-        fi
-    )
-    # clean_invalid_ln "$VUSER"
-    [ -d "$VUSER/bin" ] && add_path "$VUSER/bin"
-
-    for i in $(ls $HOME/.bin/lib); do
-        complete -F complete_for_lib $i
-    done
-    [ -f "$VUSER/init" ] && source "$VUSER/init" "load"
+    (lib.misc check_ln)
+    [ -f "$VUSER/init" ] && include "$VUSER/init" "load"
 fi
 
-# include $HOME/.bin/ini/ini.shell.2
-
-[ -f "$VTMP/init" ] && include "$VTMP/init"
-
-[ -f $VTMP/.fzf.bash ] && source $VTMP/.fzf.bash
-
-# export LC_ALL=en_US.UTF-8
-# export LANG=en_US.utf8
-# export LANG=zh_CN.UTF-8
-
-# export TMUX_PLUGIN="$HOME/.vdotfiles/src/plugins/tmux-plugin"
-export VBESUDO="$(lib.misc check_sudo)"
-
-stty -ixon
+# echo 'clean history' | at now > /dev/null 2>&1
+include $HOME/.bin/ini/ini.shell
 
 if [ -n "$(which dircolors)" ]; then
 	eval $(dircolors -b "$VGL_DATA"/dir_colors)
 fi
 
-tput init
-# ---------
-# alias #
-shopt -s expand_aliases
-
-alias ll='ls -AlFh --color'
-alias llh='ls -lh'
-alias la='ls -A'
-alias ls='ls --color=auto'
-alias l='ls'
-alias sl='ls'
-alias LS='ls'
-alias SL='ls'
-alias ax='chmod +x'
-alias du='du -h -d 1'
-alias grep='grep --color --exclude-dir=".git"'
-alias grep='grep -a --exclude-dir=.git --exclude=cscope*'
-alias libmk='lib.misc gen_lib_info $HOME/.bin/lib'
-alias rm='rm_mv=$HOME/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
-alias cd='quickcd'
-alias vi='svi'
-alias fd='set -f; find1'
-alias ..='vcd'
-alias ...='cd_repo'
-alias vvsync="rsync -url 'wgao@192.168.4.15:\$HOME/.vdotfiles' $HOME"
-# alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-if [ -n "$(type ag)" ]; then
-    alias ag='ag --hidden --ignore tags -p $HOME/.v/.agignore --noheading --smart-case -t'
-    # alias ag='ag --hidden -p $HOME/.v/.agignore --noheading --smart-case -t'
-    # alias ag='ag --hidden --ignore tags -p $HOME/.v/.agignore'
-fi
-
-# if [ "$EXP" -eq 1 ]; then
-# fi
-
 if shopt -q progcomp && [ -r /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
+
+[ -f "$VTMP/init" ] && include "$VTMP/init"
+
+[ -f $VTMP/.fzf.bash ] && include $VTMP/.fzf.bash
+
+stty -ixon
 
 unset EXP
 
