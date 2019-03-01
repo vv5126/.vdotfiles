@@ -13,10 +13,9 @@ esac
 if [ "$EXP" -eq 1 ]; then
 
     function include() {
-	[[ "$VINCS" =~ "$1:" ]] || {
-	    source $@
-	    VINCS="$VINCS$1:"
-	}
+	local file="$1"
+	[ "${file:0:4}" == 'lib.' ] && file="$VLIBS/$file"
+	[[ "$VINCS" =~ "$file:" ]] || { source $@; VINCS="$VINCS$file:"; }
     }
 
     if [ -n "$ZSH" ]; then
@@ -36,7 +35,6 @@ if [ "$EXP" -eq 1 ]; then
     export VTMP="$HOME/.v"
     export VBESUDO="$($VLIBS/lib.misc check_sudo)"
 fi
-
 
 if [ "$EXP" -eq 1 ]; then
 # export EDITOR="$(which vim)"
@@ -74,6 +72,7 @@ export FONTCONFIG_FILE="$XDG_CONFIG_HOME/fontconfig/fonts.conf"
 # export LANG=en_US.utf8
 # export LANG=zh_CN.UTF-8
 # export TMUX_PLUGIN="$HOME/.vdotfiles/src/plugins/tmux-plugin"
+export CD_COUNT="0"
 fi
 
 include $HOME/.bin/lib/lib.shell

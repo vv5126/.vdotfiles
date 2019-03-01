@@ -12,7 +12,7 @@ function dump_tree() {
 }
 
 
-[ $# -eq 1 ] && [ $1 = "big" ] && {
+[ $# -eq 1 ] && [ "$1" = "big" ] && {
 	du -h -d 1 | {
 		while read line; do
 			tmp=${line:(-1)}
@@ -29,7 +29,7 @@ function dump_tree() {
 }
 
 
-[ $# -eq 1 ] && [ $1 = "zero" ] && {
+[ $# -eq 1 ] && [ "$1" = "zero" ] && {
 	du -h -d 1 | {
 		while read line; do
 			tmp=${line:(-1)}
@@ -43,7 +43,7 @@ function dump_tree() {
 	exit
 }
 
-[ $# -eq 1 ] && [ $1 = "." -o $1 = "*" ] && exit
+[ $# -eq 1 ] && [ "$1" = "." -o "$1" = "*" ] && exit
 
 rm -rf $@
 

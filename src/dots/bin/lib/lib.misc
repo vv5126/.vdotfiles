@@ -227,7 +227,9 @@ function vdc() {
 
 # 得到快速的文件特征值
 function md1sum() {
-    echo "$(stat $1 | grep -E 'Size:|Modify:' | tr "\n" " " | awk '{print $2,$(NF-1)}' | sed 's/\ .*\.//g')"
+    IFS=
+    local md1="$(stat "$@" | grep -E 'Size:|Modify:' | tr "\n" " " | awk '{print $2,$(NF-1)}' | sed 's/\ .*\.//g')"
+    printf "%s%0$((32-${#md1}))d  %s\n" "$md1" '' "$1"
 }
 
 # 计算耗时
@@ -359,4 +361,4 @@ alias random_2='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9a-zA-Z' | fold -w 6 | h
 
 ########### export end ############
 
-[[ "${0##*/}" =~ "lib.misc" ]] && $@
+[[ "${0##*/}" =~ "lib.misc" ]] && "$@"

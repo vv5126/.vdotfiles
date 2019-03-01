@@ -23,73 +23,68 @@ dot_templat=(
 .Trash-1000
 -----------------------------
 # 不关心 #
-.stmcube
-.stm32cubemx
-.stmcufinder
-.java
-.oracle_jre_usage
------------------------------
-# 其他 #
-.bash_logout
-.emacs.d
-.xsession
-.vnc
-.freerdp
-.cscope.vim
-.xinputrc
-.gnupg
-.gnome
-.gnome2
-.gnome2_private
-.WizNote
-.hosts
-.npm
-.node-gyp
-.node-red
-.node_repl_history
-.npminstall_tarball
-.pip
-.fasd
-.AndroidStudio1.2
-.AndroidStudioPreview2.1
-.gradle
-.screenrc
-.sdcv_history
-.PyCharm40
-.docker.sh
-.zcompdump
-.gvfs
 .compiz
-.gstreamer-0.10
+.ICAClient
 .repopickle_.gitconfig
-.zsh-update
-.config.bak
-.desktop
-.getmail
-.origin
-.minirc.ttyUSB0
-.minirc.ttyUSB1
-.thumbnails
 .thunderbird
 .android
-.VirtualBox
 .Xmodmap
-.zsh_history
-.zshrc
-.mozilla
-.ICEauthority
-.gksu.lock
-.xsession.bak
-.ICAClient
-.rpmdb
-.boards
-.gbs.conf
-.subversion
-.dmrc
-.pki
-.wiznote
-.sopel
-.bypy
+# .stmcube
+# .stm32cubemx
+# .stmcufinder
+# .java
+# .oracle_jre_usage
+-----------------------------
+# 其他 #
+.cloner
+# .bash_logout
+# .emacs.d
+# .xsession
+# .vnc
+# .freerdp
+# .cscope.vim
+# .xinputrc
+# .gnupg
+# .gnome
+# .gnome2
+# .gnome2_private
+# .WizNote
+# .hosts
+# .npm
+# .node-gyp
+# .node-red
+# .node_repl_history
+# .npminstall_tarball
+# .pip
+# .fasd
+# .AndroidStudio1.2
+# .AndroidStudioPreview2.1
+# .gradle
+# .screenrc
+# .sdcv_history
+# .PyCharm40
+# .docker.sh
+# .zcompdump
+# .gvfs
+# .gstreamer-0.10
+# .config.bak
+# .desktop
+# .origin
+# .thumbnails
+# .VirtualBox
+# .zsh_history
+# .zshrc
+# .mozilla
+# .ICEauthority
+# .gksu.lock
+# .xsession.bak
+# .rpmdb
+# .boards
+# .gbs.conf
+# .subversion
+# .dmrc
+# .pki
+# .wiznote
 )
 
 #文件方式

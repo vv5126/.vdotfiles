@@ -1,0 +1,56 @@
+# design a file struct: "ID string", named .hd (hash data)
+
+function is_ID_exist() {
+	local ID="$1" file="$2" tmp
+	tmp="$(grep -oP "^$ID" $file)"
+	if [ $? -eq 0 ]; then
+		echo 0
+		return 0
+	else
+		echo 1
+		return 1
+	fi
+}
+
+function get_ID() {
+	local ID="$1" file="$2" tmp
+	tmp="$(grep -P "^$ID" $file)"
+	# tmp="$(sed -n '/^'"$ID"'/p' $file)"
+	if [ $? -eq 0 ]; then
+		echo "$tmp"
+		return 0
+	else
+		return 1
+	fi
+}
+
+function clean_ID() { # only duplicate.
+    local ID="$1" file="$2" last_match_line
+    if [ $(sed -n '/'"^$ID"'/=;' "$file" | wc -l) -ge 1 ]; then
+	last_match_line=$(sed -n '/'"^$ID"'/=;' "$file" | tail -n 1)
+	sed '/^'"$ID"'/{1,'"$((last_match_line-1))"'d}' -i "$file"
+    fi
+}
+
+function clean_ID1() { # only duplicate even string.
+    local ID="$1" file="$2" last_match_line line
+    sed -e s:/:@1@:g -e s:\ :@2@:g -i "$file"
+    cat "$file" | sort | uniq -d | while read line; do
+	last_match_line=$(grep -n "^$line$" "$file" | tail -n 1)
+	last_match_line=${last_match_line%%:*}
+	sed '/^'"$line$"'/{1,'"$((last_match_line-1))"'d}' -i "$file"
+    done
+    sed -e s:@1@:/:g -e s:@2@:\ :g -i "$file"
+}
+
+function clean_all_ID() {
+    local ID="$1" file="$2"
+    sed '/^'"$ID"'/d' -i "$file"
+}
+
+function creat_hashdata_by_dir() {
+	# find "$1" -type f | xargs -i lib.misc md1sum {}
+	find "$1" -type f | xargs -i md5sum {}
+}
+
+

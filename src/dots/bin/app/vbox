@@ -98,7 +98,6 @@ function quickcd_clean(){
     cd_cache="$VTMP/.cd_cache"
     new_quicklist=$HOME/fff
     tmp=$HOME/fff1
-    # cd_final="$VTMP/.cd_final"
     # last_100="$VTMP/.cd_last_100"
     # cd_noexist="$VTMP/.cd_noexist"
     # local tmp dir=''
@@ -126,18 +125,30 @@ function quickcd_clean(){
 	echo "$line" >> $tmp
     done < $new_quicklist
     tac $tmp > $cd_quicklist
-    rm $tmp
 
+    # clean failure directory
+    if [ $((CD_COUNT+=1)) -ge 10 ]; then
+	CD_COUNT=0
+	> $tmp
+	while read line; do
+	    lin="${line:7}"
+	    [ -d "$lin" ] && echo "$lin" >> $tmp
+	done < $cd_cache
+	cat $tmp > $cd_cache
+    fi
+
+    # rm $HOME
+    sed -i "\:$HOME$:d;" $cd_cache
     cat $cd_cache > $new_quicklist
 
     tac $cd_cache | head -n 10 | while read line; do
-	for i in {1..10}; do
+	for i in {1..5}; do
 	    echo "$line" >> $new_quicklist
 	done
     done
 
     cat $new_quicklist | sort | uniq -c |sort -rnb | awk -F'|' '{$1=null;print}' > $cd_list
-    rm $new_quicklist
+    rm $new_quicklist $tmp
 }
 
 eval $(basename $0) $@

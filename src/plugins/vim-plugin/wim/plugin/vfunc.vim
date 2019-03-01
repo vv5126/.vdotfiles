@@ -62,7 +62,7 @@ endfunction
 
 " GO GIT DIR {{{
 function! GO_GIT_DIR()
-    let l:dir = system("getdir .git")
+    let l:dir = system("lib.base getdir .git")
     let l:dir = matchstr(l:dir, '/.*')
     exec 'cd' l:dir
     exec 'pwd'
