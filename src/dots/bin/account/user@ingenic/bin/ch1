@@ -6,9 +6,9 @@ retry=10
 val=$(xdotool search --name "$TITLE")
 if [ -z "$val" ]; then
 	(
-	cd $VUSER
+	cd /home/user/.bin/account/user@ingenic
 	git checkout data/chrome1
-	nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file $VUSER/data/chrome1 > /dev/null &
+	nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file /home/user/.bin/account/user@ingenic/data/chrome1 > /dev/null &
 	)
 
 	while true; do

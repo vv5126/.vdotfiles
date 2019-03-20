@@ -1,21 +1,21 @@
 #!/bin/bash
 
-source ~/.bin/lib/lib.base
+include lib.base
 
-dir=${2:-~/tmp/v/crack/crack}
+# dir=${2:-~/tmp/v/crack/crack}
 
-cd $dir
+# cd $dir
 
-cpu_num=40
+cpu_num=20
+dict_dir="$VTMP/dicts"
+aircrack=cap
 
-cap_dir="caps"
+# /dicts.cap
+cap_dir="{2:-.}"
 oldcap_dir="$cap_dir/old_caps"
-dict_dir="dicts"
 out_dir="out"
-aircrack=$dir/make
 fail_dir="$oldcap_dir/fail"
 done_dir="$oldcap_dir/done"
-
 smkdir $cap_dir
 smkdir $fail_dir
 smkdir $done_dir

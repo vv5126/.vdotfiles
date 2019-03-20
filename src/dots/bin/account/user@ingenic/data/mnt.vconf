@@ -1,12 +1,11 @@
-# type url                                                to_path                 pw               title
-sshfs  wgao@192.168.4.15:/data1/home/wgao                 /tmp/mnt/4.15           -                4.15
-win    //192.168.1.57/work/users/swdep/wgao               /tmp/mnt/57             YXNkNDU2IUAjCg== 57
-win    //192.168.1.57/work                                /tmp/mnt/work57         YXNkNDU2IUAjCg== work57
-sshfs  wgao@192.168.3.3:/backup/home/wgao                 /tmp/mnt/3.3            -                3.3
-win    //192.168.1.57/hardware                            /tmp/mnt/hw             YXNkNDU2IUAjCg== hw
-sshfs  wgao@192.168.3.3:/backup/home/wgao/.v/tools/thunderbird    /home/user/.thunderbird -                thunderbird
-sshfs  fpga@192.168.4.13:/home/fpga/user/wgao             /tmp/mnt/fpga           -                fpga
-sshfs  fpga@192.168.4.13:/home/fpga/user/wgao             /tmp/mnt/fpga_wgao      -                fpga-wgao
-sshfs  wicom@192.168.3.3:/backup/home/wicom/work/tmp      /tmp/mnt/wicom_tmp      -                wicom-tmp
-sshfs  wicom@192.168.3.3:/backup/home/wicom/work/document /tmp/mnt/wicom_doc      -                wicom-doc
-sshfs  wgao@192.168.4.10:/home1/wgao/                     /tmp/mnt/4.10           -                4.10
+# type url                                                     to_path                 pw               title
+sshfs  wgao@192.168.3.3:/backup/home/wgao                      /tmp/mnt/3.3            -                3.3
+win    //192.168.1.57/work/users/swdep/wgao                    /tmp/mnt/57             YXNkNDU2IUAjCg== 57
+win    //192.168.1.57/work                                     /tmp/mnt/work57         YXNkNDU2IUAjCg== work57
+win    //192.168.1.57/hardware                                 /tmp/mnt/hw             YXNkNDU2IUAjCg== hw
+sshfs  wgao@192.168.3.3:/backup/home/wgao/.v/tools/thunderbird /home/user/.thunderbird -                thunderbird
+sshfs  wgao@192.168.4.15:/data1/home/wgao                      /tmp/mnt/4.15           -                4.15
+sshfs  fpga@192.168.4.13:/home/fpga/                           /tmp/mnt/fpga           -                fpga
+sshfs  fpga@192.168.4.13:/home/fpga/user/wgao                  /tmp/mnt/fpga_wgao      -                fpga-wgao
+sshfs  wicom@192.168.3.3:/backup/home/wicom/work/tmp           /tmp/mnt/wicom_tmp      -                wicom-tmp
+sshfs  wicom@192.168.3.3:/backup/home/wicom/work/document      /tmp/mnt/wicom_doc      -                wicom-doc
