@@ -166,7 +166,7 @@ function init(){
         if [ -f ".config" ]; then
             forBOARD="$(sed -n '/CONFIG_BOARD_NAME/{s/.*=//;p;}' .config)"
             while read line; do
-                [[ $line =~ "Kernel Configuration" ]] && project_type="kernel$(echo "$line" | cut -d " " -f 3)"
+                [[ $line =~ "Kernel Configuration" ]] && project_type="k"
                 # [[ "$line" =~ "CONFIG_BOARD_NAME" ]] && forBOARD=${line##*=}
                 if [[ "$line" =~ "CONFIG_LCD_" ]] && [ "${line:0-1}" = "y" ]; then
                     [[ "$line" =~ "CONFIG_LCD_CLASS_DEVICE" ]] || {
@@ -217,8 +217,8 @@ function init(){
             git_branch=${tmp##*/}
         fi
 
-	target_name='$project_type-$forBOARD-$forOS'
-        [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/$task_type/${customer:+$customer/}$forBOARD-$forOS-${feature%%_*}-imgs'
+	target_name='$project_type${forBOARD:+-$forBOARD}${forOS:+-$forOS}'
+        [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/${task_type:+$task_type/}${customer:+$customer/}${feature%%_*}'
 
 	make_info_file ".pro/project_info"
 	return 0

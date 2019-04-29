@@ -27,7 +27,7 @@ function make_info_file(){
 
 	# forBOARD=$forBOARD
 
-	project_type='uboot'
+	project_type='u'
 
 	the_image=$the_image
 

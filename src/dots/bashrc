@@ -13,9 +13,13 @@ esac
 if [ "$EXP" -eq 1 ]; then
 
     function include() {
-	local file="$1"
-	[ "${file:0:4}" == 'lib.' ] && file="$VLIBS/$file"
-	[[ "$VINCS" =~ "$file:" ]] || { source $@; VINCS="$VINCS$file:"; }
+	for i in "$@"; do
+	    local file="" tfile="${i%% *}" tparam="${i#* }"
+	    [ "$tfile" == "$tparam" ] && tparam=''
+	    [ -f "$VLIBS/lib.$tfile" ] && file="$VLIBS/lib.$tfile $tparam"
+	    [ -f "$tfile" ] && file="$tfile $tparam"
+	    [ -n "$file" ] && [[ "$VINCS" =~ "$file:" ]] || { source $file; VINCS="$VINCS$file:"; }
+	done
     }
 
     if [ -n "$ZSH" ]; then
@@ -123,7 +127,7 @@ done
 
 if [ -d "$VUSER" ]; then
     (lib.misc check_ln)
-    [ -f "$VUSER/init" ] && include "$VUSER/init" "load"
+    [ -f "$VUSER/init" ] && include "$VUSER/init load"
 fi
 
 # echo 'clean history' | at now > /dev/null 2>&1

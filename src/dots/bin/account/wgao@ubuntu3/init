@@ -8,6 +8,11 @@ else
     ### ARM
     add_path "$VTMP/tools/toolchain/gcc-arm-none-eabi-7-2018-q2-update/bin"
 
+    # GO
+    add_path "$VTMP/tools/go/bin"
+    export GOROOT="$VTMP/tools/go"
+    export GOPATH="$VTMP/tools/godir"
+
     ### JDK
     # JAVA_1="java-1.7.0-openjdk-amd64"
     JAVA_1="java-1.8.0-openjdk-amd64"

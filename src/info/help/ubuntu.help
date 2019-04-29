@@ -282,3 +282,5 @@ done </dev/null &>/dev/null
 $HOME/.config/fcitx/config
 并修改为只读权限
 
+cmake ../ -DCMAKE_INSTALL_PREFIX={WHERE_YOU_WANT_TO_INSTALL} -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=WebAssembly
+cmake -DCMAKE_TOOLCHAIN_FILE=./toolchain.cmake ..

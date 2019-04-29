@@ -8,3 +8,15 @@ as python3.4 setup.py install --prefix=$HOME/.local
 aaa[1:5]
 in
 not in
+
+
+
+# easy_install install:
+down setuptools-xx.x.x.zip from https://pypi.org/project/setuptools/#files
+sudo python setup.py install
+
+# pip install:
+down pip-xx.x.x.tar.gz from https://pypi.org/project/pip/#files
+
+# pip3 install:
+sudo aptitude install python3-pip
