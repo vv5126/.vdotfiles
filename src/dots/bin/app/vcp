@@ -1,7 +1,6 @@
 #!/bin/bash
 
-source $VLIBS/lib.misc
-source $VLIBS/lib.list
+include misc list vconf
 
 if [ $# -eq 0 ]; then
 	cat $VGL_DATA/vcp.vconf | sed -n '/^#/!p;' | showlist

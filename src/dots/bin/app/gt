@@ -1,10 +1,10 @@
 #!/bin/bash
 
-include $VLIBS/lib.base
-include $VLIBS/lib.work
-include $VLIBS/lib.file
-include $VLIBS/lib.git
-include $VLIBS/lib.misc
+include base
+include work
+include file
+include git
+include misc
 
 APP_DIR=$(which $0)
 APP_DIR=${APP_DIR%\/*}
@@ -219,8 +219,8 @@ if [ $# -gt 0 ];then
                         'bak')
                                 BAKDIR=${PWD%\/*}/git_bak/${PWD##*\/}/${PWD##*\/}_$(date +%Y%m%d_%H-%M)
                                 [ $# -eq 2 ] && BAKDIR=$BAKDIR-$2 || BAKDIR=$BAKDIR-no-up-git-push-file
-                                # git_bak $BAKDIR
-                                git_bak2 $BAKDIR
+                                git_bak $BAKDIR
+                                # git_bak2 $BAKDIR
                                 ;;
                         'cover')
 		                [ $# -eq 2 ] && git_cover $PWD $2

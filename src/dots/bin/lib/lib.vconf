@@ -44,15 +44,21 @@ function vconf_filter() {
 function vconf_format() {
     trap "set +f" 1 2 3 15; set -f
 
+    include $VLIBS/lib.misc
+
+    local c=$(get_param -s $@)
+    local separator=${c:+-F$c}
+    local file=$(get_param '' $@)
+
     local tmp_file=.tmp_$(cat /dev/urandom | LC_CTYPE=C tr -dc '0-9a-zA-Z' | fold -w 6 | head -n 1)
-    sed -i 's/^#\ /__/g' $1
+    sed -i 's/^#\ /__/g' $file
 
     local max_num num new_line line column row=1
-    column=$(sed -n 1p $1 | awk '{print NF}')
+    column=$(sed -n 1p $file | awk $separator '{print NF}')
 
     for num in $(seq 1 $column); do
         max_num=1
-        for i in $(cat $1 | awk "{print \$$num}"); do
+        for i in $(cat "$file" | awk $separator "{print \$$num}"); do
             [ "${#i}" -gt "$max_num" ] && max_num="${#i}"
         done
         eval line_$num=$max_num
@@ -62,23 +68,23 @@ function vconf_format() {
     while read line; do
         new_line=''
         for num in $(seq 1 $column); do
-            tmp=$(echo $line | awk "{print \$$num}")
+            tmp=$(echo "$line" | awk $separator "{print \$$num}" | sed 's/^\s*//;s/\s*$//')
             eval space="\$((\$line_$num-${#tmp}))"
             [ "${tmp:0:2}" == '__' -a "$row" != '1' ] && space=$(($space+2))
             if [ "$column" == "$num" -o "$space" == 0 ]; then
-                new_line="$new_line $tmp"
+                new_line="${new_line:+$new_line $c }$tmp"
             else
-                new_line="$new_line $tmp$(printf "%-"$space"s" " ")"
+                new_line="${new_line:+$new_line $c }$tmp$(printf "%-"$space"s" " ")"
             fi
         done
         echo "${new_line# *}" >> $tmp_file
         ((row+=1))
-    done < $1
+    done < $file
 
-    mv $tmp_file $1
+    mv $tmp_file $file
 
-    # vim -c "1,$(sed -n '$=' "$1")EasyAlign *\ " -c "exit" "$1"
-    sed -i 's/^__/#\ /g' $1
+    # vim -c "1,$(sed -n '$=' "$file")EasyAlign *\ " -c "exit" "$file"
+    sed -i 's/^__/#\ /g' $file
 }
 
 # vconf文件解析

@@ -37,10 +37,13 @@ function svi(){
 }
 
 function ci() {
-	include $VLIBS/lib.list
+	include list
 
 	showlist_with_input $VGL_DATA/go.vconf "dest" "copy ID to where ??" $@
-	[ -n "$dest" ] && ssh-copy-id $dest
+	echo dest $dest
+
+	[ -n "$dest" ] && { ssh-copy-id $dest; return; }
+	[ -n "$1" ] && { ssh-copy-id $1; return; }
 }
 
 function asd() {
@@ -52,7 +55,7 @@ function asd() {
 }
 
 function g() {
-    include $VLIBS/lib.list
+    include list
 
     if [[ $# -eq 1 && "$1" =~ "@" ]]; then
 	DEST="$1"
@@ -127,15 +130,11 @@ function quickcd_clean(){
     tac $tmp > $cd_quicklist
 
     # clean failure directory
-    if [ $((CD_COUNT+=1)) -ge 10 ]; then
-	CD_COUNT=0
-	> $tmp
-	while read line; do
-	    lin="${line:7}"
-	    [ -d "$lin" ] && echo "$lin" >> $tmp
-	done < $cd_cache
-	cat $tmp > $cd_cache
-    fi
+    > $tmp
+    while read line; do
+	[ -d "${line:7}" ] && echo "$line" >> $tmp
+    done < $cd_cache
+    cat $tmp > $cd_cache
 
     # rm $HOME
     sed -i "\:$HOME$:d;" $cd_cache

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# 是否为数字
 function is_num() {
     [ -z $1 ] && return 1
     expr $1 + 0 &>/dev/null
@@ -217,10 +218,12 @@ function time_sync() {
     fi
 }
 
+# 数据编码
 function vec() {
     echo "$1" | base64 -i
 }
 
+# 数据解码
 function vdc() {
     echo "$1" | base64 -d
 }
@@ -311,6 +314,7 @@ function clean_invalid_ln() {
     done
 }
 
+# 检查当前用户是否有超级权限
 function check_sudo() {
     user="$(whoami)"
     local ret=0 val
@@ -343,6 +347,51 @@ function check_ln() {
 	echo reset - "$VHOSTID" done! >&2
     fi
 }
+
+# 对指定列表文件做批量操作
+function batch_opt() {
+    local file cmd_num='' cmd i line from_stream=0
+    file="$1"
+    [ -f $file ] && shift || from_stream=1
+
+    # while true; do
+	# [[ "$@" =~ cmd@$((cmd_num+=1)) ]] || break
+    # done
+    # ((cmd_num-=1))
+    # [ $((cmd_num-=1)) -eq 0 ] && return
+
+    for i in {1..10}; do
+	[[ "$@" =~ cmd@$i ]] && cmd_num="$cmd_num $i"
+    done
+    [ -z "$cmd_num" ] && return
+
+    if [ "$from_stream" == 1 ]; then
+	while read line; do
+	    cmd="$@"
+	    for i in $cmd_num; do
+		param="$(echo $line | awk '{print $'$i'}')"
+		cmd=${cmd//cmd@$i/$param}
+	    done
+	    $cmd
+	done <&0
+    else
+	while read line; do
+	    cmd="$@"
+	    for i in $cmd_num; do
+		param="$(echo $line | awk '{print $'$i'}')"
+		cmd=${cmd//cmd@$i/$param}
+	    done
+	    $cmd
+	done < $file
+    fi
+}
+
+
+
+
+
+
+
 
 alias random_1='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9' | fold -w 8 | head -n 1'
 alias random_2='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9a-zA-Z' | fold -w 6 | head -n 1'

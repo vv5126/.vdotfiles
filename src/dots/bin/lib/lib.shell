@@ -49,7 +49,7 @@ function quickcd() {
     if [ -n "$dir" ]; then
 	builtin cd $dir
 	[ -z "$cache" ] && echo "|      $PWD" >> "$cd_cache" || echo "$cache" >> "$cd_cache"
-	echo "quickcd_clean" | at now >/dev/null 2>&1
+	[ $((CD_COUNT+=1)) -ge 2 ] && { CD_COUNT=0; echo "quickcd_clean" | at now >/dev/null 2>&1; }
     fi
 
     # if [ "$cd_state" == 'success' ]; then

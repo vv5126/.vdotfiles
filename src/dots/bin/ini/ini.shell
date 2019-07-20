@@ -17,7 +17,7 @@ alias libmk='lib.misc gen_lib_info $HOME/.bin/lib'
 alias rm='rm_mv=$HOME/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
 alias cd='quickcd'
 alias vi='svi'
-alias fd='set -f; find1'
+alias fd='trap "set +f" 1 2 3 15; set -f; find1'
 alias ..='vcd'
 alias ...='cd $($VLIBS/lib.base getdir .repo)'
 
