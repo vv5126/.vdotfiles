@@ -28,6 +28,7 @@ generate_link "$dotdir/vim"
 generate_link "$dotdir/vimrc"
 generate_link "$dotdir/bashrc"
 generate_link "$dotdir/bin"
+generate_link "$dotdir/profile"
 # generate_link "$dotdir/Xmodmap"
 # generate_link "$dotdir/zshrc"
 

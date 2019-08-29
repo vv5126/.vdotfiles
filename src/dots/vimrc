@@ -106,8 +106,10 @@ endif
     if ! isdirectory($HOME."/.vim/bundle/wim")
 	:!ln -sf $HOME/.vdotfiles/src/plugins/vim-plugin/wim $HOME/.vim/bundle/wim
     endif
-    Bundle 'wim'
-    source ~/.vim/bundle/wim/plugin/vfunc.vim
+    if isdirectory($HOME."/.vim/bundle/wim")
+       Bundle 'wim'
+        source ~/.vim/bundle/wim/plugin/vfunc.vim
+    endif
     " -------------------------------------------------
     " vim帮助中文版
     " Bundle 'becaning/vimdoccn'

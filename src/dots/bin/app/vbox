@@ -150,4 +150,22 @@ function quickcd_clean(){
     rm $new_quicklist $tmp
 }
 
+function clh() {
+    tmp="$VTMP/asd"
+    new="$VTMP/new_history"
+
+    sed -n '/^\#[0-9]\{10\}$/!p;' $HISTFILE | sort | uniq > $tmp
+
+	> $new
+    while read line; do
+	echo '#1561791599' >> $new
+	echo $line >> $new
+    done < $tmp
+
+    tail -n 50 $HISTFILE >> $new
+
+    mv $new $HISTFILE
+    rm $tmp
+}
+
 eval $(basename $0) $@

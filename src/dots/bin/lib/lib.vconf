@@ -1,6 +1,12 @@
-
 function vconf_filter() {
-    local mode=$1 in_f="$2" out_f="$3"
+    include misc
+
+    local c=$(get_param -s $@)
+    local separator=${c:+-F$c}
+    c=${c:= }
+    local mode=$(get_param -m $@)
+    local in_f=$(get_param '' $@)
+    # local out_f=$(get_param -out $@)
 
     case "$mode" in
         '0') # vconf_filter_mode0 不过滤
@@ -17,9 +23,9 @@ function vconf_filter() {
                 | sed '/^$/d;' \
                 | sed 's/^#\ /_/' \
                 | sed 's/[^_]/+ &/' \
-                | awk '{for(i=0;++i<=NF;)a[i]=a[i]?a[i] FS $i:$i}END{for(i=0;i++<NF;)print a[i]}' \
+		| awk $separator '{for(i=1;i<=NR;i++){if(NF>m){m=NF}}for(i=1;i<=m;i++){if(NR==1){a[i]=$i}else{a[i]=a[i]'\"$c\"'$i}}}END{for(i=1;a[i]!="";i++){print a[i]}}' \
                 | sed -n '/^#/!p;' \
-                | awk '{for(i=0;++i<=NF;)a[i]=a[i]?a[i] FS $i:$i}END{for(i=0;i++<NF;)print a[i]}' \
+		| awk $separator '{for(i=1;i<=NR;i++){if(NF>m){m=NF}}for(i=1;i<=m;i++){if(NR==1){a[i]=$i}else{a[i]=a[i]'\"$c\"'$i}}}END{for(i=1;a[i]!="";i++){print a[i]}}' \
                 | sed 's/^+//' \
                 | sed 's/^_+/#/' \
                 | sed '1 s/^/#/' \
@@ -27,15 +33,16 @@ function vconf_filter() {
                 >&1
             ;;
         '3') # vconf_filter_mode3 行列都滤
-            cat $in_f \
-                | sed '1 s/^#/ /' \
-                | sed '/^$/d;' \
-                | sed -n '/^#/!p;' \
-                | awk '{for(i=0;++i<=NF;)a[i]=a[i]?a[i] FS $i:$i}END{for(i=0;i++<NF;)print a[i]}' \
-                | sed -n '/^#/!p;' \
-                | awk '{for(i=0;++i<=NF;)a[i]=a[i]?a[i] FS $i:$i}END{for(i=0;i++<NF;)print a[i]}' \
-                | sed '1 s/^/# /' \
-                >&1
+	    cat $in_f \
+		| sed '1 s/^#//' \
+		| sed 's/^[ ]*//' \
+		| sed '/^$/d;' \
+		| sed -n '/^ *#/!p;' \
+		| awk $separator '{for(i=1;i<=NR;i++){if(NF>m){m=NF}}for(i=1;i<=m;i++){if(NR==1){a[i]=$i}else{a[i]=a[i]'\"$c\"'$i}}}END{for(i=1;a[i]!="";i++){print a[i]}}' \
+		| sed -n '/^ *#/!p;' \
+		| awk $separator '{for(i=1;i<=NR;i++){if(NF>m){m=NF}}for(i=1;i<=m;i++){if(NR==1){a[i]=$i}else{a[i]=a[i]'\"$c\"'$i}}}END{for(i=1;a[i]!="";i++){print a[i]}}' \
+		| sed '1 s/^/# /' \
+		>&1
             # > $out_f
             ;;
     esac
@@ -44,7 +51,7 @@ function vconf_filter() {
 function vconf_format() {
     trap "set +f" 1 2 3 15; set -f
 
-    include $VLIBS/lib.misc
+    include misc
 
     local c=$(get_param -s $@)
     local separator=${c:+-F$c}
@@ -91,9 +98,10 @@ function vconf_format() {
 function vconf() { # 要求：名字必须.vconf结尾，第一行为magic code，#开头; 其他"#"开头为注释，有效行以空格分隔每项。
     trap "set +f" 1 2 3 15; set -f
 
-    include $VLIBS/lib.misc
+    include misc debug
 
     local list vconf_file var_str num i tmp vconf_title exp='' ret=0 lines
+    local separator=$(get_param -s $@)
     local col=$(get_param -c $@)
     local row=$(get_param -r $@)
     local rownum=$(get_param -rn $@)
@@ -107,14 +115,16 @@ function vconf() { # 要求：名字必须.vconf结尾，第一行为magic code�
     [ "${file: -6}" == '.vconf' -a -f $file ] || return
 
     vconf_file=/tmp/vconf_$(cat /dev/urandom | LC_CTYPE=C tr -dc '0-9a-zA-Z' | fold -w 6 | head -n 1)
-    vconf_filter 3 $file > $vconf_file
+    # vconf_filter -m 3 $file ${separator:+-s $separator} > $vconf_file
+    vconf_filter -m 3 $file -s ${separator:+ } > $vconf_file
     lines=$(sed -n '$=' "$vconf_file")
 
     vconf_title="$(head -n 1 $vconf_file)"
-    list=(${vconf_title//\#/ })
+    list="${vconf_title//\#/ }"
+    list=("${list//$separator/ }")
 
     num=1
-    for i in ${vconf_title//#/ }; do
+    for i in $list; do
         eval var_str=\"\$var_str \${$i:--}\"
         eval $i="$num"
         ((num+=1))
@@ -175,7 +185,7 @@ function vconf() { # 要求：名字必须.vconf结尾，第一行为magic code�
     [ -n "$format" ] && vconf_format $file
 
     if [ -z "$exp" ]; then
-        for i in ${vconf_title//#/ }; do
+        for i in $list; do
             eval unset $i
         done
     fi

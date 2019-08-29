@@ -93,8 +93,8 @@ host_clean
 last=${param[$((${#param[*]}-1))]}
 debug echo last = $last
 
-debug echo ssh $VLOCALSSH "adb remount"
-ssh $VLOCALSSH "adb remount" > /dev/null 2>&1
+# debug echo ssh $VLOCALSSH "adb remount"
+# ssh $VLOCALSSH "adb remount" > /dev/null 2>&1
 if [ $is_push -eq 1 ]; then #push
     [ -z "$(try_get $last)" -a "${last:0:1}" == '/' ] && dst_dir="$(clean_last_symbol $last)"
     debug echo dst_dir = $dst_dir
@@ -136,8 +136,8 @@ if [ $is_push -eq 1 ]; then #push
             echo can\'t find $i
         fi
     done
-    debug echo ssh $VLOCALSSH "adb shell sync"
-    ssh $VLOCALSSH "adb shell sync" > /dev/null 2>&1
+    # debug echo ssh $VLOCALSSH "adb shell sync"
+    # ssh $VLOCALSSH "adb shell sync" > /dev/null 2>&1
 else #pull
     [ -n "$(try_get $last)" -o "${last:0:1}" != '/' ] && dst_dir="$(clean_last_symbol $last)"
     debug echo dst_dir = $dst_dir
