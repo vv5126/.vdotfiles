@@ -1,8 +1,8 @@
 #!/bin/bash
 
-include $VLIBS/lib.base
-include $VLIBS/lib.work
-include $VLIBS/lib.misc
+include base
+include work
+include misc
 
 debug=0
 

@@ -99,8 +99,8 @@ function quickcd_clean(){
     cd_list="$VTMP/.cd_list"
     cd_quicklist="$VTMP/.cd_quicklist"
     cd_cache="$VTMP/.cd_cache"
-    new_quicklist=$HOME/fff
-    tmp=$HOME/fff1
+    new_quicklist=$VTMP/fff
+    tmp=$VTMP/fff1
     # last_100="$VTMP/.cd_last_100"
     # cd_noexist="$VTMP/.cd_noexist"
     # local tmp dir=''
@@ -166,6 +166,10 @@ function clh() {
 
     mv $new $HISTFILE
     rm $tmp
+}
+
+function turnoff_screen() {
+        xset dpms force off
 }
 
 eval $(basename $0) $@

@@ -1,8 +1,8 @@
 # 工具链切换
 function change_toolchain(){
     eval add_path "$(
-	include $VLIBS/lib.list
-	showlist_with_input $VUSER_DATA/toolchains.vconf "toolchain_version" "go where ??" $@
+	include list
+	showlist_with_input $VUSER_DATA/toolchains.vconf "toolchain_version" "use which one??" $@
 	echo $toolchain_path
     )"
 }

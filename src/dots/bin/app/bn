@@ -1,9 +1,9 @@
 #!/bin/bash
 
-include $VLIBS/lib.misc
-include $VLIBS/lib.work
-include $VLIBS/lib.shdb
-include $VLIBS/lib.burnercfg
+include misc
+include work
+include shdb
+include burnercfg
 
 # function get_session_start() {
 #         local file="$1"

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-include $VLIBS/lib.work
-include $VLIBS/lib.shdb
+include work
+include shdb
 
 debug=0
 
@@ -193,7 +193,8 @@ function init(){
         fi
 
 	target_name='$project_type${forBOARD:+-$forBOARD}${forOS:+-$forOS}'
-        [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/${task_type:+$task_type/}${customer:+$customer/}${feature%%_*}'
+        # [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/${task_type:+$task_type/}${customer:+$customer/}${feature%%_*}'
+        [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/${customer:+$customer-}${feature%%_*}'
 
 	make_info_file ".pro/project_info"
 	return 0

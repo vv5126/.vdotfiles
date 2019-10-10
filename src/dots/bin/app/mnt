@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source $VLIBS/lib.list
+include list
 
 [ -z "$VUSER_DATA/mnt.vconf" ] && { echo "no conf file!"; exit; }
 

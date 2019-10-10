@@ -1,6 +1,6 @@
 #!/bin/bash
 
-include ~/.bin/lib/lib.list
+include list
 
 function mm1 {
     [ "$(guess_obj)" == "uboot" -o "$(guess_obj)" == "kernel" ] && { cd $BUILD_DIR; mma1; return 0; }
@@ -121,14 +121,15 @@ function guess_obj() {
 }
 
 function get_project_base_info() {
-        local task_type_list="
-                fix_bug
-                add_new
-                customer
-        "
-        local customer_list="$(cd $HOME/work/customer; ls_dir 1)"
+        # local task_type_list="
+        #         fix_bug
+        #         add_new
+        #         customer
+        # "
+        local customer_list="$(cd $HOME/customer; ls_dir 1)"
 
-        task_type=$(user_select 'project type is' "$task_type_list")
+        # task_type=$(user_select 'project type is' "$task_type_list")
+        task_type='customer' # now always use customer.
 
         if [ "$task_type" == 'customer' ]; then
                 customer="$(user_select 'have we got the customer ??' "$customer_list" 1)"

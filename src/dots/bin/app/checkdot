@@ -36,6 +36,7 @@ dot_templat=(
 # .oracle_jre_usage
 -----------------------------
 # 其他 #
+.cloner
 # .bash_logout
 # .emacs.d
 # .xsession

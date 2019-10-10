@@ -1,15 +1,15 @@
 #!/bin/bash
 
-include $VLIBS/lib.misc
-include $VLIBS/lib.work
-include $VLIBS/lib.shdb
+include misc
+include work
+include shdb
 
 debug=0
 
 function get_repo_dir() {
     repo_info=''
     local repo_dir="$(getdir .repo)"
-    [ -n "$repo_dir" -a -f "$repo_dir/.project_info" ] && repo_info="$repo_dir/.project_info"
+    [ -n "$repo_dir" -a -f "$repo_dir/.pro/project_info" ] && repo_info="$repo_dir/.pro/project_info"
 }
 
 function make_info_file(){
@@ -60,23 +60,23 @@ function make_info_file(){
 
 function mkmain() {
 
-        [ -f ".project_info" ] && source .project_info
+        [ -f ".pro/project_info" ] && source .pro/project_info
         [ "$addtime" = "1" ] && target_name=$target_name-$(date +%Y-%m-%d_%H:%M)
         [ -n "$note" ] && target_name=$target_name-$note
         target_name=$target_name.img
         [ "$needclean" = "1" ] && make distclean
         [ -f $the_image ] && rm $the_image
-        make $board_config -j32 > .tmp
-        # make $board_config -j32 > .tmp && {
-        #     echo the out img: $target_dir/$target_name >&2
-        #     smkdir $target_dir
-        #     scp $the_image $target_dir/$target_name
-        # }
+        # make $board_config -j32 > .tmp
+        make $board_config -j32 > .tmp && {
+            echo the out img: $target_dir/$target_name >&2
+            smkdir $target_dir
+            scp $the_image $target_dir/$target_name
+        }
 }
 
 
 function init(){
-        trap "rm -f .u.sh .project_info; exit 2" 1 2 3 15
+        trap "rm -rf .pro; exit 2" 1 2 3 15
 
 	local tmp=
 
@@ -86,7 +86,7 @@ function init(){
             source $repo_info
         else
             get_project_base_info
-            local project_target_dir="$HOME/work/$task_type/$customer"
+            local project_target_dir="$HOME/$task_type/$customer"
             local bool
 
             [ "$project_target_dir" != "$PWD" ] && {
@@ -133,9 +133,10 @@ function init(){
 
 	needclean=1
 	target_name='$project_type-$board_config'
-        [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/$task_type/${customer:+$customer/}${feature:+$feature-}imgs'
+        # [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/${task_type:+$task_type/}${customer:+$customer/}${feature%%_*}'
+        [ -z "$target_dir" ] && target_dir='$VGL_BOARDS/${customer:+$customer-}${feature%%_*}'
 
-	make_info_file ".project_info"
+	make_info_file ".pro/project_info"
 	return 0
 }
 
@@ -173,7 +174,6 @@ function mk_gcc_file() {
 		make distclean
 		;;
         'ycm_conf')
-	        source .project_info
                 mkdir .tag
                 make distclean
                 make $board_config -j1 > .tag/gcc 2>&1
@@ -199,4 +199,4 @@ function mk_gcc_file() {
 	mkmain
 }
 
-shdb_format ".project_info" &
+shdb_format ".pro/project_info" &

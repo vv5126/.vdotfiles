@@ -1,15 +1,17 @@
-# dest
-user@192.168.4.150:~/
-wgao@192.168.4.15:~/
-wgao@192.168.3.3:~
-user@192.168.4.150:~/mnt/57
-wgao@192.168.4.10:~/
-cljiang@192.168.3.3:~
-fpga@192.168.4.13:~/user/wgao
-jkzhao@192.168.3.3:~/tmp
-jkzhao@192.168.3.3:~
-yyxu@192.168.3.3:~/
-wicom@192.168.3.3:/backup/home/wicom/work/tmp
-clwang@192.168.4.15:~
-julyedu_554839@139.196.78.189:~
-xryuan@192.168.3.3:~
+# name         dest
+local          user@192.168.4.150:~/
+xxx            wgao@192.168.4.15:~/
+work           wgao@192.168.3.3:~
+win            user@192.168.4.150:~/mnt/57
+cljiang-server cljiang@192.168.3.3:~
+fpga           fpga@192.168.4.13:~/user/wgao
+jkzhao-server  jkzhao@192.168.3.3:~/tmp
+xxx            jkzhao@192.168.3.3:~
+yyxu-server    yyxu@192.168.3.3:~/
+xxx            wicom@192.168.3.3:/backup/home/wicom/work/tmp
+xxx            clwang@192.168.4.15:~
+xxx            julyedu_554839@139.196.78.189:~
+xryuan-server  xryuan@192.168.3.3:~
+fhguo-server   fhguo@192.168.3.3:~
+xxx            user@192.168.2.213:~
+xxx            pyzhang_bj@192.168.4.2:~

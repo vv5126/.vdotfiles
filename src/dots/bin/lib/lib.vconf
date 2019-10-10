@@ -1,12 +1,17 @@
+# 分隔符有bug!!!
 function vconf_filter() {
     include misc
 
+    # echo @ \"$@\" >&2
     local c=$(get_param -s $@)
+    # echo c \"$c\" >&2
     local separator=${c:+-F$c}
     c=${c:= }
+    # c="\ "
     local mode=$(get_param -m $@)
     local in_f=$(get_param '' $@)
     # local out_f=$(get_param -out $@)
+    # echo separator "$separator" >&2
 
     case "$mode" in
         '0') # vconf_filter_mode0 不过滤
@@ -23,9 +28,9 @@ function vconf_filter() {
                 | sed '/^$/d;' \
                 | sed 's/^#\ /_/' \
                 | sed 's/[^_]/+ &/' \
-		| awk $separator '{for(i=1;i<=NR;i++){if(NF>m){m=NF}}for(i=1;i<=m;i++){if(NR==1){a[i]=$i}else{a[i]=a[i]'\"$c\"'$i}}}END{for(i=1;a[i]!="";i++){print a[i]}}' \
+		| awk $separator '{for(i=1;i<=NR;i++){if(NF>m){m=NF}}for(i=1;i<=m;i++){if(NR==1){a[i]=$i}else{a[i]=a[i]'\""$c"\"'$i}}}END{for(i=1;a[i]!="";i++){print a[i]}}' \
                 | sed -n '/^#/!p;' \
-		| awk $separator '{for(i=1;i<=NR;i++){if(NF>m){m=NF}}for(i=1;i<=m;i++){if(NR==1){a[i]=$i}else{a[i]=a[i]'\"$c\"'$i}}}END{for(i=1;a[i]!="";i++){print a[i]}}' \
+		| awk $separator '{for(i=1;i<=NR;i++){if(NF>m){m=NF}}for(i=1;i<=m;i++){if(NR==1){a[i]=$i}else{a[i]=a[i]'\""$c"\"'$i}}}END{for(i=1;a[i]!="";i++){print a[i]}}' \
                 | sed 's/^+//' \
                 | sed 's/^_+/#/' \
                 | sed '1 s/^/#/' \
@@ -38,12 +43,16 @@ function vconf_filter() {
 		| sed 's/^[ ]*//' \
 		| sed '/^$/d;' \
 		| sed -n '/^ *#/!p;' \
-		| awk $separator '{for(i=1;i<=NR;i++){if(NF>m){m=NF}}for(i=1;i<=m;i++){if(NR==1){a[i]=$i}else{a[i]=a[i]'\"$c\"'$i}}}END{for(i=1;a[i]!="";i++){print a[i]}}' \
+		| awk $separator '{for(i=1;i<=NR;i++){if(NF>m){m=NF}}for(i=1;i<=m;i++){if(NR==1){a[i]=$i}else{a[i]=a[i]'\""$c"\"'$i}}}END{for(i=1;a[i]!="";i++){print a[i]}}' \
 		| sed -n '/^ *#/!p;' \
-		| awk $separator '{for(i=1;i<=NR;i++){if(NF>m){m=NF}}for(i=1;i<=m;i++){if(NR==1){a[i]=$i}else{a[i]=a[i]'\"$c\"'$i}}}END{for(i=1;a[i]!="";i++){print a[i]}}' \
+		| awk $separator '{for(i=1;i<=NR;i++){if(NF>m){m=NF}}for(i=1;i<=m;i++){if(NR==1){a[i]=$i}else{a[i]=a[i]'\""$c"\"'$i}}}END{for(i=1;a[i]!="";i++){print a[i]}}' \
 		| sed '1 s/^/# /' \
 		>&1
             # > $out_f
+            ;;
+        '4') # vconf_filter_mode4 只滤列 分隔符为非空格
+            ;;
+        '5') # vconf_filter_mode5 行列都滤 分隔符为非空格
             ;;
     esac
 }
@@ -94,111 +103,197 @@ function vconf_format() {
     sed -i 's/^__/#\ /g' $file
 }
 
+function vconf_help() {
+    echo "
+Usage: ls [OPTION]... [FILE]...
+List information about the FILEs (the current directory by default).
+Sort entries alphabetically if none of -cftuvSUX nor --sort is specified.
+
+Mandatory arguments to long options are mandatory for short options too.
+-r           number or row content under specified title.
+-c           specified column, (content or number).
+-s           specified separator. (todo)
+-a           add a line.
+-d           del specified line.
+-m           mode.
+-w           select show way:
+                    l: print line.
+                    p: print content.
+--reset      format vconf file.
+--exp      export
+
+-g           get specified value in row.
+-rn          row number.
+-t           specified title
+
+examples:
+    show specified column.                         -c NO.['title']
+    show specified row.                         >  -r NO. or -c 'title' -r 'text by title'
+    show content at specified column and row.      -r NO. -c NO.['title']
+
+"
+}
+
 # vconf文件解析
 function vconf() { # 要求：名字必须.vconf结尾，第一行为magic code，#开头; 其他"#"开头为注释，有效行以空格分隔每项。
+
+    [ $# -eq 0 ] && { vconf_help; return; }
+
     trap "set +f" 1 2 3 15; set -f
 
     include misc debug
+    # debug=
 
-    local list vconf_file var_str num i tmp vconf_title exp='' ret=0 lines
-    local separator=$(get_param -s $@)
-    local col=$(get_param -c $@)
-    local row=$(get_param -r $@)
-    local rownum=$(get_param -rn $@)
-    local mode=$(get_param -m $@)
-    local col1=$(get_param -g $@)
-    local addline=$(get_param -a $@)
-    local delline=$(get_param -d $@)
-    local file=$(get_param '' $@)
-    local format=$(get_param --reset $@)
+    local vconf_list vconf_var_str vconf_num vconf_title vconf_ret=0 vconf_lines
+    local i tmp_file tmp
 
-    [ "${file: -6}" == '.vconf' -a -f $file ] || return
+    local vconf_separator=$(get_param -s "$@")
+    local vconf_col=$(get_param -c "$@")
+    local vconf_row=$(get_param -r "$@")
+    local vconf_mode=$(get_param -m "$@")
+    local vconf_exc=$(get_param -except "$@")
+    local vconf_exp=$(get_param --exp "$@")
+    local vconf_addline=$(get_param -a "$@")
+    local vconf_delline=$(get_param -d "$@")
+    local vconf_file=$(get_param '' "$@")
+    # local rownum=$(get_param -rn "$@")
+    # local col1=$(get_param -g "$@")
+    # local format=$(get_param --reset "$@")
 
-    vconf_file=/tmp/vconf_$(cat /dev/urandom | LC_CTYPE=C tr -dc '0-9a-zA-Z' | fold -w 6 | head -n 1)
-    # vconf_filter -m 3 $file ${separator:+-s $separator} > $vconf_file
-    vconf_filter -m 3 $file -s ${separator:+ } > $vconf_file
-    lines=$(sed -n '$=' "$vconf_file")
+    [ "${vconf_file: -6}" == '.vconf' -a -f "$vconf_file" ] || { echo "need specified a conf file!" >&2; return -1; }
 
-    vconf_title="$(head -n 1 $vconf_file)"
-    list="${vconf_title//\#/ }"
-    list=("${list//$separator/ }")
+    # tmp_file=/tmp/vconf_$(cat /dev/urandom | LC_CTYPE=C tr -dc '0-9a-zA-Z' | fold -w 6 | head -n 1)
+    tmp_file=/tmp/tmp.vconf
 
-    num=1
-    for i in $list; do
-        eval var_str=\"\$var_str \${$i:--}\"
-        eval $i="$num"
-        ((num+=1))
+    if [ "$vconf_exp" == "vconf_col" -a -n "$vconf_separator" ]; then
+        vconf_filter -m 4 $vconf_file -s $vconf_separator > $tmp_file
+    elif [ "$vconf_exp" == "all" -a -n "$vconf_separator" ]; then
+        vconf_filter -m 5 $vconf_file -s $vconf_separator > $tmp_file
+    elif [ "$vconf_exp" == "none" ]; then
+        vconf_filter -m 0 $vconf_file > $tmp_file
+    elif [ "$vconf_exp" == "vconf_row" ]; then
+        vconf_filter -m 1 $vconf_file > $tmp_file
+    elif [ "$vconf_exp" == "vconf_col" ]; then
+        vconf_filter -m 2 $vconf_file > $tmp_file
+    elif [ "$vconf_exp" == "all" ]; then
+        vconf_filter -m 3 $vconf_file > $tmp_file
+    else
+        vconf_filter -m 3 $vconf_file > $tmp_file
+    fi
+
+    vconf_lines=$(sed -n '$=' "$tmp_file")
+
+    # set title to var, E.X. name=1 path=2 ...
+    vconf_title="$(head -n 1 $tmp_file)"
+    vconf_list="${vconf_title//\#/ }"
+    vconf_list=("${vconf_list//$vconf_separator/ }")
+    # log vconf_list
+
+    vconf_num=1
+    for i in $vconf_list; do
+        eval vconf_var_str=\"\$vconf_var_str \${$i:--}\"
+        eval $i="$vconf_num"
+        ((vconf_num+=1))
     done
 
-    [ "$(is_num $col)" == 0 ] && eval col=\$"$col"
-    [ "$(is_num $col1)" == 0 ] && eval col1=\$"$col1"
 
-    if [ -n "$row" -o -n "$rownum" ]; then
-        if [ -z "$rownum" ]; then
-            [ -z "$col" ] && return -1
+    [ "$(is_num $vconf_col)" == 0 ] && eval vconf_col=\$"$vconf_col" # if vconf_col is title, convert to num.
 
-            num=1
-            for i in $(cat $vconf_file | sed -n 1'!p;' | awk "{print \$$col}"); do
-                if [ "$i" == "$row" ]; then
-                    rownum=$num
+    # processing
+    case "$vconf_mode" in
+        'add')
+            if [ "$(is_num $vconf_row)" == 1 ]; then
+                sed "$vconf_row"'a'"$vconf_addline" -i $vconf_file
+            else
+                sed '$a'"$vconf_addline" -i $vconf_file
+            fi
+            ;;
+        'del')
+            # sed "$(($vconf_delline+1))"'s/^/# /' $tmp_file > $vconf_file # 注释
+            # sed "$(($vconf_delline+1))"'d;' $tmp_file > $vconf_file # 删除
+            ;;
+        'show-column')
+            echo "$(cat $tmp_file | sed -n 1'!p;' | awk "{print \$$vconf_col}")"
+            ;;
+        'show-row')
+            if [ "$(is_num $vconf_row)" == 1 ]; then
+                vconf_num=$vconf_row
+            else
+                vconf_num=1
+                for i in $(cat $tmp_file | sed -n 1'!p;' | awk "{print \$$vconf_col}"); do
+                    if [ "$i" == "$vconf_row" ]; then
+                        break
+                    fi
+                    ((vconf_num+=1))
+                done
+            fi
+            [ "$vconf_lines" -ge "$vconf_num" ] && row_ctx="$(cat $tmp_file | sed -n "$(($vconf_num+1))"'p;')"
+            if [ -n "$vconf_exp" ]; then
+                for i in $vconf_list; do
+                    eval tmp=\$$i
+                    eval $i=\'$(echo "$row_ctx" | awk "{print \$$tmp}")\'
+                done
+            fi
+            ;;
+        'show-value')
+            vconf_num=1
+            for i in $(cat $tmp_file | sed -n 1'!p;' | awk "{print \$$vconf_col}"); do
+                if [ "$i" == "$vconf_row" ]; then
                     break
                 fi
-                ((num+=1))
+                ((vconf_num+=1))
             done
-        fi
-    fi
-
-    if [  -n "$row" -a -z "$rownum" ]; then
-        ret=-1
-    elif [ "$(is_num $col1)" == 1 -a "$(is_num $rownum)" == 1 ]; then
-        echo "$(cat $vconf_file | sed -n "$(($rownum+1))"'!p;' || awk "{print \$$col1}")"
-    elif [ "$(is_num $rownum)" == 1 ]; then
-        if [ -n "$addline" -o -n "$delline" ]; then
-            num=1 tmp=0
-            while read line; do
-                [ "${line:0:1}" != '#' ] && ((tmp+=1))
-                [ "$tmp" == "$rownum" ] && break
-                ((num+=1))
-            done < $file
-
-            [ -n "$(is_num $delline)" ] && sed "$num"'d;' -i $file
-            [ -n "$(is_num $addline)" ] && eval sed "$(($num-1))"'a'\"$var_str\" -i $file
-
-        elif [ "$mode" == 'l' ]; then
-            echo "$rownum"
-        elif [ "$mode" == 'p' ]; then
-            echo "$(cat $vconf_file | sed -n $(($rownum+1))'p;')"
-        else
-            num=0
-            for i in $(cat $vconf_file | sed -n $(($rownum+1))'p;'); do
-                eval ${list[$num]}="\$i"
-                ((num+=1))
+            echo "$(cat $tmp_file | sed -n "$(($vconf_row+1))"'p;' | awk "{print \$$vconf_col}")"
+            ;;
+        '1')
+            vconf_num=0
+            for i in $(cat $tmp_file | sed -n $(($rownum+1))'p;'); do
+                eval ${vconf_list[$vconf_num]}="\$i"
+                ((vconf_num+=1))
             done
-            [ "$lines" -ge "$rownum" ] && exp=1
-        fi
-    elif [ "$(is_num $col)" == 1 ]; then
-        echo "$(cat $vconf_file | sed -n 1'!p;' | awk "{print \$$col}")"
-    else
-        echo "unsupport!"
-    fi
-    rm $vconf_file
-    [ -n "$format" ] && vconf_format $file
+            [ "$vconf_lines" -ge "$rownum" ] && vconf_exp=1
+            ;;
+        'format')
+            vconf_format $vconf_file
+            ;;
+        *)
+            echo "unsupport!"
+            ;;
+    esac
 
-    if [ -z "$exp" ]; then
-        for i in $list; do
+    rm $tmp_file
+
+    if [ -z "$vconf_exp" ]; then
+        for i in $vconf_list; do
             eval unset $i
         done
     fi
 
-    return $ret
+    return $vconf_ret
+
+    # num=1
+    # for i in $(cat $tmp_file | sed -n 1'!p;' | awk "{print \$$col}"); do
+    #     echo i $i $row >&2
+    #     if [ "$i" == "$row" ]; then
+    #         rownum=$num
+    #         break
+    #     fi
+    #     ((num+=1))
+    # done
+
+    # elif [ "$(is_num $col1)" == 1 -a "$(is_num $rownum)" == 1 ]; then
+    # echo "$(cat $tmp_file | sed -n "$(($rownum+1))"'p;' || awk "{print \$$col1}")"
+
+    # if [ "$mode" == 'l' ]; then
+    #     echo "$rownum"
+    # elif [ "$mode" == 'p' ]; then
+    #     echo "$(cat $tmp_file | sed -n $(($rownum+1))'p;')"
+
+    # num=0
+    # for i in $(cat $tmp_file | sed -n $(($rownum+1))'p;'); do
+    #     eval ${list[$num]}="\$i"
+    #     ((num+=1))
+    # done
 }
 
-############# export ##############
-
-# if [ -n "$ZSH" ]; then
-# else
-# fi
-
-########### export end ############
-
-[[ "${0##*/}" =~ "lib.vconf" ]] && $@
+[[ "${0##*/}" =~ "lib.vconf" ]] && "$@"

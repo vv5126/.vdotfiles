@@ -269,7 +269,7 @@ ask() {
 
 # 在当前目录创建指定文件的链接
 function lnn() {
-    include $VLIBS/lib.base
+    include base
 
     local lnfile="$1"
     local searchdir="$HOME/.bin"
@@ -327,7 +327,6 @@ function check_sudo() {
 }
 
 function check_ln() {
-    include $VLIBS/lib.misc
     cd "$VUSER"
 
     if [ ! -f "../.inited" ]; then

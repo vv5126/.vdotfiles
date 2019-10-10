@@ -2,9 +2,9 @@
 # shdb_add shdb_name $para
 # para: -a add; -g get the key line; -d delete;
 
-include $VLIBS/lib.base
-include $VLIBS/lib.misc
-include $VLIBS/lib.str
+include base
+include misc
+include str
 
 debug=0
 

@@ -43,7 +43,7 @@ function showlist(){
 }
 
 function user_select() {
-    include $VLIBS/lib.misc
+    include misc
 
     local NUM=0 info="$1"
 
@@ -61,17 +61,17 @@ function showlist_with_input(){
     local tab="$2"
     local for_user="$3"
 
-    include $VLIBS/lib.misc
-    include $VLIBS/lib.vconf
+    include misc
+    include vconf
 
     if [ "$(is_num $maybe_num)" == 1 ]; then
 	NUM=$maybe_num
     else
-	vconf "$file" -c "$tab" | showlist
+	vconf -m "show-column" -c "$tab" "$file" | showlist
 	NUM="$(get_input "$for_user")"
     fi
 
-    [ "$(is_num $NUM)" == 1 ] && vconf "$file" -rn "$NUM"
+    [ "$(is_num $NUM)" == 1 ] && vconf -m "show-row" --exp -c "$tab" -r "$NUM" "$file"
 }
 
 function get_value_from_table() {

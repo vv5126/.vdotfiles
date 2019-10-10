@@ -1,0 +1,5 @@
+function log() {
+    if [ -n "debug" ]; then
+        eval echo $1 = \\\"\$$1\\\"
+    fi
+}

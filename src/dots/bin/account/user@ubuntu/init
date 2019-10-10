@@ -3,7 +3,7 @@
 if [ $1 == "init" ]; then
     > /dev/null
 else
-    include $VLIBS/lib.misc
+    include misc
 
     add_path "/home/user/tools/gcc-arm-none-eabi-7-2018-q2-update/bin"
     # add_path "$HOME/bin/mips-gcc472-glibc216-64/bin"

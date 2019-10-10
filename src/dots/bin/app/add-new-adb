@@ -1,7 +1,7 @@
 #!/bin/bash
 #添加新的设备 完整版
 
-include $VLIBS/lib.misc
+include misc
 
 if [ $# -eq 0 ]; then
     dev=$(lsusb | grep 'Google Inc.' - | awk '{print $6}')

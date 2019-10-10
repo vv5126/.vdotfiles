@@ -2,8 +2,8 @@
 
 # for android project
 
-include $VLIBS/lib.work
-include $VLIBS/lib.shdb
+include work
+include shdb
 
 function make_info_file() {
         local file=$1

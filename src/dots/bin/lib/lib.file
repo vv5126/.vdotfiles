@@ -1,6 +1,6 @@
 #!/bin/bash
 
-include $VLIBS/lib.base
+include base
 # NF=14
 # awk '{$NF="'$PWD/'"$NF; print}' $1
 

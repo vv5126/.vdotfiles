@@ -275,6 +275,7 @@ endif
     " 需要将clang+llvm加入到PATH中
     "nnoremap <leader>hf :YcmGenerateConfig<CR>
     " -------------------------------------------------
+    Bundle 'kshenoy/vim-signature'
     " -------------------------------------------------
     "requires Vim to be compiled with Ruby support
     "Bundle 'wincent/command-t'

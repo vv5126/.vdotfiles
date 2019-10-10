@@ -1,16 +1,5 @@
 # name     param exclude                   src                           dst
 hw_pcb     av    "$VUSER_DATA/hw_pcb.sync" /tmp/mnt/hw/                  /home/user/local_debug/pcb
 hw_pdf     av    "$VUSER_DATA/hw_pdf.sync" /tmp/mnt/hw/                  /home/user/local_debug/pdf/hw
-vdotfiles  ur    *                         $WORK_SERVER_SSH:'$HOME/.vdotfiles' $HOME
-vdotfiles1 r     bundle                    $WORK_SERVER_SSH:'$HOME/.vdotfiles' $HOME
-#
-# 改查
-#
-# vconf -c "name" -f file.vconf
-# hw_pcb hw_pdf vdotfiles
-#
-# vconf -c "name" -r "vdotfiles" -f file.vconf
-# set name=vdotfiles     param=url exclude=* src="$WORK_SERVER_SSH:'$HOME/.vdotfiles'" dst=$HOME
-#
-# vconf -g "param" -c "name" -r "vdotfiles" -f file.vconf
-# return "url"
+vdotfiles  ur    *                         $WORK_SERVER_SSH:"\$HOME/.vdotfiles" $HOME
+vdotfiles1 r     bundle                    $WORK_SERVER_SSH:"\$HOME/.vdotfiles" $HOME

@@ -4,8 +4,8 @@ if [[ $1 == "init" ]]; then
     > /dev/null
 else
     include $VINIS/ini.ingenic
-    include $VLIBS/lib.work
-    include $VLIBS/lib.misc
+    include work
+    include misc
 
     # GO
     # add_path "/data1/home/wgao/tools/go/bin"
