@@ -30,7 +30,6 @@ endif
 " spf13 before. {{{
     "===============================================================================+
     set nocompatible        " Must be first line
-    source ~/.vim/bundle/spf13-vim/.vimrc.before
     "===============================================================================+
 " }}}
 
@@ -219,7 +218,7 @@ endif
     " Bundle 'Chun-Yang/vim-action-ag'
     " -------------------------------------------------
     " 让书签可视化的插件
-    " Bundle 'kshenoy/vim-signature'
+    Bundle 'kshenoy/vim-signature'
     " -------------------------------------------------
     " 任务列表的插件 —— TaskList.vim，方便管理项目中的 TODO、FIXME 等标签.
     " Bundle 'TaskList.vim'
@@ -275,7 +274,7 @@ endif
     " 需要将clang+llvm加入到PATH中
     "nnoremap <leader>hf :YcmGenerateConfig<CR>
     " -------------------------------------------------
-    Bundle 'kshenoy/vim-signature'
+    Bundle 'Shougo/deoplete.nvim'
     " -------------------------------------------------
     "requires Vim to be compiled with Ruby support
     "Bundle 'wincent/command-t'
