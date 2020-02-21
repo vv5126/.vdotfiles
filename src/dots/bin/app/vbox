@@ -168,6 +168,10 @@ function clh() {
     rm $tmp
 }
 
+function title() {
+    echo -en "\033]0;$1\a"
+}
+
 function turnoff_screen() {
         xset dpms force off
 }

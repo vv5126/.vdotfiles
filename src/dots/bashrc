@@ -16,9 +16,16 @@ if [ "$EXP" -eq 1 ]; then
 	for i in "$@"; do
 	    local file="" tfile="${i%% *}" tparam="${i#* }"
 	    [ "$tfile" == "$tparam" ] && tparam=''
-	    [ -f "$VLIBS/lib.$tfile" ] && file="$VLIBS/lib.$tfile $tparam"
-	    [ -f "$tfile" ] && file="$tfile $tparam"
-	    [ -n "$file" ] && [[ "$VINCS" =~ "$file:" ]] || { source $file; VINCS="$VINCS$file:"; }
+            [ -f "$VLIBS/lib.$tfile" ] && tfile="$VLIBS/lib.$tfile";
+            if [ -f "$tfile"  ]; then
+                [[ "$VINCS" =~ "$tfile:"  ]] || {
+                    set ""
+                    source $tfile $tparam
+                    VINCS="$VINCS$file:"; }
+            fi
+	    # [ -f "$VLIBS/lib.$tfile" ] && file="$VLIBS/lib.$tfile $tparam"
+	    # [ -f "$tfile" ] && file="$tfile $tparam"
+	    # [ -n "$file" ] && [[ "$VINCS" =~ "$file:" ]] || { source $file; VINCS="$VINCS$file:"; }
 	done
     }
 
@@ -36,7 +43,7 @@ if [ "$EXP" -eq 1 ]; then
     export VUSER="$VACCOUNT/$VHOSTID"
     export VGL_DATA="$HOME/.bin/data"
     export VUSER_DATA="$VACCOUNT/$VHOSTID/data"
-    export VTMP="$HOME/.v"
+    export VTMP="$HOME/.local"
     export VBESUDO="$($VLIBS/lib.misc check_sudo)"
 fi
 
@@ -46,27 +53,27 @@ if [ "$EXP" -eq 1 ]; then
 # history #
 export HISTTIMEFORMAT="%m-%d %H:%M "
 export PROMPT_COMMAND="history -a" # 实时追加history，不必等用户退出才将内存中的history记录到文件
-export HISTFILE=$HOME/.v/.bash_history
+export HISTFILE=$VTMP/.bash_history
 
 # don't put duplicate lines or lines starting with space in the history.
 # export HISTCONTROL=ignoreboth
 # export HISTCONTROL=erasedups       # 使用HISTCONTROL清除整个命令历史中的重复条目
 export HISTCONTROL=ignoredups:erasedups
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+# export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 export HISTSIZE=1000      # 定义了 history 命令输出的记录数.
 export HISTFILESIZE=10000 # 定义了在 .bash_history 中保存命令的记录总数.
 
 # export HISTFILE=/data1/home/wgao/.local/history/$(date +%m%d).log
-export LESSHISTFILE=$HOME/.v/.lesshst
+export LESSHISTFILE=$VTMP/.lesshst
 
 # Where user-specific configurations should be written (analogous to /etc).
 # Should default to $HOME/.config.
-export XDG_CONFIG_HOME=$HOME/.v/config
+export XDG_CONFIG_HOME=$VTMP/config
 
 # Where user-specific non-essential (cached) data should be written (analogous to /var/cache).
 # Should default to $HOME/.cache.
-export XDG_CACHE_HOME=$HOME/.v/.cache
+export XDG_CACHE_HOME=$VTMP/.cache
 
 # Where user-specific data files should be written (analogous to /usr/share).
 # Should default to $HOME/.local/share.
@@ -120,8 +127,8 @@ shopt -s histappend # 用户打开多个终端（产生多个session）情况下
 # make less more friendly for non-text input files, see lesspipe(1)
 # [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-[ -x /usr/bin/tput ] && PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\] \$ '
 # tput init
+[ -x /usr/bin/tput ] && PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]\[\033[01;36m\]$([ "$SHLVL" -ne 1 ] && echo \ $SHLVL)\[\033[00m\] \$ '
 
 for i in $(ls $VLIBS); do
     complete -F complete_for_lib $i
@@ -150,20 +157,5 @@ fi
 stty -ixon
 
 unset EXP
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$("$HOME/.v/anaconda3/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/.v/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/.v/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/.v/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# conda config --set auto_activate_base false
-# <<< conda initialize <<<
 
 echo init done

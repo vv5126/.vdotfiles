@@ -3,7 +3,7 @@
 if [ $# -eq 0 ]; then
     source ~/.cloner/.cloner_info 2>/dev/null
     if [ -z "$cloner_version" ]; then
-	select var in $(ls -d ~/.cloner/*/ | sed -n '/^cloner-/p;') ;do
+	select var in $(cd ~/.cloner; ls -d */ | sed -n '/^cloner-/p;') ;do
 	    break
 	done
 
@@ -17,11 +17,11 @@ else
     if [ $? -eq 0 ]; then
 	select="$1"
 	if [ "$select" == '0' ]; then
-	    select var in $(ls -d ~/.cloner/*/ | sed -n '/^cloner-/p;') ;do
+	    select var in $(cd ~/.cloner; ls -d */ | sed -n '/^cloner-/p;') ;do
 		break
 	    done
 	else
-	    var="$(ls -d ~/.cloner/*/ | sed -n '/^cloner-/p;' | head -$select | tail -1)"
+	    var="$(cd ~/.cloner; ls -d */ | sed -n '/^cloner-/p;' | head -$select | tail -1)"
 	fi
 
 	if [ -n "$var" ]; then

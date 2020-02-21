@@ -1,0 +1,16 @@
+#!/bin/bash
+
+server_addr="39.100.249.20"
+
+ping -c 1 -W 1 $server_addr
+
+if [ $? -eq 0 ]; then
+    if [ "$(ps -x | grep frpc | wc -l)" -eq 1 ]; then
+        nohup /backup/home/wgao/.v/tools/frp/frpc -c /backup/home/wgao/.v/tools/frp/frpc.ini > /dev/null &
+    fi
+fi
+
+
+# server command:
+# nohup ./frps -c frps.ini >/dev/null &
+

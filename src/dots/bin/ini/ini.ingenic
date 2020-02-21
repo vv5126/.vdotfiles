@@ -45,4 +45,6 @@ export VGL_ASD_FILE="$WORK_SERVER_SSH":"$VGL_DATA"/.asd
 
 complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk
 complete -W "push bak baklist cover" gt
-alias c='ctags -R .'
+alias t='ctags -R .'
+alias clone_kernel='git clone ssh://wgao_bj@192.168.1.26:29418/kernel/kernel-3.10 -b ingenic-kernel-3.10.14 --depth 1 --single-branch'
+alias clone_uboot='git clone ssh://wgao_bj@192.168.1.26:29418/bootloader/u-boot -b ingenic-master --depth 1 --single-branch'

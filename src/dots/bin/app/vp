@@ -69,7 +69,7 @@ function parse_dst() {
     [[ "$src_dir" =~ '/bin' ]] && { echo "/bin${src_dir##*/bin}"; return 0; }
     [[ "$src_dir" =~ '/etc' ]] && { echo "/etc${src_dir##*/etc}"; return 0; }
     [[ "$src_name" =~ '.so' ]] && { echo "/usr/lib"; return 0; }
-    [ -x "$1" -a ! -d "$1" ] && { echo "/bin"; return 0; }
+    [ -x "$1" -a ! -d "$1" ] && { echo "/usr/bin"; return 0; }
 }
 
 

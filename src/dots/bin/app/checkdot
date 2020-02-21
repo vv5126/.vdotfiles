@@ -5,15 +5,12 @@ dot_templat=(
 # OK #
 .bashrc
 .bin
-.rm
 .profile
+.local
 
-.nfs_disk
-.v
 .vdotfiles
 .vim
 .vimrc
-.local
 -----------------------------
 # 确定忽略 #
 .ssh
@@ -21,6 +18,9 @@ dot_templat=(
 .dbus
 .Xauthority
 .Trash-1000
+.nfs_disk
+.nano
+.selected_editor
 -----------------------------
 # 不关心 #
 .compiz

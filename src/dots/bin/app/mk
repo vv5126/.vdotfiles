@@ -72,7 +72,7 @@ function tagbuild() {
 function mkmain() {
         # try find the a.sh and run.
         local A_DIR="$(getdir a.sh)"
-        [ -f "$A_DIR/a.sh" ] && { cd "$A_DIR" && chmod +x a.sh && ./a.sh; return 0; }
+        [ -f "$A_DIR/a.sh" ] && { cd "$A_DIR" && chmod +x a.sh && ./a.sh $@; return 0; }
 
         # try find the Build.mk and run mma.
         local BUILD_DIR="$(getdir Build.mk)"

@@ -14,7 +14,7 @@ if [[ "$LAST" =~ "@" ]]; then # target
 	SKIP=1
 	echo "$DEST" >> $VGL_DATA/vcp.vconf
 else # normal file
-	showlist_with_input $VGL_DATA/vcp.vconf "dest" "cp to" $@
+	showlist_with_input $VGL_DATA/vcp.vconf "name" "cp to" $@
 	DEST="$dest"
 	[ "$(is_num "$LAST")" -eq "1" ] && SKIP=1
 fi
