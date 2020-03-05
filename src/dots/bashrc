@@ -36,14 +36,17 @@ if [ "$EXP" -eq 1 ]; then
 	export -f include
     fi
 
-    export VLIBS="$HOME/.bin/lib"
-    export VINIS="$HOME/.bin/ini"
+    export VDOT="$HOME/.local/vdot"
+    export VTMP="$HOME/.local/tmp"
+    export VTOOLS="$HOME/.local/tools"
+    export VBIN="$HOME/.bin"
+    export VLIBS="$VBIN/lib"
+    export VINIS="$VBIN/ini"
     export VHOSTID="$USER@$HOSTNAME"
-    export VACCOUNT="$HOME/.bin/account"
+    export VACCOUNT="$VBIN/account"
     export VUSER="$VACCOUNT/$VHOSTID"
-    export VGL_DATA="$HOME/.bin/data"
+    export VGL_DATA="$VBIN/data"
     export VUSER_DATA="$VACCOUNT/$VHOSTID/data"
-    export VTMP="$HOME/.local"
     export VBESUDO="$($VLIBS/lib.misc check_sudo)"
 fi
 
@@ -69,11 +72,11 @@ export LESSHISTFILE=$VTMP/.lesshst
 
 # Where user-specific configurations should be written (analogous to /etc).
 # Should default to $HOME/.config.
-export XDG_CONFIG_HOME=$VTMP/config
+# export XDG_CONFIG_HOME=$VTMP/config
 
 # Where user-specific non-essential (cached) data should be written (analogous to /var/cache).
 # Should default to $HOME/.cache.
-export XDG_CACHE_HOME=$VTMP/.cache
+# export XDG_CACHE_HOME=$VTMP/.cache
 
 # Where user-specific data files should be written (analogous to /usr/share).
 # Should default to $HOME/.local/share.
@@ -88,12 +91,11 @@ export FONTCONFIG_FILE="$XDG_CONFIG_HOME/fontconfig/fonts.conf"
 export CD_COUNT="0"
 fi
 
-include $HOME/.bin/lib/lib.shell
+include $VLIBS/lib.shell
 
 if [ "$EXP" -eq 1 ]; then
 # add path #
 add_path "$VLIBS"
-add_path "$HOME/.bin/base"
 add_path "$HOME/.local/bin"
 [ -d "$VUSER" ] && add_path "$VUSER/bin"
 
@@ -140,7 +142,7 @@ if [ -d "$VUSER" ]; then
 fi
 
 # echo 'clean history' | at now > /dev/null 2>&1
-include $HOME/.bin/ini/ini.shell
+include $VINIS/ini.shell
 
 if [ -n "$(which dircolors)" ]; then
 	eval $(dircolors -b "$VGL_DATA"/dir_colors)
@@ -149,10 +151,6 @@ fi
 if shopt -q progcomp && [ -r /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
-
-[ -f "$VTMP/init" ] && include "$VTMP/init"
-
-[ -f $VTMP/.fzf.bash ] && include $VTMP/.fzf.bash
 
 stty -ixon
 

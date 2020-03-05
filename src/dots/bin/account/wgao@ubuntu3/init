@@ -6,12 +6,12 @@ else
     include $VINIS/ini.ingenic
 
     ### ARM
-    add_path "$VTMP/tools/toolchain/gcc-arm-none-eabi-7-2018-q2-update/bin"
+    add_path "$VTOOLS/toolchain/gcc-arm-none-eabi-7-2018-q2-update/bin"
 
     # GO
-    add_path "$VTMP/tools/go/bin"
-    export GOROOT="$VTMP/tools/go"
-    export GOPATH="$VTMP/tools/godir"
+    add_path "$VTOOLS/go/bin"
+    export GOROOT="$VTOOLS/go"
+    export GOPATH="$VTOOLS/godir"
 
     ### JDK
     # JAVA_1="java-1.7.0-openjdk-amd64"
@@ -22,7 +22,7 @@ else
 
     if [ -n "$JAVA_1" ]; then
 	clean_ev JAVA_HOME
-	add_ev JAVA_HOME "$VTMP/tools/jvm/$JAVA_1"
+	add_ev JAVA_HOME "$VTOOLS/jvm/$JAVA_1"
 	add_ev JRE_HOME "${JAVA_HOME}/jre"
 	add_ev CLASSPATH ".:${JAVA_HOME}/lib:${JRE_HOME}/lib"
 	add_path "${JAVA_HOME}/bin"
@@ -31,7 +31,7 @@ else
 
     ### MISC
     # alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
-    # alias wiz='nohup $VTMP/tools/wiz > /dev/null &'
+    # alias wiz='nohup $VTOOLS/wiz > /dev/null &'
     # alias vh='nohup vhelper > /dev/null &'
     # export VGLD_CRACK_DIR="$HOME/v/bbb"
 
@@ -40,10 +40,10 @@ else
     # export LD_RUN_PATH="$HOME/.local/lib"
     # export LD_LIBRARY_PATH="$HOME/.local/lib"
 
-    # add_path "$VTMP/tools/Qt5.7.0/5.7/gcc_64/bin"
+    # add_path "$VTOOLS/Qt5.7.0/5.7/gcc_64/bin"
     # add_path "/data1/home/wgao/depot_tools/depot_tools"
-    # add_path "$VTMP/tools/llvm/bin"
-    add_path "$VTMP/tools/toolchain/mips-gcc520-glibc222/bin"
+    # add_path "$VTOOLS/llvm/bin"
+    add_path "$VTOOLS/toolchain/mips-gcc520-glibc222/bin"
 
     ### special
 
@@ -56,17 +56,19 @@ else
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-    __conda_setup="$('/backup/home/wgao/.local/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+    CONDA_DIR="$VTOOLS/miniconda3"
+    __conda_setup="$($CONDA_DIR'/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
     if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
+        eval "$__conda_setup"
     else
-    if [ -f "/backup/home/wgao/.local/miniconda3/etc/profile.d/conda.sh" ]; then
-    . "/backup/home/wgao/.local/miniconda3/etc/profile.d/conda.sh"
-    else
-    export PATH="/backup/home/wgao/.local/miniconda3/bin:$PATH"
-    fi
+        if [ -f "$CONDA_DIR/etc/profile.d/conda.sh" ]; then
+            . "$CONDA_DIR/etc/profile.d/conda.sh"
+        else
+            export PATH="$CONDA_DIR/bin:$PATH"
+        fi
     fi
     unset __conda_setup
+    unset CONDA_DIR
 # conda config --set auto_activate_base false
 # <<< conda initialize <<<
 

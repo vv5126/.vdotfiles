@@ -3,7 +3,7 @@
 include misc list vconf
 
 if [ $# -eq 0 ]; then
-	vconf -m "show-column" -c "dest" "$VGL_DATA/vcp.vconf" | showlist
+	vconf -m "show-column" -c "name" "$VGL_DATA/vcp.vconf" | sed -n '/^xxx$/!p;' | showlist
 	exit
 fi
 

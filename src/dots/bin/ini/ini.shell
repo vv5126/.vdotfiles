@@ -30,4 +30,20 @@ if [ -n "$(type ag)" ]; then
     # alias ag='ag --hidden --ignore tags -p $HOME/.v/.agignore'
 fi
 
+FZF_DIR="$VTOOLS/fzf"
 
+if [ -d $FZF_DIR ]; then
+    # Setup fzf
+    # ---------
+    if [[ ! "$PATH" == *$FZF_DIR/bin* ]]; then
+        export PATH="$PATH:$FZF_DIR/bin"
+    fi
+
+    # Auto-completion
+    # ---------------
+    # [[ $- == *i* ]] && source "$FZF_DIR/shell/completion.bash" 2> /dev/null
+
+    # Key bindings
+    # ------------
+    source "$FZF_DIR/shell/key-bindings.bash"
+fi

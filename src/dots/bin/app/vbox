@@ -2,7 +2,7 @@
 # 集成终端下指令
 
 function canup() {
-    (cd $HOME/.vdotfiles
+    (cd $VDOT
     [ x"$(git log --oneline -1 remotes/origin/master | awk '{print $1}')" != x"$(git log --oneline -1 | awk '{print $1}')" ] && echo can! || echo bad!)
 }
 

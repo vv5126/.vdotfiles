@@ -16,10 +16,10 @@ win57         user@192.168.4.150:~/mnt/57
 安晨阳本地    user@192.168.2.219:~
 安晨阳3.3     cyan@192.168.3.3:~
 郭富海3.3     fhguo@192.168.3.3:~
-xxx           user@192.168.2.213:~
 pyzhang_bj    pyzhang_bj@192.168.4.2:~
-xxx           user@192.168.4.204:~
-xxx           user@192.168.4.219:~
 fpga          fpga@192.168.4.13:~/user/wgao
 wicom         wicom@192.168.3.3:/backup/home/wicom/work/tmp
-xxx           julyedu_554839@139.196.78.189:~
+julyedu       julyedu_554839@139.196.78.189:~
+xxx           user@192.168.2.213:~
+xxx           user@192.168.4.204:~
+xxx           user@192.168.4.219:~

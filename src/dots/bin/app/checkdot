@@ -8,9 +8,9 @@ dot_templat=(
 .profile
 .local
 
-.vdotfiles
 .vim
 .vimrc
+.config
 -----------------------------
 # 确定忽略 #
 .ssh
@@ -19,10 +19,10 @@ dot_templat=(
 .Xauthority
 .Trash-1000
 .nfs_disk
-.nano
 .selected_editor
 -----------------------------
 # 不关心 #
+.nano
 .compiz
 .ICAClient
 .repopickle_.gitconfig
@@ -37,6 +37,8 @@ dot_templat=(
 -----------------------------
 # 其他 #
 .cloner
+# .conda
+# .condarc
 # .bash_logout
 # .emacs.d
 # .xsession
@@ -67,7 +69,7 @@ dot_templat=(
 # .zcompdump
 # .gvfs
 # .gstreamer-0.10
-# .config.bak
+# .config
 # .desktop
 # .origin
 # .thumbnails

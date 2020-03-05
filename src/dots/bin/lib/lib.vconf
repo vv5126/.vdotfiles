@@ -203,14 +203,30 @@ function vconf() { # 要求：名字必须.vconf结尾，第一行为magic code�
     case "$vconf_mode" in
         'add')
             if [ "$(is_num $vconf_row)" == 1 ]; then
-                sed "$vconf_row"'a'"$vconf_addline" -i $vconf_file
+                vconf_num=1 tmp=0
+                while read vconf_line; do
+                    [ "${vconf_line:0:1}" != '#' ] && ((tmp+=1))
+                    [ "$tmp" == "$vconf_row" ] && break
+                    ((vconf_num+=1))
+                done < $vconf_file
+
+                sed "$vconf_num"'a'"$vconf_addline" -i $vconf_file
             else
                 sed '$a'"$vconf_addline" -i $vconf_file
             fi
             ;;
         'del')
-            # sed "$(($vconf_delline+1))"'s/^/# /' $tmp_file > $vconf_file # 注释
-            # sed "$(($vconf_delline+1))"'d;' $tmp_file > $vconf_file # 删除
+            if [ "$(is_num $vconf_row)" == 1 ]; then
+                vconf_num=1 tmp=0
+                while read vconf_line; do
+                    [ "${vconf_line:0:1}" != '#' ] && ((tmp+=1))
+                    [ "$tmp" == "$vconf_row" ] && break
+                    ((vconf_num+=1))
+                done < $vconf_file
+                sed "$(($vconf_num))"'s/^/# /' -i $vconf_file # 注释
+                # sed "$(($vconf_delline+1))"'d;' -i $vconf_file # 删除
+                # eval sed "$(($num-1))"'a'\"$var_str\" -i $file
+            fi
             ;;
         'show-column')
             echo "$(cat $tmp_file | sed -n 1'!p;' | awk "{print \$$vconf_col}")"
