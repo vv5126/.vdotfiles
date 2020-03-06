@@ -87,7 +87,7 @@ export FONTCONFIG_FILE="$XDG_CONFIG_HOME/fontconfig/fonts.conf"
 # export LC_ALL=en_US.UTF-8
 # export LANG=en_US.utf8
 # export LANG=zh_CN.UTF-8
-# export TMUX_PLUGIN="$HOME/.vdotfiles/src/plugins/tmux-plugin"
+# export TMUX_PLUGIN="$VDOT/plugins/tmux-plugin"
 export CD_COUNT="0"
 fi
 

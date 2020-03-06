@@ -39,8 +39,8 @@ export VGLD_MKDATA=$VGL_DATA/mk
 export VGL_ASD_FILE="$WORK_SERVER_SSH":"$VGL_DATA"/.asd
 
 # [[ "$VHOSTID" != "$VMAINID" ]] && {
-#     alias vsync1='rsync -rul $WORK_SERVER_SSH:~/.vdotfiles ~'
-#     alias vsync2='rsync -rl --exclude=bundle $WORK_SERVER_SSH:~/.vdotfiles ~'
+#     alias vsync1='rsync -rul $WORK_SERVER_SSH:$VDOT ~'
+#     alias vsync2='rsync -rl --exclude=bundle $WORK_SERVER_SSH:$VDOT ~'
 # }
 
 complete -W "*.c rdy cfg tag tagup bak -h ycm_conf" mk

@@ -5,7 +5,7 @@ export ZSH=$HOME/.vim/bundle/oh-my-zsh
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 
-[ ! -f "$ZSH/themes/w.zsh-theme" ] && (ln -sf "$HOME/.vdotfiles/src/plugins/zsh-plugin/w.zsh-theme" "$ZSH/themes/w.zsh-theme")
+[ ! -f "$ZSH/themes/w.zsh-theme" ] && (ln -sf "$VDOT/plugins/zsh-plugin/w.zsh-theme" "$ZSH/themes/w.zsh-theme")
 ZSH_THEME="w"
 
 # Uncomment the following line to use case-sensitive completion.

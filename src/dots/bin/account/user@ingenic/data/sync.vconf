@@ -1,5 +1,5 @@
 # name     param exclude                   src                           dst
 hw_pcb     av    "$VUSER_DATA/hw_pcb.sync" /tmp/mnt/hw/                  /home/user/local_debug/pcb
 hw_pdf     av    "$VUSER_DATA/hw_pdf.sync" /tmp/mnt/hw/                  /home/user/local_debug/pdf/hw
-vdotfiles  ur    *                         $WORK_SERVER_SSH:"\$HOME/.vdotfiles" $HOME
-vdotfiles1 r     bundle                    $WORK_SERVER_SSH:"\$HOME/.vdotfiles" $HOME
+vdot       ur    *                         $WORK_SERVER_SSH:"\$VDOT" $HOME
+vdot       r     bundle                    $WORK_SERVER_SSH:"\$VDOT" $HOME

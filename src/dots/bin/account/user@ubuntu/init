@@ -12,7 +12,7 @@ else
     export -f win2unix
 
     ## vdot update
-    alias vdiff='vgitdiff ~/.vdotfiles'
+    alias vdiff='vgitdiff $VDOT'
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
     export -f canup
 fi

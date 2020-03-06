@@ -13,7 +13,7 @@ DIR_LIB="$DIR_VHELPER/lib"
 
 tasklist=""
 
-source $HOME/.vdotfiles/src/dots/bin/lib/lib.trigger
+source $VDOT/dots/bin/lib/lib.trigger
 
 function tasklist_reset() {
     tasklist="$(ls $TASKDIR | grep -v '\/$ -')"
