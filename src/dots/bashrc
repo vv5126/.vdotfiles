@@ -72,7 +72,7 @@ export LESSHISTFILE=$VTMP/.lesshst
 
 # Where user-specific configurations should be written (analogous to /etc).
 # Should default to $HOME/.config.
-# export XDG_CONFIG_HOME=$VTMP/config
+# export XDG_CONFIG_HOME=$HOME/.local/config
 
 # Where user-specific non-essential (cached) data should be written (analogous to /var/cache).
 # Should default to $HOME/.cache.
