@@ -1,17 +1,41 @@
 #################################################
-1. 基础
-2. 远程库
-3. 技巧
-补丁
+从无到有
+1. 从零创建版本库 create git repo form zero
+2. 获得已存在的版本库
 
-### 基础
-* 创建
+管理
+3. 分支 提交 原理
+查询工具
+
+修改
+4. 版本控制
+
+技巧
+4. 技巧
+2. 远程库
+3. 补丁
+
+========================================================================================
+从零创建版本库 *create-git-repo-form-zero*
+
+
 git init
-     在本地新建一个repo,进入一个项目目录,执行git init,会初始化一个repo,并在当前文件夹下创建一个.git文件夹.
+     在本地新建一个库,进入一个项目目录,执行git init,会初始化一个库,并在当前文件夹下创建一个.git文件夹.
+git init --bare
+     裸库,主要用来共享，作为公共库源头。
+
+
+========================================================================================
+获得已存在的版本库
+|get-repo-from-exsited|
+
 
 git clone <some repository>
      获取一个url对应的远程Git repo, 创建一个local copy.
      一般的格式是git clone [url]. clone下来的repo会以url最后一个斜线后面的名称命名,创建一个文件夹,如果想要指定特定的名称,可以git clone [url] newname指定.
+git clone git_仓库_url ：获取全部branch内容，整体下载时间较长 & 所占磁盘空间较大
+
+有三种协议：哑协议,https,ssh.
 
 git clone --bare /var/www/html/myrepo.git
     复制代码仓库
@@ -19,6 +43,14 @@ git clone --bare /var/www/html/myrepo.git
  git clone --depth 200 <some repository>
     克隆远程版本库，但只下载其中最近200个提交的历史记录
 
+git clone -b git_分支名称 git_仓库_url ：根上述 1. 结果一致
+git clone -b git_分支名称 --single--branch git_仓库_url ：获取指定分支的代码
+git clone --depth 10 git_仓库_url ：只会获取最近 xx（10条提交记录的）代码，默认是master分支， 如果想要指定分支，可以结合 -b --single--branch 使用！
+
+========================================================================================
+管理
+
+|general-config|
 * 配置文件：.gitconfig
 git config --global color.ui true
     让Git显示颜色，会让命令输出看起来更醒目：
@@ -26,18 +58,30 @@ git config --global color.ui true
 git config --global color.ui "auto"
     在命令行中使用不同颜色显示不同内容
 
+git config --global alias.xx ’!xxx' ：‘’内为以！开头可以是调用外部命令
+
+git config --list : 查看配置
+
+配置别名 [alias]项
+以后st就表示status：co表示checkout，ci表示commit，br表示branch：
+常用alias:
 git config --global alias.st status
 git config --global alias.co checkout
 git config --global alias.ci commit
 git config --global alias.br branch
 git config --global alias.unstage 'reset HEAD'
-    配置别名 [alias]项
-    以后st就表示status：co表示checkout，ci表示commit，br表示branch：
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.br branch
+git config --global alias.unstage 'reset HEAD'
+git config --global alias.last 'log -1'
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
     加上--global是针对当前用户起作用的，不加只针对当前的仓库起作用。每个仓库的Git配置文件都放在.git/config文件中。
 
+配置全局用户名和电子邮件地址
 git config --global user.name "Your Name"
 git config --global user.email "email@example.com"
-    配置全局用户名和电子邮件地址
 
 为特定的版本库配置用户名和电子邮件地址
 注意：你可以为每个版本库单独设置用户名和邮件地址。这使得用户可在不同项目中使用不同的用户名和/或不同的邮件地址。
@@ -48,6 +92,114 @@ git config user.email "email@example.com"
 设置一些默认的全局变量，对所有工程代码有效
 git config --global push.default tracking     这样后续git push 后面不用带参数
 
+git status 工作区状态
+git status
+     查询repo的状态.
+     git status -s: -s表示short, -s的输出标记会有两列,第一列是对staging区域而言,第二列是对working目录而言.
+git status                   查看仓库修改状态
+
+
+历史
+History
+
+git log --stat 显示每次提交修改的文件
+git log -p      显示每次提交间的diff
+git log 命令显示从最近到最远的提交日志
+git log -1 只显示最近一个提交
+git log -20 -p 显示最近的20个提交，以及版本间的内容差异
+git log --oneline --number: 每条log只显示一行,显示number条.
+git log --oneline --graph:可以图形化地表示出分支合并历史.
+git log branchname可以显示特定分支的log.
+git log --oneline branch1 ^branch2,可以查看在分支1,却不在分支2中的提交.^表示排除这个分支(Window下可能要给^branch2加上引号).
+git log --decorate会显示出tag信息.
+git log --author=[author name] 可以指定作者的提交历史.
+git log --since --before --until --after 根据提交时间筛选log.
+git log --since="6 hours" 显示最近6小时的提交
+git log --before="2 days" 显示两天之前的提交
+--no-merges可以将merge的commits排除在外.
+git log --grep 根据commit信息过滤log: git log --grep=keywords
+默认情况下, git log --grep --author是OR的关系,即满足一条即被返回,如果你想让它们是AND的关系,可以加上--all-match的option.
+git log -S: filter by introduced diff.
+比如: git log -SmethodName (注意S和后面的词之间没有等号分隔).
+git log -p: show patch introduced at each commit.
+每一个提交都是一个快照(snapshot),Git会把每次提交的diff计算出来,作为一个patch显示给你看.
+另一种方法是git show [SHA].
+git log --stat: show diffstat of changes introduced at each commit.
+同样是用来看改动的相对信息的,--stat比-p的输出更简单一些.
+
+显示比HEAD（当前检出分支的末梢）早3个提交的那个提交
+git log -1 HEAD^
+或者……
+git log -1 HEAD^^
+或者……
+git log -1 HEAD^^^
+
+显示两个版本之间的提交
+下面命令中的<start point>和<end point>可以是一个提交名称、分支名称、标签名称，或者它们的混合。
+git log <start point>...<end point>
+
+git log --pretty=oneline 显示历史，每个提交显示一行，包括提交注释的第一行
+git log --stat 显示改动行数统计
+git log --name-status 显示改动文件的名称和状态
+
+git log -C -C -p -1 <some point> 显示历史时，显示复制和粘贴信息
+git log --graph命令可以看到分支合并图。
+
+git blame       每次修改的详细信息
+git blame <some file> 显示文件中各个部分的修改者及相关提交信息
+git blame -M <some file> 显示文件中各个部分的修改者及相关提交信息，包括在该文件中复制、粘贴和移动内容等方面的情况。
+git blame -C -C <some file> 显示文件中各部分的修改者及相关提交信息，包括在文件间移动内容方面的情况
+
+
+
+
+
+
+git diff
+git diff 可以查看修改内容
+     不加参数的git diff:
+     show diff of unstaged changes.
+     此命令比较的是工作目录中当前文件和暂存区域快照之间的差异,也就是修改之后还没有暂存起来的变化内容.
+
+     若要看已经暂存起来的文件和上次提交时的快照之间的差异,可以用:
+     git diff --cached 命令.
+     show diff of staged changes.
+     (Git 1.6.1 及更高版本还允许使用 git diff --staged，效果是相同的).
+
+     git diff HEAD
+     show diff of all staged or unstated changes.
+     也即比较woking directory和上次提交之间所有的改动.
+
+     如果想看自从某个版本之后都改动了什么,可以用:
+     git diff [version tag]
+     跟log命令一样,diff也可以加上--stat参数来简化输出.
+
+     git diff [branchA] [branchB]可以用来比较两个分支.
+     它实际上会返回一个由A到B的patch,不是我们想要的结果.
+     一般我们想要的结果是两个分支分开以后各自的改动都是什么,是由命令:
+     git diff [branchA]…[branchB]给出的.
+     实际上它是:git diff $(git merge-base [branchA] [branchB]) [branchB]的结果.
+
+
+git diff 显示当前工作目录树和暂存区间的差别
+git diff --cached 显示暂存区和版本库间的差别
+git diff HEAD 显示工作目录树和版本库间的差别
+显示工作目录树与版本库中某次提交版本之间的差别
+<start point>可以是一个提交名称、分支名称或标签名称。
+git diff <start point>
+git diff <start point> <end point> 显示版本库中两个版本之间的差别
+git diff --stat <start point> [<end point>] 显示差别的相关统计
+
+git reflog
+     git reflog用来记录你的每一次命令
+     git reflog是对reflog进行管理的命令,reflog是git用来记录引用变化的一种机制,比如记录分支的变化或者是HEAD引用的变化.
+     当git reflog不指定引用的时候,默认列出HEAD的reflog.
+     HEAD@{0}代表HEAD当前的值,HEAD@{3}代表HEAD在3次变化之前的值.
+     git会将变化记录到HEAD对应的reflog文件中,其路径为.git/logs/HEAD, 分支的reflog文件都放在.git/logs/refs目录下的子目录中.
+
+
+========================================================================================
+4. 版本控制
 git clean
      git clean是从工作目录中移除没有track的文件.
      通常的参数是git clean -df:
@@ -66,7 +218,8 @@ git stash
      git stash drop: 删除栈顶,也可指定参数删除指定的一个项目.
      git stash clear: 删除所有项目.
 
-OK END
+
+
 
 2. 添加
 暂存已有文件上的部分修改
@@ -85,6 +238,179 @@ git add -i
 
 git add -u [<some path> [<some path>]]
     暂存已纳入Git版本控制之下的文件的修改
+
+========================================================================================
+远程库
+
+
+
+
+
+========================================================================================
+========================================================================================
+========================================================================================
+========================================================================================
+技巧
+
+10 个很有用的高级 Git 命令
+1. 输出最后一次提交的改变
+这个命令，我经常使用它 来发送其他没有使用git的人来检查或者集成所修改的。它会输出最近提交的修改内容到一个zip文件中。
+git archive -o ../updated.zip HEAD $(git diff --name-only HEAD^)
+
+2. 输出两个提交间的改变
+
+类似的，如果你需要输出某两个提交间的改变时，你可以使用这个。
+git archive -o ../latest.zip NEW_COMMIT_ID_HERE $(git diff--name-only OLD_COMMIT_ID_HERE NEW_COMMIT_ID_HERE)
+
+3. 克隆 指定的远程分支
+
+如果你渴望只克隆远程仓库的一个指定分支，而不是整个仓库分支，这对你帮助很大。
+git init
+git remote add -t BRANCH_NAME_HERE -f origin REMOTE_REPO_URL_PATH_HERE
+git checkout BRANCH_NAME_HERE
+
+4. 应用 从不相关的本地仓库来的补丁
+如果你需要其它一些不相关的本地仓库作为你现在仓库的补丁，这里就是通往那里的捷径。
+git --git-dir=PATH_TO_OTHER_REPOSITORY_HERE/.git format-patch -k -1 --stdout COMMIT_HASH_ID_HERE| git am -3 -k
+
+5. 检测 你的分支的改变是否为其它分支的一部分
+
+cherry命令让我们检测你的分支的改变是否出现在其它一些分支中。它通过+或者-符号来显示从当前分支与所给的分支之间的改变：是否合并了(merged)。.+ 指示没有出现在所给分支中，反之，- 就表示出现在了所给的分支中了。这里就是如何去检测：
+git cherry -v OTHER_BRANCH_NAME_HERE
+#例如: 检测master分支
+git cherry -v master
+
+6.开始一个无历史的新分支
+
+有时，你需要开始一个新分支，但是又不想把很长很长的历史记录带进来，例如，你想在公众区域（开源）放置你的代码，但是又不想别人知道它的历史记录。
+git checkout --orphan NEW_BRANCH_NAME_HERE
+
+7. 无切换分支的从其它分支Checkout文件
+
+不想切换分支，但是又想从其它分支中获得你需要的文件：
+git checkout BRANCH_NAME_HERE -- PATH_TO_FILE_IN_BRANCH_HERE
+
+8.忽略已追踪文件的变动
+
+如果您正在一个团队中工作，而且大家都在同一条branch上面工作，那么您很有可能会经常用到fetch和merge。但是有时候这样会重置您的环境配置文件，如此的话，您就得在每次merge后修改它。使用这一命令，您就能要求git忽视指定文件的变动。这样，下回你再merge的话，这个文件就不会被修改了。
+git update-index --assume-unchanged PATH_TO_FILE_HERE
+
+9.检查提交的变动是否是release的一部分
+
+name-rev命令能告诉您一个commit相对于最近一次release的位置。使用这条命令，您就可以检查您所做出的改动是否是release的一部分了。
+git name-rev --name-only COMMIT_HASH_HERE
+
+10.使用rebase推送而非merge
+
+如果您正在团队中工作并且整个团队都在同一条branch上面工作，那么您就得经常地进行fetch/merge或者pull。Git中，分支的合并以所提交的merge来记录，以此表明一条feature分支何时与主分支合并。但是在多团队成员共同工作于一条branch的情形中，常规的merge会导致log中出现多条消息，从而产生混淆。因此，您可以在pull的时候使用rebase，以此来减少无用的merge消息，从而保持历史记录的清晰。
+git pull --rebase
+
+您也可以将某条branch配置为总是使用rebase推送：
+git config branch.BRANCH_NAME_HERE.rebase true
+
+git 小技巧：
+
+Git 后悔药，覆盖最后一次修改：
+git add . git commit --amend git push origin master -f
+
+Git 放弃本地修改：
+git checkout .
+
+Git 销毁最后一次提交：
+git reset --hard HEAD^ git push -f origin HEAD^:master
+
+打包时候嵌入版本号：
+git rev-parse HEAD > version.txt
+
+在本地版本库中设置远程版本库的别名
+ git remote add <remote repository> <repository url>
+
+提交已纳入Git版本控制之下的文件的所有修改# s"
+ git commit -m "<some message>" -a;
+
+清除工作目录树中的修改
+ git checkout HEAD <some file> [<some file>]
+
+取消已暂存但尚未提交的修改的暂存标识
+ git reset HEAD <some file> [<some file>]
+
+修复上一次提交中的问题
+
+改动相关文件，并暂存……
+ git commit -m "<some message>" --amend
+
+修复上一次提交中的问题，并复用上次的提交注释
+ git commit -C HEAD --amend
+
+A.5 远程版本库
+Remote Repositories
+
+在本地版本库中设置远程版本库的别名
+ git remote add <remote repository> <repository url>
+
+从别名为“origin”的远程版本库中取来修改变化，但不合并到本地分支
+ git fetch
+
+从任意的远程版本库中取来修改变化，但不合并到本地分支
+ git fetch <remote repository>
+
+从任意的远程版本库中取来修改变化，并合并到当前检出的本地分支
+ git pull <remote repository>
+
+从别名为“origin”的远程版本库中取来修改变化，并合并到当前检出的本地分支
+ git pull
+
+在本地版本库中删除所有远程版本库中已不存在的分支
+ git remote prune <remote repository>
+
+在本地版本库中删除某个远程版本库的简称，以及该远程版本库相关的分支
+ git remote rm <remote repository>
+
+
+
+========================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 * 合并
 * 回退
@@ -105,8 +431,6 @@ git add -u [<some path> [<some path>]]
 
 在远程版本库中删除分支
  git push <remote repository> :<remote branch>
-
-分析
 
 分支
 Branches
@@ -208,64 +532,6 @@ git checkout -- .或者git checkout .
 git merge dev
 当Git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。
 
-
-#################################################
-历史
-History
-
-git log --stat 显示每次提交修改的文件
-git log -p      显示每次提交间的diff
-git log 命令显示从最近到最远的提交日志
-git log -1 只显示最近一个提交
-git log -20 -p 显示最近的20个提交，以及版本间的内容差异
-git log --oneline --number: 每条log只显示一行,显示number条.
-git log --oneline --graph:可以图形化地表示出分支合并历史.
-git log branchname可以显示特定分支的log.
-git log --oneline branch1 ^branch2,可以查看在分支1,却不在分支2中的提交.^表示排除这个分支(Window下可能要给^branch2加上引号).
-git log --decorate会显示出tag信息.
-git log --author=[author name] 可以指定作者的提交历史.
-git log --since --before --until --after 根据提交时间筛选log.
-git log --since="6 hours" 显示最近6小时的提交
-git log --before="2 days" 显示两天之前的提交
---no-merges可以将merge的commits排除在外.
-git log --grep 根据commit信息过滤log: git log --grep=keywords
-默认情况下, git log --grep --author是OR的关系,即满足一条即被返回,如果你想让它们是AND的关系,可以加上--all-match的option.
-git log -S: filter by introduced diff.
-比如: git log -SmethodName (注意S和后面的词之间没有等号分隔).
-git log -p: show patch introduced at each commit.
-每一个提交都是一个快照(snapshot),Git会把每次提交的diff计算出来,作为一个patch显示给你看.
-另一种方法是git show [SHA].
-git log --stat: show diffstat of changes introduced at each commit.
-同样是用来看改动的相对信息的,--stat比-p的输出更简单一些.
-
-显示比HEAD（当前检出分支的末梢）早3个提交的那个提交
-git log -1 HEAD^
-或者……
-git log -1 HEAD^^
-或者……
-git log -1 HEAD^^^
-
-显示两个版本之间的提交
-下面命令中的<start point>和<end point>可以是一个提交名称、分支名称、标签名称，或者它们的混合。
-git log <start point>...<end point>
-
-git log --pretty=oneline 显示历史，每个提交显示一行，包括提交注释的第一行
-git log --stat 显示改动行数统计
-git log --name-status 显示改动文件的名称和状态
-git diff 显示当前工作目录树和暂存区间的差别
-git diff --cached 显示暂存区和版本库间的差别
-git diff HEAD 显示工作目录树和版本库间的差别
-显示工作目录树与版本库中某次提交版本之间的差别
-<start point>可以是一个提交名称、分支名称或标签名称。
-git diff <start point>
-git diff <start point> <end point> 显示版本库中两个版本之间的差别
-git diff --stat <start point> [<end point>] 显示差别的相关统计
-git blame       每次修改的详细信息
-git blame <some file> 显示文件中各个部分的修改者及相关提交信息
-git blame -M <some file> 显示文件中各个部分的修改者及相关提交信息，包括在该文件中复制、粘贴和移动内容等方面的情况。
-git blame -C -C <some file> 显示文件中各部分的修改者及相关提交信息，包括在文件间移动内容方面的情况
-git log -C -C -p -1 <some point> 显示历史时，显示复制和粘贴信息
-git log --graph命令可以看到分支合并图。
 
 
 #################################################
@@ -399,38 +665,6 @@ repo forall -c git log --since="2011-04-19" --until="2011-04-21"   按条件查�
 repo status                查看工程中所有仓库的修改状态（包括文件位置）
 
 #################################################
-
-git status 工作区状态
-git status
-     查询repo的状态.
-     git status -s: -s表示short, -s的输出标记会有两列,第一列是对staging区域而言,第二列是对working目录而言.
-git status                   查看仓库修改状态
-
-git diff
-git diff 可以查看修改内容
-     不加参数的git diff:
-     show diff of unstaged changes.
-     此命令比较的是工作目录中当前文件和暂存区域快照之间的差异,也就是修改之后还没有暂存起来的变化内容.
-
-     若要看已经暂存起来的文件和上次提交时的快照之间的差异,可以用:
-     git diff --cached 命令.
-     show diff of staged changes.
-     (Git 1.6.1 及更高版本还允许使用 git diff --staged，效果是相同的).
-
-     git diff HEAD
-     show diff of all staged or unstated changes.
-     也即比较woking directory和上次提交之间所有的改动.
-
-     如果想看自从某个版本之后都改动了什么,可以用:
-     git diff [version tag]
-     跟log命令一样,diff也可以加上--stat参数来简化输出.
-
-     git diff [branchA] [branchB]可以用来比较两个分支.
-     它实际上会返回一个由A到B的patch,不是我们想要的结果.
-     一般我们想要的结果是两个分支分开以后各自的改动都是什么,是由命令:
-     git diff [branchA]…[branchB]给出的.
-     实际上它是:git diff $(git merge-base [branchA] [branchB]) [branchB]的结果.
-
 
 git commit
      提交已经被add进来的改动.
@@ -627,13 +861,6 @@ git push
      将会把当前分支merge到alias上的[branch]分支.如果分支已经存在,将会更新,如果不存在,将会添加这个分支.
      如果有多个人向同一个remote repo push代码, Git会首先在你试图push的分支上运行git log,检查它的历史中是否能看到server上的branch现在的tip,如果本地历史中不能看到server的tip,说明本地的代码不是最新的,Git会拒绝你的push,让你先fetch,merge,之后再push,这样就保证了所有人的改动都会被考虑进来.
 
-git reflog
-     git reflog用来记录你的每一次命令
-     git reflog是对reflog进行管理的命令,reflog是git用来记录引用变化的一种机制,比如记录分支的变化或者是HEAD引用的变化.
-     当git reflog不指定引用的时候,默认列出HEAD的reflog.
-     HEAD@{0}代表HEAD当前的值,HEAD@{3}代表HEAD在3次变化之前的值.
-     git会将变化记录到HEAD对应的reflog文件中,其路径为.git/logs/HEAD, 分支的reflog文件都放在.git/logs/refs目录下的子目录中.
-
 HEAD指向的版本就是当前版本，即你当前的工作区所用的分支，因此，Git允许我们在版本的历史之间穿梭(类似于修改二级指针内容)，使用命令git reset --hard commit_id。
 穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
 要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
@@ -642,63 +869,6 @@ HEAD指向的版本就是当前版本，即你当前的工作区所用的分支�
 #################################################
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-git 小技巧：
-
-Git 后悔药，覆盖最后一次修改：
-git add . git commit --amend git push origin master -f
-
-Git 放弃本地修改：
-git checkout .
-
-Git 销毁最后一次提交：
-git reset --hard HEAD^ git push -f origin HEAD^:master
-
-打包时候嵌入版本号：
-git rev-parse HEAD > version.txt
-
-在本地版本库中设置远程版本库的别名
- git remote add <remote repository> <repository url>
-
-提交已纳入Git版本控制之下的文件的所有修改# s"
- git commit -m "<some message>" -a;
-
-清除工作目录树中的修改
- git checkout HEAD <some file> [<some file>]
-
-取消已暂存但尚未提交的修改的暂存标识
- git reset HEAD <some file> [<some file>]
-
-修复上一次提交中的问题
-
-改动相关文件，并暂存……
- git commit -m "<some message>" --amend
-
-修复上一次提交中的问题，并复用上次的提交注释
- git commit -C HEAD --amend
-
-A.5 远程版本库
-Remote Repositories
-
-在本地版本库中设置远程版本库的别名
- git remote add <remote repository> <repository url>
-
-从别名为“origin”的远程版本库中取来修改变化，但不合并到本地分支
- git fetch
-
-从任意的远程版本库中取来修改变化，但不合并到本地分支
- git fetch <remote repository>
-
-从任意的远程版本库中取来修改变化，并合并到当前检出的本地分支
- git pull <remote repository>
-
-从别名为“origin”的远程版本库中取来修改变化，并合并到当前检出的本地分支
- git pull
-
-在本地版本库中删除所有远程版本库中已不存在的分支
- git remote prune <remote repository>
-
-在本地版本库中删除某个远程版本库的简称，以及该远程版本库相关的分支
- git remote rm <remote repository>
 
 1. 服务器版本下载：
 
@@ -873,63 +1043,6 @@ git push origin v1.0git push origin --tags
 
 --------------------------------------------------------------------------------------------------------------------------------------
 
-
-10 个很有用的高级 Git 命令
-1. 输出最后一次提交的改变
-这个命令，我经常使用它 来发送其他没有使用git的人来检查或者集成所修改的。它会输出最近提交的修改内容到一个zip文件中。
-git archive -o ../updated.zip HEAD $(git diff --name-only HEAD^)
-
-2. 输出两个提交间的改变
-
-类似的，如果你需要输出某两个提交间的改变时，你可以使用这个。
-git archive -o ../latest.zip NEW_COMMIT_ID_HERE $(git diff--name-only OLD_COMMIT_ID_HERE NEW_COMMIT_ID_HERE)
-
-3. 克隆 指定的远程分支
-
-如果你渴望只克隆远程仓库的一个指定分支，而不是整个仓库分支，这对你帮助很大。
-git init
-git remote add -t BRANCH_NAME_HERE -f origin REMOTE_REPO_URL_PATH_HERE
-git checkout BRANCH_NAME_HERE
-
-4. 应用 从不相关的本地仓库来的补丁
-如果你需要其它一些不相关的本地仓库作为你现在仓库的补丁，这里就是通往那里的捷径。
-git --git-dir=PATH_TO_OTHER_REPOSITORY_HERE/.git format-patch -k -1 --stdout COMMIT_HASH_ID_HERE| git am -3 -k
-
-5. 检测 你的分支的改变是否为其它分支的一部分
-
-cherry命令让我们检测你的分支的改变是否出现在其它一些分支中。它通过+或者-符号来显示从当前分支与所给的分支之间的改变：是否合并了(merged)。.+ 指示没有出现在所给分支中，反之，- 就表示出现在了所给的分支中了。这里就是如何去检测：
-git cherry -v OTHER_BRANCH_NAME_HERE
-#例如: 检测master分支
-git cherry -v master
-
-6.开始一个无历史的新分支
-
-有时，你需要开始一个新分支，但是又不想把很长很长的历史记录带进来，例如，你想在公众区域（开源）放置你的代码，但是又不想别人知道它的历史记录。
-git checkout --orphan NEW_BRANCH_NAME_HERE
-
-7. 无切换分支的从其它分支Checkout文件
-
-不想切换分支，但是又想从其它分支中获得你需要的文件：
-git checkout BRANCH_NAME_HERE -- PATH_TO_FILE_IN_BRANCH_HERE
-
-8.忽略已追踪文件的变动
-
-如果您正在一个团队中工作，而且大家都在同一条branch上面工作，那么您很有可能会经常用到fetch和merge。但是有时候这样会重置您的环境配置文件，如此的话，您就得在每次merge后修改它。使用这一命令，您就能要求git忽视指定文件的变动。这样，下回你再merge的话，这个文件就不会被修改了。
-git update-index --assume-unchanged PATH_TO_FILE_HERE
-
-9.检查提交的变动是否是release的一部分
-
-name-rev命令能告诉您一个commit相对于最近一次release的位置。使用这条命令，您就可以检查您所做出的改动是否是release的一部分了。
-git name-rev --name-only COMMIT_HASH_HERE
-
-10.使用rebase推送而非merge
-
-如果您正在团队中工作并且整个团队都在同一条branch上面工作，那么您就得经常地进行fetch/merge或者pull。Git中，分支的合并以所提交的merge来记录，以此表明一条feature分支何时与主分支合并。但是在多团队成员共同工作于一条branch的情形中，常规的merge会导致log中出现多条消息，从而产生混淆。因此，您可以在pull的时候使用rebase，以此来减少无用的merge消息，从而保持历史记录的清晰。
-git pull --rebase
-
-您也可以将某条branch配置为总是使用rebase推送：
-git config branch.BRANCH_NAME_HERE.rebase true
-
 创建SSH Key：$ ssh-keygen -t rsa -C "youremail@example.com"
 如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。
 在服务器端，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容。
@@ -998,15 +1111,11 @@ git branch -d myfeature
 Git删除一个远程branch:
 git push origin :branchName
 
-设置git email:
-git config --global user.email "me@example.com"
-
 如果你有未提交的commit，与master同步:
 git pull --rebase origin master
 
 Git push 新的branch到远程:
 git push -u origin mynewfeature
-
 
 git name-rev --name-only $i
 git log --pretty=format:"%h" -1 $i^
@@ -1038,26 +1147,6 @@ echo git archive -o $bakdir/updated.zip HEAD $bak_files1
 你和你的小伙伴们每个人都在 dev 分支上干活，每个人都有自己的分支，时不时地往 dev 分支上合并就可以了。
 所以，团队合作的分支看起来就像这样：
 
-如何正确的使用 git clone
-
-git clone git_仓库_url ：获取全部branch内容，整体下载时间较长 & 所占磁盘空间较大
-
-git clone -b git_分支名称 git_仓库_url ：根上述 1. 结果一致
-
-git clone -b git_分支名称 --single--branch git_仓库_url ：获取指定分支的代码
-
-git clone --depth 10 git_仓库_url ：只会获取最近 xx（10条提交记录的）代码，默认是master分支， 如果想要指定分支，可以结合 -b --single--branch 使用！
-
-更新到.gitconfig
-
-git config --global alias.st status
-
-git config --global alias.co checkout
-git config --global alias.ci commit
-git config --global alias.br branch
-git config --global alias.unstage 'reset HEAD'
-git config --global alias.last 'log -1'
-git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 git log --pretty=oneline --abbrev-commit  log 简写
 
 合并某个分支上的单个commit
@@ -1123,16 +1212,11 @@ git checkout -- ：回退暂存区1次
 
 git diff --cached ：比较暂存区和库
 
-git config --list : 查看配置
-
-
 
 git push -u(--set-upstream) 库路径（或简写） 本地分支：远程分支            ：推送时关联本地分支和远程分支，下次push就按照这个了，只push就ok git push/pull 库路径（或简写） 本地分支：远程分支           : push pull的最完整写法
 
 
 git remote show 库路径
-
-git config --global alias.xx ’!xxx' ：‘’内为以！开头可以是调用外部命令
 
 git checkout --track 远程分支 == git checkout -b xxx 远程分支 ： 新建本地分支并追踪远程分支
 
@@ -1145,8 +1229,6 @@ git push tag tag名 or tags 标签推送
 git unstarge
 
 git gc
-
-git init --bare 裸库
 
 git submodule add xxx
 git clone xxx --recursive 包括submodule一起clone

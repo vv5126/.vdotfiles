@@ -1,14 +1,1 @@
 
-# vim
-src/dots/vim/bundle
-src/dots/vim/colors
-src/dots/vim/sessions
-src/dots/vim/view
-
-src/dots/vhelper/log
-src/dots/vhelper/tmp
-
-src/dots/bin/lib/ReadMe
-src/dots/bin/lib/py3/__pycache__
-src/dots/bin/data/.asd~
-src/dots/bin/user

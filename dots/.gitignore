@@ -1,0 +1,14 @@
+# vim
+vim-old/bundle
+vim-old/colors
+vim-old/sessions
+vim-old/view
+
+vhelper/log
+vhelper/tmp
+
+bin/lib/ReadMe
+bin/lib/py3/__pycache__
+bin/data/.asd~
+bin/user
+

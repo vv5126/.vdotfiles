@@ -88,6 +88,7 @@ endif
     " 查看和自动识别文件的编码格式
     Bundle 'mbbill/fencview'
     let g:fencview_autodetect=1
+    " Bundle 's3rvac/AutoFenc'
     " -------------------------------------------------
     " 支持分支的 undo
     " Bundle 'sjl/gundo.vim'
@@ -259,8 +260,23 @@ endif
     " Bundle 'Shougo/vimproc'
     " -------------------------------------------------
     " -------------------------------------------------
+    " Bundle 'haya14busa/vim-poweryank'
+    " map <Leader>y <Plug>(operator-poweryank-osc52)
     " -------------------------------------------------
     " -------------------------------------------------
+    Bundle 'Xuyuanp/nerdtree-git-plugin'
+    let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified" : "✹",
+    \ "Staged" : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed" : "➜",
+    \ "Unmerged" : "═",
+    \ "Deleted" : "✖",
+    \ "Dirty" : "✗",
+    \ "Clean" : "✔︎",
+    \ 'Ignored' : '☒',
+    \ "Unknown" : "?"
+    \ }
     " -------------------------------------------------
     " -------------------------------------------------
     " Bundle 'jeaye/color_coded'
@@ -746,6 +762,7 @@ endif
         set matchtime=0			   " 匹配括号高亮的时间（单位是十分之一秒）
         set selectmode=mouse,key
         set bufhidden=hide
+        " set bufhidden=delete
         set wildignore+=*.bak,*.o,*.e,*~,*.obj,.git,*.pyc
         set autoread                       " 设置当文件被改动时自动载入
         set completeopt=preview,longest,menuone "代码补全
@@ -781,6 +798,19 @@ endif
         let g:maplocalleader = ";"
         " let g:spf13_leader=';'
         " let g:spf13_localleader=';'
+
+        set encoding=utf-8
+        if has("multi_byte")
+            set fileencoding=utf-8
+            " set fileencoding=gb18030
+            " set fileencoding=gb2312
+            let &termencoding=&encoding
+            set fileencodings=utf-8,iso-8859-1,gbk,latin1,ucs-bom,cp936,gb18030,utf-16,big5,gb2312,chinese
+            if v:lang=~? '^\(zh\)\|\(ja\)\|\(ko\)'
+                set ambiwidth=double
+            endif
+        endif
+	" set termencoding=utf-8
     " }}}
 
     " statusline {{{
@@ -861,6 +891,7 @@ endif
         nnoremap <tab> %
         vnoremap <tab> %
 
+        nnoremap <CR> %
         " 处理折叠行的左右移动
         noremap j gj
         noremap k gk
@@ -1035,9 +1066,13 @@ endif
         " 4 使用命令：let @a="ohello th id<80>kb<80>kb<80>kbis is a a<80>kba<80>kbmaco of vim.^[" 或者参考修改宏的第三步。
         " 5 其他人用@a命令就可以使用你制作的宏了。
     " 宏 end }}}
+    let @a="A \\j"
+    let @b="A \j"
+    let @c="vee3\j"
 
 " }}}
 
+    nmap <leader>d :%s/.*expand("<cword>").*\n//g<CR> "
 " {{{
     " s: Find this C symbol 0或者s   —— 查找这个C符号
     nmap <C-\>s :call GO_GIT_DIR()<cr>:cs find s <C-R>=expand("<cword>")<CR><CR>
