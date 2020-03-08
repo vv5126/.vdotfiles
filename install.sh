@@ -18,21 +18,21 @@ generate_link() {
 
 # ======================== MAIN
 
-dotdir="$PWD/src/dots"
+dotdir="$PWD/dots"
 
 source "$dotdir/bashrc"
 
-mkdir -p $XDG_CONFIG_HOME $XDG_CACHE_HOME $XDG_DATA_HOME
+mkdir -p $XDG_DATA_HOME # $XDG_CONFIG_HOME $XDG_CACHE_HOME
 
-generate_link "$dotdir/vim"
-generate_link "$dotdir/vimrc"
+# generate_link "$dotdir/bin/data/fonts.conf" "$XDG_CONFIG_HOME/fontconfig/fonts.conf"
+# generate_link "$dotdir/bin/data/gitconfig"  "$XDG_CONFIG_HOME/git/config"
+
+# ----------------------------------
+cp "$dotdir/profile" $HOME/.profile
 generate_link "$dotdir/bashrc"
 generate_link "$dotdir/bin"
-generate_link "$dotdir/profile"
+generate_link "$dotdir/vim"
 # generate_link "$dotdir/Xmodmap"
 # generate_link "$dotdir/zshrc"
-
-generate_link "$dotdir/bin/data/fonts.conf" "$XDG_CONFIG_HOME/fontconfig/fonts.conf"
-generate_link "$dotdir/bin/data/gitconfig"  "$XDG_CONFIG_HOME/git/config"
 
 echo " done!"

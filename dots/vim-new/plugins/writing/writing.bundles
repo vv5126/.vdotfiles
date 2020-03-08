@@ -1,0 +1,34 @@
+" EverVim Writing Bundles
+" Plug 'plasticboy/vim-markdown' ", {'for': 'markdown'}
+Plug 'Rykka/riv.vim', {'for': 'rst'}
+Plug 'vimwiki/vimwiki', {'branch': 'dev'}
+Plug 'vimoutliner/vimoutliner'
+Plug 'jceb/vim-orgmode'
+Plug 'cespare/vim-toml'
+Plug 'reedes/vim-litecorrect'
+Plug 'reedes/vim-textobj-sentence'
+Plug 'reedes/vim-textobj-quote'
+Plug 'reedes/vim-wordy'
+Plug 'tyru/open-browser.vim'
+Plug 'kannokanno/previm'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'sotte/presenting.vim'
+
+" TextObj Sentence {
+    augroup textobj_sentence
+        autocmd!
+        autocmd FileType markdown call textobj#sentence#init()
+        autocmd FileType textile call textobj#sentence#init()
+        autocmd FileType text call textobj#sentence#init()
+    augroup END
+" }
+
+" TextObj Quote {
+    augroup textobj_quote
+        autocmd!
+        autocmd FileType markdown call textobj#quote#init()
+        autocmd FileType textile call textobj#quote#init()
+        autocmd FileType text call textobj#quote#init({'educate': 0})
+    augroup END
+" }

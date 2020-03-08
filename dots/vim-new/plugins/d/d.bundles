@@ -1,0 +1,5 @@
+Plug 'kiith-sa/DSnips'
+Plug 'idanarye/vim-dutyl', {'for': ['d']}
+if count(g:evervim_bundle_groups, 'deoplete')
+    Plug 'landaire/deoplete-d', { 'for': ['d'] }
+endif

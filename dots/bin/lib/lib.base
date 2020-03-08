@@ -112,6 +112,11 @@ function log() {
     done
 }
 
+function isping() {
+    local ip="$1"
+    ping "$ip"  -c 1 -w 1 -q 2>&1 1>/dev/null
+    [ $? -eq 0 ] && return 1 || return 0
+}
 
 ############# export ##############
 

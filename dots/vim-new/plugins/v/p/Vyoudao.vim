@@ -16,7 +16,7 @@ endfunction
 
 function! Vyoudao() range
     let word = GetVisualSelection()
-python << EOF
+python3 << EOF
 #-*-coding:utf-8-*- 
 import json, vim
 from urllib import request, parse

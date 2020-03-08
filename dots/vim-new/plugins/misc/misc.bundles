@@ -1,0 +1,13 @@
+" EverVim Misc Bundles
+Plug 'tpope/vim-cucumber'
+Plug 'quentindecock/vim-cucumber-align-pipes'
+Plug 'saltstack/salt-vim'
+Plug 'adelarsq/vim-hackernews'
+Plug 'itchyny/calendar.vim'
+Plug 'chrisbra/csv.vim'
+Plug 'chemzqm/wxapp.vim'
+if executable('xmake')
+    Plug 'luzhlon/xmake.vim'
+endif
+" Plug 'tpope/vim-markdown'
+Plug 'spf13/vim-preview'
