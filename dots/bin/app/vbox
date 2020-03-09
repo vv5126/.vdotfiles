@@ -39,11 +39,19 @@ function svi(){
 function ci() {
 	include list
 
-	showlist_with_input $VGL_DATA/go.vconf "dest" "copy ID to where ??" $@
-	echo dest $dest
+    if [ "$#" -eq 2 ]; then
+        if [ "$(is_num $1)" == 1 ]; then
+            showlist_with_input $VGL_DATA/vcp.vconf "name" "copy ID to where ??" $@
+        else
+            dest="$1"
+        fi
+    else
+        showlist_with_input $VGL_DATA/vcp.vconf "name" "copy ID to where ??" $@
+    fi
 
-	[ -n "$dest" ] && { ssh-copy-id $dest; return; }
-	[ -n "$1" ] && { ssh-copy-id $1; return; }
+    dest="${dest%%:*}"
+
+    [ -n "$dest" ] && { ssh-copy-id $dest; return; }
 }
 
 function asd() {
@@ -87,7 +95,7 @@ function ccd(){
 
 # find的增强版
 function find1(){
-    set +f
+    # set +f
     if [ $# -ne 0 ]; then
         STR=${1%%:*}
         FILE=${STR##*/}

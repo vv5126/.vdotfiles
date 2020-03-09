@@ -284,3 +284,8 @@ $HOME/.config/fcitx/config
 
 cmake ../ -DCMAKE_INSTALL_PREFIX={WHERE_YOU_WANT_TO_INSTALL} -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD=WebAssembly
 cmake -DCMAKE_TOOLCHAIN_FILE=./toolchain.cmake ..
+
+wget https://github.com/yakumioto/YaHei-Consolas-Hybrid-1.12/raw/master/YaHei%20Consolas%20Hybrid%201.12.ttf
+wget https://github.com/ryanoasis/nerd-fonts/raw/master/src/glyphs/Symbols-2048-em%20Nerd%20Font%20Complete.ttf
+wget https://github.com/ryanoasis/nerd-fonts/raw/master/src/glyphs/Symbols-1000-em%20Nerd%20Font%20Complete.ttf
+wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64

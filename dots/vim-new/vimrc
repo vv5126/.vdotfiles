@@ -1,54 +1,16 @@
-" Modeline and Notes {
-"   EverVim is a modern & powerful vim distribution
-"   Repo URL: https://github.com/LER0ever/EverVim
-"   Made by [LER0ever](https://github.com/LER0ever)
-"   Licensed under
-"       * Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE.md) or http://www.apache.org/licenses/LICENSE-2.0)
-" }
-
-" vim init. {{{
-function! Sync_repo(Dir, Remote, Branch, Commit)
-    if ! isdirectory(a:Dir)
-        echo a:Dir
-        call system("mkdir -p " . a:Dir)
-        call system("git clone -b " . a:Branch . ' ' . a:Remote . ' ' . a:Dir)
-    endif
-
-    call system("cd " . a:Dir . " && git reset --hard " . a:Commit)
-    " call system("cd " . a:Dir . " && git pull origin " . a:Branch)
-endfunction
-
-function! PATCH_V(Dir)
-    call system("cp -r $HOME/.vdotfiles/src/plugins/vim-plugin/v " . a:Dir . "/plugins")
-    call system("cd " . a:Dir . " && git am $HOME/.vdotfiles/src/plugins/vim-plugin/v/*.patch")
-    " git apply --check 0001-limit-log-function.patch
-endfunction
-" }}}
-
-
-" check EverVim. {{{
 let $evervim_root = $HOME. "/.vim"
-" if ! filereadable($evervim_root . "/Boot-EverVim.sh")
-"     echo "setup EverVim frist!"
-"     call system("mv " . $evervim_root . " vim-bak")
-"     call Sync_repo($evervim_root, "https://github.com/LER0ever/EverVim", "master", "d44ea81")
-"     call PATCH_V($evervim_root)
-"     echo 'Downloading Vim-Plug'
-"     call system("curl -fLo " . $evervim_root . "/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim")
-" endif
-" }}}
 
 " EverVim options {
 
     " Disable folding
     let g:evervim_disable_folding=1
-    "
 
     " EverVim Bundle Groups
-    " Bundle Group name is just folders under ~/.EverVim/plugins
-    " Below is the default config, uncomment and make your own
-    let g:evervim_bundle_groups=['general', 'v', 'bash', 'appearance', 'writing', 'programming', 'misc', 'cpp', 'snipmate']
-    " , 'python' , 'youcompleteme'
+    " Bundle Group name is just folders under ~/.vim/plugins
+    let g:evervim_bundle_groups=['general', 'bash', 'appearance', 'writing', 'programming', 'misc', 'cpp', 'snipmate']
+    " let g:evervim_bundle_groups += ['python']
+    " let g:evervim_bundle_groups += ['youcompleteme']
+    let g:evervim_bundle_groups += ['v']
 
     " Color Theme
     " Use :Colors for a list of available colorschemes

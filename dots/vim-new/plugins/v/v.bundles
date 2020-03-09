@@ -1,15 +1,15 @@
 " 显示git diff的插件
-Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter',{'commit': '297678a'}
 " -------------------------------------------------
 " vim帮助中文版
 Plug 'yianwillis/vimcdoc'
 " -------------------------------------------------
 "让Vim变成所见即所得的MarkDown文件编辑器，可以在编辑时预览最终效果。
-Plug 'iamcco/markdown-preview.vim'
-let g:mkdp_path_to_chrome = "firefox"
-" let g:mkdp_auto_start = 1
-let g:mkdp_auto_open = 1
-let g:mkdp_command_for_global = 1
+" Plug 'iamcco/markdown-preview.vim'
+" let g:mkdp_path_to_chrome = "firefox"
+" " let g:mkdp_auto_start = 1
+" let g:mkdp_auto_open = 1
+" let g:mkdp_command_for_global = 1
 " -------------------------------------------------
 " show color, like red yellow #066
 Plug 'gko/vim-coloresque'
@@ -41,8 +41,6 @@ Plug 'gregsexton/gitv'
 " 让书签可视化的插件
 Plug 'kshenoy/vim-signature'
 " -------------------------------------------------
-
-
 
 
 " Vim8 异步运行shell
@@ -137,9 +135,6 @@ let g:rbpt_loadcmd_toggle = 0
 " Plug 'TaskList.vim'
 " nnoremap <leader>v <Plug>TaskList
 " -------------------------------------------------
-" repeat 支持使用.来重复执行一些插件的命令（如speeddating, surround等)
-" Plug 'repeat.vim'
-" -------------------------------------------------
 " 可以在vim和tmux的任何组合间无缝切换
 " Plug 'christoomey/vim-tmux-navigator'
 " -------------------------------------------------
@@ -155,10 +150,10 @@ let g:rbpt_loadcmd_toggle = 0
 " Plug 'sjas/csExplorer'
 " -------------------------------------------------
 " 打开quickfix快捷键
-Plug 'Valloric/ListToggle'
-" let g:lt_location_list_toggle_map = '<leader>ff'
-let g:lt_quickfix_list_toggle_map = '<leader>qq'
-let g:lt_height = 10
+" Plug 'Valloric/ListToggle'
+" " let g:lt_location_list_toggle_map = '<leader>ff'
+" let g:lt_quickfix_list_toggle_map = '<leader>qq'
+" let g:lt_height = 10
 " -------------------------------------------------
 " Plug 'haya14busa/vim-poweryank'
 " map <Leader>y <Plug>(operator-poweryank-osc52)
@@ -234,8 +229,6 @@ set foldcolumn=1                   " 设置折叠区域的宽度
 " 语法高亮 似乎不好用
 " Plug 'plasticboy/vim-markdown'
 " let g:vim_markdown_frontmatter=1
-" -------------------------------------------------
-" Plug 'vimwiki/vimwiki'
 " -------------------------------------------------
 " 给vim增加url的识别功能,但是功能远不只是支持url,还有更多,详情见utl的帮.
 " utl.vim
@@ -334,10 +327,6 @@ let g:miniBufExplVSplit = 20
 " -------------------------------------------------
 " FavEx : Favorite file and directory explorer ,可以添加目录和文件到收藏夹，可以把经常编辑的文件添加到收藏夹来，在文件打开以后，\ff新增文件到收藏夹，\fd新增目录到收藏夹
 " Plug 'FavEx'
-" -------------------------------------------------
-" 文本同级文字选取，和文本处理 推荐：****
-" Plug 'kana/vim-textobj-indent'
-" Plug 'kana/vim-textobj-user'
 " -------------------------------------------------
 " 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
 " Plug 'navicore/vis.vim'

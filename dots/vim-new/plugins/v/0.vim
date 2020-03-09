@@ -1,7 +1,6 @@
 " design by wgao.
 
 " reset EverVim {{{
-set shell=/bin/bash
 nunmap ;
 " }}}
 
@@ -48,15 +47,11 @@ set viminfo+='1000,n$VTMP/.viminfo
 " set --- foldmethod=manual " 手动折叠
 " set --- foldmethod=marker " 依标志折叠
 " set --- foldmethod=indent " 基于缩进或语法进行代码折叠
-" set --- tabstop=8         " 设置编辑时制表符占用空格数
 " set --- shiftwidth=8      " 设置格式化时制表符占用空格数
-" set --- softtabstop=8     " 让 vim 把连续数量的空格视为一个制表符, 使得按退格键时可以一次删掉 4 个空格
-" set --- expandtab         " 用空格代替制表符
 " set noexpandtab           " 不要用空格代替制表符
 " autocmd FileType sh setlocal shiftwidth=4
 
 " --- set undofile                     " 无限undo
-set autoread                       " 设置当文件被改动时自动载入
 set bufhidden=hide
 " set --- bufhidden=delete
 " set --- shell=/bin/bash
@@ -83,11 +78,6 @@ au InsertLeave * call InsertStatuslineColor('')
 "Space to command mode.
 nnoremap <space> :
 vnoremap <space> :
-
-" GIT
-nnoremap <leader>gd :GitGutterPreviewHunk<cr>
-nnoremap <leader>ga :GitGutterStageHunk<cr>
-nmap <buffer> <Leader>hr <Plug>(GitGutterUndoHunk)
 
 " 空格键替换为换行
 " nnoremap <S-k> :s/ \+/\r/g<cr>:noh<cr>
@@ -217,8 +207,6 @@ nnoremap tm :tabmove
 " 独立的剪贴板
 " vmap <silent> <expr> p <sid>Repl()
 
-" set colorcolumn=100
-" set cursorcolumn                   "高亮显示当前列
 " set colorcolumn=37                 " 彩色显示一列，用以规范代码
 " set nocul
 " set nocuc
@@ -306,7 +294,6 @@ if gitroot != ''
 endif
 " }}}
 
-set encoding=utf-8
 if has("multi_byte")
     set fileencoding=utf-8
     " set fileencoding=gb18030
@@ -400,3 +387,5 @@ vnoremap <tab> %
 " 快速选择段中串
 map <leader>u vi"
 
+" set shell=/bin/bash
+" set encoding=utf-8

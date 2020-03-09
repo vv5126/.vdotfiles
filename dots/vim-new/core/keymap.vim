@@ -33,7 +33,7 @@ endif
 
 " TODO: edit config not working yet
 execute "noremap " . s:evervim_edit_config_mapping " :call EditEverVimConfig()<CR>"
-execute "noremap " . s:evervim_apply_config_mapping . " :source ~/.EverVim/vimrc<CR>"
+execute "noremap " . s:evervim_apply_config_mapping . " :source ~/.vim/vimrc<CR>"
 
 " Easier moving in tabs and windows
 " The lines conflict with the default digraph mapping of <C-K>

@@ -170,7 +170,7 @@ if isdirectory(expand(EverVimBundleDir("lightline.vim")))
         return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
     endfunction
 
-    let g:tagbar_status_func = 'TagbarStatusFunc'
+    " let g:tagbar_status_func = 'TagbarStatusFunc'
 
     function! TagbarStatusFunc(current, sort, fname, ...) abort
         let g:lightline.fname = a:fname

@@ -108,7 +108,7 @@ endif
     endif
     if isdirectory($HOME."/.vim/bundle/wim")
        Bundle 'wim'
-        source ~/.vim/bundle/wim/plugin/vfunc.vim
+        source ~/.vim/bundle/wim/p/vfunc.vim
     endif
     " -------------------------------------------------
     " vim帮助中文版

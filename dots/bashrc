@@ -82,7 +82,7 @@ export LESSHISTFILE=$VTMP/.lesshst
 # Should default to $HOME/.local/share.
 export XDG_DATA_HOME=$HOME/.local/share
 
-export FONTCONFIG_FILE="$XDG_CONFIG_HOME/fontconfig/fonts.conf"
+# export FONTCONFIG_FILE="$XDG_CONFIG_HOME/fontconfig/fonts.conf"
 
 # export LC_ALL=en_US.UTF-8
 # export LANG=en_US.utf8

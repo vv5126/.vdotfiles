@@ -2,15 +2,15 @@
 set nowrap                      " Do not wrap long lines
 set autoindent                  " Indent at the same level of the previous line
 set shiftwidth=4                " Use indents of 4 spaces
-set expandtab                   " Tabs are spaces, not tabs
-set tabstop=4                   " An indentation every four columns
-set softtabstop=4               " Let backspace delete indent
+set expandtab                   " Tabs are spaces, not tabs 用空格代替制表符
+set tabstop=4                   " An indentation every four columns 设置编辑时制表符占用空格数
+set softtabstop=4               " Let backspace delete indent 让 vim 把连续数量的空格视为一个制表符, 使得按退格键时可以一次删掉 4 个空格
 set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
 set splitright                  " Puts new vsplit windows to the right of the current
 set splitbelow                  " Puts new split windows to the bottom of the current
 "set matchpairs+=<:>            "  Match, to be used with %
 set pastetoggle=<F12>           "  pastetoggle (sane indentation on pastes)
-set autoread                    " Automatically reload if file is changed externally
+set autoread                    " Automatically reload if file is changed externally 设置当文件被改动时自动载入
 if OSX()
     set nofsync                 " Disable fsync under macOS, for it wont work on NTFS
 endif

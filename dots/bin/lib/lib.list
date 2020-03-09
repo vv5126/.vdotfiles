@@ -50,7 +50,11 @@ function user_select() {
     set "$2"
     echo "$@" | showlist
     NUM="$(get_input "$info")"
-    [ "$(is_num $NUM)" == 1 ] && echo "$(echo "$@" | sed -n -e 's/^[\ ]*//' -e '/^$/!p;' | sed -n $NUM'p;')"
+    if [ "$(is_num $NUM)" == 1 ]; then
+        echo "$(echo "$@" | sed -n -e 's/^[\ ]*//' -e '/^$/!p;' | sed -n $NUM'p;')"
+    else
+        echo $NUM
+    fi
 }
 
 function showlist_with_input(){

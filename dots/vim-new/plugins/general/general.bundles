@@ -5,7 +5,7 @@ endif
 Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
 Plug 'jistr/vim-nerdtree-tabs', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-speeddating'
+" Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-repeat'
 Plug 'simeji/winresizer'
 Plug 't9md/vim-choosewin'
@@ -58,8 +58,11 @@ if exists('g:evervim_smooth_scrolling')
 endif
 Plug 'tpope/vim-abolish'
 Plug 'jamessan/vim-gnupg'
+
+" 文本同级文字选取，和文本处理 推荐：****
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-indent'
+
 Plug 'gcmt/wildfire.vim'
 Plug 'ap/vim-css-color'
 " Plug 'FredKSchott/CoVim'
