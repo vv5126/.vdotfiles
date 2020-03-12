@@ -7,9 +7,11 @@ let $evervim_root = $HOME. "/.vim"
 
     " EverVim Bundle Groups
     " Bundle Group name is just folders under ~/.vim/plugins
-    let g:evervim_bundle_groups=['general', 'bash', 'appearance', 'writing', 'programming', 'misc', 'cpp', 'snipmate']
-    " let g:evervim_bundle_groups += ['python']
-    " let g:evervim_bundle_groups += ['youcompleteme']
+    let g:evervim_bundle_groups=['general', 'appearance', 'writing', 'programming', 'misc']
+    let g:evervim_bundle_groups += ['lang/bash', 'lang/cpp']
+    let g:evervim_bundle_groups += ['code_completion/youcompleteme']
+    " let g:evervim_bundle_groups += ['lang/python']
+    " let g:evervim_bundle_groups += ['code_completion/deoplete', 'code_completion/snipmate']
     let g:evervim_bundle_groups += ['v']
 
     " Color Theme

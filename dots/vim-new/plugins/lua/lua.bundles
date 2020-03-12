@@ -1,3 +1,0 @@
-" EverVim Lua Bundles
-Plug 'WolfgangMehner/lua-support'
-Plug 'leafo/moonscript-vim'

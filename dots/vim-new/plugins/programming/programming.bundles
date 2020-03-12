@@ -3,7 +3,7 @@
 if !exists('g:evervim_use_syntastic')
     Plug 'w0rp/ale'
 else
-    Plug 'vim-syntastic/syntastic'
+    " Plug 'vim-syntastic/syntastic'
 endif
 Plug 'tpope/vim-fugitive'
 Plug 'jiangmiao/auto-pairs'

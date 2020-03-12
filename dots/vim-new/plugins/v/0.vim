@@ -233,7 +233,7 @@ nnoremap <leader>mo :call SET_MOUSE()<cr>
 " nnoremap ff :1,$s///g
 
 "=====================================================
-map <leader>e :e! ~/.vimrc<cr>
+" map <leader>e :e! ~/.vimrc<cr>
 nnoremap <C-]> g]
 map <C-]> g]
 " gd 代替 *

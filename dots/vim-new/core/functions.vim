@@ -173,6 +173,14 @@ endfunction
 function! SourceConfigsIn(dir)
     let filelist = split(globpath(a:dir, '*.vim'), '\n')
     for vimconf in filelist
-        execute 'source' vimconf
+        let file_prefix = substitute(substitute(vimconf, '.*/', '', ''), '.vim$', '', '')
+        if count(g:plugs_order, file_prefix) != 0
+            \ || count(g:plugs_order, file_prefix . '.vim') != 0
+            \ || a:dir == expand($evervim_root . '/plugins/v')
+            " echo vimconf
+            execute 'source' vimconf
+        " else
+        "     echo 'unload' . vimconf
+        endif
     endfor
 endfunction

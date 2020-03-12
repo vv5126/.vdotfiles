@@ -9,7 +9,7 @@
 " }
 
 " Windows Compatible {
-    source $evervim_root/core/windows.vim
+    " source $evervim_root/core/windows.vim
 " }
 
 " Arrow Key Fix {
@@ -21,9 +21,7 @@
 " }
 
 " Use bundles config {
-    if filereadable(expand($evervim_root . "/plugins/plugins.vim"))
-        source $evervim_root/plugins/plugins.vim
-    endif
+    source $evervim_root/core/plugins.vim
 " }
 
 " General {
@@ -47,7 +45,7 @@
 " }
 "
 " Plugin Configuration {
-    source $evervim_root/plugins/plugin-config.vim
+    source $evervim_root/core/plugin-config.vim
 " }
 "
 " GUI Config {

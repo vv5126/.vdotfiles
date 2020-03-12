@@ -35,7 +35,10 @@
     endif
 
     for $bundle_group in g:evervim_bundle_groups
-        source $evervim_root/plugins/$bundle_group/$bundle_group.bundles
+        let $f = expand($evervim_root . "/plugins/" . $bundle_group . "/" . substitute($bundle_group, '.*/', '', '') . ".bundles")
+        if filereadable($f)
+            source $f
+        endif
     endfor
 
     " Use local bundles config if available {
