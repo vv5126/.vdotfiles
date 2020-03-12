@@ -1,3 +1,0 @@
-" EverVim Scala Bundles
-Plug 'derekwyatt/vim-scala'
-Plug 'derekwyatt/vim-sbt'
