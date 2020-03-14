@@ -241,6 +241,8 @@ git add -u [<some path> [<some path>]]
 
 ========================================================================================
 远程库
+版本库复制：
+
 
 
 
@@ -307,8 +309,6 @@ git pull --rebase
 
 您也可以将某条branch配置为总是使用rebase推送：
 git config branch.BRANCH_NAME_HERE.rebase true
-
-git 小技巧：
 
 Git 后悔药，覆盖最后一次修改：
 git add . git commit --amend git push origin master -f

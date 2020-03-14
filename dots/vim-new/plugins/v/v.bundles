@@ -6,10 +6,6 @@ Plug 'yianwillis/vimcdoc'
 " -------------------------------------------------
 "让Vim变成所见即所得的MarkDown文件编辑器，可以在编辑时预览最终效果。
 " Plug 'iamcco/markdown-preview.vim'
-" let g:mkdp_path_to_chrome = "firefox"
-" " let g:mkdp_auto_start = 1
-" let g:mkdp_auto_open = 1
-" let g:mkdp_command_for_global = 1
 " -------------------------------------------------
 " show color, like red yellow #066
 Plug 'gko/vim-coloresque'
@@ -22,15 +18,9 @@ Plug 'troydm/zoomwintab.vim'
 " -------------------------------------------------
 " 另一种对齐方式
 Plug 'junegunn/vim-easy-align'
-nmap ga <Plug>(EasyAlign)
-xmap ga <Plug>(EasyAlign)
 " -------------------------------------------------
 " 排版
 Plug 'rhysd/vim-clang-format'
-" let g:clang_format#code_style = "chromium"
-let g:clang_format#style_options = {
-            \ 'AllowShortIfStatementsOnASingleLine' : 'false',
-            \ "BreakBeforeBraces" : "Linux"}
 " -------------------------------------------------
 " end 自动补全
 Plug 'tpope/vim-endwise'
@@ -48,13 +38,10 @@ Plug 'kshenoy/vim-signature'
 " -------------------------------------------------
 " 查看和自动识别文件的编码格式
 Plug 'mbbill/fencview'
-let g:fencview_autodetect=1
 " Plug 's3rvac/AutoFenc'
 " -------------------------------------------------
 " 支持分支的 undo
 " Plug 'sjl/gundo.vim'
-" 调用 gundo 树
-" nnoremap <Leader>ud :GundoToggle<CR>
 " -------------------------------------------------
 "deal
 " 允许你在 Vim中按等号、冒号、表格等来对齐文本
@@ -67,14 +54,6 @@ let g:fencview_autodetect=1
 " % 正向匹配      g% 反向匹配
 " [% 定位块首     ]% 定位块尾
 " -------------------------------------------------
-" if ! isdirectory($HOME."/.vim/bundle/wim")
-"     :!ln -sf $VDOT/src/plugins/vim-plugin/wim $HOME/.vim/bundle/wim
-" endif
-" if isdirectory($HOME."/.vim/bundle/wim")
-"     Plug 'wim'
-"     source ~/.vim/bundle/wim/plugin/vfunc.vim
-" endif
-" -------------------------------------------------
 " unuseful
 " -------------------------------------------------
 " View man pages in vim. Grep for the man pages.
@@ -82,30 +61,6 @@ let g:fencview_autodetect=1
 " -------------------------------------------------
 " 为小括号加如彩虹效果，但对c貌似没啥意义...
 Plug 'kien/rainbow_parentheses.vim'
-let g:rbpt_colorpairs = [
-            \ ['brown',       'RoyalBlue3'],
-            \ ['Darkblue',    'SeaGreen3'],
-            \ ['darkgray',    'DarkOrchid3'],
-            \ ['darkgreen',   'firebrick3'],
-            \ ['darkcyan',    'RoyalBlue3'],
-            \ ['darkred',     'SeaGreen3'],
-            \ ['darkmagenta', 'DarkOrchid3'],
-            \ ['brown',       'firebrick3'],
-            \ ['gray',        'RoyalBlue3'],
-            \ ['black',       'SeaGreen3'],
-            \ ['darkmagenta', 'DarkOrchid3'],
-            \ ['Darkblue',    'firebrick3'],
-            \ ['darkgreen',   'RoyalBlue3'],
-            \ ['darkcyan',    'SeaGreen3'],
-            \ ['darkred',     'DarkOrchid3'],
-            \ ['red',         'firebrick3'],
-            \ ]
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
-" au VimEnter * RainbowParenthesesToggle
-" au Syntax * RainbowParenthesesLoadRound
-" au Syntax * RainbowParenthesesLoadSquare
-" au Syntax * RainbowParenthesesLoadBraces
 " -------------------------------------------------
 " 在vim里画图
 " Plug 'DrawIt'
@@ -177,17 +132,6 @@ let g:rbpt_loadcmd_toggle = 0
 " -------------------------------------------------
 " 由注释生成文档，并且能够快速生成函数标准注释
 Plug 'vim-scripts/DoxygenToolkit.vim'
-let g:DoxygenToolkit_authorName="wei.gao ingenic"
-let g:DoxygenToolkit_briefTag_funcName="yes"
-map <leader>da :DoxAuthor<CR>
-map <leader>df :Dox<CR>
-" map <leader>db :DoxBlock<CR>
-let g:DoxygenToolkit_licenseTag="My own license\<enter>"
-let g:DoxygenToolkit_undocTag="DOXIGEN_SKIP_BLOCK"
-let g:DoxygenToolkit_briefTag_pre = "@brief\t"
-let g:DoxygenToolkit_paramTag_pre = "@param\t"
-let g:DoxygenToolkit_returnTag = "@return\t"
-let g:DoxygenToolkit_maxFunctionProtoLines = 30
 " -------------------------------------------------
 "Plug 'cctree'             " 可以查看function的call tree
 " -------------------------------------------------
@@ -213,22 +157,12 @@ Plug 'lambdalisue/vim-foldround'
 nmap <Leader>xf <Plug>(foldround-forward)
 nmap <Leader>fb <Plug>(foldround-backward)
 
-Plug 'Konfekt/FastFold'
-nmap zuz <Plug>(FastFoldUpdate)
-let g:fastfold_savehook = 1
-let g:fastfold_fold_command_suffixes =  ['x','X','a','A','o','O','c','C']
-let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']
-
 Plug 'tmhedberg/SimpylFold'
 Plug 'tweekmonster/braceless.vim'
 
 setlocal foldlevel=1               " 设置折叠层数为
 set nofoldenable                   " 启动 vim 时关闭折叠代码
 set foldcolumn=1                   " 设置折叠区域的宽度
-" -------------------------------------------------
-" 语法高亮 似乎不好用
-" Plug 'plasticboy/vim-markdown'
-" let g:vim_markdown_frontmatter=1
 " -------------------------------------------------
 " 给vim增加url的识别功能,但是功能远不只是支持url,还有更多,详情见utl的帮.
 " utl.vim
@@ -261,36 +195,8 @@ set foldcolumn=1                   " 设置折叠区域的宽度
 " selectbuf.vim -> fuzzyfinder.vim:FuzzyFinderBuffer
 " NERDTree.vim -> fuzzyfinder.vim:FuzzyFinderFile
 " -------------------------------------------------
-" 列出当前打开的buffer,可以很容易的切换到和删除选定的buffer,必备插件之一
-" \be 全屏方式查看全部打开的文件列表
-" \bv 左右方式查看   \bs 上下方式查看
-Plug 'jlanzarotta/bufexplorer'
-let g:bufExplorerDefaultHelp=0
-let g:bufExplorerShowRelativePath=1
-let g:bufExplorerSortBy = "name"
-map <leader>o :BufExplorer<cr>
-
-Plug 'fholgado/minibufexpl.vim'
 " 切换缓冲区
-let g:miniBufExplorerAutoStart = 0
-" let g:miniBufExplBRSplit = 0
-let g:miniBufExplVSplit = 20
-" let g:miniBufExplSplitBelow=1
-
-" minibufexpl插件的一般设置
-" let g:miniBufExplMapWindowNavVim = 1
-" let g:miniBufExplMapWindowNavArrows = 1
-" let g:miniBufExplMapCTabSwitchBufs = 1
-" let g:miniBufExplModSelTarget = 1
-" let g:miniBufExplorerMoreThanOne = 1 "自动打开
-" autocmd BufRead,BufNew :call UMiniBufExplorer
-" let g:miniBufExplUseSingleClick = 1
-
-" 显示/隐藏 MiniBufExplorer 窗口
-" map <Leader>bl :MBEToggle<cr>
-" buffer 切换快捷键
-" map <C-Tab> :MBEbn<cr>
-" map <C-S-Tab> :MBEbp<cr>
+Plug 'fholgado/minibufexpl.vim'
 " -------------------------------------------------
 " Very small, clean but quick and powerful buffer manager. c.
 " qbuf

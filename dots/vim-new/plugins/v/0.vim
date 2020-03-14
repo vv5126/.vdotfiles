@@ -261,25 +261,6 @@ autocmd BufRead *.help set filetype=markdown
 "=====================================================
 " autocmd end }}}
 
-" 宏 {{{
-"宏录制相关
-" q+<register> 开始记录命令, <register> 指用户自己定义的a-z中的一个寄存器
-" q 完成记录，退出记录
-" 执行这个宏可以用命令：         @a
-" 也可以加上执行次数：           10@a 执行10次
-" 当你执行过一次@a之后，你可以用@@来重复执行@a
-" 修改宏
-" 1、找个空白行
-" 2、使用命令"ap会看到寄存器a中的命令宏像文本一样出现在这一行，然后编辑这一行。编编辑结束后回到行首。
-" 3、然后用"ay$将正确内容写到寄存器a中，最后删除这一行即可。
-" 4、当你需要向命令宏寄存器中增加内容时，可以用命令qA来向a寄存器增加内容，之后输入你想增加的内容，再使用q结束。
-" 保存和传递宏
-" 1 先建立一个宏。如上
-" 2 在任意一个文件的空白位置normal状态下，命令"ap 即可以把宏的内容显示出来。比如说我的宏是："ohello th id<80>kb<80>kb<80>kbis is a a<80>kba<80>kbmaco of vim.^["
-" 3 这段内容保存或传递。
-" 4 使用命令：let @a="ohello th id<80>kb<80>kb<80>kbis is a a<80>kba<80>kbmaco of vim.^[" 或者参考修改宏的第三步。
-" 5 其他人用@a命令就可以使用你制作的宏了。
-" 宏 end }}}
 let @a="A \\j"
 let @b="A \j"
 let @c="vee3\j"
@@ -370,11 +351,6 @@ nmap <F6> :PlugStatus<cr>
 nmap <S-F6> :PlugUpdate<cr>
 
 
-
-
-
-
-
 " maybe unused
 " 常用缩写
 " iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
@@ -389,3 +365,102 @@ map <leader>u vi"
 
 " set shell=/bin/bash
 " set encoding=utf-8
+
+if 0
+" Make it so AutoCloseTag works for xml and xhtml files as well
+au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
+nmap <Leader>ac <Plug>ToggleAutoCloseMappings
+
+if isdirectory(expand("~/.vim/bundle/vim-powerline/"))
+    " mkfontscale
+    " mkfontdir
+    " fc-cache -vf
+    " rm ~/.vim/bundle/vim-powerline/*.cache
+    " https://github.com/eugeii/consolas-powerline-vim.git
+    " https://github.com/powerline/fonts.git
+    " set guifont=PowerlineSymbols\ for\ Powerline
+    " let g:Powerline_symbols = 'fancy'
+endif
+
+if !exists('g:override_spf13_bundles') && filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+    let g:solarized_termcolors=256
+    let g:solarized_termtrans=1
+    let g:solarized_contrast="normal"
+    let g:solarized_visibility="normal"
+    color solarized             " Load a colorscheme
+endif
+
+
+" 常用缩写
+" iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+
+" 使用tab键来代替%进行匹配跳转
+nnoremap <tab> %
+vnoremap <tab> %
+
+" 比较文件
+nnoremap <leader>df :vert diffsplit 
+nnoremap <leader>dff :diffoff<cr>
+
+" i/a 技巧: di da vi va ya yi...
+" 快速选择段中串
+map <leader>u vi"
+
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+
+autocmd BufEnter * call ncm2#enable_for_buffer()
+set completeopt=noinsert,menuone,noselect
+set shortmess+=c
+
+inoremap <c-c> <ESC>
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+Plug 'ncm2/ncm2-match-highlight'
+Plug 'ncm2/ncm2-ultisnips'
+
+inoremap <silent> <expr> <CR> ((pumvisible() && empty(v:completed_item)) ?  "\<c-y>\<cr>" : (!empty(v:completed_item) ? ncm2_ultisnips#expand_or("", 'n') : "\<CR>" ))
+
+" c-j c-k for moving in snippet
+imap <expr> <c-u> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)", 'm')
+smap <c-u> <Plug>(ultisnips_expand)
+
+let g:UltiSnipsRemoveSelectModeMappings = 0
+
+Plug 'ncm2/ncm2-html-subscope'
+Plug 'ncm2/ncm2-markdown-subscope'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-jedi'
+Plug 'ncm2/ncm2-pyclang'
+Plug 'ncm2/ncm2-tern'
+Plug 'ncm2/ncm2-cssomni'
+
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
+let g:LanguageClient_serverCommands = {
+            \ 'vue': ['vls'],
+            \ 'rust': ['rls'],
+            \ }
+
+" read
+" https://github.com/autozimu/LanguageClient-neovim/pull/514#issuecomment-404463033
+" for contents of settings.json for vue-language-server
+
+let g:LanguageClient_settingsPath = $WORKSPACE_DIR . '/.vim/settings.json'
+let g:LanguageClient_completionPreferTextEdit = 1
+autocmd BufNewFile,BufRead *.vue set filetype=vue
+autocmd filetype vue LanguageClientStart
+
+" " for debugging LanguageClient-neovim
+" set noshowmode
+" inoremap <silent> <c-q> <esc>:<c-u>q!<cr>
+" let g:LanguageClient_loggingFile = '/tmp/lc.log'
+" let g:LanguageClient_loggingLevel = 'DEBUG'
+
+" the suddennly popup of diagnostics sign is kind of annoying
+let g:LanguageClient_diagnosticsSignsMax = 0
+endif

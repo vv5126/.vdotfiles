@@ -1,0 +1,151 @@
+1. substitute like ag
+2. matchstr   取字符串
+
+" 配置多语言环境
+" 以下列出了和语言编码的相关的设置：
+" 环境变量 LANG（使用的语言）；
+" 环境变量 LC_CTYPE（使用的内部编码）；
+" Vim 选项 encoding(enc)（Vim 的内部编码）；不管文件的编码如何，不管如何显示和输入， Vim 内部使用的编码是 UTF-8；这是国际化支持的基础。
+" Vim 选项 termencoding(tenc)（Vim 在与屏幕/键盘交互时使用的编码）；
+" Vim 选项 fileencoding(fenc)（Vim 当前编辑的文件在存储时的编码）；
+" Vim 选项 fileencodings(fencs)（Vim 打开文件时的尝试使用的编码）；
+" Vim 选项 ambiwidth（对“不明宽度”字符的处理方式；Vim 6.1.455 后引入）。
+
+" let 变量名 = 数值
+" g: 全局变量（在函数中访问全局变量必须使用该前缀，不加前缀的话则认为是函数内的局部变量）；
+" s: 变量名只在当前脚本中有效；
+
+"常用知识
+" :noremap 普通，可视和操作符等待模式
+" :vnoremap 可视模式
+" :nnoremap 普通模式
+" :onoremap 操作符等待模式
+" :noremap! 插入和命令行模式
+" :inoremap 插入模式
+" :cnoremap 命令行模式
+" :h option-list "查看set项
+"
+" 参考
+highlight WhitespaceEOL ctermbg=red guibg=red
+match WhitespaceEOL /\s\+$/
+" bufname("")
+" let l:pattern = escape(@", '/.*$^~[]')
+nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+function AddTitle()
+	call append(0,"/*=============================================================================")
+	normal m'
+	execute '/# *Last modified:/s@:.*$@\=strftime(":\t%Y-%m-%d %H:%M")@'
+	normal ''
+	normal mk
+	execute '/# *Filename:/s@:.*$@\=":\t\t".expand("%:t")@'
+	execute "noh"
+	normal 'k
+	echohl WarningMsg | echo "Successful in updating the copy right." | echohl None
+	let n=1
+	while n < 10
+		let line = getline(n)
+		if line =~ '^\#\s*\S*Last\smodified:\S*.*$'
+			call UpdateTitle()
+			return
+		endif
+		let n = n + 1
+	endwhile
+	call AddTitle()
+    let c = inputlist(['select one:',"1.c","2.py"])
+    echo "\n"
+    if c == 1
+        let l:dir = system("getdir_git_repo")
+        let l:dir = matchstr(l:dir, '/.*')
+    elseif c == 2
+        echon c
+    endif
+endfunction
+" -------------------------------------------------
+if 0    " NerdTree的设置
+        " o 打开关闭文件或者目录         t 在标签页中打开
+        " T 在后台标签页中打开           ! 执行此文件
+        " p 到上层目录                   P 到根目录
+        " K 到第一个节点                 J 到最后一个节点
+        " u 打开上层目录                 m 显示文件系统菜单（添加、删除、移动操作）
+        " r 递归刷新当前目录             R 递归刷新当前根目录
+endif
+
+# apt-get install libncurses5-dev libgnome2-dev \
+#     libgnomeui-dev libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
+#     libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
+#     python3-dev ruby-dev lua5.1 lua5.1-dev liblua5.1-dev libperl-dev git
+
+./configure --with-features=huge \
+    --enable-multibyte \
+    --enable-rubyinterp=yes \
+    --enable-python3interp=yes \
+    --with-python3-config-dir=/usr/lib/python3.5/config-3.5m-x86_64-linux-gnu \
+    --enable-pythoninterp=yes \
+    --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu \
+    --enable-perlinterp=yes \
+    --enable-luainterp=yes \
+    --enable-gui=gtk2 --enable-cscope --prefix=/backup/home/wgao/.local
+
+make distclean
+mkdir -p src/objects
+make
+
+" 宏 {{{
+"宏录制相关
+" q+<register> 开始记录命令, <register> 指用户自己定义的a-z中的一个寄存器
+" q 完成记录，退出记录
+" 执行这个宏可以用命令：         @a
+" 也可以加上执行次数：           10@a 执行10次
+" 当你执行过一次@a之后，你可以用@@来重复执行@a
+" 修改宏
+" 1、找个空白行
+" 2、使用命令"ap会看到寄存器a中的命令宏像文本一样出现在这一行，然后编辑这一行。编编辑结束后回到行首。
+" 3、然后用"ay$将正确内容写到寄存器a中，最后删除这一行即可。
+" 4、当你需要向命令宏寄存器中增加内容时，可以用命令qA来向a寄存器增加内容，之后输入你想增加的内容，再使用q结束。
+" 保存和传递宏
+" 1 先建立一个宏。如上
+" 2 在任意一个文件的空白位置normal状态下，命令"ap 即可以把宏的内容显示出来。比如说我的宏是："ohello th id<80>kb<80>kb<80>kbis is a a<80>kba<80>kbmaco of vim.^["
+" 3 这段内容保存或传递。
+" 4 使用命令：let @a="ohello th id<80>kb<80>kb<80>kbis is a a<80>kba<80>kbmaco of vim.^[" 或者参考修改宏的第三步。
+" 5 其他人用@a命令就可以使用你制作的宏了。
+" 宏 end }}}
+
+2 变量的作用域（名字空间）
+2.1 基本变量命名空间
+在VimScript中默认的作用域是全局作用域，也就是说你在一个脚本文件中定义了一个变量，在其他脚本中也可以读取和修改这个变量。在任何编程语言中，全局变量的滥用都会造成混乱，所以VimScript提供了更多的非全局作用域。
+
+s:name 脚本文件作用域，此时s:name这个变量只在当前脚本文件中有效，其他的脚本文件中如果也定义了同名的s:name也没关系，因为这两者彼此独立。这一点与C中的static关键字类似。
+b:name 缓冲区作用域，b:name只在指定的缓冲区中有效
+w:name 窗口作用域，w:name只在指定的窗口中有效
+g:name 全局作用域，函数外定义的变量的默认值
+v:name vim预定义的变量，注意预定义变量不同于vim的选项(option)变量。
+l:name 函数内部的局部变量，函数内部定义的变量的默认值
+
+注意这些作用域只针对变量名，而不能作用于函数名。
+
+
+2.2 特殊变量空间
+除了上面的各种名字空间，vim还提供了几个特殊的名字空间。
+环境变量 如果变量的名字以$开头，那么这个变量被认为是环境变量， 如
+环境变量的数据类型都是String，如果没有定义一个环境变量，使用也不会报错，默认值是空字符串。
+
+option  如果变量名以&开头，那么这个变量是一个vim内部变量。vim提供了很多可以配置的选项，也被称为vim内部变量。
+同一个名称的内部变量往往有很多副本，一个是全局的，还有buffer和window局部的，而且提供了不同的读写命令set和setlocal。
+内部变量共使用了三种数据类型：boolean，Number, String。其实VimScript并不支持boolean，而是用Number模仿而已。
+改变一个option有两种方法：一是使用set命令，如 set number， set tabstop=4； 二是给变量直接赋值，如 let &number=1, let &tabstop=4。两种方法达到的效果是一样的。不过需要注意的是：
+set命令可以使用简写形式的option名字，如set nu，而直接赋值必须使用完整的内部变量名称；
+直接赋值时要在变量名之前添加&，否则会新建一个同名变量，而不是使用vim的内部变量。如 let number=1不会修改vim的number内部变量。
+
+register 如果变量名以@开头，那么这本变量是暂存区变量，注意register在这里的含义与CPU中的寄存器没有直接关系。
+register其实就是一块内存，用来存放各种临时性的东西，比如拷贝的文本，文件的名称，最近删除的文本等等。共有9种类型的register。分别是：
+（1）无名register "" ， 在vim中register使用引号开头
+（2）以数字为名的register，"0到"9，共10个
+（3）小删除register, “-（连接符）
+（4）以字母为名的register, ”a到"z，共26个
+（5）只读register，共有4个，分别是 ", ，“。，”%，"#
+（6）表达式register，"=
+（7）选择与删除register，共3个，分别是 "*，"+以及"~
+（8）黑洞register, “_（下划线），注意与"-区别
+（9）上次查找模式register, ”/
+
+这些register中，有一些是vim自身使用的，有些则是共用户使用的。

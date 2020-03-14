@@ -27,6 +27,12 @@ if isdirectory(expand(EverVimBundleDir("vim-airline")))
     endif
 endif
 
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.space = "\ua0"
 " vim-airline {{{
 " Set configuration options for the statusline plugin vim-airline.
 " Use the powerline theme and optionally enable powerline symbols.
@@ -44,14 +50,5 @@ if isdirectory(expand("~/.vim/bundle/vim-airline-themes/"))
         let g:airline_left_sep='›'  " Slightly fancier than '>'
         let g:airline_right_sep='‹' " Slightly fancier than '<'
     endif
-endif
-
-if 1 && isdirectory(expand("~/.vim/bundle/vim-airline"))
-    let g:airline#extensions#tabline#left_sep = ' '
-    let g:airline#extensions#tabline#left_alt_sep = '|'
-    if !exists('g:airline_symbols')
-        let g:airline_symbols = {}
-    endif
-    let g:airline_symbols.space = "\ua0"
 endif
 " }}}

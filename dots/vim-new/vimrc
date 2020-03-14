@@ -12,7 +12,7 @@ let $evervim_root = $HOME. "/.vim"
     let g:evervim_bundle_groups += ['code_completion/youcompleteme']
     " let g:evervim_bundle_groups += ['lang/python']
     " let g:evervim_bundle_groups += ['code_completion/deoplete', 'code_completion/snipmate']
-    let g:evervim_bundle_groups += ['v']
+    let g:evervim_bundle_groups += ['v', 'v/plugins']
 
     " Color Theme
     " Use :Colors for a list of available colorschemes
