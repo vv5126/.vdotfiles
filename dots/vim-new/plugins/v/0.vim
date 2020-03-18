@@ -348,7 +348,7 @@ let g:maplocalleader = ";"
 " 刷新插件
 nmap <F6> :PlugStatus<cr>
 " 更新插件
-nmap <S-F6> :PlugUpdate<cr>
+nmap <S-F6> :PlugInstall<cr>
 
 
 " maybe unused
@@ -464,3 +464,7 @@ autocmd filetype vue LanguageClientStart
 " the suddennly popup of diagnostics sign is kind of annoying
 let g:LanguageClient_diagnosticsSignsMax = 0
 endif
+
+" Filetype plugins need to be enabled
+filetype plugin on
+

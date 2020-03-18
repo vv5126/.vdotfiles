@@ -11,7 +11,7 @@ Plug 'yianwillis/vimcdoc'
 Plug 'gko/vim-coloresque'
 " -------------------------------------------------
 " 同时高亮多个单词 usage
-" Plug 'vim-scripts/Mark--Karkat'
+Plug 'vim-scripts/Mark--Karkat'
 " -------------------------------------------------
 " 最大化当前panel.
 Plug 'troydm/zoomwintab.vim'

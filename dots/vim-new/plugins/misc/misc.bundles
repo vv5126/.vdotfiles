@@ -1,13 +1,165 @@
 " EverVim Misc Bundles
-Plug 'tpope/vim-cucumber'
-Plug 'quentindecock/vim-cucumber-align-pipes'
-Plug 'saltstack/salt-vim'
-Plug 'adelarsq/vim-hackernews'
 Plug 'itchyny/calendar.vim'
-Plug 'chrisbra/csv.vim'
-Plug 'chemzqm/wxapp.vim'
-if executable('xmake')
-    Plug 'luzhlon/xmake.vim'
-endif
+" Plug 'chrisbra/csv.vim'
 " Plug 'tpope/vim-markdown'
-Plug 'spf13/vim-preview'
+"
+
+" EverVim General Bundles
+" Fuzzy finder choice
+if exists('g:evervim_use_ctrlp') || WINDOWS()
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tacahiroy/ctrlp-funky'
+else
+Plug 'junegunn/fzf', { 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
+endif
+
+Plug 'rhysd/conflict-marker.vim'
+
+if NVIM()
+    Plug 'equalsraf/neovim-gui-shim'
+endif
+Plug 'jistr/vim-nerdtree-tabs', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
+Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-speeddating'
+Plug 'tpope/vim-repeat'
+Plug 'Konfekt/FastFold'
+Plug 'romainl/vim-qf'
+
+if executable('ack')
+    " Plug 'dyng/ctrlsf.vim'
+    " " vmap <C-E>a <Plug>CtrlSFVwordPath
+    " let g:ctrlsf_default_root = 'project'
+endif
+Plug 'hecal3/vim-leader-guide', {'do' : ':call DeleteLinesInFile(EverVimBundleDir(\"vim-leader-guide/autoload/leaderGuide.vim\"), \"statusline=\")'}
+if !NVIM() && !WINDOWS()
+    Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+    Plug 'Shougo/vimshell.vim'
+endif
+Plug 'vim-scripts/sessionman.vim'
+"Plug 'matchit.zip' " no longer use vim-scripts
+Plug 'tmhedberg/matchit'
+Plug 'jlanzarotta/bufexplorer'
+" Plug 'haya14busa/incsearch.vim'
+Plug 'osyo-manga/vim-over'
+Plug 'MattesGroeger/vim-bookmarks'
+Plug 'embear/vim-localvimrc'
+"Plug 'justincampbell/vim-eighties'
+" Plug 'dracula/vim' " Main theme for EverVim
+
+if !exists('g:evervim_use_indentguides')
+    Plug 'Yggdroot/indentLine'
+else
+    Plug 'nathanaelkane/vim-indent-guides'
+endif
+
+if !exists('g:evervim_no_restore_cursor')
+    Plug 'farmergreg/vim-lastplace'
+endif
+
+if exists('g:evervim_smooth_scrolling')
+    Plug 'yuttie/comfortable-motion.vim'
+endif
+" Plug 'jamessan/vim-gnupg'
+
+" 文本同级文字选取，和文本处理 推荐：****
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-indent'
+
+Plug 'gcmt/wildfire.vim'
+" Plug 'ap/vim-css-color'
+" Plug 'FredKSchott/CoVim'
+
+Plug 'bling/vim-bufferline'
+" Plug 'nathanaelkane/vim-indent-guides'
+Plug 'vim-scripts/restore_view.vim'
+Plug 'osyo-manga/vim-over'
+
+
+" EverVim Appearance Bundles
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" if exists('g:evervim_use_lightline')
+"     Plug 'itchyny/lightline.vim'
+"     Plug 'taohex/lightline-buffer'
+" else
+"     " Plug 'vim-airline/vim-airline'
+"     " Plug 'vim-airline/vim-airline-themes'
+" endif
+" Plug 'mhinz/vim-startify'
+
+" if exists('g:evervim_minimap')
+"     Plug 'severin-lemaignan/vim-minimap'
+" endif
+" Plug 'miyakogi/seiya.vim'
+" Additional Color Schemes
+" Some of them are already included in the vim-colorscheme pack
+" But just missing the airline/lightline color
+" Plug 'tomasiser/vim-code-dark'
+" Plug 'altercation/vim-colors-solarized'
+" Plug 'spf13/vim-colors'
+
+" Plug 'joshdick/onedark.vim'
+" Plug 'rakr/vim-one'
+" Plug 'morhetz/gruvbox'
+" Plug 'reedes/vim-colors-pencil'
+" Plug 'liuchengxu/space-vim-dark'
+" Plug 'sonph/onehalf', {'rtp': 'vim/'}
+" Plug 'nightsense/vimspectr'
+" Plug 'noahfrederick/vim-noctu'
+"
+"
+
+" EverVim Programming Bundles
+
+" Pick ALE by default, and fall back to syntastic
+if !exists('g:evervim_use_syntastic')
+    Plug 'w0rp/ale'
+else
+    " Plug 'vim-syntastic/syntastic'
+endif
+Plug 'tpope/vim-fugitive'
+" Plug 'sheerun/vim-polyglot' " disabled by default, conflicts
+" with many plugins
+" Plug 'mattn/webapi-vim'
+Plug 'mattn/gist-vim'
+if !exists('g:evervim_use_neoformat')
+    Plug 'Chiel92/vim-autoformat'
+else
+    Plug 'sbdchd/neoformat'
+end
+Plug 'luochen1990/rainbow'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+if executable('ag')
+    Plug 'mileszs/ack.vim'
+    let g:ackprg = 'ag --nogroup --nocolor --column --smart-case'
+elseif executable('ack-grep')
+    let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+    Plug 'mileszs/ack.vim'
+elseif executable('ack')
+    Plug 'mileszs/ack.vim'
+endif
+Plug 'tpope/vim-dispatch'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'} " needed by vim-vebugger
+Plug 'idanarye/vim-vebugger'
+Plug 'metakirby5/codi.vim'
+Plug 'sgur/vim-editorconfig'
+Plug 'ekalinin/Dockerfile.vim'
+" Pick one of the checksyntax, jslint, or syntastic
+" Plug 'scrooloose/syntastic'
+
+
+
+" EverVim Writing Bundles
+
+" Plug 'tyru/open-browser.vim'
+" Plug 'kannokanno/previm'
+" Plug 'junegunn/goyo.vim'
+" Plug 'junegunn/limelight.vim'
+" Plug 'sotte/presenting.vim'
+" Plug 'plasticboy/vim-markdown' ", {'for': 'markdown'}
+" Plug 'vimwiki/vimwiki', {'branch': 'dev'}
+" Plug 'vimoutliner/vimoutliner'
+" Plug 'cespare/vim-toml'
+" Plug 'reedes/vim-litecorrect'
+

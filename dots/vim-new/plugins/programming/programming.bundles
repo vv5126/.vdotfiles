@@ -1,50 +1,12 @@
 " EverVim Programming Bundles
-" Pick ALE by default, and fall back to syntastic
-if !exists('g:evervim_use_syntastic')
-    Plug 'w0rp/ale'
-else
-    " Plug 'vim-syntastic/syntastic'
-endif
-Plug 'tpope/vim-fugitive'
-Plug 'jiangmiao/auto-pairs'
-" Plug 'sheerun/vim-polyglot' " disabled by default, conflicts
-" with many plugins
-" Plug 'mattn/webapi-vim'
-Plug 'mattn/gist-vim'
-Plug 'scrooloose/nerdcommenter'
-if !exists('g:evervim_use_neoformat')
-    Plug 'Chiel92/vim-autoformat'
-else
-    Plug 'sbdchd/neoformat'
-end
-Plug 'chrisyip/AuthorInfo'
+
+" 一款用于快速高效注释代码的插件
+" Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-commentary'
-" Plug 'godlygeek/tabular'
-Plug 'luochen1990/rainbow'
+
+Plug 'jiangmiao/auto-pairs'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
-" Plug 'cohama/agit.vim'
-" Plug 'mhinz/vim-signify'
 if executable('ctags')
     Plug 'majutsushi/tagbar'
 endif
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
-if executable('ag')
-    Plug 'mileszs/ack.vim'
-    let g:ackprg = 'ag --nogroup --nocolor --column --smart-case'
-elseif executable('ack-grep')
-    let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-    Plug 'mileszs/ack.vim'
-elseif executable('ack')
-    Plug 'mileszs/ack.vim'
-endif
-Plug 'tpope/vim-dispatch'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'} " needed by vim-vebugger
-Plug 'idanarye/vim-vebugger'
-Plug 'metakirby5/codi.vim'
-Plug 'alpertuna/vim-header'
-Plug 'sgur/vim-editorconfig'
-Plug 'ekalinin/Dockerfile.vim'
-" Pick one of the checksyntax, jslint, or syntastic
-" Plug 'scrooloose/syntastic'
+

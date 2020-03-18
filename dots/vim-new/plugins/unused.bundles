@@ -1,0 +1,10 @@
+Plug 'kien/tabman.vim'
+Plug 'tpope/vim-abolish'
+
+Plug 'chrisyip/AuthorInfo'
+Plug 'alpertuna/vim-header'
+Plug 'godlygeek/tabular'
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
+Plug 'cohama/agit.vim'
+Plug 'mhinz/vim-signify'
+

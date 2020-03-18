@@ -1,19 +1,10 @@
 " EverVim Writing Bundles
-" Plug 'plasticboy/vim-markdown' ", {'for': 'markdown'}
 Plug 'Rykka/riv.vim', {'for': 'rst'}
-" Plug 'vimwiki/vimwiki', {'branch': 'dev'}
-Plug 'vimoutliner/vimoutliner'
 Plug 'jceb/vim-orgmode'
-Plug 'cespare/vim-toml'
-Plug 'reedes/vim-litecorrect'
+
 Plug 'reedes/vim-textobj-sentence'
 Plug 'reedes/vim-textobj-quote'
 Plug 'reedes/vim-wordy'
-Plug 'tyru/open-browser.vim'
-Plug 'kannokanno/previm'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-Plug 'sotte/presenting.vim'
 
 " TextObj Sentence {
     augroup textobj_sentence
