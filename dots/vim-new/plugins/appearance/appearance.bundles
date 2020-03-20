@@ -1,4 +1,3 @@
-" EverVim Appearance Bundles
 " Make sure we run devicons after the above
 if !TERMUX() && !exists('g:evervim_no_patched_fonts')
     Plug 'ryanoasis/vim-devicons'

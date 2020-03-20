@@ -12,6 +12,7 @@ Plug 'gko/vim-coloresque'
 " -------------------------------------------------
 " 同时高亮多个单词 usage
 Plug 'vim-scripts/Mark--Karkat'
+nmap <unique> <silent> <Leader>n <Plug>MarkSearchAnyNext
 " -------------------------------------------------
 " 最大化当前panel.
 Plug 'troydm/zoomwintab.vim'
@@ -237,5 +238,5 @@ Plug 'fholgado/minibufexpl.vim'
 " 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
 " Plug 'navicore/vis.vim'
 " -------------------------------------------------
-"
+Plug 'reedes/vim-wheel'
 " -------------------------------------------------

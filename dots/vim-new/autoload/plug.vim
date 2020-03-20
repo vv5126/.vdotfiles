@@ -671,12 +671,10 @@ function! s:infer_properties(name, repo)
 endfunction
 
 function! s:install(force, names)
-  system('echo install >> bbb')
   call s:update_impl(0, a:force, a:names)
 endfunction
 
 function! s:update(force, names)
-  system('echo update >> bbb')
   call s:update_impl(1, a:force, a:names)
 endfunction
 
@@ -1000,7 +998,6 @@ function! s:retry()
     return
   endif
   echo
-  system('echo retry >> bbb')
   call s:update_impl(s:update.pull, s:update.force,
         \ extend(copy(s:update.errors), [s:update.threads]))
 endfunction
@@ -1204,7 +1201,6 @@ function! s:update_finish()
       return
     endtry
     call s:finish(s:update.pull)
-    system('echo xxx >> bbb')
     call setline(1, 'Updated. Elapsed time: ' . split(reltimestr(reltime(s:update.start)))[0] . ' sec.')
     call s:switch_out('normal! gg')
   endif

@@ -1,4 +1,3 @@
-" EverVim General Bundles
 Plug 't9md/vim-choosewin'
 Plug 'simeji/winresizer'
 Plug 'easymotion/vim-easymotion'
