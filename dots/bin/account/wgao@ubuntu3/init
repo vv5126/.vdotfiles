@@ -50,6 +50,7 @@ else
     ## vdot update
     alias vdiff='vgitdiff $VDOT; meld git.diff.add git.diff.rm'
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
+    alias con='conda_cmd'
 
     export VGL_BOOKMARK="$VDOT/info/bookmark.html"
     complete -W "diff bak" vhtml

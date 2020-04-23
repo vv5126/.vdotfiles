@@ -35,7 +35,7 @@ Plug 'kshenoy/vim-signature'
 
 
 " Vim8 异步运行shell
-" Plug 'skywind3000/asyncrun.vim'
+Plug 'skywind3000/asyncrun.vim'
 " -------------------------------------------------
 " 查看和自动识别文件的编码格式
 Plug 'mbbill/fencview'
@@ -240,3 +240,48 @@ Plug 'fholgado/minibufexpl.vim'
 " -------------------------------------------------
 Plug 'reedes/vim-wheel'
 " -------------------------------------------------
+
+Plug 'sheerun/vim-polyglot'
+
+
+
+
+" Plug 'tenfyzhong/CompleteParameter.vim'
+
+
+
+
+
+" Language Server Client:
+" Plug 'autozimu/LanguageClient-neovim', {
+"     \ 'branch': 'next',
+"     \ 'do': 'bash install.sh',
+"     \ }
+" (Optional) Multi-entry selection UI.
+" Plug 'junegunn/fzf'
+
+" Plug 'neoclide/coc.nvim',{'branch': 'release'}
+
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/vim-lsp'
+
+" 补全框架：
+" Plug 'Shougo/deoplete.nvim'
+" ncm2
+" Plug 'prabirshrestha/asyncomplete.vim'
+
+" snippets
+" Plug 'SirVer/ultisnips'
+" Plug 'Shougo/neosnippet.vim'
+" Plug 'Shougo/deoppet.nvim'
+" Plug 'neoclide/coc-snippets'
+
+" 异步Fuzzy Finder：
+" Plug 'Shougo/denite.nvim'
+" Plug 'junegunn/fzf.vim'
+" Plug 'Yggdroot/LeaderF'
+
+
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+

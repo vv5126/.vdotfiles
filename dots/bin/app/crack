@@ -42,8 +42,8 @@ function send(){
     echo word $word
     echo "$word" >> tmp
 
-    scp tmp user@192.168.4.150:/tmp/wpa
-    ssh user@192.168.4.150 "cat /tmp/wpa > /tmp/.vpipe"
+    scp tmp user@192.168.3.75:/tmp/wpa
+    ssh user@192.168.3.75 "cat /tmp/wpa > /tmp/.vpipe"
 }
 
 for cap in $caps; do

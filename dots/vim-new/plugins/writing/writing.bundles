@@ -1,4 +1,3 @@
-" EverVim Writing Bundles
 Plug 'Rykka/riv.vim', {'for': 'rst'}
 Plug 'jceb/vim-orgmode'
 

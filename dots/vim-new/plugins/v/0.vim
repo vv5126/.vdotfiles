@@ -28,6 +28,8 @@ set selectmode=mouse,key
 set wildignore+=*.bak,*.o,*.e,*~,*.obj,.git,*.pyc
 set completeopt=preview,longest,menuone "代码补全
 
+let g:netrw_home = $VTMP
+
 " tab的设定
 set smarttab                       " 在行和段开始处使用制表符
 
@@ -405,6 +407,13 @@ nnoremap <leader>dff :diffoff<cr>
 " i/a 技巧: di da vi va ya yi...
 " 快速选择段中串
 map <leader>u vi"
+
+
+
+
+
+
+
 
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'

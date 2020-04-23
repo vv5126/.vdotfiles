@@ -20,14 +20,6 @@ let $evervim_root = $HOME. "/.vim"
     let g:evervim_airline_theme="dracula"
     let g:evervim_light_background = 1
 
-" if filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
-"     let g:evervim_color_theme="solarized"
-"     let g:solarized_termcolors=256
-"     let g:solarized_termtrans=1
-"     let g:solarized_contrast="normal"
-"     let g:solarized_visibility="normal"
-" endif
-
     " Customize Patched Font
     " Pick one at https://github.com/ryanoasis/nerd-fonts
     " By default it's "Knack Nerd Font" on Unix and "Knack NF" on Windows
@@ -156,16 +148,6 @@ let $evervim_root = $HOME. "/.vim"
     " Minimap Support
     " Shows a minimap on the right hand side, need has_python
     " let g:evervim_minimap
-
-    " Don't create default mappings for multicursors
-    " See :help multiple-cursors-mappings
-    " let g:multi_cursor_use_default_mapping=0
-    " let g:multi_cursor_next_key='<C-n>'
-    " let g:multi_cursor_prev_key='<C-p>'
-    " let g:multi_cursor_skip_key='<C-x>'
-    " let g:multi_cursor_quit_key='<Esc>'
-    " Require a special keypress to enter multiple cursors mode
-    " let g:multi_cursor_start_key='+'
 
     " Mappings for editing/applying evervim config
     " let g:evervim_edit_config_mapping='<leader>ec'
