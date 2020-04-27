@@ -289,3 +289,22 @@ wget https://github.com/yakumioto/YaHei-Consolas-Hybrid-1.12/raw/master/YaHei%20
 wget https://github.com/ryanoasis/nerd-fonts/raw/master/src/glyphs/Symbols-2048-em%20Nerd%20Font%20Complete.ttf
 wget https://github.com/ryanoasis/nerd-fonts/raw/master/src/glyphs/Symbols-1000-em%20Nerd%20Font%20Complete.ttf
 wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+
+
+### conda
+conda版本：conda --version
+激活 环境：conda activate envname
+切换回当前环境：conda deactivate
+conda create -name envname python=2.7
+列出conda创建所有的环境: conda info -envs
+更新conda：conda update conda
+删除环境：conda remove --name flowers --all
+制作环境副本：conda create --name flowers --clone snowflakes
+查看在环境中安装的第三方包：conda list
+搜索可安装的包：conda search
+安装新软件：conda install --name packagename beautifulsoup4
+也可以使用pip安装：pip install pkg
+也可以从其它页面下载安装：conda install --channel https://conda.anaconda.org/pandas bottleneck
+删除环境的第三方包：conda remove --name envname pck或者 pip uninstall pck
+删除conda：rm -rf ~/miniconda OR  rm -rf ~/anaconda
+

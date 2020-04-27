@@ -1,4 +1,3 @@
-" EverVim Python Bundles
 " Pick either python-mode or pyflakes & pydoc
 Plug 'python-mode/python-mode', {'branch': 'develop'}
 Plug 'yssource/python.vim'

@@ -1,4 +1,4 @@
-export ZSH=$HOME/.vim/bundle/oh-my-zsh
+export ZSH=$HOME/.local/tools/oh-my-zsh
 #--------------------------------------------------------------------------
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -52,6 +52,18 @@ ZSH_THEME="w"
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git)
 
+# git clone https://github.com/zsh-users/zsh-syntax-highlighting
+# git clone https://github.com/zsh-users/zsh-autosuggestions
+# git clone https://github.com/zsh-users/zsh-completions
+# git clone https://github.com/zsh-users/zsh-history-substring-search
+
+plugins=(
+    git
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    zsh-completions
+    zsh-history-substring-search
+)
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"

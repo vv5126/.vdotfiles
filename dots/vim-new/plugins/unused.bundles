@@ -8,3 +8,5 @@ Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsTog
 Plug 'cohama/agit.vim'
 Plug 'mhinz/vim-signify'
 
+Plug 'tpope/vim-speeddating'
+Plug 'vim-scripts/a.vim'

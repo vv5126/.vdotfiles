@@ -8,8 +8,8 @@ let $evervim_root = $HOME. "/.vim"
     " EverVim Bundle Groups
     " Bundle Group name is just folders under ~/.vim/plugins
     let g:evervim_bundle_groups=['general', 'appearance', 'writing', 'programming', 'misc']
-    let g:evervim_bundle_groups += ['lang/bash', 'lang/cpp']
-    let g:evervim_bundle_groups += ['code_completion/youcompleteme']
+    let g:evervim_bundle_groups += ['lang', 'lang/bash', 'lang/cpp']
+    " let g:evervim_bundle_groups += ['code_completion/youcompleteme']
     " let g:evervim_bundle_groups += ['lang/python']
     " let g:evervim_bundle_groups += ['code_completion/deoplete', 'code_completion/snipmate']
     let g:evervim_bundle_groups += ['v', 'v/plugins']
@@ -144,10 +144,6 @@ let $evervim_root = $HOME. "/.vim"
     " 80 Column Warning
     " Shows a magenta line at column 81 only for those lines that exceeds 80
     " let g:evervim_80_column_warning = 1
-
-    " Minimap Support
-    " Shows a minimap on the right hand side, need has_python
-    " let g:evervim_minimap
 
     " Mappings for editing/applying evervim config
     " let g:evervim_edit_config_mapping='<leader>ec'

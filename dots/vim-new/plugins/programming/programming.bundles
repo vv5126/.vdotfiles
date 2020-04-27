@@ -1,5 +1,3 @@
-" EverVim Programming Bundles
-
 " 一款用于快速高效注释代码的插件
 " Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-commentary'
@@ -9,4 +7,12 @@ Plug 'terryma/vim-multiple-cursors'
 if executable('ctags')
     Plug 'majutsushi/tagbar'
 endif
+
+if !exists('g:evervim_use_indentguides')
+    Plug 'Yggdroot/indentLine'
+else
+    Plug 'nathanaelkane/vim-indent-guides'
+endif
+
+Plug 'gcmt/wildfire.vim'
 
