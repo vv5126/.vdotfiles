@@ -16,3 +16,4 @@ endif
 
 Plug 'gcmt/wildfire.vim'
 
+Plug 'luochen1990/rainbow'

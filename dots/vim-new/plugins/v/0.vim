@@ -44,13 +44,13 @@ set viminfo+='1000,n$VTMP/.viminfo
 " :help digraph-table 特殊字符表
 
 " set foldclose=all         " 设置为自动关闭折叠
-" set --- foldenable        " 允许折叠
 " set --- foldmethod=syntax " 用语法高亮来定义折叠
 " set --- foldmethod=manual " 手动折叠
 " set --- foldmethod=marker " 依标志折叠
 " set --- foldmethod=indent " 基于缩进或语法进行代码折叠
 " set --- shiftwidth=8      " 设置格式化时制表符占用空格数
 " set noexpandtab           " 不要用空格代替制表符
+set expandtab
 " autocmd FileType sh setlocal shiftwidth=4
 
 " --- set undofile                     " 无限undo
@@ -364,9 +364,6 @@ vnoremap <tab> %
 " i/a 技巧: di da vi va ya yi...
 " 快速选择段中串
 map <leader>u vi"
-
-" set shell=/bin/bash
-" set encoding=utf-8
 
 if 0
 " Make it so AutoCloseTag works for xml and xhtml files as well

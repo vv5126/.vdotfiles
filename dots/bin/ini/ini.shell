@@ -10,7 +10,7 @@ alias SL='ls'
 
 alias md='mkdir'
 alias aa='chmod +x'
-alias du='du -h -d 1'
+alias du='du -h -d 1 --exclude=.nfs_disk'
 alias grep='grep --color --exclude-dir=".git"'
 alias grep='grep -a --exclude-dir=.git --exclude=cscope*'
 alias libmk='lib.misc gen_lib_info $HOME/.bin/lib'

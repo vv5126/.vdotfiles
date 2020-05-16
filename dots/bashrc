@@ -46,7 +46,7 @@ if [ "$EXP" -eq 1 ]; then
     export VACCOUNT="$VBIN/account"
     export VUSER="$VACCOUNT/$VHOSTID"
     export VGL_DATA="$VBIN/data"
-    export VUSER_DATA="$VACCOUNT/$VHOSTID/data"
+    export VUSER_DATA="$VUSER/data"
     export VBESUDO="$($VLIBS/lib.misc check_sudo)"
 fi
 

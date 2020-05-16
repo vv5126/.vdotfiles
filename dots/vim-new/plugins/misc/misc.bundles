@@ -56,7 +56,6 @@ if !exists('g:evervim_use_neoformat')
 else
     Plug 'sbdchd/neoformat'
 end
-Plug 'luochen1990/rainbow'
 " Plug 'MarcWeber/vim-addon-mw-utils'
 " Plug 'tomtom/tlib_vim'
 if executable('ag')

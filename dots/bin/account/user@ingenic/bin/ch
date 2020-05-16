@@ -2,13 +2,14 @@
 
 TITLE="Windows 登录"
 retry=10
+key="$1"
 
 val=$(xdotool search --name "$TITLE")
 if [ -z "$val" ]; then
 	(
-	cd /home/user/.bin/account/user@ingenic
-	git checkout data/chrome1
-	nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file /home/user/.bin/account/user@ingenic/data/chrome1 > /dev/null &
+	cd $VUSER_DATA
+	git checkout $key
+	nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file $VUSER_DATA/$key > /dev/null &
 	)
 
 	while true; do

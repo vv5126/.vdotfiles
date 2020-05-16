@@ -107,7 +107,9 @@
 		"mozart": "x"
 	},
 	"ip": {
-		"user@ingenic-wgao": "192.168.3.75",
+		"wgao@ubuntu3": "192.168.3.3",
+		"wgao@ubuntu35": "192.168.3.5",
+		"user@ingenic-wgao": "192.168.3.88",
 		"wgao@lqchen-0B": "192.168.4.15",
 		"fpga@lqchen-G41M-ES2L": "192.168.4.13",
 		"wicom@wicom32": "192.168.3.2",

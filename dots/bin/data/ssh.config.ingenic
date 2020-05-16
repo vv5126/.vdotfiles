@@ -1,0 +1,16 @@
+Host 192.168.1.26
+	KexAlgorithms +diffie-hellman-group1-sha1
+	StrictHostKeyChecking no
+	UserKnownHostsFile /dev/null
+	User wgao_bj
+
+Host study
+HostName 139.196.78.189
+Port 22
+User julyedu_554839
+IdentityFile ~/.ssh/id_rsa
+
+Host lotus
+HostName 39.100.249.20
+Port 22
+User wgao

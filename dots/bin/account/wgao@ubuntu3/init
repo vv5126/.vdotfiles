@@ -1,7 +1,7 @@
 
 #================================================#
 if [[ $1 == "init" ]]; then
-    > /dev/null
+	[ ! -d "$HOME/.ssh" ] && ln -sf $VUSER_DATA/ssh $HOME/.ssh
 else
     include $VINIS/ini.ingenic
 
@@ -52,7 +52,7 @@ else
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
     alias con='conda_cmd'
 
-    export VGL_BOOKMARK="$VDOT/info/bookmark.html"
+    export VGL_BOOKMARK="$VDOT/docs/bookmark.html"
     complete -W "diff bak" vhtml
 
 # >>> conda initialize >>>

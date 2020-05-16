@@ -275,6 +275,7 @@ function lnn() {
     local searchdir="$HOME/.bin"
     local target="$lnfile"
     local tmp
+    local platform="$(uname -i)"
 
     [ -z "$1" ] && return 1
 

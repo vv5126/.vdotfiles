@@ -80,9 +80,9 @@ if !ONI()
     set scrolloff=3             " Minimum lines to keep above and below cursor
 endif
 if exists('g:evervim_disable_folding')
-    set nofoldenable                " Disable Auto fold code
+    set nofoldenable                " 禁止折叠
 else
-    set foldenable                  " Auto fold code
+    set foldenable                  " 允许折叠
 endif
 
 set list

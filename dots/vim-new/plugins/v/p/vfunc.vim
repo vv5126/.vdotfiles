@@ -166,7 +166,6 @@ endfunction
         " let syntastic_loc_list_height = 5
         let g:shiftwidth=8
         let g:tabstop=8
-        " set expandtab
         " -------------------------------------------------
         " set colorcolumn=37                 " 彩色显示一列，用以规范代码
         " highlight ColorColumn ctermbg=green ctermfg=black
@@ -192,6 +191,7 @@ endfunction
         nmap  <F5> :cclose<cr>
         " -------------------------------------------------
         if g:code_project == 'kernel'
+            set noexpandtab           " 不要用空格代替制表符
             iab wgao1 <c-r>='printk("\033[33m(l:%d, f:%s, F: %s) %d %s\033[0m\n", __LINE__, __func__, __FILE__, 0, "");'<cr>
             iab wgao2 <c-r>='printk("\033[33m(l:%d, f:%s, F: %s) %d %s\033[0m\n", __LINE__, __func__, __FILE__, 0, "");'<cr>
             " iab wgao1 <c-r>='printk("\033[33m(l:%d, f:%s, F:%s, p:%d) %d %s\033[0m\n", __LINE__, __func__, __FILE__, current->pid, 0, "");'<cr>
