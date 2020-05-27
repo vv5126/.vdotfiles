@@ -292,7 +292,7 @@ function lnn() {
 
     [ -f "$lnfile"  ] && rm "$lnfile"
 
-    local d="$(find "$searchdir/" -name "$lnfile" | head -1)"
+    local d="$(find "$searchdir/" -type f -perm -111 -name "$lnfile" | head -1)"
     if [ -n "$d" ]; then
         [ -f "$target" ] && rm "$target"
         [[ $d =~ "$HOME" ]] && ln -sfr "$d" "$target" || ln -sf "$d" "$target"

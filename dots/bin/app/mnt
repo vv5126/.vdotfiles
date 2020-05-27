@@ -33,8 +33,12 @@ if [ "${title-"null"}" != "null" ]; then
             else
                 sudo mkdir -p $to_path
             fi
-	    [ "$pw" != '-' ] && ps="password=$(vdc $pw)" || ps=''
-	    echo 'user' | sudo mount -t cifs $url $to_path -o username=wgao_bj,$ps,rw,dir_mode=0777,file_mode=0777 || sudo rm -rf $to_path
+            [ "$user" != '-' ] && us="username=$user" || us=''
+            [ "$pw" != '-' ] && ps="password=$(vdc $pw)" || ps=''
+            if [ -n "$us" -o -n "$ps" ]; then
+                param="-o ${us:+$us,}${ps:+$ps,}rw,dir_mode=0777,file_mode=0777"
+            fi
+            echo 'user' | sudo mount -t cifs $url $to_path -o vers=1.0 $param || sudo rm -rf $to_path
         fi
 		;;
 	esac

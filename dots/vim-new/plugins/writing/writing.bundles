@@ -1,4 +1,4 @@
-Plug 'Rykka/riv.vim', {'for': 'rst'}
+" Plug 'Rykka/riv.vim', {'for': 'rst'}
 Plug 'jceb/vim-orgmode'
 
 Plug 'reedes/vim-textobj-sentence'

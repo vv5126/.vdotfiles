@@ -1,6 +1,9 @@
+先更新系统!
+
 aptitude
 
 openssh-server
+net-tools
 silversearcher-ag
 cifs-utils
 xdotool
@@ -10,16 +13,24 @@ git
 meld
 fcitx
 sshfs
+make
+minicom
+adb
 cmake
 libusb-1.0.0-dev
+autoconf
+xclip
+rdfind
+sshfs
 
+输入法
 sogou
 sogoupinyin_2.2.0.0108_amd64.deb
 rm fcitx-qimpanel
 配置 快捷键
 
 
-icaclient_13.5.0.10185126_amd64.deb
+icaclient
 libwebkit-1.0-2
 
 有待添加

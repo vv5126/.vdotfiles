@@ -26,4 +26,6 @@ vbox win2unix
 vbox ci
 vbox asd
 vbox g
+vbox find1
+vbox title
 vbox turnoff_screen

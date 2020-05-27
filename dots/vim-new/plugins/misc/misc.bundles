@@ -1,3 +1,5 @@
+" will move
+"
 " vim-leader-guide is a vim keymap-display loosely inspired by emacs's guide-key.
 Plug 'hecal3/vim-leader-guide', {'do' : ':call DeleteLinesInFile(EverVimBundleDir(\"vim-leader-guide/autoload/leaderGuide.vim\"), \"statusline=\")'}
 
@@ -28,9 +30,9 @@ if !NVIM() && !WINDOWS()
 endif
 " Plug 'vim-scripts/sessionman.vim'
 " Plug 'tmhedberg/matchit'
-Plug 'jlanzarotta/bufexplorer'
+" Plug 'jlanzarotta/bufexplorer'
 " Plug 'haya14busa/incsearch.vim'
-Plug 'MattesGroeger/vim-bookmarks'
+" Plug 'MattesGroeger/vim-bookmarks'
 
 " 文本同级文字选取，和文本处理 推荐：****
 Plug 'kana/vim-textobj-user'
@@ -57,7 +59,6 @@ else
     Plug 'sbdchd/neoformat'
 end
 " Plug 'MarcWeber/vim-addon-mw-utils'
-" Plug 'tomtom/tlib_vim'
 if executable('ag')
     Plug 'mileszs/ack.vim'
     let g:ackprg = 'ag --nogroup --nocolor --column --smart-case'
@@ -68,13 +69,10 @@ elseif executable('ack')
     Plug 'mileszs/ack.vim'
 endif
 
-Plug 'metakirby5/codi.vim'
-Plug 'sgur/vim-editorconfig'
-
+" Plug 'metakirby5/codi.vim'
 
 " EverVim Writing Bundles
 
-" Plug 'tyru/open-browser.vim'
 " Plug 'kannokanno/previm'
 " Plug 'junegunn/goyo.vim'
 " Plug 'junegunn/limelight.vim'

@@ -12,3 +12,5 @@ bin/lib/py3/__pycache__
 bin/data/.asd~
 bin/user
 
+known_hosts
+authorized_keys

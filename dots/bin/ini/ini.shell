@@ -1,4 +1,4 @@
-# alias #
+## alias ##
 alias ll='ls -AlFh --color'
 alias llh='ls -lh'
 alias la='ls -A'
@@ -8,20 +8,21 @@ alias sl='ls'
 alias LS='ls'
 alias SL='ls'
 
+alias mv='mv -i'
 alias md='mkdir'
 alias aa='chmod +x'
 alias du='du -h -d 1 --exclude=.nfs_disk'
 alias grep='grep --color --exclude-dir=".git"'
 alias grep='grep -a --exclude-dir=.git --exclude=cscope*'
-alias libmk='lib.misc gen_lib_info $HOME/.bin/lib'
+alias libmk='lib.misc gen_lib_info $VLIBS'
 alias rm='rm_mv=$VTMP/rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
 alias cd='quickcd'
 alias vi='svi'
 alias fd='trap "set +f" 1 2 3 15; set -f; find1'
 alias ..='vcd'
-alias ...='cd $($VLIBS/lib.base getdir .repo)'
+alias ...='cd $(lib.base getdir .repo)'
 
-alias vvsync="rsync -url 'wgao@192.168.4.15:\$VDOT' $HOME"
+alias vvsync="rsync -url 'wgao@192.168.3.3:\$VDOT' $HOME"
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 if [ -n "$(type ag)" ]; then
@@ -30,6 +31,8 @@ if [ -n "$(type ag)" ]; then
     # alias ag='ag --hidden --ignore tags -p $HOME/.v/.agignore'
 fi
 
+
+## fzf ##
 FZF_DIR="$VTOOLS/fzf"
 
 if [ -d $FZF_DIR ]; then
