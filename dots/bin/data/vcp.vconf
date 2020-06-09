@@ -1,8 +1,6 @@
 # name         dest
 我的本地      user@192.168.3.88:~/
 我的3.3       wgao@192.168.3.3:~
-我的3.5       wgao@192.168.3.5:~/
-我的4.15      wgao@192.168.4.15:~/
 win57         user@192.168.3.88:~/mnt/57
 大龙的3.3     cljiang@192.168.3.3:~
 佳康的3.3-tmp jkzhao@192.168.3.3:~/tmp
@@ -21,3 +19,5 @@ pyzhang_bj    pyzhang_bj@192.168.4.2:~
 fpga          fpga@192.168.4.13:~/user/wgao
 wicom         wicom@192.168.3.3:/backup/home/wicom/work/tmp
 julyedu       julyedu_554839@139.196.78.189:~
+我的3.5       wgao@192.168.3.5:~/
+我的4.15      wgao@192.168.4.15:~/

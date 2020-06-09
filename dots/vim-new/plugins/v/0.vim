@@ -125,20 +125,8 @@ vnoremap <silent> y y`]
 vnoremap <silent> p p`]
 nnoremap <silent> p p`]
 
-" 处理折叠行的左右移动
-noremap j gj
-noremap k gk
-
 " Switching between buffers.
-nnoremap <C-h> <C-W>h
-nnoremap <C-j> <C-W>j
-nnoremap <C-k> <C-W>k
-nnoremap <C-l> <C-W>l
 nnoremap <C-x> <c-w>\|<c-w>_
-"inoremap <C-h> <Esc><C-W>h
-"inoremap <C-j> <Esc><C-W>j
-"inoremap <C-k> <Esc><C-W>k
-"inoremap <C-l> <Esc><C-W>l
 
 " 为选中代码加括号啥的
 vnoremap 1 h<esc>`>a)<esc>`<i(<esc>
@@ -339,13 +327,8 @@ set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic white
 " }}}
 
 source $evervim_root/plugins/v/p/vfunc.vim
-source $evervim_root/plugins/v/p/Vyoudao.vim
-
-" leader
-let mapleader        = ";"
-let maplocalleader   = ";"
-let g:mapleader      = ";"
-let g:maplocalleader = ";"
+source $evervim_root/plugins/v/p/burner.vim
+source $evervim_root/plugins/v/p/youdao.vim
 
 " 刷新插件
 nmap <F6> :PlugStatus<cr>
@@ -353,10 +336,6 @@ nmap <F6> :PlugStatus<cr>
 nmap <S-F6> :PlugInstall<cr>
 
 
-" maybe unused
-" 常用缩写
-" iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
-
 " 使用tab键来代替%进行匹配跳转
 nnoremap <tab> %
 vnoremap <tab> %
@@ -364,112 +343,6 @@ vnoremap <tab> %
 " i/a 技巧: di da vi va ya yi...
 " 快速选择段中串
 map <leader>u vi"
-
-if 0
-" Make it so AutoCloseTag works for xml and xhtml files as well
-au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
-nmap <Leader>ac <Plug>ToggleAutoCloseMappings
-
-if isdirectory(expand("~/.vim/bundle/vim-powerline/"))
-    " mkfontscale
-    " mkfontdir
-    " fc-cache -vf
-    " rm ~/.vim/bundle/vim-powerline/*.cache
-    " https://github.com/eugeii/consolas-powerline-vim.git
-    " https://github.com/powerline/fonts.git
-    " set guifont=PowerlineSymbols\ for\ Powerline
-    " let g:Powerline_symbols = 'fancy'
-endif
-
-if !exists('g:override_spf13_bundles') && filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
-    let g:solarized_termcolors=256
-    let g:solarized_termtrans=1
-    let g:solarized_contrast="normal"
-    let g:solarized_visibility="normal"
-    color solarized             " Load a colorscheme
-endif
-
-
-" 常用缩写
-" iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
-
-" 使用tab键来代替%进行匹配跳转
-nnoremap <tab> %
-vnoremap <tab> %
-
-" 比较文件
-nnoremap <leader>df :vert diffsplit 
-nnoremap <leader>dff :diffoff<cr>
-
-" i/a 技巧: di da vi va ya yi...
-" 快速选择段中串
-map <leader>u vi"
-
-
-
-
-
-
-
-
-Plug 'ncm2/ncm2'
-Plug 'roxma/nvim-yarp'
-
-autocmd BufEnter * call ncm2#enable_for_buffer()
-set completeopt=noinsert,menuone,noselect
-set shortmess+=c
-
-inoremap <c-c> <ESC>
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-Plug 'ncm2/ncm2-match-highlight'
-Plug 'ncm2/ncm2-ultisnips'
-
-inoremap <silent> <expr> <CR> ((pumvisible() && empty(v:completed_item)) ?  "\<c-y>\<cr>" : (!empty(v:completed_item) ? ncm2_ultisnips#expand_or("", 'n') : "\<CR>" ))
-
-" c-j c-k for moving in snippet
-imap <expr> <c-u> ncm2_ultisnips#expand_or("\<Plug>(ultisnips_expand)", 'm')
-smap <c-u> <Plug>(ultisnips_expand)
-
-let g:UltiSnipsRemoveSelectModeMappings = 0
-
-Plug 'ncm2/ncm2-html-subscope'
-Plug 'ncm2/ncm2-markdown-subscope'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-jedi'
-Plug 'ncm2/ncm2-pyclang'
-Plug 'ncm2/ncm2-tern'
-Plug 'ncm2/ncm2-cssomni'
-
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-
-let g:LanguageClient_serverCommands = {
-            \ 'vue': ['vls'],
-            \ 'rust': ['rls'],
-            \ }
-
-" read
-" https://github.com/autozimu/LanguageClient-neovim/pull/514#issuecomment-404463033
-" for contents of settings.json for vue-language-server
-
-let g:LanguageClient_settingsPath = $WORKSPACE_DIR . '/.vim/settings.json'
-let g:LanguageClient_completionPreferTextEdit = 1
-autocmd BufNewFile,BufRead *.vue set filetype=vue
-autocmd filetype vue LanguageClientStart
-
-" " for debugging LanguageClient-neovim
-" set noshowmode
-" inoremap <silent> <c-q> <esc>:<c-u>q!<cr>
-" let g:LanguageClient_loggingFile = '/tmp/lc.log'
-" let g:LanguageClient_loggingLevel = 'DEBUG'
-
-" the suddennly popup of diagnostics sign is kind of annoying
-let g:LanguageClient_diagnosticsSignsMax = 0
-endif
 
 " Filetype plugins need to be enabled
 filetype plugin on

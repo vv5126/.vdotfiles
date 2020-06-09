@@ -5,7 +5,7 @@
 " character) add the following to your .vimrc.before.local file:
 "   let g:evervim_leader='\'
 if !exists('g:evervim_leader')
-    let mapleader = ','
+    let mapleader = ';'
 else
     let mapleader=g:evervim_leader
 endif
@@ -39,7 +39,7 @@ execute "noremap " . s:evervim_apply_config_mapping . " :source ~/.vim/vimrc<CR>
 " The lines conflict with the default digraph mapping of <C-K>
 " If you prefer that functionality, add the following to your
 " .vimrc.before.local file:
-"   let g:evervim_easyWindows = 1
+"   let g:evervim_no_easyWindows = 1
 if !exists('g:evervim_no_easyWindows')
     map <C-J> <C-W>j
     map <C-K> <C-W>k
@@ -54,6 +54,7 @@ if !exists('g:evervim_no_easyWindows')
 endif
 
 " Wrapped lines goes down/up to next row, rather than next line in file.
+" 处理折叠行的左右移动
 noremap j gj
 noremap k gk
 

@@ -111,7 +111,7 @@ function! s:ExpandFilenameAndExecute(command, file)
 endfunction
 
 function! EditEverVimConfig()
-    call <SID>ExpandFilenameAndExecute("tabedit", "~/.EverVim.vimrc")
+    call <SID>ExpandFilenameAndExecute("tabedit", "~/.vim/vimrc")
 endfunction
 
 function! ReplaceInFile(file, regexmatch, replace)

@@ -4,6 +4,8 @@ TITLE="Windows 登录"
 retry=10
 key="$1"
 
+VUSER_DATA=/home/user/.bin/account/user@ingenic/data
+
 val=$(xdotool search --name "$TITLE")
 if [ -z "$val" ]; then
 	(

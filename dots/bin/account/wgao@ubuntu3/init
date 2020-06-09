@@ -1,7 +1,10 @@
 
 #================================================#
 if [[ $1 == "init" ]]; then
-	[ ! -d "$HOME/.ssh" ] && ln -sf $VUSER_DATA/ssh $HOME/.ssh
+	[ ! -f "$HOME/.ssh/config" ] && {
+		[ ! -d "$HOME/.ssh" ] && mkdir "$HOME/.ssh"
+		ln -sf "$VDATA/ssh.config" "$HOME/.ssh/config"
+	}
 else
     include $VINIS/ini.ingenic
 

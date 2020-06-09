@@ -12,6 +12,8 @@ showlist_with_input $VUSER_DATA/sync.vconf "name" "Backup you want" $@
 if [ "${name-"null"}" != "null" ]; then
 	eval src=$src
 	eval dst=$dst
+    eval exclude="$exclude"
+
 	if [ "$exclude" == '*' ]; then
 		exclude=''
 	elif [ -f "$exclude" ]; then

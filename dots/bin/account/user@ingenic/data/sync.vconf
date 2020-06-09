@@ -1,5 +1,3 @@
 # name     param exclude                   src                           dst
-hw_pcb     av    "$VUSER_DATA/hw_pcb.sync" /tmp/mnt/hw/                  /home/user/local_debug/pcb
-hw_pdf     av    "$VUSER_DATA/hw_pdf.sync" /tmp/mnt/hw/                  /home/user/local_debug/pdf/hw
-vdot       ur    *                         $WORK_SERVER_SSH:"\$VDOT" $HOME
-vdot       r     bundle                    $WORK_SERVER_SSH:"\$VDOT" $HOME
+hw_pdf     auq    "$VUSER_DATA/hw_pdf.sync" /tmp/mnt/hw/                  /home/user/mnt/3.3/work/datasheet/hw
+vdot       ru    *                         $WORK_SERVER_SSH:/backup/home/wgao/.local/vdot $HOME

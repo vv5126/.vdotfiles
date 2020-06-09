@@ -56,7 +56,7 @@ let $evervim_root = $HOME. "/.vim"
     " let g:evervim_welcome_message = "Code your life with EverVim!"
 
     " Leader keys
-    let g:evervim_leader=';'
+    " let g:evervim_leader=';'
     " let g:evervim_localleader=' '
 
     " Restore cursor

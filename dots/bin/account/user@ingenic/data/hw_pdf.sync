@@ -1,4 +1,14 @@
 + */
+- /04_FPGA_Platform/***
+- /05_OTHER/***
+- /06_SUBSTRATE/***
+- /07_SOCKET/***
+- /08_library/***
+- /09_Board_Design_Guide/***
+- /10_IBIS/***
+- /RECYCLER/***
++ /01_DEV_Board
++ /02_RDK
++ /03_PRODUCT
 + *.pdf
 - *
-- Thumbs.db

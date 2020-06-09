@@ -29,9 +29,6 @@ autocmd FileType python set tabstop=4 shiftwidth=4 expandtab
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 
-"文件类型切换
- nmap <leader>fj :set ft=javascript<CR>
-
 "Delete trailing white space, useful for Python ;)
 func! DeleteTrailingWS()
   exe "normal mz"
@@ -207,3 +204,24 @@ set langmenu=zh_CN.UTF-8    "菜单使用的语言
 """"""""""""""""""""""""""""""
 " => gvim section end
 """"""""""""""""""""""""""""""
+
+Plug 'kien/tabman.vim'
+Plug 'tpope/vim-abolish'
+Plug 'chrisyip/AuthorInfo'
+Plug 'alpertuna/vim-header'
+Plug 'godlygeek/tabular'
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
+Plug 'cohama/agit.vim'
+Plug 'mhinz/vim-signify'
+
+Plug 'tpope/vim-speeddating'
+Plug 'vim-scripts/a.vim'
+Plug 'tyru/open-browser.vim'
+
+" EditorConfig可以帮助在不同的编辑器和IDE上从事同一项目的多个开发人员保持一致的编码样式。
+Plug 'sgur/vim-editorconfig'
+
+Plug 'tomtom/tlib_vim'
+
+Plug 'will133/vim-dirdiff'
+let g:DirDiffExcludes = "CVS,*.class,*.exe,.*.swp, .*.cmd, *.o, .git"

@@ -55,5 +55,12 @@ mkdir -p tmp proc lost+found sys mnt media dev var
 
 gsettings set org.gnome.settings-daemon.plugins.power button-power suspend
 
+typora:
+wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
+sudo add-apt-repository 'deb https://typora.io/linux ./'
+sudo apt-get update
+sudo aptitude install typora
+
+iptux
 
 

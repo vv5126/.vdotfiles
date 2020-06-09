@@ -3,9 +3,6 @@
 " vim-leader-guide is a vim keymap-display loosely inspired by emacs's guide-key.
 Plug 'hecal3/vim-leader-guide', {'do' : ':call DeleteLinesInFile(EverVimBundleDir(\"vim-leader-guide/autoload/leaderGuide.vim\"), \"statusline=\")'}
 
-" Plug 'justincampbell/vim-eighties' " 自动调整窗口大小
-
-
 
 
 " Plug 'itchyny/calendar.vim'
@@ -82,6 +79,242 @@ endif
 " Plug 'vimoutliner/vimoutliner'
 " Plug 'reedes/vim-litecorrect'
 
+
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install() }}
+
+
+" use <tab> for trigger completion and navigate to the next complete item
+
+" Plug 'neoclide/coc.nvim',{'branch': 'release'}
+
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/vim-lsp'
+
+" 补全框架：
+" Plug 'Shougo/deoplete.nvim'
+" ncm2
+" Plug 'prabirshrestha/asyncomplete.vim'
+
+" snippets
+" Plug 'SirVer/ultisnips'
+" Plug 'Shougo/neosnippet.vim'
+" Plug 'Shougo/deoppet.nvim'
+" Plug 'neoclide/coc-snippets'
+
+" 异步Fuzzy Finder：
+" Plug 'Shougo/denite.nvim'
+" Plug 'junegunn/fzf.vim'
+" Plug 'Yggdroot/LeaderF'
+
+" Plug 'tenfyzhong/CompleteParameter.vim'
+
+
+
+
+
+" Language Server Client:
+" Plug 'autozimu/LanguageClient-neovim', {
+"     \ 'branch': 'next',
+"     \ 'do': 'bash install.sh',
+"     \ }
+" (Optional) Multi-entry selection UI.
+" Plug 'junegunn/fzf'
+
+" -------------------------------------------------
+" 支持分支的 undo
+" Plug 'sjl/gundo.vim'
+" -------------------------------------------------
+"deal
+" 允许你在 Vim中按等号、冒号、表格等来对齐文本
+" 'Tabular'
+" ex: :TAb /=
+" -------------------------------
+" 扩展了vim的%功能,让%可以匹配的,
+" 不再仅仅是括号,支持多种语言.必备插件之一
+" 'matchit.zip'
+" % 正向匹配      g% 反向匹配
+" [% 定位块首     ]% 定位块尾
+" -------------------------------------------------
+" unuseful
+" -------------------------------------------------
+" View man pages in vim. Grep for the man pages.
+" Plug 'vim-utils/vim-man'
+" -------------------------------------------------
+" 为小括号加如彩虹效果，但对c貌似没啥意义...
+Plug 'kien/rainbow_parentheses.vim'
+" -------------------------------------------------
+" 在vim里画图
+" Plug 'DrawIt'
+" -------------------------------------------------
+" dealing
+" -------------------------------------------------
+" cscope的vim插件,提供快捷键操纵cscope
+" Plug 'chazy/cscope_maps'
+" Plug 'cscope_macros.vim'
+" set cscopetag
+" set cscopeverbose
+" set cscopequickfix=c-,d-,e-,g-,i-,s-,t-
+" set cscopetagorder=1
+" set nocsverb "增加 cscope 数据库时，不给出消息
+" -------------------------------------------------
+" Plug 'charz/multi-cscope-db'
+" Plug 'brookhong/cscope.vim'
+" nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
+" nnoremap <leader>l :call ToggleLocationList()<CR>
+" -------------------------------------------------
+" Plug 'rking/ag.vim'
+" let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
+" let g:ag_working_path_mode="r"
+" Plug 'Chun-Yang/vim-action-ag'
+" -------------------------------------------------
+" 任务列表的插件 —— TaskList.vim，方便管理项目中的 TODO、FIXME 等标签.
+" Plug 'TaskList.vim'
+" nnoremap <leader>v <Plug>TaskList
+" -------------------------------------------------
+" 可以在vim和tmux的任何组合间无缝切换
+" Plug 'christoomey/vim-tmux-navigator'
+" -------------------------------------------------
+" have bug.
+" Plug 'terryma/vim-expand-region'
+" vmap v <Plug>(expand_region_expand)
+" vmap <C-v> <Plug>(expand_region_shrink)
+" -------------------------------------------------
+" 缩进代替
+" Plug 'tpope/vim-sleuth'
+" -------------------------------------------------
+" color theme浏览插件,列出所有的vim color theme到一个列表中,选中后按回车即可应用
+" Plug 'sjas/csExplorer'
+" -------------------------------------------------
+" 打开quickfix快捷键
+" Plug 'Valloric/ListToggle'
+" " let g:lt_location_list_toggle_map = '<leader>ff'
+" let g:lt_quickfix_list_toggle_map = '<leader>qq'
+" let g:lt_height = 10
+" -------------------------------------------------
+" Plug 'haya14busa/vim-poweryank'
+" map <Leader>y <Plug>(operator-poweryank-osc52)
+" -------------------------------------------------
+" Plug 'jeaye/color_coded'
+" let g:color_coded_enabled = 1
+" let g:color_coded_filetypes = ['c', 'cpp', 'objc']
+" -------------------------------------------------
+" Plug 'kassio/neoterm'
+" Plug 'wincent/terminus'
+" -------------------------------------------------
+" Plug 'rdnetto/YCM-Generator'
+" 需要将clang+llvm加入到PATH中
+"nnoremap <leader>hf :YcmGenerateConfig<CR>
+" -------------------------------------------------
+"requires Vim to be compiled with Ruby support
+"Plug 'wincent/command-t'
+"let g:CommandTMaxHeight = 15
+"noremap <leader>j :CommandT<cr>
+"noremap <leader>y :CommandTFlush<cr>
+" -------------------------------------------------
+" 由注释生成文档，并且能够快速生成函数标准注释
+" Plug 'vim-scripts/DoxygenToolkit.vim'
+" -------------------------------------------------
+"Plug 'cctree'             " 可以查看function的call tree
+" -------------------------------------------------
+" Plug 'dkprice/vim-easygrep'
+" let g:EasyGrepMode = 2     " All:0, Open Buffers:1, TrackExt:2,
+" let g:EasyGrepCommand = 0  " Use vimgrep:0, grepprg:1
+" let g:EasyGrepRecursive  = 1 " Recursive searching
+" let g:EasyGrepIgnoreCase = 1 " not ignorecase:0
+" let g:EasyGrepFilesToExclude = "*.bak, *~, cscope.*, *.a, *.o, *.pyc, *.bak"
+" -------------------------------------------------
+" 工程内查找与替换+
+" Plug 'grep.vim'
+" -------------------------------------------------
+" Unite可以在一个项目中快速浏览文件。但是它不仅限于文件，其他任何可以列出的东西都可以很好的被显示和搜索。
+Plug 'Shougo/unite-help'
+Plug 'Shougo/unite-outline'
+Plug 'Shougo/unite.vim'
+" Plug 'osyo-manga/unite-quickfix'
+" Plug 'tsukkee/unite-tag'
+" -------------------------------------------------
+" 折叠
+Plug 'lambdalisue/vim-foldround'
+nmap <Leader>xf <Plug>(foldround-forward)
+nmap <Leader>fb <Plug>(foldround-backward)
+
+Plug 'tmhedberg/SimpylFold'
+Plug 'tweekmonster/braceless.vim'
+
+setlocal foldlevel=1               " 设置折叠层数为
+set nofoldenable                   " 启动 vim 时关闭折叠代码
+set foldcolumn=1                   " 设置折叠区域的宽度
+" -------------------------------------------------
+" 给vim增加url的识别功能,但是功能远不只是支持url,还有更多,详情见utl的帮.
+" utl.vim
+" -------------------------------------------------
+" array操作库函数，multiselect依赖它
+" Plug 'multvals.vim'
+" -------------------------------------------------
+" 可以对数字, 日期, 星期, 字母进行序列填充, 方式有升序和降序, 同时可以指定step间隔.
+" 给vim增加生成递增或者递减数列的功能,支持十进制,十六进制,日期,星期等,功能强大灵活
+" Plug 'VisIncr'
+" -------------------------------------------------
+" runs make and shows the test run status with a red or green bar.
+" Plug 'reinh/vim-makegreen'
+" -------------------------------------------------
+" C++相关
+" Plug 'stl.vim' "stl语法高亮+
+" Plug 'stlrefvim' "stl帮助 +
+" -------------------------------------------------
+" Plug 'Wildog/airline-weather.vim'
+" let g:weather#area = 'newyorkcity,us'
+" let g:weather#unit = 'metric'
+" -------------------------------------------------
+"FuzzyFinder底层依耐+
+" Plug 'l9'
+" Plug 'junegunn/fzf'
+" FuzzyFinder缓冲器/文件/命令/标签/等浏览器的模糊匹配 +
+" electbuf.vim相比，它少了对多个buf的批量选择和处理
+" mru.vim -> fuzzyfinder.vim:FuzzyFinderMruFile
+" favex.vim -> fuzzyfinder.vim:FuzzyFinderFavFile
+" selectbuf.vim -> fuzzyfinder.vim:FuzzyFinderBuffer
+" NERDTree.vim -> fuzzyfinder.vim:FuzzyFinderFile
+" -------------------------------------------------
+" 切换缓冲区
+" Plug 'fholgado/minibufexpl.vim'
+" -------------------------------------------------
+" Very small, clean but quick and powerful buffer manager. c.
+" qbuf
+" -------------------------------------------------
+" Plug 'jsfaint/gen_tags.vim'
+" Plug 'gtags.vim'
+" Plug 'matchparen/'
+" Plug 'xml.vim'
+" Plug 'tpope/vim-git'
+" Plug 'winfileexplorer.vim'
+" Plug 'wintagexplorer.vim'
+" Plug 'CaptureClipboard'
+" Plug 'ctrlp-modified.vim'
+" -------------------------------------------------
+" 使用菜单和热键来编写和执行BASH脚本
+" Plug 'bash-support.vim'
+" -------------------------------------------------
+" 结构化数据变成漂亮的表
+" Plug 'Stormherz/tablify'
+" -------------------------------------------------
+" 检测当光标改变时，执行函数
+" Plug 'hookcursormoved'
+" -------------------------------------------------
+" 类似emacs的king ring,给vim的yank也增加缓冲,vim本身只缓冲删除的字符串,不缓冲yank的内容,这个插件可以同时粘贴多个需要的单词等
+" Plug 'YankRing.vim'
+" -------------------------------------------------
+" Switch very quickly between your most recently used buffers
+" if has("ruby")
+" Plug 'LustyJuggler'
+" endif
+" -------------------------------------------------
+" -------------------------------------------------
+" FavEx : Favorite file and directory explorer ,可以添加目录和文件到收藏夹，可以把经常编辑的文件添加到收藏夹来，在文件打开以后，\ff新增文件到收藏夹，\fd新增目录到收藏夹
+" Plug 'FavEx'
+" -------------------------------------------------
+" 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
+" Plug 'navicore/vis.vim'
 "-----------------------------------------
 "substitute preview
 " Plug 'osyo-manga/vim-over'
