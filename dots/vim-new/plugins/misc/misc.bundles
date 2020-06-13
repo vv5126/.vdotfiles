@@ -80,20 +80,12 @@ endif
 " Plug 'reedes/vim-litecorrect'
 
 
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install() }}
-
-
 " use <tab> for trigger completion and navigate to the next complete item
-
-" Plug 'neoclide/coc.nvim',{'branch': 'release'}
 
 " Plug 'prabirshrestha/async.vim'
 " Plug 'prabirshrestha/vim-lsp'
 
 " 补全框架：
-" Plug 'Shougo/deoplete.nvim'
-" ncm2
-" Plug 'prabirshrestha/asyncomplete.vim'
 
 " snippets
 " Plug 'SirVer/ultisnips'
@@ -111,14 +103,6 @@ Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install() }}
 
 
 
-
-" Language Server Client:
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'bash install.sh',
-"     \ }
-" (Optional) Multi-entry selection UI.
-" Plug 'junegunn/fzf'
 
 " -------------------------------------------------
 " 支持分支的 undo

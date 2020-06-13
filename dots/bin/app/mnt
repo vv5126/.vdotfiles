@@ -2,6 +2,8 @@
 
 include list
 
+debug=0
+
 [ -z "$VUSER_DATA/mnt.vconf" ] && { echo "no conf file!"; exit; }
 
 showlist_with_input $VUSER_DATA/mnt.vconf "title" "which need mount ??" $@
@@ -38,6 +40,7 @@ if [ "${title-"null"}" != "null" ]; then
             if [ -n "$us" -o -n "$ps" ]; then
                 param="-o ${us:+$us,}${ps:+$ps,}rw,dir_mode=0777,file_mode=0777"
             fi
+            debug echo sudo mount -t cifs $url $to_path -o vers=1.0 $param
             echo 'user' | sudo mount -t cifs $url $to_path -o vers=1.0 $param || sudo rm -rf $to_path
         fi
 		;;

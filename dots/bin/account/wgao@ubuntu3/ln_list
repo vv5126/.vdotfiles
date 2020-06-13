@@ -21,7 +21,7 @@ mk        "$HOME/.bin/app"
 vp
 bn        "$HOME/.bin/app"
 
-# fasd
+fasd
 # vhelper
 # qq
 # happybox

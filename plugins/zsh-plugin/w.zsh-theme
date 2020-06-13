@@ -20,7 +20,9 @@ elif [[ "$USER" == 'wgao' && "$HOST" == 'sw' ]]; then
     HOST_COLOR="%{$fg[blue]%}"
 elif [[ "$USER" == 'wgao' && "$HOST" == 'lqchen-0B' ]]; then
     HOST_COLOR="%{$fg[yellow]%}"
-elif [[ "$USER" == 'user' && "$HOST" == 'ingenic-wgao' ]]; then
+elif [[ "$USER" == 'wgao' && "$HOST" == 'ubuntu3' ]]; then
+    HOST_COLOR="%{$fg[yellow]%}"
+elif [[ "$USER" == 'user' && "$HOST" == 'ingenic' ]]; then
     HOST_COLOR="%{$fg[orange]%}"
 fi
 

@@ -23,7 +23,7 @@ if [ "${name-"null"}" != "null" ]; then
 	fi
 
 	if [ "$(is_exsit $src)" -eq 1 -a "$(is_exsit $dst)" -eq 1 ]; then
-		rsync -$param $exclude "$src" "$dst"
+		rsync -$param --prune-empty-dirs --delete $exclude "$src" "$dst"
 	else
 		echo "dir error!"
 	fi

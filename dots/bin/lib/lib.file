@@ -84,8 +84,7 @@ function deleteempty() {
       echo "$dir"
       rm -rf ${dir} 2>&- && echo "Empty, Deleted!" || echo "Delete error"
     fi
-    if [ -d ${dir} ]
-    then
+    if [ -d "$dir" ]; then
       deleteempty "$dir"
     fi
   done

@@ -1,8 +1,7 @@
-" design by wgao.
-
-" reset EverVim {{{
-nunmap ;
-" }}}
+" 刷新插件
+nmap <F6> :PlugStatus<cr>
+" 更新插件
+nmap <S-F6> :PlugInstall<cr>
 
 " my setting {{{
 filetype off                       " 关闭文件类型侦测
@@ -38,17 +37,6 @@ set foldlevel=1               " 设置折叠层数为
 set foldcolumn=0                   " 设置折叠区域的宽度
 set viminfo+='1000,n$VTMP/.viminfo
 
-" set rtp+=xxx/vim		   " 自定义vim目录位置
-" syntax enable                      " 开启语法高亮功能
-
-" :help digraph-table 特殊字符表
-
-" set foldclose=all         " 设置为自动关闭折叠
-" set --- foldmethod=syntax " 用语法高亮来定义折叠
-" set --- foldmethod=manual " 手动折叠
-" set --- foldmethod=marker " 依标志折叠
-" set --- foldmethod=indent " 基于缩进或语法进行代码折叠
-" set --- shiftwidth=8      " 设置格式化时制表符占用空格数
 " set noexpandtab           " 不要用空格代替制表符
 set expandtab
 " autocmd FileType sh setlocal shiftwidth=4
@@ -126,7 +114,7 @@ vnoremap <silent> p p`]
 nnoremap <silent> p p`]
 
 " Switching between buffers.
-nnoremap <C-x> <c-w>\|<c-w>_
+" nnoremap <C-x> <c-w>\|<c-w>_
 
 " 为选中代码加括号啥的
 vnoremap 1 h<esc>`>a)<esc>`<i(<esc>
@@ -140,13 +128,6 @@ vnoremap <silent> * :call VisualSearch('f')<CR>
 vnoremap <silent> # :call VisualSearch('b')<CR>
 " When you press gv you vimgrep after the selected text
 " vnoremap <silent> gv :call VisualSearch('gv')<CR>
-
-"光标所在词搜索
-nnoremap <leader>f *
-nnoremap <leader>fa :call SET_ISK()<cr>
-
-" 窗口自动半边排版
-nnoremap <silent> <leader>; :call VZOOM()<cr>
 
 "插入模式下移动
 inoremap <c-h> <C-o><S-Left>
@@ -194,18 +175,6 @@ nnoremap tm :tabmove
 " nnoremap 2 2gt
 " nnoremap 3 3gt
 
-" 独立的剪贴板
-" vmap <silent> <expr> p <sid>Repl()
-
-" set colorcolumn=37                 " 彩色显示一列，用以规范代码
-" set nocul
-" set nocuc
-" autocmd InsertLeave * set nocul    " 用浅色高亮当前行
-" autocmd InsertEnter * set cul      " 用浅色高亮当前行
-" highlight cursorLine cterm=bold ctermfg=green ctermbg=blue
-" highlight cursorColumn cterm=bold ctermfg=green ctermbg=yellow
-" highlight cursorColumn ctermbg=green ctermfg=green
-
 nmap <A-j> mz:m+<cr>`z
 " dot 文件生成并预览
 " :autocmd BufRead,BufNewFile *.dot map <F5> :w<CR>:!dot -Tjpg -o %<.jpg % && eog %<.jpg  <CR><CR> && exec "redr!"
@@ -237,7 +206,7 @@ map <leader>fc /\v^[<\|=>]{7}( .*\|$)<CR>
 
 " autocmd {{{
 "自动载入配置文件不需要重启
-autocmd! bufwritepost .vimrc source %
+autocmd! bufwritepost vimrc source %
 "=====================================================
 autocmd WinEnter * if &buftype ==#'quickfix' && winnr('$') == 1 | quit |endif
 "=====================================================
@@ -246,7 +215,7 @@ autocmd WinLeave * lclose
 "=====================================================
 autocmd BufEnter * call CHECK_FILETYPE()
 
-autocmd BufRead *.h set filetype=c
+" autocmd BufRead *.h set filetype=c
 autocmd BufRead *.help set filetype=markdown
 "=====================================================
 " autocmd end }}}
@@ -276,27 +245,6 @@ if has("multi_byte")
     endif
 endif
 " set termencoding=utf-8
-
-nmap <leader>d :%s/.*expand("<cword>").*\n//g<CR> "
-" {{{
-" s: Find this C symbol 0或者s   —— 查找这个C符号
-nmap <C-\>s :call GO_GIT_DIR()<cr>:cs find s <C-R>=expand("<cword>")<CR><CR>
-" g: Find this definition 1或者g  —— 查找这个定义
-nmap <C-\>g :call GO_GIT_DIR()<cr>:cs find g <C-R>=expand("<cword>")<CR><CR>
-" c: Find functions calling this function 3或者c  —— 查找调用这个函数的函数（们）
-nmap <C-\>c :call GO_GIT_DIR()<cr>:cs find c <C-R>=expand("<cword>")<CR><CR>
-" t: Find this text string 4或者t   —— 查找这个字符串
-nmap <C-\>t :call GO_GIT_DIR()<cr>:cs find t <C-R>=expand("<cword>")<CR><CR>
-" e: Find this egrep pattern 6或者e  —— 查找这个egrep匹配模式
-nmap <C-\>e :call GO_GIT_DIR()<cr>:cs find e <C-R>=expand("<cword>")<CR><CR>
-" f: Find this file 7或者f   —— 查找这个文件
-nmap <C-\>f :call GO_GIT_DIR()<cr>:cs find f <C-R>=expand("<cfile>")<CR><CR>
-" i: Find files #including this file 8或者i   —— 查找#include这个文件的文件（们）
-nmap <C-\>i :call GO_GIT_DIR()<cr>:cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-" d: Find functions called by this function 2或者d  —— 查找被这个函数调用的函数（们）
-nmap <C-\>d :call GO_GIT_DIR()<cr>:cs find d <C-R>=expand("<cword>")<CR><CR>
-set cst
-set cspc=3
 
 nmap <F2> :set ic<cr>/
 nmap <S-C> :stj <C-R>=expand("<cword>")<CR><CR>
@@ -329,11 +277,6 @@ set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic white
 source $evervim_root/plugins/v/p/vfunc.vim
 source $evervim_root/plugins/v/p/burner.vim
 source $evervim_root/plugins/v/p/youdao.vim
-
-" 刷新插件
-nmap <F6> :PlugStatus<cr>
-" 更新插件
-nmap <S-F6> :PlugInstall<cr>
 
 
 " 使用tab键来代替%进行匹配跳转

@@ -1,12 +1,10 @@
 #!/bin/bash
 
-include base
-include work
-include misc
+include base work misc
 
 debug=0
 
-host_vp="$VLOCALHOME/.local/vp"
+host_vp="$VLOCALHOME/.local/tmp/vp"
 is_push=1
 is_local=0
 dst_dir=''

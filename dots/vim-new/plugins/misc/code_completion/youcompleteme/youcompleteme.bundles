@@ -1,4 +1,3 @@
-" EverVim YouCompleteMe Bundles
 Plug 'Valloric/YouCompleteMe', { 'do': 'python3 ./install.py' }
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'

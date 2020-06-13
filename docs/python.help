@@ -20,3 +20,9 @@ down pip-xx.x.x.tar.gz from https://pypi.org/project/pip/#files
 
 # pip3 install:
 sudo aptitude install python3-pip
+
+# burner need!
+# ModuleNotFoundError: No module named 'usb'
+sudo pip3 install pyusb
+intelhex
+sudo aptitude install python3-tk

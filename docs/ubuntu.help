@@ -372,3 +372,6 @@ conda create -name envname python=2.7
 --log-format=FORMAT 指定日志文件格式
 --password-file=FILE 从FILE中得到密码
 --bwlimit=KBPS 限制I/O带宽，KBytes per second
+
+添加 32 位体系结构支持：
+sudo dpkg --add-architecture i386

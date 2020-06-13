@@ -1,4 +1,4 @@
-" EverVim SnipMate Bundles
+" 没有推荐vim-snipmate，因为和补全框架的整合不如上面两者，我的意思是一些补全框架不支持vim-snipmate。
 Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 " Source support_function.vim to support vim-snippets.
