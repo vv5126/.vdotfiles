@@ -11,7 +11,7 @@ let $evervim_root = $HOME. "/.vim"
     let g:evervim_bundle_groups += ['lang', 'lang/bash', 'lang/cpp']
     " let g:evervim_bundle_groups += ['misc/code_completion/youcompleteme']
     " let g:evervim_bundle_groups += ['misc/code_completion/neocomplete']
-    let g:evervim_bundle_groups += ['misc/code_completion/coc']
+    let g:evervim_bundle_groups += ['code_completion/coc']
     " let g:evervim_bundle_groups += ['misc/code_completion/snipmate']
     " let g:evervim_bundle_groups += ['lang/python']
     let g:evervim_bundle_groups += ['v']
@@ -151,8 +151,6 @@ let $evervim_root = $HOME. "/.vim"
     " let g:evervim_edit_config_mapping='<leader>ec'
     " let g:evervim_apply_config_mapping='<leader>ac'
 " }
-
-set encoding=utf-8
 
 " Core Config
 source $evervim_root/core/core.vim

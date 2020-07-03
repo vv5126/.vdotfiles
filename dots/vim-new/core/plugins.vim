@@ -35,6 +35,7 @@
     endif
 
     for $bundle_group in g:evervim_bundle_groups
+        " search all *.bundles
         let $f = expand($evervim_root . "/plugins/" . $bundle_group . "/" . substitute($bundle_group, '.*/', '', '') . ".bundles")
         if filereadable($f)
             source $f

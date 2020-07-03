@@ -5,14 +5,20 @@ Plug 'airblade/vim-gitgutter',{'commit': '297678a'}
 Plug 'yianwillis/vimcdoc'
 " -------------------------------------------------
 "让Vim变成所见即所得的MarkDown文件编辑器，可以在编辑时预览最终效果。
-" Plug 'iamcco/markdown-preview.vim'
+" " If you don't have nodejs and yarn
+" use pre build, add 'vim-plug' to the filetype list so vim-plug can update this plugin
+" see: https://github.com/iamcco/markdown-preview.nvim/issues/50
+" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
+" If you have nodejs and yarn
+" Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 " -------------------------------------------------
 " show color, like red yellow #066
 Plug 'gko/vim-coloresque'
 " -------------------------------------------------
 " 同时高亮多个单词 usage
 Plug 'vim-scripts/Mark--Karkat'
-nmap <unique> <silent> <Leader>n <Plug>MarkSearchAnyNext
+" nmap <unique> <silent> <Leader>k <Plug>MarkSearchAnyNext
 " -------------------------------------------------
 " 最大化当前panel.
 Plug 'troydm/zoomwintab.vim'
