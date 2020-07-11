@@ -225,3 +225,6 @@ Plug 'tomtom/tlib_vim'
 
 Plug 'will133/vim-dirdiff'
 let g:DirDiffExcludes = "CVS,*.class,*.exe,.*.swp, .*.cmd, *.o, .git"
+
+Plug 'sotte/presenting.vim'
+Plug 'reedes/vim-litecorrect'

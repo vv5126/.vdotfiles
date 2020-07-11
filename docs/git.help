@@ -5,6 +5,9 @@
 
 管理
 3. 分支 提交 原理
+commit原理
+branch原理
+
 查询工具
 
 修改
@@ -46,6 +49,13 @@ git clone --bare /var/www/html/myrepo.git
 git clone -b git_分支名称 git_仓库_url ：根上述 1. 结果一致
 git clone -b git_分支名称 --single--branch git_仓库_url ：获取指定分支的代码
 git clone --depth 10 git_仓库_url ：只会获取最近 xx（10条提交记录的）代码，默认是master分支， 如果想要指定分支，可以结合 -b --single--branch 使用！
+
+3. 克隆 指定的远程分支
+
+如果你渴望只克隆远程仓库的一个指定分支，而不是整个仓库分支，这对你帮助很大。
+git init
+git remote add -t BRANCH_NAME_HERE -f origin REMOTE_REPO_URL_PATH_HERE
+git checkout BRANCH_NAME_HERE
 
 ========================================================================================
 管理
@@ -263,13 +273,6 @@ git archive -o ../updated.zip HEAD $(git diff --name-only HEAD^)
 
 类似的，如果你需要输出某两个提交间的改变时，你可以使用这个。
 git archive -o ../latest.zip NEW_COMMIT_ID_HERE $(git diff--name-only OLD_COMMIT_ID_HERE NEW_COMMIT_ID_HERE)
-
-3. 克隆 指定的远程分支
-
-如果你渴望只克隆远程仓库的一个指定分支，而不是整个仓库分支，这对你帮助很大。
-git init
-git remote add -t BRANCH_NAME_HERE -f origin REMOTE_REPO_URL_PATH_HERE
-git checkout BRANCH_NAME_HERE
 
 4. 应用 从不相关的本地仓库来的补丁
 如果你需要其它一些不相关的本地仓库作为你现在仓库的补丁，这里就是通往那里的捷径。

@@ -1,0 +1,46 @@
+
+1. 编译GCC
+wget https://mirrors.tuna.tsinghua.edu.cn/gnu/gcc/gcc-7.2.0/gcc-7.2.0.tar.gz
+
+cd gcc-7.2.0
+如果可以访问外网，那么可以直接通过GCC源码包中内置的脚本下载，下载前改下./contrib/download_prerequisites中base_url=‘http://mirror.linux-ia64.org/gnu/gcc/infrastructure/’，不然下载很慢
+./contrib/download_prerequisites
+
+./configure --prefix=/usr/local/gcc-7.2.0 --enable-checking=release --enable-languages=c,c++ --disable-multilib
+make -j$(nproc)
+sudo make install
+
+2. cmake
+
+cmake从官网直接现在最新版本即可
+解压 tar zxvf cmake-3.16.5-Linux-x86_64.tar.gz
+添加到PATH使用 export PATH=CMAKEHOME/bin:CMAKEHOME/bin:PATH
+
+3. clang llvm
+
+git clone https://gitee.com/vv5126/llvm-project -b release/10.x --single-branch --depth=1
+cd llvm源码解压目录
+mkdir Release
+cd Release
+
+# 如果需要clangd，则LLVM_ENABLE_PROJECTS加上clang-tools-extra
+cmake ../llvm -DCMAKE_C_COMPILER=/usr/local/gcc-7.2.0/bin/gcc -DCMAKE_CXX_COMPILER=/usr/local/gcc-7.2.0/bin/g++ -DCMAKE_CXX_LINK_FLAGS="-Wl,-rpath,/usr/local/gcc-7.2.0/lib64 -L/usr/local/gcc-7.2.0/lib" -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;"
+make -j4
+make DESTDIR=/install/directory install
+
+3. ccls
+git clone https://github.com/MaskRay/ccls
+cd ccls
+cmake . -DCMAKE_PREFIX_PATH=/usr/local/ -DCMAKE_CXX_COMPILER=/usr/local/gcc-7.2.0/bin/g++ -DCMAKE_CXX_LINK_FLAGS="-Wl,-rpath,/usr/local/gcc-7.2.0/lib64 -L/usr/local/gcc-7.2.0/lib" -DCMAKE_CXX_FLAGS="-static-libgcc -static-libstdc++"
+make -j$(nproc)
+make DESTDIR=/install/directory install
+
+
+gcc7.2.0
+clang
+cmake
+ccls
+coc
+yarn
+rapidjson
+

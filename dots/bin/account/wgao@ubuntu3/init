@@ -1,10 +1,10 @@
 
 #================================================#
 if [[ $1 == "init" ]]; then
-	[ ! -f "$HOME/.ssh/config" ] && {
-		[ ! -d "$HOME/.ssh" ] && mkdir "$HOME/.ssh"
-		ln -sf "$VDATA/ssh.config" "$HOME/.ssh/config"
-	}
+    [ ! -f "$HOME/.ssh/config" ] && {
+        [ ! -d "$HOME/.ssh" ] && mkdir "$HOME/.ssh"
+            ln -sf "$VDATA/ssh.config" "$HOME/.ssh/config"
+        }
 else
     include $VINIS/ini.ingenic
 
@@ -24,12 +24,12 @@ else
     # JAVA_1="jdk1.6.0_45"
 
     if [ -n "$JAVA_1" ]; then
-	clean_ev JAVA_HOME
-	add_ev JAVA_HOME "$VTOOLS/jvm/$JAVA_1"
-	add_ev JRE_HOME "${JAVA_HOME}/jre"
-	add_ev CLASSPATH ".:${JAVA_HOME}/lib:${JRE_HOME}/lib"
-	add_path "${JAVA_HOME}/bin"
-	unset JAVA_1
+        clean_ev JAVA_HOME
+        add_ev JAVA_HOME "$VTOOLS/jvm/$JAVA_1"
+        add_ev JRE_HOME "${JAVA_HOME}/jre"
+        add_ev CLASSPATH ".:${JAVA_HOME}/lib:${JRE_HOME}/lib"
+        add_path "${JAVA_HOME}/bin"
+        unset JAVA_1
     fi
 
     ### MISC
@@ -46,14 +46,14 @@ else
     # add_path "$VTOOLS/Qt5.7.0/5.7/gcc_64/bin"
     # add_path "/data1/home/wgao/depot_tools/depot_tools"
     # add_path "$VTOOLS/llvm/bin"
-    add_path "$VTOOLS/toolchain/mips-gcc520-glibc222/bin"
+    # add_path "$VTOOLS/toolchain/mips-gcc520-glibc222/bin"
 
     ### special
 
     ## vdot update
     alias vdiff='vgitdiff $VDOT; meld git.diff.add git.diff.rm'
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
-    alias con='conda_cmd'
+    alias libmk='lib.misc gen_lib_info $VLIBS'
 
     export VGL_BOOKMARK="$VDOT/docs/bookmark.html"
     complete -W "diff bak" vhtml
@@ -74,6 +74,10 @@ else
     unset __conda_setup
     unset CONDA_DIR
 # conda config --set auto_activate_base false
+
+    # alias con='conda_cmd'
+    complete -W "--version activate deactivate search" conda
+
 # <<< conda initialize <<<
 
 fi

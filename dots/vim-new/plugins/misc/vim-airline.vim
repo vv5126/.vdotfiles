@@ -1,12 +1,11 @@
 if isdirectory(expand(EverVimBundleDir("vim-airline")))
     set laststatus=2
     if !exists('g:evervim_airline_theme')
-        " let g:airline_theme = 'dracula' " 'molokai' 'solarized'
-        " let g:airline_theme = 'dark' " 'molokai' 'solarized'
-        let g:airline_theme = 'solarized' " 'molokai' 'solarized'
+        let g:airline_theme = 'solarized'
     else
         let g:airline_theme = g:evervim_airline_theme
     endif
+    " let g:airline_theme = 'one'
     let g:airline#extensions#tabline#enabled = 1
     "let g:airline#extensions#bufferline#enabled = 1
     let g:airline#extensions#tabline#buffer_nr_show = 1
@@ -52,3 +51,4 @@ if isdirectory(expand("~/.vim/bundle/vim-airline-themes/"))
     endif
 endif
 " }}}
+let g:airline#extensions#tabline#formatter = 'default'

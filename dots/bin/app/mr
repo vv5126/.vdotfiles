@@ -47,4 +47,5 @@ function dump_tree() {
 
 rm -rf $@
 
-alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'
+alias rm='vrm'
+# alias rm='rm_mv=~/.rm/$(date +%Y%m%d_%H%M%S); mkdir -p $rm_mv; mv -f -t $rm_mv'

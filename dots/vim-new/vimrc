@@ -19,7 +19,7 @@ let $evervim_root = $HOME. "/.vim"
     " Color Theme
     " Use :Colors for a list of available colorschemes
     let g:evervim_color_theme="Dark"
-    let g:evervim_airline_theme="dracula"
+    let g:evervim_airline_theme="dark" " 'dark' 'dracula' 'molokai' 'solarized'
     let g:evervim_light_background = 1
 
     " Customize Patched Font

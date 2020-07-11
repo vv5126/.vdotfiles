@@ -45,3 +45,7 @@ vbox find1
 vbox quickcd_clean
 vbox clh
 vbox title
+vbox vrm
+vbox urm
+vbox agg
+vbox md

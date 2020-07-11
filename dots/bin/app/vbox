@@ -184,4 +184,58 @@ function turnoff_screen() {
         xset dpms force off
 }
 
+function vrm() {
+    local rm_mv="$VTMP/rm/$(date +%Y%m%d_%H%M%S)"
+    local i
+
+    mkdir -p $rm_mv
+
+    for i in $@; do
+        mv "$i" $rm_mv 2>/dev/null
+        if [ "$?" -eq 0 ]; then
+            [ "${i: -1}" == '/' ] && i="${i:0:-1}"
+            if [ "${i:0:1}" == '/' ]; then
+                echo $rm_mv/${i##*/} ${i%/*} >> $rm_mv/rm_info
+            else
+                echo $rm_mv/${i##*/} $PWD/${i%/*} >> $rm_mv/rm_info
+            fi
+        fi
+    done
+
+    if [ -f "$rm_mv/rm_info" ]; then
+        [ -e "$VTMP/rm/last" ] && mv "$VTMP/rm/last" "$rm_mv"
+        ln -sfr $rm_mv "$VTMP/rm/last"
+    fi
+
+    [ "$(ls -A $rm_mv | wc | awk '{print $1}')" == 0 ] && rm -rf $rm_mv
+}
+
+function urm() {
+    local line real_dir
+    [ ! -e "$VTMP/rm/last" ] && return
+
+    if [ -f "$VTMP/rm/last/rm_info" ]; then
+        cat "$VTMP/rm/last/rm_info" | while read line; do
+            mv $line
+        done
+        real_dir="$(readlink $VTMP/rm/last)"
+        rm "$VTMP/rm/last"
+        [ -f "$VTMP/rm/last/last" ] && mv "$VTMP/rm/last/last" "$VTMP/rm"
+
+        [ "$(ls -A "$VTMP/rm/$real_dir" | wc | awk '{print $1}')" == 1 ] && rm -rf "$VTMP/rm/$real_dir"
+    fi
+}
+
+function agg() {
+    [ $# -lt 2 ] && { echo "usage: agg file-suffix(h, c, cpp ...) xxx"; return; }
+
+    local file="$1"
+    shift
+    ag --hidden --noheading --smart-case -t -G '.+\.'$file $@
+}
+
+function md {
+    [ ! -d "$1" ] && mkdir -p $1
+}
+
 eval $(basename $0) $@

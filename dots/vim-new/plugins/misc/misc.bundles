@@ -1,38 +1,29 @@
-" will move
-"
 " vim-leader-guide is a vim keymap-display loosely inspired by emacs's guide-key.
 Plug 'hecal3/vim-leader-guide', {'do' : ':call DeleteLinesInFile(EverVimBundleDir(\"vim-leader-guide/autoload/leaderGuide.vim\"), \"statusline=\")'}
-
-
 
 " Swap windows without ruining your layout!
 " Plug 'wesQ3/vim-windowswap'
 
 " Plug 'itchyny/calendar.vim'
 " Plug 'chrisbra/csv.vim'
-" Plug 'tpope/vim-markdown'
 if NVIM()
     Plug 'equalsraf/neovim-gui-shim'
 endif
 " Plug 'jistr/vim-nerdtree-tabs', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'Konfekt/FastFold'
-Plug 'romainl/vim-qf'
-if executable('ack')
-    Plug 'dyng/ctrlsf.vim'
-    " vmap <C-E>a <Plug>CtrlSFVwordPath
-    let g:ctrlsf_default_root = 'project'
-endif
+" Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-repeat'
+" Plug 'Konfekt/FastFold'
+" Plug 'romainl/vim-qf'
 if !NVIM() && !WINDOWS()
     Plug 'Shougo/vimproc.vim', {'do' : 'make'} " 异步执行库
     Plug 'Shougo/vimshell.vim'
 endif
-" Plug 'vim-scripts/sessionman.vim'
+" Plug 'kassio/neoterm'
+" Plug 'wincent/terminus'
+" -------------------------------------------------
 " Plug 'tmhedberg/matchit'
 " Plug 'jlanzarotta/bufexplorer'
 " Plug 'haya14busa/incsearch.vim'
-" Plug 'MattesGroeger/vim-bookmarks'
 
 " 文本同级文字选取，和文本处理 推荐：****
 Plug 'kana/vim-textobj-user'
@@ -40,54 +31,52 @@ Plug 'kana/vim-textobj-indent'
 
 " Plug 'ap/vim-css-color'
 " Plug 'bling/vim-bufferline'
-
-" EverVim Appearance Bundles
-" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-if exists('g:evervim_use_lightline')
-    Plug 'itchyny/lightline.vim'
-    Plug 'taohex/lightline-buffer'
-else
-    " Plug 'vim-airline/vim-airline'
-    " Plug 'vim-airline/vim-airline-themes'
-endif
 " Plug 'mhinz/vim-startify'
 
-" EverVim Programming Bundles
 if !exists('g:evervim_use_neoformat')
     Plug 'Chiel92/vim-autoformat'
 else
     Plug 'sbdchd/neoformat'
 end
 " Plug 'MarcWeber/vim-addon-mw-utils'
+" -------------------------------------------------
+" search
+
+" Plug 'rking/ag.vim'
+" let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
+" let g:ag_working_path_mode="r"
+
+if executable('ack')
+    Plug 'dyng/ctrlsf.vim'
+    " vmap <C-E>a <Plug>CtrlSFVwordPath
+    let g:ctrlsf_default_root = 'project'
+endif
+
 if executable('ag')
-    Plug 'mileszs/ack.vim'
     let g:ackprg = 'ag --nogroup --nocolor --column --smart-case'
 elseif executable('ack-grep')
     let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-    Plug 'mileszs/ack.vim'
 elseif executable('ack')
-    Plug 'mileszs/ack.vim'
+    Plug 'dyng/ctrlsf.vim'
+    " vmap <C-E>a <Plug>CtrlSFVwordPath
+    let g:ctrlsf_default_root = 'project'
 endif
-
+Plug 'mileszs/ack.vim'
+" -------------------------------------------------
 " Plug 'metakirby5/codi.vim'
-
-" EverVim Writing Bundles
-
-" Plug 'kannokanno/previm'
-" Plug 'junegunn/goyo.vim'
-" Plug 'junegunn/limelight.vim'
-" Plug 'sotte/presenting.vim'
-" Plug 'plasticboy/vim-markdown' ", {'for': 'markdown'}
-" Plug 'vimwiki/vimwiki', {'branch': 'dev'}
-" Plug 'vimoutliner/vimoutliner'
-" Plug 'reedes/vim-litecorrect'
-
-
+" -------------------------------------------------
+Plug 'vimwiki/vimwiki', {'branch': 'dev'}
+" -------------------------------------------------
+" markdown
+Plug 'kannokanno/previm'
+Plug 'plasticboy/vim-markdown' ", {'for': 'markdown'}
+" Plug 'tpope/vim-markdown'
+" -------------------------------------------------
 " use <tab> for trigger completion and navigate to the next complete item
-
+" -------------------------------------------------
 " Plug 'prabirshrestha/async.vim'
 " Plug 'prabirshrestha/vim-lsp'
-
+" -------------------------------------------------
 " 补全框架：
 
 " snippets
@@ -95,23 +84,17 @@ endif
 " Plug 'Shougo/neosnippet.vim'
 " Plug 'Shougo/deoppet.nvim'
 " Plug 'neoclide/coc-snippets'
-
+" -------------------------------------------------
 " 异步Fuzzy Finder：
 " Plug 'Shougo/denite.nvim'
 " Plug 'junegunn/fzf.vim'
 " Plug 'Yggdroot/LeaderF', { 'do': './install.sh'  }
 
 " Plug 'tenfyzhong/CompleteParameter.vim'
-
-
-
-
-
 " -------------------------------------------------
 " 支持分支的 undo
 " Plug 'sjl/gundo.vim'
 " -------------------------------------------------
-"deal
 " 允许你在 Vim中按等号、冒号、表格等来对齐文本
 " 'Tabular'
 " ex: :TAb /=
@@ -122,8 +105,6 @@ endif
 " % 正向匹配      g% 反向匹配
 " [% 定位块首     ]% 定位块尾
 " -------------------------------------------------
-" unuseful
-" -------------------------------------------------
 " View man pages in vim. Grep for the man pages.
 " Plug 'vim-utils/vim-man'
 " -------------------------------------------------
@@ -132,31 +113,6 @@ Plug 'kien/rainbow_parentheses.vim'
 " -------------------------------------------------
 " 在vim里画图
 " Plug 'DrawIt'
-" -------------------------------------------------
-" dealing
-" -------------------------------------------------
-" cscope的vim插件,提供快捷键操纵cscope
-" Plug 'chazy/cscope_maps'
-" Plug 'cscope_macros.vim'
-" set cscopetag
-" set cscopeverbose
-" set cscopequickfix=c-,d-,e-,g-,i-,s-,t-
-" set cscopetagorder=1
-" set nocsverb "增加 cscope 数据库时，不给出消息
-" -------------------------------------------------
-" Plug 'charz/multi-cscope-db'
-" Plug 'brookhong/cscope.vim'
-" nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
-" nnoremap <leader>l :call ToggleLocationList()<CR>
-" -------------------------------------------------
-" Plug 'rking/ag.vim'
-" let g:ag_prg="<custom-ag-path-goes-here> --vimgrep"
-" let g:ag_working_path_mode="r"
-" Plug 'Chun-Yang/vim-action-ag'
-" -------------------------------------------------
-" 任务列表的插件 —— TaskList.vim，方便管理项目中的 TODO、FIXME 等标签.
-" Plug 'TaskList.vim'
-" nnoremap <leader>v <Plug>TaskList
 " -------------------------------------------------
 " 可以在vim和tmux的任何组合间无缝切换
 " Plug 'christoomey/vim-tmux-navigator'
@@ -169,28 +125,15 @@ Plug 'kien/rainbow_parentheses.vim'
 " 缩进代替
 " Plug 'tpope/vim-sleuth'
 " -------------------------------------------------
-" color theme浏览插件,列出所有的vim color theme到一个列表中,选中后按回车即可应用
-" Plug 'sjas/csExplorer'
-" -------------------------------------------------
 " 打开quickfix快捷键
 " Plug 'Valloric/ListToggle'
 " " let g:lt_location_list_toggle_map = '<leader>ff'
 " let g:lt_quickfix_list_toggle_map = '<leader>qq'
 " let g:lt_height = 10
 " -------------------------------------------------
-" Plug 'haya14busa/vim-poweryank'
-" map <Leader>y <Plug>(operator-poweryank-osc52)
-" -------------------------------------------------
 " Plug 'jeaye/color_coded'
 " let g:color_coded_enabled = 1
 " let g:color_coded_filetypes = ['c', 'cpp', 'objc']
-" -------------------------------------------------
-" Plug 'kassio/neoterm'
-" Plug 'wincent/terminus'
-" -------------------------------------------------
-" Plug 'rdnetto/YCM-Generator'
-" 需要将clang+llvm加入到PATH中
-"nnoremap <leader>hf :YcmGenerateConfig<CR>
 " -------------------------------------------------
 "requires Vim to be compiled with Ruby support
 "Plug 'wincent/command-t'
@@ -202,16 +145,6 @@ Plug 'kien/rainbow_parentheses.vim'
 " Plug 'vim-scripts/DoxygenToolkit.vim'
 " -------------------------------------------------
 "Plug 'cctree'             " 可以查看function的call tree
-" -------------------------------------------------
-" Plug 'dkprice/vim-easygrep'
-" let g:EasyGrepMode = 2     " All:0, Open Buffers:1, TrackExt:2,
-" let g:EasyGrepCommand = 0  " Use vimgrep:0, grepprg:1
-" let g:EasyGrepRecursive  = 1 " Recursive searching
-" let g:EasyGrepIgnoreCase = 1 " not ignorecase:0
-" let g:EasyGrepFilesToExclude = "*.bak, *~, cscope.*, *.a, *.o, *.pyc, *.bak"
-" -------------------------------------------------
-" 工程内查找与替换+
-" Plug 'grep.vim'
 " -------------------------------------------------
 " Unite可以在一个项目中快速浏览文件。但是它不仅限于文件，其他任何可以列出的东西都可以很好的被显示和搜索。
 Plug 'Shougo/unite-help'
@@ -249,10 +182,6 @@ set foldcolumn=1                   " 设置折叠区域的宽度
 " Plug 'stl.vim' "stl语法高亮+
 " Plug 'stlrefvim' "stl帮助 +
 " -------------------------------------------------
-" Plug 'Wildog/airline-weather.vim'
-" let g:weather#area = 'newyorkcity,us'
-" let g:weather#unit = 'metric'
-" -------------------------------------------------
 "FuzzyFinder底层依耐+
 " Plug 'l9'
 " Plug 'junegunn/fzf'
@@ -271,12 +200,7 @@ set foldcolumn=1                   " 设置折叠区域的宽度
 " -------------------------------------------------
 " Plug 'jsfaint/gen_tags.vim'
 " Plug 'gtags.vim'
-" Plug 'matchparen/'
-" Plug 'xml.vim'
 " Plug 'tpope/vim-git'
-" Plug 'winfileexplorer.vim'
-" Plug 'wintagexplorer.vim'
-" Plug 'CaptureClipboard'
 " Plug 'ctrlp-modified.vim'
 " -------------------------------------------------
 " 使用菜单和热键来编写和执行BASH脚本
@@ -296,29 +220,35 @@ set foldcolumn=1                   " 设置折叠区域的宽度
 " Plug 'LustyJuggler'
 " endif
 " -------------------------------------------------
-" -------------------------------------------------
 " FavEx : Favorite file and directory explorer ,可以添加目录和文件到收藏夹，可以把经常编辑的文件添加到收藏夹来，在文件打开以后，\ff新增文件到收藏夹，\fd新增目录到收藏夹
 " Plug 'FavEx'
 " -------------------------------------------------
 " 可以对选中的文本块执行ex操作,尤其是visual block模式下,vim自己是不支持的.选中后,:B 加上ex命令
 " Plug 'navicore/vis.vim'
 "-----------------------------------------
-"substitute preview
-" Plug 'osyo-manga/vim-over'
-
-" Search local vimrc files (".lvimrc") in the tree (root dir up to current dir) and load them.
-" Plug 'embear/vim-localvimrc'
-
 " Plug 'dracula/vim' " Main theme for EverVim
 " Plug 'vim-scripts/restore_view.vim'
-
-" VIM的协同编辑（VIM最需要的特性之一）
-" Plug 'FredKSchott/CoVim'
 
 " 清除并使终端中的vim背景色透明
 " Plug 'miyakogi/seiya.vim'
 
+" EverVim Appearance Bundles
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+if exists('g:evervim_use_lightline')
+    Plug 'itchyny/lightline.vim'
+    Plug 'taohexxx/lightline-buffer'
+else
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'Wildog/airline-weather.vim'
+    let g:weather#area = 'newyorkcity,us'
+    let g:weather#unit = 'metric'
+" -------------------------------------------------
+endif
 " vim配色方案
+" color theme浏览插件,列出所有的vim color theme到一个列表中,选中后按回车即可应用
+" Plug 'sjas/csExplorer'
+" -------------------------------------------------
 " Some of them are already included in the vim-colorscheme pack
 " But just missing the airline/lightline color
 " Plug 'tomasiser/vim-code-dark'
@@ -329,19 +259,8 @@ set foldcolumn=1                   " 设置折叠区域的宽度
 " Plug 'morhetz/gruvbox'
 " Plug 'reedes/vim-colors-pencil'
 " Plug 'liuchengxu/space-vim-dark'
-
-" Vim、Sublime Text、iTerm、gnome terminal等的干净、充满活力和令人愉悦的配色方案。
-" Plug 'sonph/onehalf', {'rtp': 'vim/'}
-
-" Plug 'nightsense/vimspectr'
-
-" A Vim color scheme for 16-color terminals
-" Plug 'noahfrederick/vim-noctu'
-" -----------------------------
-
-" Plug 'tpope/vim-dispatch'
-" Plug 'idanarye/vim-vebugger' "need vimproc.vim
+" -------------------------------------------------
 " Plug 'mattn/webapi-vim' " An Interface to WEB APIs.
 " Plug 'jamessan/vim-gnupg'
-
 " Plug 'cohama/agit.vim'
+" -------------------------------------------------
