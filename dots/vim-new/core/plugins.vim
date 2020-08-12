@@ -1,12 +1,6 @@
-" Modeline and Notes {
-"   EverVim is a modern & powerful vim distribution
-"   Repo URL: https://github.com/LER0ever/EverVim
-"   Made by [LER0ever](https://github.com/LER0ever)
-"   Licensed under
-"       * Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE.md) or http://www.apache.org/licenses/LICENSE-2.0)
-" }
 
 " Setup Vim-Plug Support {
+    source $evervim_root/core/plug.vim
     call plug#begin(EverVimBundleDir(''))
 " }
 
@@ -47,9 +41,6 @@
         source ~/.EverVim.bundles
     endif
     " }
-
-    " Run PlugInstall if bundle does not exists
-    autocmd VimEnter * call EverVimInitPlugins()
 " }
 
 " Vim-Plug Teardown {

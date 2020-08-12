@@ -1,3 +1,6 @@
+"自动载入配置文件不需要重启
+" autocmd! bufwritepost vimrc source %
+
 " vim: set filetype=vim sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
 " need 将当前不用的buffer移动到win
 " buffer 交换

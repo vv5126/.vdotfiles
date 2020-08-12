@@ -1,4 +1,4 @@
-" Identify platform 
+" Identify platform
 silent function! OSX()
     return has('macunix')
 endfunction

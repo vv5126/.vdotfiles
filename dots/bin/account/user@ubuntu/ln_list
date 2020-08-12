@@ -1,37 +1,6 @@
-# make      gmake /usr/bin
-# gawk-x64  gawk
-diff-so-fancy
-# repo
-# g
-checkdot
-vcp
-gt
-mr
-star
 ins
-# ack
 vgitdiff
 mnt
-# vhtml
-
-# mk        "$HOME/.bin/app"
-# vp
-# bn
-# fasd
-# vhelper
-# qq
-# happybox
-# xclip-x64 xclip
-# jp
-# tm
-# tmux-zoom
-# crack
-# asd
 irc
 
-vbox canup
-vbox svi
-vbox win2unix
-vbox ci
-vbox find1
 vbox quickcd_clean

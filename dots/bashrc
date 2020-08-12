@@ -152,6 +152,11 @@ if shopt -q progcomp && [ -r /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
 
+for i in $(LC_ALL=C command ls "$HOME/.bin/data/completions"); do
+    i=$HOME/.bin/data/completions/$i
+    [[ -f $i && -r $i ]] && . "$i"
+done
+
 stty -ixon
 
 unset EXP

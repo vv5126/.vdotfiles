@@ -1,31 +1,18 @@
 adb
 add-new-adb
-checkdot
 com
 cloner
-diff-so-fancy
 ins
 kill_process
 mnt
-mr
-star
 vp
-vcp
 vhelper
 vsync
 
-gt
 # ack
 # qq
 # fasd      fasd
 # happybox
 # vgitdiff
 
-vbox svi
-vbox win2unix
-vbox ci
-vbox find1
-vbox title
-vbox asd
-vbox g
 vbox turnoff_screen

@@ -1,13 +1,7 @@
 make      gmake /usr/bin
 gawk-x64  gawk
 fzy-x64   fzy
-diff-so-fancy
 repo
-checkdot
-vcp
-gt
-mr
-star
 ins
 ack
 vgitdiff
@@ -33,19 +27,3 @@ xclip-x64 xclip
 # asd
 # irc
 tm
-unrar
-
-vbox canup
-vbox svi
-vbox win2unix
-vbox ci
-vbox asd
-vbox g
-vbox find1
-vbox quickcd_clean
-vbox clh
-vbox title
-vbox vrm
-vbox urm
-vbox agg
-vbox md

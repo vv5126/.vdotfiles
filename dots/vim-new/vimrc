@@ -1,5 +1,3 @@
-let $evervim_root = $HOME. "/.vim"
-
 " EverVim options {
 
     " Disable folding
@@ -152,8 +150,10 @@ let $evervim_root = $HOME. "/.vim"
     " let g:evervim_apply_config_mapping='<leader>ac'
 " }
 
-" Core Config
-source $evervim_root/core/core.vim
+" Core Config {
+    let $evervim_root = $HOME. "/.vim"
+    source $evervim_root/core/core.vim
+" }
 
 " based on d44ea81fd8ebb83de3483350624697f7a714fffa
 

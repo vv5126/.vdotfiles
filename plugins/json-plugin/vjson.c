@@ -26,7 +26,7 @@ enum opt_type {EMPTY, ARRAY, OBJECT};
 
 struct {
     int opt;
-    string file;
+    /* string file; */
 
     /* vector<string> obj; */
 
@@ -646,25 +646,41 @@ int process(void)
             if (job[i].have_key != 0) { // object job.
                 for (map<string,string>::iterator it = job[i].ks.begin(); it != job[i].ks.end(); ++it) {
                     if (js_p->find(it->first) != js_p->end()) {
-                        cout << "get key " << it->first << " of " << std::string(js_p->type_name()) << endl;
-                        cout << (*js_p)[it->first] << endl;
+                        /* cout << "get key " << it->first << " of " << std::string(js_p->type_name()) << endl; */
+                        /* cout << (*js_p)[it->first] << endl; */
+                        if ((*js_p)[it->first].type() != json::value_t::object) {
+                            for (auto tmp = (*js_p)[it->first].begin(); tmp != (*js_p)[it->first].end(); ++tmp) {
+                                cout << '"' << string(*tmp) << "\" ";
+                            }
+                            cout << "" << endl;
+                        }
                     }
                 }
 
+                job_done = 1;
             } else if (job[i].have_array != 0) { // array job.
-                cout << 1 << endl;
                 if (!job[i].array.empty()) {
                     if (js_p->find(job[i].array[0]) == js_p->end()) {
                         continue;
                     }
                     if ((*js_p)[job[i].array[0]].type() == json::value_t::array) {
-                        cout << (*js_p)[job[i].array[0]] << endl;
+                        /* cout << (*js_p)[job[i].array[0]] << endl; */
+                        for (auto tmp = (*js_p)[job[i].array[0]].begin(); tmp != (*js_p)[job[i].array[0]].end(); ++tmp) {
+                            cout << '"' << string(*tmp) << "\" ";
+                        }
+                        cout << "" << endl;
                     } else {
                         continue;
                     }
                 }
+                job_done = 1;
             }
-            js_p = last_js_p;
+        }
+        if (job_done == 0) {
+            for (json::iterator it = js_p->begin(); it != js_p->end(); ++it) {
+                cout << '"' << it.key() << "\" ";
+            }
+            cout << "" << endl;
         }
     }
 }

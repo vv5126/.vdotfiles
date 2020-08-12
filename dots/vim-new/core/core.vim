@@ -1,53 +1,27 @@
-" EverVim Core Config
+source $evervim_root/core/platform.vim
 
-" Identify platform {
-    source $evervim_root/core/platform.vim
-" }
+source $evervim_root/core/basics.vim
 
-" Basics {
-    source $evervim_root/core/basics.vim
-" }
+if WINDOWS()
+    source $evervim_root/core/windows.vim
+endif
 
-" Windows Compatible {
-    " source $evervim_root/core/windows.vim
-" }
+source $evervim_root/core/functions.vim
 
-" Arrow Key Fix {
-    source $evervim_root/core/arrowkey-fix.vim
-" }
+source $evervim_root/core/plugins.vim " Use bundles config
 
-" Functions {
-    source $evervim_root/core/functions.vim
-" }
+source $evervim_root/core/general.vim
 
-" Use bundles config {
-    source $evervim_root/core/plugins.vim
-" }
+source $evervim_root/core/vimui.vim
 
-" General {
-    source $evervim_root/core/general.vim
-" }
+source $evervim_root/core/formatting.vim
 
-" Vim UI {
-    source $evervim_root/core/vimui.vim
-" }
+source $evervim_root/core/session.vim
 
-" Formatting {
-    source $evervim_root/core/formatting.vim
-" }
+source $evervim_root/core/keymap.vim
 
-" Session {
-    source $evervim_root/core/session.vim
-" }
+source $evervim_root/core/plugin-config.vim
 
-" Key (re)Mappings {
-    source $evervim_root/core/keymap.vim
-" }
-"
-" Plugin Configuration {
-    source $evervim_root/core/plugin-config.vim
-" }
-"
-" GUI Config {
-    source $evervim_root/core/gui.vim
-" }
+source $evervim_root/core/gui.vim
+
+source $evervim_root/core/misc.vim
