@@ -1,4 +1,4 @@
-" Plugin Configuration 
+" Plugin Configuration
 function! SourceConfigsIn(dir)
     let filelist = split(globpath(a:dir, '*.vim'), '\n')
     for vimconf in filelist
@@ -25,6 +25,5 @@ function! SourceConfigsIn(dir)
 endfunction
 
 for $bundle_group in g:evervim_bundle_groups
-    " search all *.vim at same dir of bundle.
     call SourceConfigsIn($evervim_root . "/plugins/" . $bundle_group)
 endfor

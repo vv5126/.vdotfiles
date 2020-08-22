@@ -1,6 +1,7 @@
 make      gmake /usr/bin
 gawk-x64  gawk
 fzy-x64   fzy
+vjson-x64   vjson
 repo
 ins
 ack

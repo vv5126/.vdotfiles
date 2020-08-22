@@ -34,11 +34,11 @@ set tabpagemax=15                                      " Only show 15 tabs
 set showmode                                           " Display the current mode
 
 set cursorline                                         " Highlight current line
-"set cursorcolumn                                      " Highlight current column
+" set cursorcolumn                                      " Highlight current column
 
 highlight clear SignColumn                             " SignColumn should match background
 highlight clear LineNr                                 " Current line number row will have same background color in relative mode
-"highlight clear CursorLineNr                          " Remove highlight color from current line number
+" highlight clear CursorLineNr                          " Remove highlight color from current line number
 
 if has('cmdline_info')
     set ruler                                          " Show the ruler

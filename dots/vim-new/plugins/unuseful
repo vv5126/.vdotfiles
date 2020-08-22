@@ -216,6 +216,12 @@ Plug 'godlygeek/tabular'
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
 Plug 'cohama/agit.vim'
 Plug 'mhinz/vim-signify'
+" Highlight, Jump and Resolve Conflict Markers Quickly in Vim.
+Plug 'rhysd/conflict-marker.vim'
+" -------------------------------------------------
+" 在vim里画图
+" Plug 'DrawIt'
+" -------------------------------------------------
 
 Plug 'tpope/vim-speeddating'
 Plug 'vim-scripts/a.vim'

@@ -10,7 +10,7 @@ include base work misc
 function try_get_obj()
 {
     local tmp="$(guess_obj)"
-    [ "${tmp%% *}" != "unknown" ] && eval echo "$(jsonparser --get_key -k "mk_sub ${tmp%% *}" -f $VGL_JSON_FILE)"
+    [ "${tmp%% *}" != "unknown" ] && eval echo "$(vjson --get -o "mk_sub" -k "${tmp%% *}" -f $VGL_JSON_FILE)"
 }
 
 function checkver()
@@ -29,7 +29,7 @@ function mkinit()
         # only for mozart now
         [ "$dest" == 'mzt.sh' -a -d "mozart" ] && cd mozart
 
-        local project_list="$(jsonparser --get_keys -k 'mk_sub' -f $VGL_JSON_FILE)"
+        local project_list="$(vjson --get -o 'mk_sub' -f $VGL_JSON_FILE)"
         [ -z "$dest" ] && dest=$(user_select 'what project type do you want init' "${project_list[@]}")
 
 	if [ ! -f ".pro/.$dest" ]; then

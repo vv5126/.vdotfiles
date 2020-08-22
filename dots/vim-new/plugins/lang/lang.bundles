@@ -10,6 +10,6 @@ endif
 
 " Plug 'sheerun/vim-polyglot' " disabled by default, conflicts with many plugins
 
-Plug 'cespare/vim-toml'
-Plug 'ekalinin/Dockerfile.vim'
+" Plug 'cespare/vim-toml'
+" Plug 'ekalinin/Dockerfile.vim'
 " Plug 'peterhoeg/vim-qml'

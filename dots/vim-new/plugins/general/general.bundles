@@ -1,17 +1,23 @@
 " 显示git diff的插件
 Plug 'airblade/vim-gitgutter',{'commit': '297678a'}
 " -------------------------------------------------
+Plug 'easymotion/vim-easymotion'
+" -------------------------------------------------
 " vim帮助中文版
 Plug 'yianwillis/vimcdoc'
 " -------------------------------------------------
-"让Vim变成所见即所得的MarkDown文件编辑器，可以在编辑时预览最终效果。
-" " If you don't have nodejs and yarn
-" use pre build, add 'vim-plug' to the filetype list so vim-plug can update this plugin
-" see: https://github.com/iamcco/markdown-preview.nvim/issues/50
-" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-
-" If you have nodejs and yarn
-" Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+" Make sure we run devicons after the above
+if !TERMUX() && !exists('g:evervim_no_patched_fonts')
+    Plug 'ryanoasis/vim-devicons'
+endif
+" -------------------------------------------------
+" VIM的撤销历史可视化工具
+Plug 'mbbill/undotree'
+" -------------------------------------------------
+if !exists('g:evervim_no_restore_cursor')
+    " 重新打开文件在您的最后编辑位置
+    Plug 'farmergreg/vim-lastplace'
+endif
 " -------------------------------------------------
 " show color, like red yellow #066
 Plug 'gko/vim-coloresque'
@@ -41,9 +47,6 @@ Plug 'kshenoy/vim-signature'
 " 自动调整窗口大小
 " Plug 'justincampbell/vim-eighties'
 " -------------------------------------------------
-" Vim8 异步运行shell
-Plug 'skywind3000/asyncrun.vim'
-" -------------------------------------------------
 " 查看和自动识别文件的编码格式
 Plug 'mbbill/fencview'
 " Plug 's3rvac/AutoFenc'
@@ -60,22 +63,11 @@ Plug 't9md/vim-choosewin'
 " 非常简单的vim插件，方便调整您的vim窗口
 Plug 'simeji/winresizer'
 " -------------------------------------------------
-Plug 'easymotion/vim-easymotion'
-" -------------------------------------------------
 " 总是为vim分割窗口有一个好的视图
 Plug 'zhaocai/GoldenView.Vim'
 " -------------------------------------------------
-" VIM的撤销历史可视化工具
-Plug 'mbbill/undotree'
-" -------------------------------------------------
 " 一个用于vim的树资源管理器插件
 Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
-" -------------------------------------------------
-
-if !exists('g:evervim_no_restore_cursor')
-    " 重新打开文件在您的最后编辑位置
-    Plug 'farmergreg/vim-lastplace'
-endif
 " -------------------------------------------------
 if exists('g:evervim_smooth_scrolling')
     " 为Vim世界带来基于物理的平滑滚动!
@@ -85,10 +77,15 @@ endif
 " 非常棒的Git包装器
 Plug 'tpope/vim-fugitive'
 " -------------------------------------------------
-Plug 'rhysd/conflict-marker.vim'
+" vim配色大全
+Plug 'flazz/vim-colorschemes'
+" color theme浏览插件,列出所有的vim color theme到一个列表中,选中后按回车即可应用
+Plug 'sjas/csExplorer'
+" 未集成的vim配色方案
+Plug 'rakr/vim-one'
 " -------------------------------------------------
-" Gist的Vim插件
-" Plug 'mattn/gist-vim'
+" -------------------------------------------------
+" -------------------------------------------------
 " -------------------------------------------------
 " Fuzzy finder choice
 if exists('g:evervim_use_ctrlp') || WINDOWS()
@@ -99,16 +96,10 @@ else
     Plug 'junegunn/fzf.vim'
 endif
 " -------------------------------------------------
-" Make sure we run devicons after the above
-if !TERMUX() && !exists('g:evervim_no_patched_fonts')
-    Plug 'ryanoasis/vim-devicons'
-endif
-" -------------------------------------------------
-Plug 'flazz/vim-colorschemes'
+" Vim8 异步运行shell
+Plug 'skywind3000/asyncrun.vim'
 " -------------------------------------------------
 " -------------------------------------------------
 " -------------------------------------------------
 " -------------------------------------------------
 " -------------------------------------------------
-" -------------------------------------------------
-

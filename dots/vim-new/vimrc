@@ -139,7 +139,7 @@
     " Hybrid Linenumber
     " Show absolute line number for current line and relative
     " for the rest
-    " let g:evervim_hybrid_linenumber = 0
+    " let g:evervim_hybrid_linenumber = 1
 
     " 80 Column Warning
     " Shows a magenta line at column 81 only for those lines that exceeds 80
@@ -148,6 +148,9 @@
     " Mappings for editing/applying evervim config
     " let g:evervim_edit_config_mapping='<leader>ec'
     " let g:evervim_apply_config_mapping='<leader>ac'
+
+    " no simultaneous edits.
+    " let g:evervim_nosimultaneousedits = 1
 " }
 
 " Core Config {
