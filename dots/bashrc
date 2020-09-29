@@ -56,7 +56,9 @@ if [ "$EXP" -eq 1 ]; then
 # history #
 export HISTTIMEFORMAT="%m-%d %H:%M "
 export PROMPT_COMMAND="history -a" # 实时追加history，不必等用户退出才将内存中的history记录到文件
-export HISTFILE=$VTMP/.bash_history
+VTTY="$(tty)"
+export HISTFILE=$VTMP/.bash_history_"${VTTY##*/}"
+unset VTTY
 
 # don't put duplicate lines or lines starting with space in the history.
 # export HISTCONTROL=ignoreboth

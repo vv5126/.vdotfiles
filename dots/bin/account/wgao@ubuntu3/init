@@ -76,8 +76,8 @@ else
 # conda config --set auto_activate_base false
 
     # alias con='conda_cmd'
-    complete -W "--version activate deactivate search" conda
 
 # <<< conda initialize <<<
 
+# add_ev LD_LIBRARY_PATH "/backup/home/wgao/.local/lib"
 fi

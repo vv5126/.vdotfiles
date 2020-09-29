@@ -1,0 +1,64 @@
+
+# conda版本：conda --version
+# 搜索可安装的包：conda search
+# 切换回当前环境：conda deactivate
+# 激活 环境：conda activate envname
+# 列出conda创建所有的环境: conda info -envs
+# 更新conda：conda update conda
+# 查看在环境中安装的第三方包：conda list
+# 安装新软件：conda install --name packagename beautifulsoup4
+# 也可以从其它页面下载安装：conda install --channel https://conda.anaconda.org/pandas bottleneck
+# conda create -name envname python=2.7
+# 制作环境副本：conda create --name flowers --clone snowflakes
+
+
+# conda env remove -n test
+# 删除环境的第三方包：conda remove --name envname pck或者 pip uninstall pck
+# 删除环境：conda remove --name flowers --all
+
+
+function get_envs() {
+    echo $(conda info --envs | awk '{print $1}' | sed -n '/^\#/!p;')
+}
+
+function conda_cmd() {
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    COMPREPLY=( $(compgen -W "--version activate deactivate search create remove update info config list install env -h" -- ${cur}) )
+
+    case "${COMP_WORDS[1]}" in
+        '--version'|'search'|'deactivate')
+            COMPREPLY=()
+            ;;
+        'activate')
+            [ "$COMP_CWORD" -gt 2 ] && COMPREPLY=() || COMPREPLY=( $(compgen -W "$(get_envs)" -- ${cur}) )
+            ;;
+        'create')
+            COMPREPLY=( $(compgen -W '--name --clone python=2.7 python=3.6' -- ${cur}) )
+            ;;
+        'update')
+            [ "$COMP_CWORD" -gt 2 ] && COMPREPLY=() || COMPREPLY=('conda')
+            ;;
+        'remove')
+            [ "$COMP_CWORD" -gt 2 ] && COMPREPLY=() || COMPREPLY=( $(compgen -W '--name --all' -- ${cur}) )
+            ;;
+        'info')
+            [ "$COMP_CWORD" -gt 2 ] && COMPREPLY=() || COMPREPLY=( $(compgen -W '--all --base --envs --system --unsafe-channels --help' -- ${cur}) )
+            ;;
+        'config')
+            [ "$COMP_CWORD" -gt 2 ] && COMPREPLY=() || COMPREPLY=( $(compgen -W '--help' -- ${cur}) )
+            ;;
+        'list')
+            [ "$COMP_CWORD" -gt 2 ] && COMPREPLY=() || COMPREPLY=( $(compgen -W '--help' -- ${cur}) )
+            ;;
+        'install')
+            [ "$COMP_CWORD" -gt 3 ] && COMPREPLY=() || COMPREPLY=( $(compgen -W '--name --channel --help' -- ${cur}) )
+            ;;
+        'env')
+            [ "$COMP_CWORD" -gt 2 ] && COMPREPLY=() || COMPREPLY=( $(compgen -W 'create export list remove update config' -- ${cur}) )
+            ;;
+        *)
+            ;;
+    esac
+}
+
+complete -F conda_cmd conda

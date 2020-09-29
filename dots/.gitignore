@@ -10,6 +10,7 @@ vhelper/tmp
 bin/lib/ReadMe
 bin/lib/py3/__pycache__
 bin/data/.asd~
+bin/data/baidu.json
 bin/user
 
 known_hosts

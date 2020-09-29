@@ -1,5 +1,6 @@
 #include <iostream>
 #include<vector>
+#include <map>
 #include<string>
 #include <fstream>
 #include <unistd.h>
@@ -23,30 +24,23 @@ using json = nlohmann::json;
 
 enum opt_state {ADD, DEL, GET, PUT};
 enum opt_type {EMPTY, ARRAY, OBJECT};
+int optx = -1;
 
-struct {
-    int opt;
-    /* string file; */
-
-    /* vector<string> obj; */
-
-    /* vector<string> str; */
-    /* vector<string> array; */
-    /* vector<string> key; */
-    /* vector<string> value; */
-    /* vector<string> i; */
-    /* vector<string> b; */
-} ctx;
+#define JOB_NUM 10
 
 struct task {
     /* json *js_p; */
     /* json *last_js_p; */
     /* json js; */
+    enum opt_type type;
     vector<string> obj;
     vector<string> array;
     int have_key;
     int have_array;
+    int job_end;
 
+    // 每个job中，通过obj array定位到指定操作点，kx只对obj有效(可以有多个), x只对array有效(可以有多个)。
+    // 只要如下有一项不为空，即为当前job的终止符。
     map<string,string> ks;
     map<string,string> kb;
     map<string,int> ki;
@@ -54,39 +48,20 @@ struct task {
     vector<string> s;
     vector<int> i;
     vector<string> b;
-
-    /* vector<string> key; */
-    /* vector<string> value; */
-
-    /* vector<string> array; */
-} job[10];
+} job[JOB_NUM];
 
 int job_cnt = 0;
-int job_end = 0;
-int job_in = EMPTY;
 
 json js;
 string key_tmp = "";
 
+string file = "";
 int write_flag = 0;
-
-/* json *job_js_p; */
-/* json *js_opt = &js; */
-/* json *last_opt = js_opt; */
-/* int cur_type; */
-
-#if 0
-void reset_cur_obj(void)
-{
-    if ((js_opt->type() != json::value_t::object) && (js_opt->type() != json::value_t::null))
-        js_opt = last_opt;
-}
-#endif
 
 int prefix_process(int argc, char *argv[])
 {
     optind = 1;
-    int file_flag = 0, opt_flag = 0; // , opt_cnt = 0;
+    int file_flag = 0;
 
     int opt, option_index = 0;
     const char *optstring = "f:b:i:s:k:v:a:o:";
@@ -101,29 +76,27 @@ int prefix_process(int argc, char *argv[])
 
     while ((opt = getopt_long(argc, argv, optstring, long_options, &option_index)) != -1) {
         if (opt == 'A') {
-            ctx.opt = ADD;
-            opt_flag = 1;
+            optx = ADD;
         } else if (opt == 'D') {
-            ctx.opt = DEL;
-            opt_flag = 1;
+            optx = DEL;
         } else if (opt == 'G') {
-            ctx.opt = GET;
-            opt_flag = 1;
+            optx = GET;
         } else if (opt == 'C') {
-            ctx.opt = PUT;
-            opt_flag = 1;
+            optx = PUT;
         } else if (opt == 'f') {
-            char *buffer;
             fstream fd;
 
-            fd.open(optarg,ios::in|ios::out|ios::binary|ios::ate);
-            int size = fd.tellg();
-            fd.seekg(0, ios::beg);
-            buffer = new char[size];
-            fd.read(buffer, size);
-            js = json::parse(buffer);
-            free(buffer);
-            fd.close();
+            file = optarg;
+            fd.open(file,ios::in|ios::out|ios::binary|ios::ate);
+            if (fd) {
+                int size = fd.tellg();
+                char *buffer = new char[size];
+                fd.seekg(0, ios::beg);
+                fd.read(buffer, size);
+                js = json::parse(buffer);
+                free(buffer);
+                fd.close();
+            }
             file_flag = 1;
         }
     }
@@ -131,8 +104,8 @@ int prefix_process(int argc, char *argv[])
     if (file_flag == 0)
         return -1;
 
-    if (opt_flag == 0)
-        ctx.opt = GET;
+    if (optx == -1)
+        optx = GET;
 
     /* opt_cnt = optind; */
     /* cout << "opt_cnt" << opt_cnt << endl; */
@@ -141,77 +114,21 @@ int prefix_process(int argc, char *argv[])
 
     while ((opt = getopt_long(argc, argv, optstring, long_options, &option_index)) != -1) {
         /* cout << "optind" << optind << endl; */
-
-#if 0
-        switch(opt) {
-            case 'o':
-            case 'a':
-                if (job_end) {
-                    job_cnt ++;
-                    job_end = 0;
-                }
-                job[job_cnt].have_key = 0;
-                if (opt == 'o')
-                    job[job_cnt].obj.push_back(optarg);
-                else if (opt == 'a')
-                    job[job_cnt].array.push_back(optarg);
-                job_in = (opt == 'o') ? OBJECT : ARRAY;
-                break;
-            case 'i':
-            case 'b':
-            case 's':
-                if (!key_tmp.empty()) {
-                    if (job_in == ARRAY)
-                        job_cnt++;
-
-                    if (opt == 's')
-                        job[job_cnt].ks.insert(pair<string,string>(key_tmp, optarg));
-                    else if (opt == 'i')
-                        job[job_cnt].ki.insert(pair<string,int>(key_tmp, atoi(optarg)));
-                    else if (opt == 'b')
-                        job[job_cnt].kb.insert(pair<string,string>(key_tmp, optarg));
-
-                    job[job_cnt].have_key = 1;
-                    key_tmp = "";
-                } else {
-                    if (opt == 's')
-                        job[job_cnt].s.push_back(optarg);
-                    else if (opt == 'i')
-                        job[job_cnt].i.push_back(atoi(optarg));
-                    else if (opt == 'b')
-                        job[job_cnt].b.push_back(optarg);
-                }
-                job_end = 1;
-                break;
-            case 'k':
-                key_tmp = string(optarg);
-                break;
-            default:
-                break;
-        }
-#else
         if (opt == 'o') {
-            if (job_end) {
-                job_cnt ++;
-                job_end = 0;
-            }
-            job[job_cnt].have_key = 0;
-            job[job_cnt].obj.push_back(optarg);
-            job_in = OBJECT;
-        } else if (opt == 'a') {
-            if (job_end) {
-                job_cnt ++;
-                job_end = 0;
-            }
+            if (job[job_cnt].job_end) job_cnt ++;
 
-            job_end = 1;
-            job[job_cnt].have_key = 0;
-            job[job_cnt].have_array = 1;
+            job[job_cnt].obj.push_back(optarg);
+            job[job_cnt].type = OBJECT;
+        } else if (opt == 'a') {
+            if (job[job_cnt].job_end) job_cnt ++;
+
             job[job_cnt].array.push_back(optarg);
-            job_in = ARRAY;
+            job[job_cnt].type = ARRAY;
+            job[job_cnt].job_end = 1;
+            job[job_cnt].have_array = 1;
         } else if (opt == 'k') { // k属于o, 但不会更新指针，且只含有一个值
             if (!key_tmp.empty()) {
-                if (job_in == ARRAY)
+                if (job[job_cnt].type == ARRAY)
                     job_cnt++;
 
                 job[job_cnt].ks.insert(pair<string,string>(key_tmp, ""));
@@ -221,7 +138,7 @@ int prefix_process(int argc, char *argv[])
             key_tmp = string(optarg);
         } else if (opt == 's') {
             if (!key_tmp.empty()) {
-                if (job_in == ARRAY)
+                if (job[job_cnt].type == ARRAY)
                     job_cnt++;
 
                 job[job_cnt].ks.insert(pair<string,string>(key_tmp, optarg));
@@ -230,10 +147,10 @@ int prefix_process(int argc, char *argv[])
             } else {
                 job[job_cnt].s.push_back(optarg);
             }
-            job_end = 1;
+            job[job_cnt].job_end = 1;
         } else if (opt == 'i') {
             if (!key_tmp.empty()) {
-                if (job_in == ARRAY)
+                if (job[job_cnt].type == ARRAY)
                     job_cnt++;
 
                 job[job_cnt].ki.insert(pair<string,int>(key_tmp, atoi(optarg)));
@@ -242,159 +159,88 @@ int prefix_process(int argc, char *argv[])
             } else {
                 job[job_cnt].i.push_back(atoi(optarg));
             }
-            job_end = 1;
+            job[job_cnt].job_end = 1;
         } else if (opt == 'b') {
             if (!key_tmp.empty()) {
-                if (job_in == ARRAY)
+                if (job[job_cnt].type == ARRAY)
                     job_cnt++;
 
                 job[job_cnt].kb.insert(pair<string,string>(key_tmp, optarg));
                 job[job_cnt].have_key = 1;
                 key_tmp = "";
             } else {
-                /* if (string(optarg) == "true") */
                 job[job_cnt].b.push_back(optarg);
             }
-            job_end = 1;
+            job[job_cnt].job_end = 1;
         }
-#endif
     }
 
     if (!key_tmp.empty()) {
-        if (job_in == OBJECT) {
+        if (job[job_cnt].type == OBJECT) {
             job[job_cnt].ks.insert(pair<string,string>(key_tmp, ""));
             job[job_cnt].have_key = 1;
         }
+        if (job[job_cnt].type == ARRAY) {
+            job[job_cnt].ks.insert(pair<string,string>(key_tmp, ""));
+            job[job_cnt].have_key = 1;
+        }
+        job[job_cnt].job_end = 1;
     }
 
     return 0;
 }
 
 #if 0
-int testGetOptLong(int argc, char *argv[])
+void print_array(json *js_p_cur, vector<string>& array)
 {
-    int opt; // getopt_long() 的返回值
-    int digit_optind = 0; // 设置短参数类型及是否需要参数
+    for (auto tmp = (*js_p)[array[0]].begin(); tmp != (*js_p)[array[0]].end(); ++tmp) {
+        cout << '"' << string(*tmp) << "\" ";
+    }
+}
+#endif
 
-    int option_index = 0;
-    const char *optstring = "f:b:i:s:k:v:a:o:";
+json * xxx_obj(int job_index, json *js_p_cur)
+{
+    int empty = 0;
 
-    static struct option long_options[] = {
-        {"add", no_argument, NULL, 'A'},
-        {"del",  no_argument, NULL, 'D'},
-        {"change", no_argument, NULL, 'C'},
-        {"get", no_argument, NULL, 'G'},
-        {0, 0, 0, 0}  // 添加 {0, 0, 0, 0} 是为了防止输入空值
-    };
+    if (job[job_index].job_end)
+        return js_p_cur;
 
-    while ((opt = getopt_long(argc, argv, optstring, long_options, &option_index)) != -1) {
-        if (opt == 'A') {
-            ctx.opt = ADD;
-        } else if (opt == 'D') {
-            ctx.opt = DEL;
-        } else if (opt == 'G') {
-            ctx.opt = GET;
-        } else if (opt == 'C') {
-            ctx.opt = PUT;
-        }
+    if (job[job_index].ks.size() != 0) {
+        for (map<string,string>::iterator it = job[job_index].ks.begin(); it != job[job_index].ks.end(); ++it) {
+            /* cout << "it->first " << it->first << endl; */
+            if (js_p_cur->find(it->first) != js_p_cur->end()) {
+                /* cout << "get key " << it->first << " of " << std::string(js_p_cur->type_name()) << endl; */
+                /* cout << string((*js_p_cur)[it->first].type_name()) << endl; */
 
-        if (opt == 'f') {
-            char *buffer;
-            fstream fd;
-
-            fd.open(optarg,ios::in|ios::out|ios::binary|ios::ate);
-            int size = fd.tellg();
-            fd.seekg(0, ios::beg);
-            /* cout << "size = " << size << endl; */
-            buffer = new char[size];
-            fd.read(buffer, size);
-            /* cout << buffer << endl; */
-            js = json::parse(buffer);
-            free(buffer);
-            fd.close();
-        } else if (opt == 'o') {
-            reset_cur_obj();
-
-            cout << "opt type_name1 = "<< std::string(js_opt->type_name()) << '\n';
-            cout << "last_opt type_name = "<< std::string(last_opt->type_name()) << '\n';
-            if (ctx.opt == DEL) {
-                    cout << "haha" << endl;
-                    last_opt->erase(optarg);
-            cout << "del obj " << optarg << endl;
-            } else {
-            if (js_opt->find(optarg) == js_opt->end()) {
-                last_opt = js_opt;
-                if (ctx.opt != DEL) {
-                    (*js_opt)[optarg] = {};
-                }
-            }
-            js_opt = &(*js_opt)[optarg];
-            cout << "add obj " << optarg << endl;
-            }
-            /* key_tmp = string(optarg); ??? */
-        } else if (opt == 'k') { // k属于o, 但不会更新指针，且只含有一个值
-            if (!key_tmp.empty() && (ctx.opt == DEL)) {
-                /* (*js_opt)[key_tmp] = optarg; */
-            }
-            key_tmp = string(optarg);
-        } else if (opt == 's') {
-            cout << "type_name = "<< std::string(js_opt->type_name()) << '\n';
-            if (ctx.opt == DEL) {
-                if (!key_tmp.empty()) {
-                    reset_cur_obj();
-                    js_opt->erase(key_tmp);
-                    key_tmp = "";
+                if ((*js_p_cur)[it->first].type() == json::value_t::object) {
+                    for (json::iterator it1 = (*js_p_cur)[it->first].begin(); it1 != (*js_p_cur)[it->first].end(); ++it1) {
+                        cout << '"' << it1.key() << "\" ";
+                    }
+                } else if ((*js_p_cur)[it->first].type() == json::value_t::array) {
+                    for (auto tmp = (*js_p_cur)[it->first].begin(); tmp != (*js_p_cur)[it->first].end(); ++tmp) {
+                        cout << '"' << string(*tmp) << "\" ";
+                    }
                 } else {
-                    js_opt->erase(optarg);
+                    cout << (*js_p_cur)[it->first] << " ";
                 }
-            } else {
-
-            if (!key_tmp.empty()) {
-                reset_cur_obj();
-
-                (*js_opt)[key_tmp] = optarg;
-                key_tmp = "";
-            } else {
-                js_opt->push_back(optarg);
             }
-            }
-
-            cout << "add string " << optarg << endl;
-        } else if (opt == 'i') {
-            if (!key_tmp.empty()) {
-                reset_cur_obj();
-                (*js_opt)[key_tmp] = atoi(optarg);
-                key_tmp = "";
-            } else {
-                js_opt->push_back(atoi(optarg));
-            }
-            cout << "add int " << optarg << endl;
-        } else if (opt == 'b') {
-            if (!key_tmp.empty()) {
-                reset_cur_obj();
-                if (string(optarg) == "true")
-                    (*js_opt)[key_tmp] = true;
-                else
-                    (*js_opt)[key_tmp] = false;
-                key_tmp = "";
-            } else {
-                if (string(optarg) == "true")
-                    js_opt->push_back(true);
-                else
-                    js_opt->push_back(false);
-            }
-            cout << "add bool " << optarg << endl;
+            empty = 1;
         }
     }
 
-    return 0;
-}
+    if ((empty == 0) && (job_index == job_cnt)) {
+        for (json::iterator it = (*js_p_cur).begin(); it != (*js_p_cur).end(); ++it) {
+            cout << '"' << it.key() << "\" ";
+        }
+        empty = 1;
+    }
 
-json * get_obj_ptr(vertcor<string> &obj)
-{
+    if (empty)
+        job[job_index].job_end = 1;
 
+    return js_p_cur;
 }
-#endif
 
 
 int process(void)
@@ -406,12 +252,12 @@ int process(void)
     json * last_js_p = js_p;
 
     /* cout << "job_cnt " << job_cnt << endl; */
-    /* cout << "ctx.opt " << ctx.opt << endl; */
+    /* cout << "optx " << optx << endl; */
 
-    if (ctx.opt == ADD) {
+    if (optx == ADD) {
         write_flag = 1;
         for (int i = 0; i < job_cnt+1; ++i) {
-            cout << "job_cnt i = " << i << endl;
+            /* cout << "job_cnt i = " << i << endl; */
             for (int j = 0; j < job[i].obj.size(); ++j) {
                 if (js_p->find(job[i].obj[j]) == js_p->end()) {
                     (*js_p)[job[i].obj[j]] = {};
@@ -470,12 +316,12 @@ int process(void)
             }
             js_p = last_js_p;
         }
-    } else if (ctx.opt == DEL) {
+    } else if (optx == DEL) {
         write_flag = 1;
         string tmp;
         job_done = 0;
         for (int i = 0; i < job_cnt+1; ++i) {
-            cout << "job_cnt i = " << i << endl;
+            /* cout << "job_cnt i = " << i << endl; */
             for (int j = 0; j < job[i].obj.size(); ++j) {
                 if (js_p->find(job[i].obj[j]) == js_p->end()) {
                     job_done = 1;
@@ -577,12 +423,12 @@ int process(void)
             js_p = last_js_p;
         }
 
-    } else if (ctx.opt == PUT) { // only support modified key's value.
+    } else if (optx == PUT) { // only support modified key's value.
         write_flag = 1;
         string tmp;
         job_done = 0;
         for (int i = 0; i < job_cnt+1; ++i) {
-            cout << "job_cnt i = " << i << endl;
+            /* cout << "job_cnt i = " << i << endl; */
             for (int j = 0; j < job[i].obj.size(); ++j) {
                 if (js_p->find(job[i].obj[j]) == js_p->end()) {
                     job_done = 1;
@@ -620,14 +466,17 @@ int process(void)
             js_p = last_js_p;
         }
 
-    } else if (ctx.opt == GET) {
+    } else if (optx == GET) {
         string tmp;
-        job_done = 0;
-        for (int i = 0; i < job_cnt+1; ++i) {
+        /* job_done = 0; */
+        int i;
+
+        for (i = 0; i < job_cnt+1; ++i) {
             /* cout << "job_cnt i = " << i << endl; */
             for (int j = 0; j < job[i].obj.size(); ++j) {
                 if (js_p->find(job[i].obj[j]) == js_p->end()) {
-                    job_done = 1;
+                    /* job_done = 1; */
+                    job[i].job_end = 1;
                     break;
                 } else {
                     if ((*js_p)[job[i].obj[j]].type() == json::value_t::object) {
@@ -635,59 +484,188 @@ int process(void)
                         js_p = &(*js_p)[job[i].obj[j]];
                         tmp = job[i].obj[j];
                     } else {
-                        job_done = 1;
+                        /* job_done = 1; */
+                        job[i].job_end = 1;
                         break;
                     }
                 }
             }
 
-            if (job_done) continue;
+            /* cout << "type_name " << std::string(js_p->type_name()) << '\n'; */
+            /* cout << "size " << job[i].array.size() << endl; */
 
-            if (job[i].have_key != 0) { // object job.
-                for (map<string,string>::iterator it = job[i].ks.begin(); it != job[i].ks.end(); ++it) {
-                    if (js_p->find(it->first) != js_p->end()) {
-                        /* cout << "get key " << it->first << " of " << std::string(js_p->type_name()) << endl; */
-                        /* cout << (*js_p)[it->first] << endl; */
-                        if ((*js_p)[it->first].type() != json::value_t::object) {
-                            for (auto tmp = (*js_p)[it->first].begin(); tmp != (*js_p)[it->first].end(); ++tmp) {
-                                cout << '"' << string(*tmp) << "\" ";
-                            }
-                            cout << "" << endl;
-                        }
-                    }
-                }
+            if (job[i].job_end) continue;
 
-                job_done = 1;
-            } else if (job[i].have_array != 0) { // array job.
+            if ((job[i].type == OBJECT) && (js_p->type() == json::value_t::object)) {
+                js_p = xxx_obj(i, js_p);
+            } else if ((job[i].type == ARRAY) && (js_p->type() == json::value_t::array)) {
+                /* js_p = xxx_obj(i, js_p); */
+                int empty = 0;
+
                 if (!job[i].array.empty()) {
                     if (js_p->find(job[i].array[0]) == js_p->end()) {
-                        continue;
+                        int array_cnt = atoi(job[i].array[0].c_str());
+                        if (array_cnt < js_p->size())
+                            js_p = &(*js_p)[array_cnt];
+                        /* cout << job[i].array[0] << (*js_p)[array_cnt] << endl; */
+                        else
+                            continue;
                     }
+
+                    if (js_p->type() == json::value_t::array) {
+                        /* js_p = xxx_obj(i, js_p); */
+                    } else if (js_p->type() == json::value_t::object) {
+                        js_p = xxx_obj(i, js_p);
+                    }
+
                     if ((*js_p)[job[i].array[0]].type() == json::value_t::array) {
                         /* cout << (*js_p)[job[i].array[0]] << endl; */
                         for (auto tmp = (*js_p)[job[i].array[0]].begin(); tmp != (*js_p)[job[i].array[0]].end(); ++tmp) {
                             cout << '"' << string(*tmp) << "\" ";
                         }
                         cout << "" << endl;
+                    } else if ((*js_p)[job[i].array[0]].type() == json::value_t::object) {
+                        for (auto tmp = (*js_p)[job[i].array[0]].begin(); tmp != (*js_p)[job[i].array[0]].end(); ++tmp) {
+                            if ((*tmp).type() == json::value_t::object) {
+                                for (auto aaa = (*tmp).begin(); aaa != (*tmp).end(); ++aaa)
+                                    cout << '"' << string(*aaa) << "\" ";
+                            } else if ((*tmp).type() == json::value_t::array) {
+                                cout << '"' << string(*tmp) << "\" ";
+                            }
+                        }
+                        cout << "" << endl;
+                        /* job_done = 1; */
+                        job[i].job_end = 1;
                     } else {
                         continue;
                     }
                 }
-                job_done = 1;
+
+                if (empty == 0) {
+                    for (auto tmp = (*js_p).begin(); tmp != (*js_p).end(); ++tmp) {
+                        /* cout << (*js_p)[2] << ; */
+                        if ((*tmp).type() == json::value_t::object)
+                            /* cout << " \1 " << (*tmp).first() << endl; */
+                            /* for (json::iterator it = (*tmp).begin(); it != (*tmp).end(); ++it) { */
+                            /*     cout << '"' << it.key() << "\" "; */
+                            /* } */
+                        cout << '"' << string(*tmp) << "\" ";
+                    }
+                }
+                cout << "" << endl;
+
+                /* job_done = 1; */
+                    job[i].job_end = 1;
             }
         }
-        if (job_done == 0) {
-            for (json::iterator it = js_p->begin(); it != js_p->end(); ++it) {
-                cout << '"' << it.key() << "\" ";
+#if 0
+        if (job[i].job_end == 0) {
+            if (js_p->type() == json::value_t::object) {
+                for (json::iterator it = js_p->begin(); it != js_p->end(); ++it) {
+                    cout << '"' << it.key() << "\" ";
+                }
+                cout << "" << endl;
             }
+        }
+#endif
+        if (i > 0 && job[i-1].job_end)
             cout << "" << endl;
+    }
+}
+
+void ShowVec(const vector<string>& valList)
+{
+    for (auto iter = valList.cbegin(); iter != valList.cend(); iter++)
+    {
+        cout << "  " << (*iter) << endl;
+    }
+}
+
+void ShowVec1(const vector<int>& valList)
+{
+    for (auto iter = valList.cbegin(); iter != valList.cend(); iter++)
+    {
+        cout << "  " << (*iter) << endl;
+    }
+}
+
+void debug(void)
+{
+    for (int i = 0; i < JOB_NUM; ++i) {
+        if (job[i].type != EMPTY) {
+            if (optx == ADD)
+                printf("\033[33m ADD\033[0m");
+            else if (optx == DEL)
+                printf("\033[33m DEL\033[0m");
+            else if (optx == GET)
+                printf("\033[33m GET\033[0m");
+            else if (optx == PUT)
+                printf("\033[33m PUT\033[0m");
+
+            if (job[i].type == OBJECT)
+                printf("\033[33m OBJECT\033[0m\n");
+            else if (job[i].type == ARRAY)
+                printf("\033[33m ARRAY\033[0m\n");
+
+            printf("\033[33m job[i].have_key = %d | job[i].job_end = %d | job[i].have_array = %d |\033[0m\n", job[i].have_key, job[i].job_end, job[i].have_array);
+
+            if (!job[i].obj.empty()) {
+                cout << "obj" << endl;
+                ShowVec(job[i].obj);
+            }
+
+            if (!job[i].array.empty()) {
+                cout << "array" << endl;
+                ShowVec(job[i].array);
+            }
+
+            if (!job[i].s.empty()) {
+                cout << "s" << endl;
+                ShowVec(job[i].s);
+            }
+
+            if (!job[i].b.empty()) {
+                cout << "b" << endl;
+                ShowVec(job[i].b);
+            }
+
+            if (!job[i].i.empty()) {
+                cout << "i" << endl;
+                ShowVec1(job[i].i);
+            }
+
+            for (map<string,string>::iterator it = job[i].ks.begin(); it != job[i].ks.end(); ++it) {
+                cout << "ks:\n  " << it->first << ": " << it->second << endl;
+            }
+
+            for (map<string,string>::iterator it = job[i].kb.begin(); it != job[i].kb.end(); ++it) {
+                cout << "kb:\n  " << it->first << ": " << it->second << endl;
+            }
+
+            for (map<string,int>::iterator it = job[i].ki.begin(); it != job[i].ki.end(); ++it) {
+                cout << "ki:\n  " << it->first << ": " << it->second << endl;
+            }
+        cout << "-------------" << endl;
         }
     }
 }
 
 int main(int argc, char *argv[])
 {
+    job_cnt = 0;
+    for (int i = 0; i < JOB_NUM; ++i) {
+        job[i].type = EMPTY;
+        job[i].have_key = 0;
+        job[i].have_array = 0;
+        job[i].job_end = 0;
+    }
+
     prefix_process(argc, argv);
+    /* debug(); */
+
+    for (int i = 0; i < JOB_NUM; ++i)
+        job[i].job_end = 0;
+
     process();
 
     /* testGetOptLong(argc, argv); */
@@ -696,7 +674,7 @@ int main(int argc, char *argv[])
 
     if (write_flag) {
         ofstream out;
-        out.open("out.txt",ios::in|ios::out|ios::binary|ios::trunc);
+        out.open(file,ios::in|ios::out|ios::binary|ios::trunc);
         out << js.dump(4);
         out.close();
     }

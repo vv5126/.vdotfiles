@@ -11,6 +11,8 @@ configparser
 jsonparser
 irc
 vsync
+p
+bai
 
 mk        "$HOME/.bin/app"
 vp
@@ -28,3 +30,8 @@ xclip-x64 xclip
 # asd
 # irc
 tm
+per_10_miniutes_job
+string_escape_prevention
+
+bai
+bai-ls

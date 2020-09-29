@@ -1253,3 +1253,7 @@ rebase 功能
 2.修改历史
 3.合并历史
 
+error: error: invalid protocol: wanted 'old new ref'
+git fetch --unshallow
+
+如果下载太慢，可以把github.com换成hub.fastgit.org

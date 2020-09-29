@@ -1,6 +1,10 @@
 " Gist的Vim插件
 " Plug 'mattn/gist-vim'
 " -------------------------------------------------
+" markdown
+Plug 'kannokanno/previm'
+Plug 'plasticboy/vim-markdown' ", {'for': 'markdown'}
+" Plug 'tpope/vim-markdown'
 "让Vim变成所见即所得的MarkDown文件编辑器，可以在编辑时预览最终效果。
 " If you don't have nodejs and yarn
 " use pre build, add 'vim-plug' to the filetype list so vim-plug can update this plugin
@@ -83,10 +87,6 @@ Plug 'mileszs/ack.vim'
 " -------------------------------------------------
 Plug 'vimwiki/vimwiki', {'branch': 'dev'}
 " -------------------------------------------------
-" markdown
-Plug 'kannokanno/previm'
-Plug 'plasticboy/vim-markdown' ", {'for': 'markdown'}
-" Plug 'tpope/vim-markdown'
 " -------------------------------------------------
 " use <tab> for trigger completion and navigate to the next complete item
 " -------------------------------------------------
@@ -125,7 +125,7 @@ Plug 'Yggdroot/LeaderF', { 'do': './install.sh'  }
 " Plug 'vim-utils/vim-man'
 " -------------------------------------------------
 " 为小括号加如彩虹效果，但对c貌似没啥意义...
-Plug 'kien/rainbow_parentheses.vim'
+" Plug 'kien/rainbow_parentheses.vim'
 " -------------------------------------------------
 " 可以在vim和tmux的任何组合间无缝切换
 " Plug 'christoomey/vim-tmux-navigator'

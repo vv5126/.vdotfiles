@@ -1,0 +1,56 @@
+# COMP_WORDS: 类型为数组，存放当前命令行中输入的所有单词；
+# COMP_CWORD: 类型为整数，当前光标下输入的单词位于COMP_WORDS数组中的索引；
+# COMPREPLY: 类型为数组，候选的补全结果；
+# COMP_WORDBREAKS: 类型为字符串，表示单词之间的分隔符；
+# COMP_LINE: 类型为字符串，表示当前的命令行输入；
+
+function _bai()
+{
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    if [ "${#COMP_WORDS[@]}" -eq 2 ]; then
+        COMPREPLY=( $(compgen -W "ls ll export meta quota search share tree offlinedl cp mv rm mkdir download upload" -- ${cur}) )
+        return
+    fi
+
+    if [ "${cur:0:1}" == "/" ]; then
+        if [ "${cur}" != "/" ]; then
+            [ "${cur: -1}" == "/" ] && cur="${cur%/*}"
+            tmp=($(bai-ls -f $VGL_DATA/baidu.json -d $cur))
+            if [ -z "$tmp" ]; then
+                path1=${cur%/*}
+                [ -z "$path1" ] && path1="/"
+                tmp=($(bai-ls -f $VGL_DATA/baidu.json -d $path1))
+                if [ -z "$tmp" ]; then
+                    compopt -o default
+                    return
+                fi
+                probe=${cur##*/}
+            else
+                path1=$cur
+                probe=""
+            fi
+        else
+            path1="/"
+            probe=""
+        fi
+
+        tmp=($(bai-ls -f $VGL_DATA/baidu.json -d $path1))
+
+        if [ -n "$tmp" ]; then
+            compopt -o nospace -o filenames
+
+            if [ "$path1" == "/" ]; then
+                COMPREPLY=( $(compgen -W "$(echo "${tmp[*]}" | awk '{for(c=1;c<=NF;c++){printf("/%s ", $c);}}' - )" -- "/${probe}") )
+            else
+                COMPREPLY=( $(compgen -W "$(echo "${tmp[*]}" | awk '{for(c=1;c<=NF;c++){printf("'"$path1"'/%s ", $c);}}' - )" -- "$path1/${probe}") )
+            fi
+        fi
+    else
+        compopt -o default
+    fi
+
+    return 0
+} &&
+complete -F _bai bai

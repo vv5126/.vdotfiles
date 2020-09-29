@@ -1,0 +1,141 @@
+#!/bin/bash
+
+include base work misc
+
+debug=0
+
+is_push=1
+is_local=0
+dst_dir=''
+ret1=0
+
+# 如果为本地，得到全路径；如果为板端，不做处理。
+function try_get() {
+    local file="$1"
+
+    # [ "$file" != '/' ] && [ "${file: -1}" == '/' ] && file="${file:0:-1}"
+    [ "${file:0:4}" == '/tmp' ] && return 1
+    [ "${file:0:4}" == '/mnt' ] && return 1
+    [ "${file:0:4}" == '/usr' ] && return 1
+    [ "${file:0:4}" == '/etc' ] && return 1
+    [ "$file" == '/' ] && return 1
+
+    if [ "${file:0:1}" == '/' ]; then #absolute
+        [ -f "$1" -o -d "$1" ] && { echo $1; return 0; }
+    fi
+
+    [ -f "$1" -o -d "$1" ] && { echo "$PWD/$1"; return 0; }
+
+    cddir '.git'
+    [ -f "$1" -o -d "$1" ] && { echo "$PWD/$1"; return 0; }
+
+    cddir '.repo'
+    [ -f "$1" -o -d "$1" ] && { echo "$PWD/$1"; return 0; }
+
+    return 1
+}
+
+# if [ $is_push -eq 1 ]; then #push
+#     [ -z "$(try_get $last)" -a "${last:0:1}" == '/' ] && dst_dir="$(clean_last_symbol $last)"
+#     debug echo dst_dir = $dst_dir
+
+#     for i in ${param[@]}; do
+#         debug echo i $i
+#         i="$(clean_last_symbol $i)"
+#         debug echo i $i
+
+#         [ "$i" == '/' ] && continue
+#         [ "$i" == "$dst_dir" ] && continue
+
+#         src="$(try_get $i)"
+#         debug echo src = $src
+#         if [ -n "$src" ]; then
+#             # [ "${src: -1}" == '/' ] && src="${src:0:-1}"
+#             src_name="${src##*/}"
+#             debug echo src_name = $src_name
+#             if [ -z "$dst_dir" ]; then
+#                 dst="$(parse_dst "$src")"
+#             else
+#                 [ "$dst_dir" != '/' ] && dst="$dst_dir"
+#             fi
+
+#             if [ $is_local -eq 0 ]; then
+#                 debug echo scp -r "$src" "$VLOCALSSH:$host_vp"
+#                 scp -r "$src" "$VLOCALSSH:$host_vp" > /dev/null 2>&1
+
+#                 debug echo ssh $VLOCALSSH "adb push $host_vp/$src_name $dst/$src_name"
+#                 ssh $VLOCALSSH "adb push $host_vp/$src_name $dst/$src_name" > /dev/null 2>&1
+#                 [ $? -eq 0 ] || { echo push $src_name to $dst failed!; ret1=1; }
+#             else
+#                 debug echo adb push "$src" "$dst/$src_name"
+#                 adb push "$src" "$dst/$src_name"
+#                 [ $? -eq 0 ] || { echo push $src to $dst failed!; ret1=1; }
+#             fi
+#             [ $ret1 -eq 0 ] && echo done! # || echo failed!
+#         else
+#             echo can\'t find $i
+#         fi
+#     done
+#     # debug echo ssh $VLOCALSSH "adb shell sync"
+#     # ssh $VLOCALSSH "adb shell sync" > /dev/null 2>&1
+# else #pull
+#     [ -n "$(try_get $last)" -o "${last:0:1}" != '/' ] && dst_dir="$(clean_last_symbol $last)"
+#     debug echo dst_dir = $dst_dir
+
+#     for i in $@; do
+#         debug echo i $i
+#         i="$(clean_last_symbol $i)"
+#         debug echo i $i
+
+#         [ "$i" == '/' ] && continue
+#         [ "$i" == "$dst_dir" ] && continue
+
+#         if [ "${i:0:1}" == '/' ]; then
+#             src_name="${i##*/}"
+#             debug echo src_name = $src_name
+#             if [ -z "$dst_dir" ]; then
+#                 dst="."
+#             else
+#                 dst="$dst_dir"
+#             fi
+
+#             if [ $is_local -eq 0 ]; then
+#                 debug echo ssh $VLOCALSSH "adb pull $i $host_vp/$src_name"
+#                 ssh $VLOCALSSH "adb pull $i $host_vp/$src_name" > /dev/null 2>&1
+#                 if [ $? -eq 0 ]; then
+#                     debug echo scp -r "$VLOCALSSH:$host_vp/$src_name" "$dst"
+#                     scp -r "$VLOCALSSH:$host_vp/$src_name" "$dst" > /dev/null 2>&1
+#                 else
+#                     echo pull $src_name to $dst failed!
+#                     ret1=1
+#                 fi
+#             else
+#                 debug echo adb pull $i $dst/$src_name
+#                 adb pull $i $dst/$src_name
+#                 [ $? -eq 0 ] || { echo pull $i to $dst failed!; ret1=1; }
+#             fi
+#             [ $ret1 -eq 0 ] && echo done! # || echo failed!
+#         else
+#             echo unsupport file $i
+#         fi
+#     done
+# fi
+
+# need param
+[ $# -lt 2 ] && exit
+
+cmd="$1"
+shift
+
+eval param=($@)
+
+# echo ${#param[*]}
+# last=${param[$((${#param[*]}-1))]}
+# debug echo last = $last
+
+case $cmd in
+    # ls ll export meta quota search share tree offlinedl cp mv mkdir download upload
+    'ls'|'ll')
+    echo baidu $param
+    ;;
+esac

@@ -1,0 +1,4 @@
+# name     param  exclude                 src                                       dst
+nfs        auv    "$VUSER_DATA/nfs.sync"  /backup/home/wgao/.nfs_disk               wgao@192.168.3.5:/home1/wgao/bak
+debug      auv    -                       /backup/home/wgao/work/local_debug/debug  wgao@192.168.3.5:/home1/wgao/bak
+datasheet  auv    -                       /backup/home/wgao/work/datasheet          wgao@192.168.3.5:/home1/wgao/bak

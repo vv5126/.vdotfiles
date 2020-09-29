@@ -121,19 +121,13 @@ vnoremap . :normal .<CR>
 
 " For when you forget to sudo.. Really Write the file.
 cmap w!! w !sudo tee % >/dev/null
-" 没sudo却想保存
-cmap w!! w !sudo tee % >/dev/null
 
 " Dos Unix FF Conversion
 " nnoremap <Leader>fcu :call Dos2Unix()<CR>
 " nnoremap <Leader>fcd :call Unix2Dos()<CR>
 
 " Some helpers to edit mode
-" http://vimcasts.org/e/14
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
-map <leader>ew :e %%
-map <leader>es :sp %%
-map <leader>ev :vsp %%
 map <leader>et :tabe %%
 
 " Map <Leader>ff to display all lines with keyword under cursor
@@ -152,7 +146,7 @@ nnoremap <silent> <leader>fk vipJ
 nnoremap <silent> <leader>fK :%norm vipJ<cr>
 
 " fullscreen mode for GVIM and Terminal, need 'wmctrl' in you PATH
-map <silent> <F11> :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
+" map <silent> <F11> :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
 
 " Open a new instance tab
 nnoremap <Leader>tn :tabnew +Startify<CR>

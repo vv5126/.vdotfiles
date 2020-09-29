@@ -129,6 +129,14 @@ function git_bak() {
                         ;;
                 esac
         done < .tmp-git-bak
+
+        # git remote -v >  .tmp-git-bak
+        # git br -av >>  .tmp-git-bak
+        # git st -s >>  .tmp-git-bak
+
+        tar -Pzcf "$bakdir.tar.gz" "$bakdir"
+        rm -rf "$bakdir"
+
         rm .tmp-git-bak
 
         echo "cp $num files, finished!"

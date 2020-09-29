@@ -1,0 +1,109 @@
+#!/bin/bash
+
+source /backup/home/wgao/.profile
+
+json_data=$VTMP/.bash.json
+history_data=$VTMP/.bash_history
+
+function history_check() {
+    local tty md5 md5_tmp
+
+    if [ -f "$1" ]; then
+        md5=$(md5sum $1)
+        md5="${md5%% *}"
+        tty="${1##*_}"
+        eval md5_tmp="$(vjson -o md5 -k "$tty" -f $json_data)"
+    else
+        return 0
+    fi
+
+    # echo tty = $tty >&2
+    # echo md5 = $md5 >&2
+    # echo md5_tmp = $md5_tmp >&2
+    if [ "$md5" != "$md5_tmp" ]; then
+        return 1
+    else
+        return 0
+    fi
+
+}
+
+function history_merge() {
+    local tty md5
+
+    if [ -f "$1" ]; then
+        md5=$(md5sum $1)
+        md5="${md5%% *}"
+        tty="${1##*_}"
+    else
+        return 0
+    fi
+
+    while read line; do
+        if [ "x${line:0:1}" != x'#' ]; then
+            line="${line/\$/\\\$/}"
+            line="${line/\^/\\\^/}"
+            # echo echo $line
+            ag "^$(string_escape_prevention 0 "  $line")$" "$history_data" > /dev/null
+            if [ $? -ne 0 ]; then
+                # echo add
+                echo "  $line" >> $history_data
+            # else
+            #     echo skip
+            fi
+        fi
+    done < $1
+
+    echo vjson --add -o md5 -k "$tty" -s "$md5" -f "$json_data"
+    vjson --add -o md5 -k "$tty" -s "$md5" -f "$json_data"
+}
+
+function history_deal() {
+    local tty
+    local files="$(ls $VTMP/.bash_history_*)"
+
+    for i in $files; do
+
+        # if change merge.
+        history_check "$i"
+        if [ "$?" -eq 1 ]; then
+            history_merge "$i"
+        fi
+
+        tty="${i##*_}"
+
+        w | ag wgao | ag pts/$tty > /dev/null
+        if [ $? -ne 0 ]; then
+            echo rm $i >&2
+            vrm $i
+        fi
+    done
+}
+
+function history_clean() {
+    # cp $history_data xxxtmp
+    # cp $history_data .$history_data
+
+    sed '/^  rm /d;' $history_data > xxxtmp
+    sed '/^  mr /d;' $history_data -i xxxtmp
+
+    > newtmp
+    while read line; do
+
+        [ "$(echo $line | wc -L)" -lt 5 ] && continue;
+
+        str="${line:0:3}"
+        # if [ "$str" == "cd " ]; then
+        #     continue;
+        # fi
+
+        if [ "$str" == "ag " ]; then
+            continue;
+        fi
+
+        echo "  $line" >> newtmp
+    done < xxxtmp
+}
+
+history_deal
+# history_clean

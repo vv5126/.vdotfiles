@@ -82,7 +82,7 @@ function deleteempty() {
     if [[ -z "$(find "$dir" -mindepth 1 -type f)" ]] >/dev/null
     then
       echo "$dir"
-      rm -rf ${dir} 2>&- && echo "Empty, Deleted!" || echo "Delete error"
+      rm -rf "$dir" 2>&- && echo "Empty, Deleted!" || echo "Delete error"
     fi
     if [ -d "$dir" ]; then
       deleteempty "$dir"

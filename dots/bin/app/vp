@@ -31,6 +31,7 @@ function try_get() {
 
     # [ "$file" != '/' ] && [ "${file: -1}" == '/' ] && file="${file:0:-1}"
     [ "${file:0:4}" == '/tmp' ] && return 1
+    [ "${file:0:4}" == '/mnt' ] && return 1
     [ "${file:0:4}" == '/usr' ] && return 1
     [ "${file:0:4}" == '/etc' ] && return 1
     [ "$file" == '/' ] && return 1
@@ -53,6 +54,7 @@ function try_get() {
 function host_clean() {
     # echo ssh $VLOCALSSH "rm -r $host_vp/*"
     ssh $VLOCALSSH "rm -r $host_vp/*" > /dev/null 2>&1
+    # ssh $VLOCALSSH "mkdir -p $VLOCALSSH:$host_vp" > /dev/null 2>&1
 }
 
 function parse_dst() {
@@ -85,7 +87,7 @@ debug echo $VHOSTID $VLOCALID
 debug echo is_push = $is_push
 debug echo is_local = $is_local
 
-host_clean
+[ "$is_local" -eq 0 ] && host_clean
 
 # eval last=$'$'$#
 last=${param[$((${#param[*]}-1))]}

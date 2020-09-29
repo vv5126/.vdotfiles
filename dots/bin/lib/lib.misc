@@ -335,8 +335,8 @@ function check_ln() {
         > "../.inited"
     fi
 
-    listfile_md1="$listfile_md1""$(md1sum $VGL_DATA/ln_common_list | awk '{print $1}')"
-    listfile_md1="$(md1sum ln_list | awk '{print $1}')"
+    listfile_md1="$(md1sum $VGL_DATA/ln_common_list | awk '{print $1}')"
+    listfile_md1="$listfile_md1""$(md1sum ln_list | awk '{print $1}')"
     if [ "x$(cat ../.inited)" != "x$listfile_md1" ]; then
         find $1 -type l -delete
         # clean_invalid_ln "$VUSER"

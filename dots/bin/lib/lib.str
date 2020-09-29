@@ -6,3 +6,5 @@ function string_escape() {
 	done
 	echo "$str"
 }
+
+[[ "${0##*/}" =~ "lib.str" ]] && $@

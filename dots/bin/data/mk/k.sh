@@ -179,11 +179,11 @@ function init(){
         fi
 
         if [ -z "$forOS" ]; then
-            local surport_os="$(jsonparser --get_keys -k 'surport_os' -f $VGL_JSON_FILE)"
+            local surport_os="$(vjson --get -o 'surport_os' -f $VGL_JSON_FILE)"
             tmp=$(user_select 'what OS' "${surport_os[@]}")
             forOS="${tmp:=none}"
         fi
-        [ -z "$the_image" ] && the_image="$(jsonparser --get_key -k "kernel_img $forOS" -f $VGL_JSON_FILE)"
+        [ -z "$the_image" ] && the_image="$(vjson --get -o 'kernel_img' -k "$forOS" -f $VGL_JSON_FILE)"
 
 	git_remote="$(git remote -v | head -2 | tail -1 | awk '{print $2}')"
 	git_branch="$(git branch | grep '*' | awk '{print $2}')"

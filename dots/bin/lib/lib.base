@@ -63,7 +63,7 @@ function smv() {
 function getdir() {
     local TARGET=$1
     local PROJECT_DIR=''
-    local BASE_DIR=~/
+    local BASE_DIR=/
     local DIR=$PWD
 
     [[ "$DIR" =~ "$BASE_DIR" ]] || return

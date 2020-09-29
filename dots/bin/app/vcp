@@ -12,7 +12,7 @@ LAST="${!#}"
 if [[ "$LAST" =~ "@" ]]; then # target
 	DEST="$LAST"
 	SKIP=1
-	echo "$DEST" >> $VGL_DATA/vcp.vconf
+	echo "$DEST $DEST" >> $VGL_DATA/vcp.vconf
 else # normal file
 	showlist_with_input $VGL_DATA/vcp.vconf "name" "cp to" $@
 	DEST="$dest"
