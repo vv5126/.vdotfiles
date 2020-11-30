@@ -24,14 +24,14 @@ function quickcd() {
                 dir="${WORKSPACE:-$HOME}"
             fi
         elif [ "$1" == '.' ]; then
-	    tmp="$(cat $cd_list | fzy)"
-	    [ -d "${tmp:7}" ] && dir="${tmp:7}"
+            tmp="$(cat $cd_list | fzy)"
+            [ -d "${tmp:7}" ] && dir="${tmp:7}"
         elif [ -d "$1" ]; then
             dir="$1"
         elif [ $# -eq 2 -a $1 = "add" ]; then
-	    printf "%-6s %s\n" "|[$2]" "$PWD" >> $cd_quicklist
-	    dir="$PWD"
-	else
+            printf "%-6s %s\n" "|[$2]" "$PWD" >> $cd_quicklist
+            dir="$PWD"
+        else
             [ -d "${1%\/*}" ] && { dir="${1%\/*}"; continue; }
             [[ "$1" =~ ":~" ]] && { dir=$HOME"${1##*:~}"; continue; }
             [[ "$1" =~ ":" ]] && { dir="${1##*:}"; continue; }
@@ -42,7 +42,7 @@ function quickcd() {
                     [ "|[$1]" = ${line%% *} ] && { cache="$line"; dir="${line#* }"; continue 2; }
                 done < "$cd_quicklist"
             }
-            tmp="$(find -maxdepth 1 -type d -name "$1*")"; [ $? -eq 0 -a -d "$tmp" ] && { dir="$tmp"; continue; }
+        tmp="$(find -maxdepth 1 -type d -name "$1*")"; [ $? -eq 0 -a -d "$tmp" ] && { dir="$tmp"; continue; }
         fi
     done
 
@@ -60,7 +60,7 @@ function quickcd() {
 function vcd(){
     local DIR=~
     local TARGET=
-    [ -d "$DIR/$1" ] && TARGET=$1
+    [ "$1" != ".." -a -d "$DIR/$1" ] && TARGET=$1
     [ -f "$DIR/$1" ] && TARGET=${1%/*}
     [ -z "$1" ] && { TARGET=$($VLIBS/lib.base getdir .git); [ -z "$TARGET" ] && TARGET=$($VLIBS/lib.base getdir .repo); }
     [ -z "$TARGET" -a -n "$1" ] && { TARGET=$[${#1}+1]; TARGET=$(seq -s "../" $TARGET); TARGET=${TARGET//[0-9]/}; }

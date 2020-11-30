@@ -20,4 +20,9 @@ for $bundle_group in g:evervim_bundle_groups
     endif
 endfor
 
+" Make sure we run devicons after the above
+if !TERMUX() && !exists('g:evervim_no_patched_fonts')
+    Plug 'ryanoasis/vim-devicons'
+endif
+
 call plug#end()

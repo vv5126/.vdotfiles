@@ -122,7 +122,7 @@ function try_get() {
 # fi
 
 # need param
-[ $# -lt 2 ] && exit
+[ $# -lt 1 ] && exit
 
 cmd="$1"
 shift
@@ -134,8 +134,17 @@ eval param=($@)
 # debug echo last = $last
 
 case $cmd in
-    # ls ll export meta quota search share tree offlinedl cp mv mkdir download upload
-    'ls'|'ll')
-    echo baidu $param
-    ;;
+    # ls ll export meta quota search share tree offlinedl cp mv rm mkdir download upload
+    'ls'|'ll'|'meta'|'tree'|'quota'|'search'|'offlinedl'|'mkdir'|'share'|'rm'|'export')
+        baidu $cmd ${param[@]}
+        ;;
+    'cp')
+        echo baidu ${param[@]}
+        ;;
+    'mv')
+        ;;
+    'download')
+        ;;
+    'upload')
+        ;;
 esac

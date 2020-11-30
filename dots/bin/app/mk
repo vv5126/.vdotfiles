@@ -70,6 +70,11 @@ function tagbuild() {
 }
 
 function mkmain() {
+        # for buildroot.
+        local obj="$(findobj)"
+        [ -n "$obj" ] && PATH="$obj/buildroot-intermediate/host/bin:$obj/buildroot-intermediate/host/sbin:$PATH"
+        PYTHONNOUSERSITE=y
+
         # try find the a.sh and run.
         local A_DIR="$(getdir a.sh)"
         [ -f "$A_DIR/a.sh" ] && { cd "$A_DIR" && chmod +x a.sh && ./a.sh $@; return 0; }

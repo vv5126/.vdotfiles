@@ -17,6 +17,11 @@ alias aa='chmod +x'
 alias du='du -h -d 1 --exclude=.nfs_disk'
 alias fd='trap "set +f" 1 2 3 15; set -f; find1'
 
+alias gs='git st'
+alias gd='git diff'
+alias ga='git add'
+alias gk='gitk'
+
 alias ..='vcd'
 alias ...='cd $(lib.base getdir .repo)'
 

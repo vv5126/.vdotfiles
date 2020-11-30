@@ -251,27 +251,6 @@ set iskeyword-=-                                "  '-' is an end of word designa
 " set it to the first line when editing a git commit message
 au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
 
-" http://vim.wikia.com/wiki/Restore_cursor_to_file_position_in_previous_editing_session
-" Restore cursor to file position in previous editing session
-" This may cause NERDTree and tagbar's abnormal behavior
-" To disable this, add the following to your .vimrc.before.local file:
-"   let g:evervim_no_restore_cursor = 1
-" deprecated, replaced by vim-lastplace
-
-"if !exists('g:evervim_no_restore_cursor')
-    "function! ResCur()
-        "if line("'\"") <= line("$")
-            "silent! normal! g`"
-            "return 1
-        "endif
-    "endfunction
-
-    "augroup resCur
-        "autocmd!
-        "autocmd BufWinEnter * call ResCur()
-    "augroup END
-"endif
-
 if exists('g:evervim_nosimultaneousedits')
     augroup NoSimultaneousEdits
         autocmd!

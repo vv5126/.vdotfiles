@@ -676,6 +676,7 @@ int main(int argc, char *argv[])
         ofstream out;
         out.open(file,ios::in|ios::out|ios::binary|ios::trunc);
         out << js.dump(4);
+        out << '\n';
         out.close();
     }
 

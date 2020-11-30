@@ -80,30 +80,53 @@ function history_deal() {
     done
 }
 
+function checkstr()
+{
+    [ "${1:0:${#2}}" == "$2" ] && echo 1
+}
+
 function history_clean() {
     # cp $history_data xxxtmp
     # cp $history_data .$history_data
 
     sed '/^  rm /d;' $history_data > xxxtmp
-    sed '/^  mr /d;' $history_data -i xxxtmp
+    sed '/^  mr /d;' -i xxxtmp
+    sed '/^  git rm /d;' -i xxxtmp
+    sed '/^  ag /d;' -i xxxtmp
+    sed '/^  mv /d;' -i xxxtmp
+    sed '/^  du /d;' -i xxxtmp
+    sed '/^  fd /d;' -i xxxtmp
+    sed '/^  man /d;' -i xxxtmp
+    sed '/^  md /d;' -i xxxtmp
+    sed '/^  mkdir /d;' -i xxxtmp
+    sed '/^  iv /d;' -i xxxtmp
+    sed -rn '/^.{0,7}$/!p' -i xxxtmp
 
     > newtmp
     while read line; do
+        local cmd=${line%% *}
+        [ ${#cmd} -gt 30 ] && continue;
+        # [ "$(echo $line | wc -L)" -lt 5 ] && continue;
 
-        [ "$(echo $line | wc -L)" -lt 5 ] && continue;
-
-        str="${line:0:3}"
-        # if [ "$str" == "cd " ]; then
-        #     continue;
-        # fi
-
-        if [ "$str" == "ag " ]; then
-            continue;
-        fi
+        # [ -n "$(checkstr "$line" "git rm ")" ] && continue;
+        # [ -n "$(checkstr "$line" "ag ")" ] && continue;
+        # [ -n "$(checkstr "$line" "du ")" ] && continue;
+        # [ -n "$(checkstr "$line" "mv ")" ] && continue;
+        # [ -n "$(checkstr "$line" "fd ")" ] && continue;
 
         echo "  $line" >> newtmp
     done < xxxtmp
+
+    echo '' >> $json_data
+    eval tty=($(vjson -f $json_data -o md5))
+    for i in ${tty[@]}; do
+        w | ag wgao | ag pts/$i > /dev/null
+        if [ $? -ne 0 ]; then
+            echo vjson --del -f $json_data -o md5 -k $i
+            vjson --del -f $json_data -o md5 -k $i
+        fi
+    done
 }
 
 history_deal
-# history_clean
+history_clean

@@ -3,7 +3,6 @@
 Plug 'tpope/vim-commentary'
 
 Plug 'jiangmiao/auto-pairs'
-Plug 'terryma/vim-multiple-cursors'
 if executable('ctags')
     Plug 'majutsushi/tagbar'
 endif

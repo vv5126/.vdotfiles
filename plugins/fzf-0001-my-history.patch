@@ -1,0 +1,36 @@
+From 0cbcfd55c22cff8d14300ae56b2e758e3d3bbd31 Mon Sep 17 00:00:00 2001
+From: Gao Wei <wei.gao@ingenic.com>
+Date: Wed, 25 Nov 2020 16:23:30 +0800
+Subject: [PATCH] my history
+
+---
+ shell/key-bindings.bash | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/shell/key-bindings.bash b/shell/key-bindings.bash
+index be24dec..a83e614 100644
+--- a/shell/key-bindings.bash
++++ b/shell/key-bindings.bash
+@@ -55,13 +55,14 @@ __fzf_history__() (
+   local line
+   shopt -u nocaseglob nocasematch
+   line=$(
+-    HISTTIMEFORMAT= history |
+-    FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS --tac --sync -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" $(__fzfcmd) |
+-    command grep '^ *[0-9]') &&
++    cat $VTMP/.bash_history $HISTFILE | grep -v '^#.*' |
++    FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS --tac --sync -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS +m" $(__fzfcmd)) &&
+     if [[ $- =~ H ]]; then
+-      sed 's/^ *\([0-9]*\)\** .*/!\1/' <<< "$line"
++        echo $line
++      # sed 's/^ *\([0-9]*\)\** .*/!\1/' <<< "$line"
+     else
+-      sed 's/^ *\([0-9]*\)\** *//' <<< "$line"
++        echo $line
++      # sed 's/^ *\([0-9]*\)\** *//' <<< "$line"
+     fi
+ )
+ 
+-- 
+2.7.4
+

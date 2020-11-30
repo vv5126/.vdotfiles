@@ -28,7 +28,8 @@ function make_info_file(){
 
 	project_type=$project_type
 
-	the_image=$the_image
+	the_image="arch/mips/boot/uImage"
+	# the_image="arch/mips/boot/zcompressed/xImage"
 
 	lcd_name=$lcd_name
 
@@ -118,7 +119,8 @@ function mkmain() {
                 new_target_name=$new_target_name.img
                 echo -e "\n  the out img: $target_dir/$new_target_name" >&2
                 smkdir $target_dir
-                scp $the_image $target_dir/$new_target_name
+                p $the_image
+                # scp $the_image $target_dir/$new_target_name
             fi
             ;;
     esac

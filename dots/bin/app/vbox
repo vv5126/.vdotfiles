@@ -211,7 +211,23 @@ function vrm() {
 }
 
 function urm() {
-    local line real_dir
+    local line real_dir target list i
+
+    if [ $# -ne 0 ]; then
+        target="$PWD/$1"
+        list=($(find $VTMP/rm -name rm_info))
+        for i in ${list[@]}; do
+            while read line; do
+                detect_target="${line##* }"
+                if [ "$detect_target" == "$target" ];then
+                    mv $line
+                    return
+                fi
+            done < $i
+        done
+        return
+    fi
+
     [ ! -e "$VTMP/rm/last" ] && return
 
     if [ -f "$VTMP/rm/last/rm_info" ]; then
@@ -220,7 +236,7 @@ function urm() {
         done
         real_dir="$(readlink $VTMP/rm/last)"
         rm "$VTMP/rm/last"
-        [ -f "$VTMP/rm/last/last" ] && mv "$VTMP/rm/last/last" "$VTMP/rm"
+        [ -L "$VTMP/rm/$real_dir/last" ] && mv "$VTMP/rm/$real_dir/last" "$VTMP/rm"
 
         [ "$(ls -A "$VTMP/rm/$real_dir" | wc | awk '{print $1}')" == 1 ] && rm -rf "$VTMP/rm/$real_dir"
     fi
@@ -238,4 +254,28 @@ function md {
     [ ! -d "$1" ] && mkdir -p $1
 }
 
-eval $(basename $0) $@
+function wwget {
+    [ $# -eq 0 ] && return
+
+    while true; do
+        wget -c $1
+        if [ $? -eq 0 ]; then
+            exit
+        fi
+    done
+}
+
+function pw {
+    [ $# -lt 2 ] && return
+    src="$1"
+    dst="$2"
+
+    list=($(ag "$src" -l))
+
+    for i in ${list[@]}; do
+        echo sed "s/$src/$dst/g" -i $i
+        sed "s/$src/$dst/g" -i $i
+    done
+}
+
+eval $(basename $0) '$@'

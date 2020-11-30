@@ -375,3 +375,7 @@ conda create -name envname python=2.7
 
 添加 32 位体系结构支持：
 sudo dpkg --add-architecture i386
+
+go 安装第三方库
+go get github.com/tidwall/gjson
+

@@ -12,7 +12,6 @@
     let g:evervim_bundle_groups += ['code_completion/coc']
     " let g:evervim_bundle_groups += ['misc/code_completion/snipmate']
     " let g:evervim_bundle_groups += ['lang/python']
-    let g:evervim_bundle_groups += ['v']
 
     " Color Theme
     " Use :Colors for a list of available colorschemes
@@ -61,6 +60,7 @@
 
     " Restore cursor
     " Automatically restore your cursor to the place you left
+    " This may cause NERDTree and tagbar's abnormal behavior
     " Disable by uncommenting the following line.
     " let g:evervim_no_restore_cursor = 1
 
