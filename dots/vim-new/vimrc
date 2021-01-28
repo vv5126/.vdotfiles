@@ -5,13 +5,11 @@
 
     " EverVim Bundle Groups
     " Bundle Group name is just folders under ~/.vim/plugins
-    let g:evervim_bundle_groups=['general', 'appearance', 'writing', 'programming', 'misc']
-    let g:evervim_bundle_groups += ['lang', 'lang/bash', 'lang/cpp']
+    let g:evervim_bundle_groups=['general', 'appearance', 'writing', 'programming', 'lang', 'misc']
+    let g:evervim_bundle_groups += ['code_completion/coc']
     " let g:evervim_bundle_groups += ['misc/code_completion/youcompleteme']
     " let g:evervim_bundle_groups += ['misc/code_completion/neocomplete']
-    let g:evervim_bundle_groups += ['code_completion/coc']
     " let g:evervim_bundle_groups += ['misc/code_completion/snipmate']
-    " let g:evervim_bundle_groups += ['lang/python']
 
     " Color Theme
     " Use :Colors for a list of available colorschemes

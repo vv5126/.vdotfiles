@@ -23,6 +23,8 @@ function is_exsit() {
 function smkdir() {
     dst=$1
 
+    [ -z "$dst" ] && return
+
     is_local $dst
     if [ $? = 0 ]; then
         mkdir -p $dst

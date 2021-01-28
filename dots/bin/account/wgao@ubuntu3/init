@@ -12,9 +12,12 @@ else
     add_path "$VTOOLS/toolchain/gcc-arm-none-eabi-7-2018-q2-update/bin"
 
     # GO
-    add_path "$VTOOLS/go/bin"
     export GOROOT="$VTOOLS/go"
     export GOPATH="$VTOOLS/godir"
+    export GOBIN="$VTOOLS/godir/bin"
+    export GO111MODULE=auto
+    add_path "$GOROOT/bin"
+    add_path "$GOBIN"
 
     ### JDK
     # JAVA_1="java-1.7.0-openjdk-amd64"

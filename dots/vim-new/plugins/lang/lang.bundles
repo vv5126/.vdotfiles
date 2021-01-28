@@ -13,3 +13,38 @@ endif
 " Plug 'cespare/vim-toml'
 " Plug 'ekalinin/Dockerfile.vim'
 " Plug 'peterhoeg/vim-qml'
+
+
+
+
+
+
+" BASH
+Plug 'WolfgangMehner/bash-support'
+
+" CPP
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'vim-scripts/c.vim'
+" if count(g:evervim_bundle_groups, 'deoplete')
+"     Plug 'tweekmonster/deoplete-clang2'
+" endif
+
+" PYTHON
+" Pick either python-mode or pyflakes & pydoc
+" Plug 'python-mode/python-mode', {'branch': 'develop'}
+Plug 'yssource/python.vim'
+"Plug 'python_match.vim' " no longer use vim-scripts
+Plug 'vim-scripts/python_match.vim'
+"Plug 'pythoncomplete' " use youcompleteme + jedi instead
+if count(g:evervim_bundle_groups, 'deoplete')
+    Plug 'zchee/deoplete-jedi'
+endif
+" Pick either python-mode or pyflakes & pydoc
+" Plug 'klen/python-mode'
+
+" Go
+"Plug 'Blackrush/vim-gocode'
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+if count(g:evervim_bundle_groups, 'deoplete')
+    Plug 'zchee/deoplete-go'
+endif

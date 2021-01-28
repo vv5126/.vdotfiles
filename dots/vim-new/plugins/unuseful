@@ -41,9 +41,6 @@ endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 
 "python 插件
-if v:version < 704
-    Bundle 'Python-mode-klen'
-endif
 python_calltips
 Bundle 'Pydiction' "补全提示+
 let g:pydiction_menu_height = 20

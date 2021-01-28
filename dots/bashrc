@@ -36,10 +36,13 @@ if [ "$EXP" -eq 1 ]; then
 	export -f include
     fi
 
-    export VDOT="$HOME/.local/vdot"
-    export VTMP="$HOME/.local/tmp"
-    export VTOOLS="$HOME/.local/tools"
-    export VBIN="$HOME/.bin"
+    [ -z "$VDOT" ] && export VDOT="$HOME/.local/vdot/dots"
+    # [ -z "$VDOT" ] && export VDOT="$(readlink -f $0)"
+    [ -z "$VTMP" ] && export VTMP="$HOME/.local/tmp"
+    [ -z "$VTOOLS" ] && export VTOOLS="$HOME/.local/tools"
+
+    export VBIN="$VDOT/bin"
+    # export VBIN="$HOME/.bin"
     export VLIBS="$VBIN/lib"
     export VINIS="$VBIN/ini"
     export VHOSTID="$USER@$HOSTNAME"

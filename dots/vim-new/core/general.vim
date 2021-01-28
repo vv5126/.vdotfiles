@@ -35,7 +35,7 @@ nmap <S-F6> :PlugInstall<cr>
 vnoremap <S-k> :s/ \+/\r/g<cr>:noh<cr>
 
 "使用<leader>空格来取消搜索高亮
-nnoremap <silent> <leader><space> :noh<cr>
+nnoremap <silent> <leader><space> :noh<cr>:pclose<cr>
 
 "去空行
 nnoremap <leader>db :g/^\s*$/d<cr>
