@@ -1,0 +1,122 @@
+#!/bin/bash
+
+# 系统最小安装
+
+# change sources.list
+mv -i /etc/apt/sources.list /etc/apt/sources.list.bak
+
+echo "
+deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
+" > /etc/apt/sources.list
+
+# set ip
+lan="eno1"
+ifconfig eth0 down
+ifconfig $lan 192.168.3.89 # 给eth0网卡配置IP地址
+route add default gw 192.168.3.1
+gnome-control-center
+echo set dns to 192.168.1.2
+ifconfig eth0 up
+
+
+sudo apt update
+sudo apt upgrades
+
+apt install aptitude
+
+function ins() {
+    pro=$1
+    apt show $pro > /dev/null
+    [ $? -eq 0 ] && return
+    aptitude install $pro
+}
+
+# 必装
+ins gdebi-core
+ins timeshift
+ins openssh-server
+ins net-tools
+ins cifs-utils # for mount win dir!!!
+ins sshfs
+ins minicom
+ins adb
+ins icaclient
+ins gnome-tweaks
+ins gnome-shell-extensions
+ins solaar
+ins git
+ins sshfs
+# ins xclip
+
+ins silversearcher-ag
+
+gdebi wps-office_11.1.0.9126_amd64.deb
+
+# ins libusb-1.0.0-dev
+
+# ins xdotool
+# ins vim
+# ins gitk
+# ins meld
+# ins make
+# ins cmake
+# ins autoconf
+# ins rdfind
+
+# 输入法
+# fcitx
+# gdebi sogoupinyin_2.2.0.0108_amd64.deb
+# rm fcitx-qimpanel
+# libfcitx-qt5-1
+# 配置 快捷键
+
+# libwebkit-1.0-2
+
+# numlockx
+# sudo vi /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+# add "greeter-setup-script=/usr/bin/numlockx on"
+
+# vsudoer
+
+# /* win */
+# cifs-utils
+# font
+# ssh-keygen
+
+# tar cvpzf 4.152-bak.tgz --exclude=/tmp --exclude=/proc --exclude=/lost+found/ --exclude=/sys --exclude=/mnt --exclude=/media --exclude=/dev --exclude=/var /
+# mkdir -p tmp proc lost+found sys mnt media dev var
+
+# gsettings set org.gnome.settings-daemon.plugins.power button-power suspend
+
+# typora:
+# wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
+# sudo add-apt-repository 'deb https://typora.io/linux ./'
+# sudo apt-get update
+# sudo aptitude install typora
+
+# iptux
+
+# 添加32位体系结构支持：
+# sudo dpkg --add-architecture i386
+
+
+# 有待添加
+# route to rc.local
+
+# user@ingenic /etc $ route -F
+# Kernel IP routing table
+# Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+# default         bogon           0.0.0.0         UG    600    0        0 wlp0s20f3
+# default         localhost       0.0.0.0         UG    20100  0        0 eno1
+# 10.4.20.0       0.0.0.0         255.255.255.0   U     600    0        0 wlp0s20f3
+# link-local      0.0.0.0         255.255.0.0     U     1000   0        0 wlp0s20f3
+# 192.168.3.0     0.0.0.0         255.255.255.0   U     100    0        0 eno1

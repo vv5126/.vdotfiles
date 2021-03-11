@@ -2,7 +2,7 @@
 alias ll='ls -AlFh --color'
 alias llh='ls -lh'
 alias la='ls -A'
-alias ls='ls --color=auto'
+alias ls='ls -Isnap --color=auto'
 alias l='ls'
 alias sl='ls'
 alias LS='ls'

@@ -58,7 +58,7 @@ else
     alias vdpush='git stash > /dev/null; git push -u origin master && git pull; echo $?; git stash pop > /dev/null'
     alias libmk='lib.misc gen_lib_info $VLIBS'
 
-    export VGL_BOOKMARK="$VDOT/docs/bookmark.html"
+    export VGL_BOOKMARK="$VDOT/../docs/bookmark.html"
     complete -W "diff bak" vhtml
 
 # >>> conda initialize >>>

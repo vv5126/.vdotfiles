@@ -2,3 +2,6 @@ Goproxy 中国
 go env -w GO111MODULE=on
 go env -w GOPROXY=https://goproxy.cn,direct
 
+go 安装第三方库
+go get github.com/tidwall/gjson
+

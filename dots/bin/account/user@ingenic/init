@@ -24,4 +24,5 @@ else
     alias go='g'
     alias ch='(cd $VDOT; git checkout dots/bin/account/user@ingenic/data/chrome3;); nohup /opt/Citrix/ICAClient/wfica -icaroot /opt/Citrix/ICAClient $VUSER/data/chrome3 > /dev/null &'
     # alias ch1='(cd $VDOT; git checkout dots/bin/account/user@ingenic/data/chrome1;); nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file $VUSER/data/chrome1 > /dev/null &'
+    add_path $VTOOLS/mips-gcc720-glibc226/bin
 fi

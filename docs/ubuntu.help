@@ -132,7 +132,6 @@ pu logfname••••••••
 
 ### bcompare安装
 wget http://www.scootersoftware.com/bcompare-4.1.9.21719_amd64.deb
-sudo apt-get update
 sudo apt-get install gdebi-core
 sudo gdebi bcompare-4.1.9.21719_amd64.deb
 
@@ -212,12 +211,7 @@ fzf 安装：
 3.下载fzf二进制: https://github.com/junegunn/fzf-bin/releases/download/0.17.3/fzf-0.17.3-linux_amd64.tgz
 4.执行install in fzf.
 
-
-sudo apt-get install aptitude
 /var/lib/dpkg/info
-
-### for mount win dir!!!
-cifs-utils
 
 ### new sources list
 deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse
@@ -231,22 +225,10 @@ deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted univers
 deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse
 deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
 
-### system backup
-sudo su
-tar -cvpzf /tmp/mnt/4.15/4.150-sysbak.tar.gz --exclude=/proc --exclude=/tmp --exclude=/lost+found --exclude=/media --exclude=/mnt --exclude=/run --exclude=/sys --exclude=/home --exclude=/swapfile /
-
-# RECOVERY
-# on system:
- <!-- tar还原是只会覆盖相同的文件 -->
-tar -xvpzf /media/Disk/myDisk/ubuntu_boot_backup@2016-6-6.tar.gz -C /
-
 # live CD:
 mkdir /mnt/sys
 mount /dev/sdaX /mnt/sys
 tar -xvpzf /media/myDisk/ubuntu_boot_backup@2016-6-6.tar.gz -C /mnt/sys
-
-mkdir /proc /tmp /lost+found /media /mnt /run /home /sys
-
 
 ### Copy-Paste in terminal adds 0~ and 1~
 <!-- The issue is that your terminal is in bracketed paste mode, but doesn’t seem to support it properly. The issue was fixed in VTE, but xfce4-terminal is still using an old and unmaintained version of it. -->
@@ -254,10 +236,15 @@ mkdir /proc /tmp /lost+found /media /mnt /run /home /sys
 printf "\e[?2004l"
 
 
-### SYSBAK
-#### backup
+### system backup
 sudo su
 cd /; tar -cvpzf /tmp/mnt/4.15/4.150-sysbak.tar.gz --exclude=/proc --exclude=/tmp --exclude=/lost+found --exclude=/media --exclude=/mnt --exclude=/run --exclude=/sys --exclude=/home --exclude=/swapfile
+tar -cvpzf /tmp/mnt/4.15/4.150-sysbak.tar.gz --exclude=/proc --exclude=/tmp --exclude=/lost+found --exclude=/media --exclude=/mnt --exclude=/run --exclude=/sys --exclude=/home --exclude=/swapfile /
+
+# RECOVERY
+# on system:
+ <!-- tar还原是只会覆盖相同的文件 -->
+tar -xvpzf /media/Disk/myDisk/ubuntu_boot_backup@2016-6-6.tar.gz -C /
 
 #### recovery
 mkdir /mnt/sys
@@ -270,7 +257,14 @@ dev opt root srv
 
 ### uninstall libreoffice, use wps.
 sudo apt-get remove --purge libreoffice*
-http://community.wps.cn/download/
+
+### 分区设置.
+nvme0n1     259:0    0 465.8G  0 disk
+├─nvme0n1p1 259:1    0   476M  0 part /boot/efi
+├─nvme0n1p2 259:2    0   9.6G  0 part /boot
+├─nvme0n1p3 259:3    0  95.4G  0 part /
+├─nvme0n1p4 259:4    0  15.3G  0 part [SWAP]
+└─nvme0n1p5 259:5    0 345.1G  0 part /home
 
 ### xdotool类似与autoit
 demo: retry=5
@@ -372,10 +366,4 @@ conda create -name envname python=2.7
 --log-format=FORMAT 指定日志文件格式
 --password-file=FILE 从FILE中得到密码
 --bwlimit=KBPS 限制I/O带宽，KBytes per second
-
-添加 32 位体系结构支持：
-sudo dpkg --add-architecture i386
-
-go 安装第三方库
-go get github.com/tidwall/gjson
 
