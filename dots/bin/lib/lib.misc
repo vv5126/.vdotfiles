@@ -388,11 +388,15 @@ function batch_opt() {
     fi
 }
 
+function ssh_from()
+{
+    [ -n "$SSH_CLIENT" ] && echo "${SSH_CLIENT%% *}"
+}
 
-
-
-
-
+function guess_ssh_user() {
+    local ssh=$(ssh_from)
+    echo user@$ssh
+}
 
 
 alias random_1='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9' | fold -w 8 | head -n 1'

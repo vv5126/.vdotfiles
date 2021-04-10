@@ -1,2 +1,0 @@
-## Short issue description: pasting with mouse middle button, or by keyboard hot-key cause rounding text with "~0" and "~1" (more correct: "\e[200~" and "\e[201~")."]]")
-https://launchpad.net/~adrozdoff/+archive/ubuntu/vte

@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char key0[]= {'\\', '\'', '\"', '=', '^', '$', '(', ')', '[', ']'};
-char *key1="=^";
+char key0[] = {'\\', '\'', '\"', '=', '^', '$', '(', ')', '[', ']'};
+char *key1 = "=^";
 
 int main(int argc, char *argv[])
 {

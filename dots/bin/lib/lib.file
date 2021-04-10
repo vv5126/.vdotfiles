@@ -224,6 +224,8 @@ function find_all_in_list() {
 # 找出用tab缩进的文件:
 # find . -type f -exec egrep -l $'\t' "{}" \;
 
+# find . -type f -exec sed -i '' s/$1/$2/g {} +
+
 # 根据文件类型进行搜索
 # find . -type 类型参数
 # 类型参数列表：

@@ -75,6 +75,7 @@ endif
 #     libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
 #     python3-dev ruby-dev lua5.1 lua5.1-dev liblua5.1-dev libperl-dev git
 
+echo > a.sh <
 ./configure --with-features=huge \
     --enable-multibyte \
     --enable-rubyinterp=yes \
@@ -89,6 +90,7 @@ endif
 make distclean
 mkdir -p src/objects
 make
+EOF
 
 " 宏 {{{
 "宏录制相关

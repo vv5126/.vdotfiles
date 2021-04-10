@@ -119,7 +119,7 @@ function mkmain() {
                 new_target_name=$new_target_name.img
                 echo -e "\n  the out img: $target_dir/$new_target_name" >&2
                 smkdir $target_dir
-                p $the_image
+                push_image $the_image
                 # scp $the_image $target_dir/$new_target_name
             fi
             ;;

@@ -1,70 +1,118 @@
 #!/bin/bash
 
-# 系统最小安装
+# ubuntu初安装
+
+# 分区方法：
+# /     30G~50G左右  ext4 主分区
+# swap  物理内存两倍 swap 逻辑分区
+# /boot 10G          ext4 逻辑分区
+# /home 剩下的       ext4 逻辑分区
+#-------------------------------------------------#
 
 # change sources.list
-mv -i /etc/apt/sources.list /etc/apt/sources.list.bak
+# mv -i /etc/apt/sources.list /etc/apt/sources.list.bak
 
-echo "
-deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial-proposed main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
-" > /etc/apt/sources.list
+# echo "
+# deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+# deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+# deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+# deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+# deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+# deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+# deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+# deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+# deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+# deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+# " > /etc/apt/sources.list
 
-# set ip
-lan="eno1"
-ifconfig eth0 down
-ifconfig $lan 192.168.3.89 # 给eth0网卡配置IP地址
-route add default gw 192.168.3.1
-gnome-control-center
-echo set dns to 192.168.1.2
-ifconfig eth0 up
+## manual
+## bug
+## set ip
+# lan="eno1"
+# ifconfig eth0 down
+# ifconfig $lan 192.168.3.89 # 给eth0网卡配置IP地址
+# route add default gw 192.168.3.1
+# gnome-control-center
+# echo set dns to 192.168.1.2
+# ifconfig eth0 up
 
+# manual wlan
+# setting manual
 
-sudo apt update
-sudo apt upgrades
+# sudo apt update
+# sudo apt upgrade
 
-apt install aptitude
+# sudo apt install aptitude
 
 function ins() {
     pro=$1
-    apt show $pro > /dev/null
-    [ $? -eq 0 ] && return
-    aptitude install $pro
+    # dpkg -l $pro > /dev/null
+    # [ $? -eq 0 ] && return
+    sudo aptitude install $pro
 }
 
 # 必装
-ins gdebi-core
-ins timeshift
-ins openssh-server
-ins net-tools
-ins cifs-utils # for mount win dir!!!
-ins sshfs
-ins minicom
-ins adb
-ins icaclient
-ins gnome-tweaks
-ins gnome-shell-extensions
-ins solaar
-ins git
-ins sshfs
+
+# ins gdebi-core
+# ins timeshift
+# ins openssh-server
+# ins net-tools
+# ins cifs-utils # for mount win dir!!!
+# ins sshfs
+# ins minicom
+# ins adb
+# ins icaclient
+# ins gnome-tweaks
+# ins gnome-shell-extensions
+# ins solaar
+# ins git
+# ins sshfs
 # ins xclip
+# ins silversearcher-ag
 
-ins silversearcher-ag
+# manual shell-extensions store
+# tar -cf  extensions.tar.gz -C ~/.local/share/gnome-shell
 
-gdebi wps-office_11.1.0.9126_amd64.deb
+# manual 输入法 
+# manual mail
+# gdebi wps-office_11.1.0.9126_amd64.deb
 
+## vim
+# ins libpython2.7
+# ins libpython2.7-dev
+# ins libpython3.8-dev
+#-------------------------------------------------#
+# You need to install a terminal library:
+sudo apt-get install libncurses5-dev
+# ins libncurses5-dev # for vim
+# Python.h: No such file or directory:
+sudo apt-get install python2.7-dev
+#-------------------------------------------------#
+cd /tmp/mnt/3.3/.local/tools/vim && ./a.sh
+# ins gawk
+
+# 7yuv
+# ins nodejs
+
+# typora:
+# wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
+# sudo add-apt-repository 'deb https://typora.io/linux ./'
+# sudo apt-get update
+# sudo aptitude install typora
+
+# ins thunderbird
+# add sshkey
+# ssh-keygen -t rsa
+# cp vdot
+
+# $sudo apt-get install build-essential
+
+exit
+# nautilus-image-converter
+
+# ins python3.8
 # ins libusb-1.0.0-dev
-
 # ins xdotool
-# ins vim
 # ins gitk
 # ins meld
 # ins make
@@ -85,8 +133,6 @@ gdebi wps-office_11.1.0.9126_amd64.deb
 # sudo vi /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
 # add "greeter-setup-script=/usr/bin/numlockx on"
 
-# vsudoer
-
 # /* win */
 # cifs-utils
 # font
@@ -96,12 +142,6 @@ gdebi wps-office_11.1.0.9126_amd64.deb
 # mkdir -p tmp proc lost+found sys mnt media dev var
 
 # gsettings set org.gnome.settings-daemon.plugins.power button-power suspend
-
-# typora:
-# wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
-# sudo add-apt-repository 'deb https://typora.io/linux ./'
-# sudo apt-get update
-# sudo aptitude install typora
 
 # iptux
 
@@ -120,3 +160,29 @@ gdebi wps-office_11.1.0.9126_amd64.deb
 # 10.4.20.0       0.0.0.0         255.255.255.0   U     600    0        0 wlp0s20f3
 # link-local      0.0.0.0         255.255.0.0     U     1000   0        0 wlp0s20f3
 # 192.168.3.0     0.0.0.0         255.255.255.0   U     100    0        0 eno1
+
+
+# ln -sf /tmp/mnt/3.3/work/local_debug
+# ln -sf /tmp/mnt
+md /home/user/.local/tmp/rm /home/user/.local/tmp/vp
+
+python先不要安装新版了，只要2 3都有就行，主要是扩展包。
+sudo apt-get install autoconf
+sudo apt-get install automake
+sudo apt-get install pkg-config
+sudo apt-get install libgtk-3-dev
+
+系统精简：
+卸载libreOffice，选择用WPS来替代： sudo apt-get remove libreoffice-common
+
+sudo apt-get remove thunderbird totem rhythmbox empathy brasero simple-scan gnome-mahjongg aisleriot gnome-mines cheese transmission-common gnome-orca webbrowser-app gnome-sudoku landscape-client-ui-install onboard deja-dup 
+#-------------------------------------------------#
+apt-get install安装目录是包的维护者确定的，不是用户
+
+### vsudoer
+add vsudoer to /etc/sudoers use sudo visudo
+sed -i '/%sudo/c %sudo  ALL=(ALL:ALL)  NOPASSWD:ALL' /etc/sudoers
+visudo -c#检查语法是否正确，一定要执行，否则出现问题很麻烦
+
+### backup
+# bak cp -r ~/.local/share/gnome-shell/extensions/

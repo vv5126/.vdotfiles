@@ -50,6 +50,9 @@ Plug 'mbbill/fencview'
 Plug 'reedes/vim-wheel'
 " -------------------------------------------------
 " A collection of language packs for Vim.
+if isdirectory(expand(EverVimBundleDir("vim-polyglot")))
+    let g:polyglot_disabled = ['markdown', 'go', 'c/c++', 'css', 'html5', 'md', 'html', 'javascript', 'rust', 'toml']
+endif
 Plug 'sheerun/vim-polyglot'
 " -------------------------------------------------
 " 登陆到你选择的窗口，比如tmux的“显示面板”

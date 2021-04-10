@@ -5,6 +5,11 @@ else
     " Plug 'vim-syntastic/syntastic'
 endif
 
+" Language Server Client
+" Plug 'prabirshrestha/vim-lsp'
+
+
+
 " Pick one of the checksyntax, jslint, or syntastic
 " Plug 'scrooloose/syntastic'
 

@@ -135,6 +135,14 @@ echo ${#string}             //结果11
 expr length $string         //结果11
 expr "$string" : ".*"       //结果11 分号二边要有空格,这里的:根match的用法差不多2，字符串所在位置
 expr index $string '123'    //结果4 字符串对应的下标是从0开始的这个方法让我想起来了js的indexOf，各种语言对字符串的操作方法大方向都差不多，如果有语言基础的话，学习shell会很快的。
+expr index $string substring索引命令功能在字符串$string上找出substring中字符第一次出现的位置，若找不到则expr index返回0或1。
+
+### 查找子串的位置
+str="abc"
+expr index $str "a"  # 1
+expr index $str "b"  # 2
+expr index $str "x"  # 0
+expr index $str ""   # 0
 
 ### 信号处理
 trap命令用于在Shell程序中捕捉信号，之后可以有3种反应方式：
@@ -202,6 +210,12 @@ echo ${string//23/bb}  //abc1bb4bb41  双斜杠替换所有匹配
 echo ${string/#abc/bb} //bb12342341   #以什么开头来匹配
 echo ${string/%41/bb}  //abc123423bb  %以什么结尾来匹配
 
+### 比较
+[[ "a.txt" == a* ]]        # 逻辑真 (pattern matching)
+[[ "a.txt" =~ .*\.txt ]]   # 逻辑真 (regex matching)
+[[ "abc" == "abc" ]]       # 逻辑真 (string comparision) 
+[[ "11" < "2" ]]           # 逻辑真 (string comparision), 按ascii值比较
+
 ### 指定位置截取
 str='http://www.xxx.com/cut-string.html'
 1、从左边第几个字符开始以及字符的个数, echo ${var:0:5} 结果是：http:
@@ -227,12 +241,29 @@ ${var%%pattern}    匹配结尾（最大匹配），并返回余下内容   echo
 http://www.你的域名.com
 注：pattern为正则表达式匹配
 
+str="abbc,def,ghi,abcjkl"
+echo ${str#a*c}     # 输出,def,ghi,abcjkl  一个井号(#) 表示从左边截取掉最短的匹配 (这里把abbc字串去掉）
+echo ${str##a*c}    # 输出jkl，             两个井号(##) 表示从左边截取掉最长的匹配 (这里把abbc,def,ghi,abc字串去掉)
+echo ${str#"a*c"}   # 输出abbc,def,ghi,abcjkl 因为str中没有"a*c"子串
+echo ${str##"a*c"}  # 输出abbc,def,ghi,abcjkl 同理
+echo ${str#*a*c*}   # 空
+echo ${str##*a*c*}  # 空
+echo ${str#d*f)     # 输出abbc,def,ghi,abcjkl, 
+echo ${str#*d*f}    # 输出,ghi,abcjkl
+ 
+echo ${str%a*l}     # abbc,def,ghi  一个百分号(%)表示从右边截取最短的匹配 
+echo ${str%%b*l}    # a             两个百分号表示(%%)表示从右边截取最长的匹配
+echo ${str%a*c}     # abbc,def,ghi,abcjkl
+ 可以这样记忆, 井号（#）通常用于表示一个数字，它是放在前面的；百分号（%）卸载数字的后面; 或者这样记忆，在键盘布局中，井号(#)总是位于百分号（%）的左边(即前面)    :-)
+ 
+
 从字符串开头到子串的最大长度 expr match $string 'abc.*3'
 匹配显示内容
 //例3中也有match和这里的match不同，上面显示的是匹配字符的长度，而下面的是匹配的内容
 expr match $string '\([a-c]*[0-9]*\)'  //abc12342341
 expr $string : '\([a-c]*[0-9]\)'       //abc1
 expr $string : '.*\([0-9][0-9][0-9]\)' //341 显示括号中匹配的内容这里括号的用法
+expr match $string substring命令在string字符串中匹配substring字符串，然后返回匹配到的substring字符串的长度，若找不到则返回0。
 
 ### 数学
 
@@ -418,7 +449,6 @@ execve("/bin/ksh93", ["ksh93", "./test1.sh"], [/* 21 vars */]) = 0
 eval与（3）的点命令原理一样，但是提供了更多的参数。
 (5) 使用exec 命令执行脚本文件(不产生子进程)
 exec 内置命令可以作用于二进制，也可以作用于可执行的脚本文件，使用exec命令执行（不建立子进程）,会替换当前bash进程。
-
 
 # set指令查询
 set指令能设置所使用shell的执行方式，可依照不同的需求来做设置

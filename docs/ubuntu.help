@@ -367,3 +367,6 @@ conda create -name envname python=2.7
 --password-file=FILE 从FILE中得到密码
 --bwlimit=KBPS 限制I/O带宽，KBytes per second
 
+# 磁盘读写检测
+apt install sysstat
+iostat -d -k 1 10

@@ -181,6 +181,30 @@ function findobj() {
     fi
 }
 
+function push_image() {
+    (include base str
+
+    find $VGL_BOARDS -type l | while read line; do [ ! -L "$line" -o -e "$line" ] || unlink "$line"; done
+
+    files="$@"
+
+    dst_dir=$(cd_repo; echo "$PWD" | sed 's/'"$(string_escape $HOME/)"'//')
+    [ $dst_dir == "$HOME" ] && len=${#HOME}; dst_dir=${PWD:$len+1}
+    dst_dir=$VGL_BOARDS/${dst_dir//\//\_}
+
+    echo dst_dir $dst_dir
+
+    mkdir -p $dst_dir
+
+    for (( i = 1; i < $#+1; i++ )); do
+        eval file=\$$i
+
+        if [ -e "$file" ]; then
+            cp -r $file $dst_dir
+            # ln -sfr $file $dst_dir/${file##*/}
+        fi
+    done)
+}
 ############# export ##############
 
 alias mm='mm1'

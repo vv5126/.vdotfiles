@@ -3,7 +3,7 @@ nnoremap <space> :
 vnoremap <space> :
 
 source $evervim_root/plugins/v/vfunc.vim
-source $evervim_root/plugins/v/burner.vim
+" source $evervim_root/plugins/v/burner.vim
 source $evervim_root/plugins/v/youdao.vim
 
 " Key (Re)Mappings

@@ -91,7 +91,6 @@ Plug 'vimwiki/vimwiki', {'branch': 'dev'}
 " use <tab> for trigger completion and navigate to the next complete item
 " -------------------------------------------------
 " Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/vim-lsp'
 " -------------------------------------------------
 " 补全框架：
 
@@ -107,9 +106,6 @@ Plug 'vimwiki/vimwiki', {'branch': 'dev'}
 Plug 'Yggdroot/LeaderF', { 'do': './install.sh'  }
 
 " Plug 'tenfyzhong/CompleteParameter.vim'
-" -------------------------------------------------
-" 支持分支的 undo
-" Plug 'sjl/gundo.vim'
 " -------------------------------------------------
 " 允许你在 Vim中按等号、冒号、表格等来对齐文本
 " 'Tabular'

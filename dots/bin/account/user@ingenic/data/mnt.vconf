@@ -8,4 +8,5 @@ sshfs   fpga@192.168.4.13:/home/fpga/                       /tmp/mnt/fpga       
 sshfs   fpga@192.168.4.13:/home/fpga/user/wgao              /tmp/mnt/fpga_wgao  -        -                 fpga-wgao
 sshfs   wicom@192.168.3.3:/backup/home/wicom/work/tmp       /tmp/mnt/wicom_tmp  -        -                 wicom-tmp
 win     //192.168.1.57/work                                 /tmp/mnt/work57     wgao_bj  YXNkNDU2IUAjCg==  work57
+win     //192.168.1.57/users                                /tmp/mnt/57users     wgao_bj  YXNkNDU2IUAjCg==  57users
 sshfs   wgao@192.168.4.15:/data1/home/wgao                  /tmp/mnt/4.15       -        -                 4.15

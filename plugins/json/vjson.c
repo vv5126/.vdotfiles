@@ -90,7 +90,7 @@ int prefix_process(int argc, char *argv[])
             fd.open(file,ios::in|ios::out|ios::binary|ios::ate);
             if (fd) {
                 int size = fd.tellg();
-                char *buffer = new char[size];
+                char *buffer = new char[size+1];
                 fd.seekg(0, ios::beg);
                 fd.read(buffer, size);
                 js = json::parse(buffer);

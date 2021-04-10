@@ -2,60 +2,76 @@
 
 source /backup/home/wgao/.profile
 
-json_data=$VTMP/.bash.json
 history_data=$VTMP/.bash_history
+history_data_bak=$VTMP/.bash_history_bak
 
-function history_check() {
-    local tty md5 md5_tmp
-
-    if [ -f "$1" ]; then
-        md5=$(md5sum $1)
-        md5="${md5%% *}"
-        tty="${1##*_}"
-        eval md5_tmp="$(vjson -o md5 -k "$tty" -f $json_data)"
-    else
-        return 0
-    fi
-
-    # echo tty = $tty >&2
-    # echo md5 = $md5 >&2
-    # echo md5_tmp = $md5_tmp >&2
-    if [ "$md5" != "$md5_tmp" ]; then
-        return 1
-    else
-        return 0
-    fi
-
+function del_vim_month_ago() {
+    awk '$0=NR" "$0' .bash_history | sed -n '/^[0-9].* #[0-9].*$/p;' > z
+    rm z;
 }
 
-function history_merge() {
-    local tty md5
+function history_clean() {
+    sed '/^  rm /d;' -i $1
+    sed '/^  mr /d;' -i $1
+    sed '/^  git rm /d;' -i $1
+    sed '/^  ag /d;' -i $1
+    sed '/^  mv /d;' -i $1
+    sed '/^  du /d;' -i $1
+    sed '/^  fd /d;' -i $1
+    sed '/^  cd /d;' -i $1
+    sed '/^  ls/d;' -i $1
+    sed '/^  git /d;' -i $1
+    sed '/^  ga /d;' -i $1
+    sed '/^  gd /d;' -i $1
+    sed '/^  gs /d;' -i $1
+    sed '/^  man /d;' -i $1
+    sed '/^  md /d;' -i $1
+    sed '/^  mkdir /d;' -i $1
+    sed '/^  iv /d;' -i $1
+    sed '/^  which /d;' -i $1
+    sed '/^  echo /d;' -i $1
+    sed '/^  cp /d;' -i $1
+    sed '/^  df /d;' -i $1
+    sed '/^  meld /d;' -i $1
+    sed '/^  builtin /d;' -i $1
+    sed '/^  tree /d;' -i $1
+    sed '/^  cat /d;' -i $1
+    sed '/^  baidu /d;' -i $1
+    sed '/^  file /d;' -i $1
+    sed '/^  sh /d;' -i $1
+    sed '/^  bash /d;' -i $1
+    sed '/^  tree /d;' -i $1
+    sed '/^  gitk/d;' -i $1
+    sed '/^  vjson /d;' -i $1
+    sed '/^  gcc /d;' -i $1
+    sed '/^  g++ /d;' -i $1
+    sed '/^  change_toolchain /d;' -i $1
+    sed '/^  title /d;' -i $1
+    sed '/^  vsync /d;' -i $1
+    # sed '/^  \.\/ /d;' -i $1
+    # sed -rn '/^.{0,7}$/!p' -i $1
+    sed '/^  star /d;' -i $1
+    sed '/^  tar /d;' -i $1
 
-    if [ -f "$1" ]; then
-        md5=$(md5sum $1)
-        md5="${md5%% *}"
-        tty="${1##*_}"
-    else
-        return 0
-    fi
-
+    > newtmp
+    local out
     while read line; do
-        if [ "x${line:0:1}" != x'#' ]; then
-            line="${line/\$/\\\$/}"
-            line="${line/\^/\\\^/}"
-            # echo echo $line
-            ag "^$(string_escape_prevention 0 "  $line")$" "$history_data" > /dev/null
-            if [ $? -ne 0 ]; then
-                # echo add
-                echo "  $line" >> $history_data
-            # else
-            #     echo skip
-            fi
-        fi
-    done < $1
+        out=1
 
-    echo vjson --add -o md5 -k "$tty" -s "$md5" -f "$json_data"
-    vjson --add -o md5 -k "$tty" -s "$md5" -f "$json_data"
+        local cmd=${line%% *}
+        if [ ${#cmd} -lt 10 ]; then
+            type $cmd > /dev/null 2>&1
+            if [ $? -ne 0 ]; then
+                echo error -- $cmd
+                out=0
+            fi
+            # [ $? -ne 0 ] && out=0
+        fi
+
+        [ "${line:0:1}" == "#" ] && { echo "$line" >> newtmp; out=0; }
+
+        [ $out == 1 ] && echo "  $line" >> $2
+    done < $1
 }
 
 function history_deal() {
@@ -64,69 +80,59 @@ function history_deal() {
 
     for i in $files; do
 
-        # if change merge.
-        history_check "$i"
-        if [ "$?" -eq 1 ]; then
-            history_merge "$i"
-        fi
-
         tty="${i##*_}"
 
         w | ag wgao | ag pts/$tty > /dev/null
         if [ $? -ne 0 ]; then
+            # sed -n '/^#[0-9]\+/!p;' $i | awk '$0=NR" "$0' | sort --field-separator=" " --key=2 | uniq -f 1 | sort --human-numeric-sort - | sed -n 's/^[0-9]\+ /  /p;' >> $history_data
+            # sed -n '/^#[0-9]\+/!p;' $i | sort | uniq | awk '$0="  "$0'  >> $history_data
+            sed -n '/^#[0-9]\+/!p;' $i | sort | uniq > xxxtmp
+            history_clean xxxtmp newtmp
+            cat newtmp | awk '$0="  "$0'  >> $history_data
+            echo "#$(date +%m)" >> $history_data
+
             echo rm $i >&2
-            vrm $i
+            vrm xxxtmp newtmp $i
         fi
     done
-}
 
-function checkstr()
-{
-    [ "${1:0:${#2}}" == "$2" ] && echo 1
-}
+    # mv all times to new.
 
-function history_clean() {
-    # cp $history_data xxxtmp
-    # cp $history_data .$history_data
-
-    sed '/^  rm /d;' $history_data > xxxtmp
-    sed '/^  mr /d;' -i xxxtmp
-    sed '/^  git rm /d;' -i xxxtmp
-    sed '/^  ag /d;' -i xxxtmp
-    sed '/^  mv /d;' -i xxxtmp
-    sed '/^  du /d;' -i xxxtmp
-    sed '/^  fd /d;' -i xxxtmp
-    sed '/^  man /d;' -i xxxtmp
-    sed '/^  md /d;' -i xxxtmp
-    sed '/^  mkdir /d;' -i xxxtmp
-    sed '/^  iv /d;' -i xxxtmp
-    sed -rn '/^.{0,7}$/!p' -i xxxtmp
-
-    > newtmp
+    awk '$0=NR" "$0' $history_data | sed -n '/^[0-9].* #[0-9].*$/p;' > z
+    awk '$0=NR" "$0' $history_data | sed -n '/^[0-9].* #[0-9].*$/!p;' | sort --field-separator=" " --key=2 | uniq -f 1 -u >> z
+    awk '$0=NR" "$0' $history_data | sed -n '/^[0-9].* #[0-9].*$/!p;' | sort --field-separator=" " --key=2 | uniq -f 1 -D > y
+    match=""
+    l=""
     while read line; do
-        local cmd=${line%% *}
-        [ ${#cmd} -gt 30 ] && continue;
-        # [ "$(echo $line | wc -L)" -lt 5 ] && continue;
+        if [ "$match" != "" ]; then
+            next="${line#* }"
+            nl="${line%% *}"
 
-        # [ -n "$(checkstr "$line" "git rm ")" ] && continue;
-        # [ -n "$(checkstr "$line" "ag ")" ] && continue;
-        # [ -n "$(checkstr "$line" "du ")" ] && continue;
-        # [ -n "$(checkstr "$line" "mv ")" ] && continue;
-        # [ -n "$(checkstr "$line" "fd ")" ] && continue;
-
-        echo "  $line" >> newtmp
-    done < xxxtmp
-
-    echo '' >> $json_data
-    eval tty=($(vjson -f $json_data -o md5))
-    for i in ${tty[@]}; do
-        w | ag wgao | ag pts/$i > /dev/null
-        if [ $? -ne 0 ]; then
-            echo vjson --del -f $json_data -o md5 -k $i
-            vjson --del -f $json_data -o md5 -k $i
+            if [ "$next" == "$match" ]; then
+                l=$(($nl>$l?$nl:$l))
+            else
+                echo "$l $match" >> z
+                match="$next"
+                l="$nl"
+            fi
+        else
+            match="${line#* }"
+            l="${line%% *}"
         fi
-    done
+    done < y
+    echo "$l   $match" >> z
+    cat z | sort --human-numeric-sort - | sed -n 's/^[0-9]\+ //p;' > $history_data
+    rm y z
 }
+
+# function checkstr()
+# {
+#     [ "${1:0:${#2}}" == "$2" ] && echo 1
+# }
+
+# function history_bak() {
+#     cat $history_data $history_data_bak | sort -u > /tmp/.bash_history_bak
+#     mv .bash_history_bak $history_data_bak
+# }
 
 history_deal
-history_clean

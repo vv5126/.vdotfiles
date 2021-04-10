@@ -77,9 +77,6 @@ sudo !!
 创建临时RAM文件系统 - ramdisk (请先创建 /tmpram 目录):
 mount -t tmpfs tmpfs /tmpram -o size=512m
 
-Grep完整的单词（译注：而不是其它单词的一部分）:
-grep -w "name" test.txt
-
 提升权限后在一个文件后追加文本:
 echo "some text" | sudo tee -a /path/file
 
@@ -116,15 +113,9 @@ lsblk -f
 用"="打印水平行
 printf '%100s\n' | tr ' ' =
 
-
-
-
 unused:
 一次创建多个目录：
 mkdir -p /home/user/{test,test1,test2}
-
-创建 war 文件:
-jar -cvf name.war file
 
 测试硬盘写入速度：
 dd if=/dev/zero of=/tmp/output.img bs=8k count=256k conv=fdatasync; rm -rf /tmp/output.img
@@ -138,9 +129,6 @@ expand test.txt > test1.txt
 将qcow2的镜像转化成raw格式:
 qemu-img convert -f qcow2 -O raw precise-server-cloudimg-amd64-disk1.img \
 precise-server-cloudimg-amd64-disk1.raw
-
-检查xml格式：
-xmllint --noout file.xml
 
 截取最后一列
 awk '{print $NF}

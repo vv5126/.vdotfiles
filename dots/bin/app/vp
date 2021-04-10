@@ -4,9 +4,11 @@ include base work misc
 
 debug=0
 
-# VLOCALSSH=cljiang@10.10.30.212
-# host_vp="/tmp/vp"
-host_vp="$VLOCALHOME/.local/tmp/vp"
+VPHOST="/tmp/vp"
+
+vp_ssh="${VPSSH:-$(guess_ssh_user)}"
+# vp_ssh="${VPSSH:-$VLOCALSSH}"
+host_vp="${VPHOST:-$VLOCALHOME/.local/tmp/vp}"
 
 is_push=1
 is_local=0
@@ -18,13 +20,13 @@ function install_apk() {
     local file=${src##*/}
     local ret=0
 
-    scp $src $VLOCALSSH:/tmp > /dev/null
+    scp $src $vp_ssh:/tmp > /dev/null
 
-    ssh $VLOCALSSH "$adb remount" > /dev/null 2>&1
-    ssh $VLOCALSSH "$adb install -r /tmp/$file" > /dev/null 2>&1
+    ssh $vp_ssh "$adb remount" > /dev/null 2>&1
+    ssh $vp_ssh "$adb install -r /tmp/$file" > /dev/null 2>&1
     [ $? -eq 0 ] && ret=0 || ret=1
-    ssh $VLOCALSSH "$adb shell sync" > /dev/null 2>&1
-    ssh $VLOCALSSH "rm /tmp/$file" > /dev/null 2>&1
+    ssh $vp_ssh "$adb shell sync" > /dev/null 2>&1
+    ssh $vp_ssh "rm /tmp/$file" > /dev/null 2>&1
     return $ret
 }
 
@@ -55,9 +57,9 @@ function try_get() {
 }
 
 function host_clean() {
-    # echo ssh $VLOCALSSH "rm -r $host_vp/*"
-    ssh $VLOCALSSH "rm -r $host_vp/*" > /dev/null 2>&1
-    # ssh $VLOCALSSH "mkdir -p $VLOCALSSH:$host_vp" > /dev/null 2>&1
+    # echo ssh $vp_ssh "rm -r $host_vp/*"
+    ssh $vp_ssh "rm -r $host_vp/*" > /dev/null 2>&1
+    # ssh $vp_ssh "mkdir -p $vp_ssh:$host_vp" > /dev/null 2>&1
 }
 
 function parse_dst() {
@@ -90,14 +92,16 @@ debug echo $VHOSTID $VLOCALID
 debug echo is_push = $is_push
 debug echo is_local = $is_local
 
+ssh $vp_ssh "[ ! -d $host_vp ] && { rm -r $host_vp; mkdir -p $host_vp; }" > /dev/null 2>&1
+
 [ "$is_local" -eq 0 ] && host_clean
 
 # eval last=$'$'$#
 last=${param[$((${#param[*]}-1))]}
 debug echo last = $last
 
-# debug echo ssh $VLOCALSSH "adb remount"
-# ssh $VLOCALSSH "adb remount" > /dev/null 2>&1
+# debug echo ssh $vp_ssh "adb remount"
+# ssh $vp_ssh "adb remount" > /dev/null 2>&1
 if [ $is_push -eq 1 ]; then #push
     [ -z "$(try_get $last)" -a "${last:0:1}" == '/' ] && dst_dir="$(clean_last_symbol $last)"
     debug echo dst_dir = $dst_dir
@@ -123,11 +127,11 @@ if [ $is_push -eq 1 ]; then #push
             fi
 
             if [ $is_local -eq 0 ]; then
-                debug echo scp -r "$src" "$VLOCALSSH:$host_vp"
-                scp -r "$src" "$VLOCALSSH:$host_vp" > /dev/null 2>&1
+                debug echo scp -r "$src" "$vp_ssh:$host_vp"
+                scp -r "$src" "$vp_ssh:$host_vp" > /dev/null 2>&1
 
-                debug echo ssh $VLOCALSSH "adb push $host_vp/$src_name $dst/$src_name"
-                ssh $VLOCALSSH "adb push $host_vp/$src_name $dst/$src_name" > /dev/null 2>&1
+                debug echo ssh $vp_ssh "adb push $host_vp/$src_name $dst/$src_name"
+                ssh $vp_ssh "adb push $host_vp/$src_name $dst/$src_name" > /dev/null 2>&1
                 [ $? -eq 0 ] || { echo push $src_name to $dst failed!; ret1=1; }
             else
                 debug echo adb push "$src" "$dst/$src_name"
@@ -139,8 +143,8 @@ if [ $is_push -eq 1 ]; then #push
             echo can\'t find $i
         fi
     done
-    # debug echo ssh $VLOCALSSH "adb shell sync"
-    # ssh $VLOCALSSH "adb shell sync" > /dev/null 2>&1
+    # debug echo ssh $vp_ssh "adb shell sync"
+    # ssh $vp_ssh "adb shell sync" > /dev/null 2>&1
 else #pull
     [ -n "$(try_get $last)" -o "${last:0:1}" != '/' ] && dst_dir="$(clean_last_symbol $last)"
     debug echo dst_dir = $dst_dir
@@ -163,11 +167,11 @@ else #pull
             fi
 
             if [ $is_local -eq 0 ]; then
-                debug echo ssh $VLOCALSSH "adb pull $i $host_vp/$src_name"
-                ssh $VLOCALSSH "adb pull $i $host_vp/$src_name" > /dev/null 2>&1
+                debug echo ssh $vp_ssh "adb pull $i $host_vp/$src_name"
+                ssh $vp_ssh "adb pull $i $host_vp/$src_name" > /dev/null 2>&1
                 if [ $? -eq 0 ]; then
-                    debug echo scp -r "$VLOCALSSH:$host_vp/$src_name" "$dst"
-                    scp -r "$VLOCALSSH:$host_vp/$src_name" "$dst" > /dev/null 2>&1
+                    debug echo scp -r "$vp_ssh:$host_vp/$src_name" "$dst"
+                    scp -r "$vp_ssh:$host_vp/$src_name" "$dst" > /dev/null 2>&1
                 else
                     echo pull $src_name to $dst failed!
                     ret1=1
