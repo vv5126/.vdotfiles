@@ -398,6 +398,38 @@ function guess_ssh_user() {
     echo user@$ssh
 }
 
+function clean_history_1() {
+    array=($(sed -n '/^#[0-9]\+$/=' $1 | xargs))
+
+    cnt=0
+    while true; do
+        # echo --- ${array[$cnt]}
+        # echo $cnt ${#array[@]}
+        if [ $((cnt+1)) -eq ${#array[@]} ]; then
+            tmp=$(sed -n -e "${array[$cnt]}"'p;' -e "$((${array[$cnt]}+1))"',$p;' $1 | sed ':label;N;s/\n/%%/;b label' | sed 's/%%/ /')
+            echo -e $tmp
+            break;
+        else
+            # tmp=$(sed -n -e "${array[$cnt]}"'p;' -e "$((${array[$cnt]}+1)),$((${array[$((cnt+1))]}-1))p;" $1 | tr "\n" "%")
+            tmp=$(sed -n -e "${array[$cnt]}"'p;' -e "$((${array[$cnt]}+1)),$((${array[$((cnt+1))]}-1))p;" $1 | sed ':label;N;s/\n/%%/;b label' | sed 's/%%/ /')
+            cnt=$((cnt+1))
+            echo -e $tmp
+        fi
+    done
+}
+
+function clean_history() {
+    # local files="$(ls $VTMP/.bash_history_*)"
+
+    # for i in $files; do
+    #     clean_history_1 $i | sort --field-separator=" " --key=2 | tac | uniq -f 1 | sort --human-numeric-sort | sed 's/ /%%/' | sed ':label;N;s/%%/\n/g;b label' > tmpa
+    #     mv tmpa $i
+    # done
+
+    local file=$VTMP/.bash_history_"$(tty | sed 's#.*/##')"
+    clean_history_1 $file | sort --field-separator=" " --key=2 | tac | uniq -f 1 | sort --human-numeric-sort | sed 's/ /%%/' | sed ':label;N;s/%%/\n/g;b label' > tmpa
+    mv tmpa $file
+}
 
 alias random_1='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9' | fold -w 8 | head -n 1'
 alias random_2='cat /dev/urandom | LC_CTYPE=C tr -dc '0-9a-zA-Z' | fold -w 6 | head -n 1'

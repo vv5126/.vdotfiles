@@ -14,6 +14,7 @@ vbox asd
 vbox g
 vbox find1
 vbox quickcd_clean
+vbox vim_clean
 vbox clh
 vbox title
 # vbox conda_cmd

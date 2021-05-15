@@ -1,0 +1,121 @@
+        case 200: //Thunderstorm with light rain
+            return _('雷雨夹小雨');
+        case 201: //Thunderstorm with rain
+            return _('雷雨带雨');
+        case 202: //Thunderstorm with heavy rain
+            return _('雷雨夹大雨');
+        case 210: //Light thunderstorm
+            return _('小雷雨');
+        case 211: //Thunderstorm
+            return _('雷雨');
+        case 212: //Heavy thunderstorm
+            return _('强雷雨');
+        case 221: //Ragged thunderstorm
+            return _('Ragged thunderstorm');
+        case 230: //Thunderstorm with light drizzle
+            return _('Thunderstorm with light drizzle');
+        case 231: //Thunderstorm with drizzle
+            return _('Thunderstorm with drizzle');
+        case 232: //Thunderstorm with heavy drizzle
+            return _('Thunderstorm with heavy drizzle');
+        case 300: //Light intensity drizzle
+            return _('Light intensity drizzle');
+        case 301: //Drizzle
+            return _('Drizzle');
+        case 302: //Heavy intensity drizzle
+            return _('Heavy intensity drizzle');
+        case 310: //Light intensity drizzle rain
+            return _('Light intensity drizzle rain');
+        case 311: //Drizzle rain
+            return _('Drizzle rain');
+        case 312: //Heavy intensity drizzle rain
+            return _('Heavy intensity drizzle rain');
+        case 313: //Shower rain and drizzle
+            return _('Shower rain and drizzle');
+        case 314: //Heavy shower rain and drizzle
+            return _('Heavy shower rain and drizzle');
+        case 321: //Shower drizzle
+            return _('Shower drizzle');
+            return _('阵雨');
+        case 500: //Light rain
+            return _('Light rain');
+            return _('小雨');
+        case 501: //Moderate rain
+            return _('Moderate rain');
+            return _('中雨');
+        case 502: //Heavy intensity rain
+            return _('Heavy intensity rain');
+            return _('强降雨');
+        case 503: //Very heavy rain
+            return _('Very heavy rain');
+            return _('大雨');
+        case 504: //Extreme rain
+            return _('Extreme rain');
+            return _('极端降雨');
+        case 511: //Freezing rain
+            return _('Freezing rain');
+            return _('冻雨');
+        case 520: //Light intensity shower rain
+            return _('Light intensity shower rain');
+        case 521: //Shower rain
+            return _('Shower rain');
+        case 522: //Heavy intensity shower rain
+            return _('Heavy intensity shower rain');
+        case 531: //Ragged shower rain
+            return _('Ragged shower rain');
+        case 600: //Light snow
+            return _('小雪');
+            return _('Light snow');
+        case 601: //Snow
+            return _('雪');
+            return _('Snow');
+        case 602: //Heavy snow
+            return _('大雪');
+            return _('Heavy snow');
+        case 611: //Sleet
+            return _('雨夹雪');
+            return _('Sleet');
+        case 612: //Shower sleet
+            return _('Shower sleet');
+        case 615: //Light rain and snow
+            return _('Light rain and snow');
+        case 616: //Rain and snow
+            return _('Rain and snow');
+        case 620: //Light shower snow
+            return _('Light shower snow');
+        case 621: //Shower snow
+            return _('Shower snow');
+        case 622: //Heavy shower snow
+            return _('Heavy shower snow');
+        case 701: //Mist
+            return _('Mist');
+        case 711: //Smoke
+            return _('烟');
+        case 721: //Haze
+            return _('阴霾');
+        case 731: //Sand/Dust Whirls
+            return _('Sand/Dust Whirls');
+        case 741: //Fog
+            return _('雾');
+        case 751: //Sand
+            return _('沙尘');
+        case 761: //Dust
+            return _('浮尘');
+        case 762: //VOLCANIC ASH
+            return _('VOLCANIC ASH');
+        case 771: //SQUALLS
+            return _('暴风');
+        case 781: //TORNADO
+            return _('龙卷风');
+        case 800: //Sky is clear
+            return _('晴天');
+        case 801: //Few clouds
+            return _('少云');
+        case 802: //Scattered clouds
+            return _('Scattered clouds');
+        case 803: //Broken clouds
+            return _('Broken clouds');
+        case 804: //Overcast clouds
+            return _('阴云');
+        default:
+            return _('不可用');

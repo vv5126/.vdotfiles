@@ -21,9 +21,11 @@ alias gs='git st'
 alias gd='git diff'
 alias ga='git add'
 alias gk='gitk'
+alias gk='gitk'
 
 alias ..='vcd'
 alias ...='cd $(lib.base getdir .repo)'
+alias f='lib.misc clean_history'
 
 alias grep='grep --color --exclude-dir=".git"'
 

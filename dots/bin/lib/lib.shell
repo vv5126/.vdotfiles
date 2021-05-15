@@ -24,6 +24,7 @@ function quickcd() {
                 dir="${WORKSPACE:-$HOME}"
             fi
         elif [ "$1" == '.' ]; then
+            # tmp="$(cat $cd_list | awk '$1="      " $0' | fzy)"
             tmp="$(cat $cd_list | fzy)"
             [ -d "${tmp:7}" ] && dir="${tmp:7}"
         elif [ -d "$1" ]; then
@@ -47,9 +48,9 @@ function quickcd() {
     done
 
     if [ -n "$dir" ]; then
-	builtin cd $dir
-	[ -z "$cache" ] && echo "|      $PWD" >> "$cd_cache" || echo "$cache" >> "$cd_cache"
-	[ $((CD_COUNT+=1)) -ge 2 ] && { CD_COUNT=0; echo "quickcd_clean" | at now >/dev/null 2>&1; }
+        builtin cd $dir
+        [ -z "$cache" ] && echo "|      $PWD" >> "$cd_cache" || echo "$cache" >> "$cd_cache"
+        [ $((CD_COUNT+=1)) -ge 2 ] && { CD_COUNT=0; echo "quickcd_clean" | at now >/dev/null 2>&1; }
     fi
 
     # if [ "$cd_state" == 'success' ]; then
@@ -116,4 +117,11 @@ function add_server() { # NAME HOST ID IP HOME
     # eval export "$NAME"_IP="$IP"
     eval export "$NAME"_SSH="$ID@$IP"
     eval export "$NAME"_HOME="$HOME"
+}
+
+function genCRlist() {
+    cat $VTMP/.bash_history
+    cat $VTMP/.vim_list | awk '$0="vi "$0'
+    cat $VTMP/.cd_list | sed -n 's/^ \{6\}/ /p;' | awk '$0="cd"$0'
+    cat $HISTFILE
 }

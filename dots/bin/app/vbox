@@ -31,7 +31,12 @@ function svi(){
         [ ! -f "$FILE" -a "$PWD" != "$HOME" ] && STR="$(find1 $FILE)"
         [ -n "$STR" ] && FILE="$STR"
 
-        [ -f "$FILE" ] && vim $FILE ${LINE:+$LINE}
+        if [ -f "$FILE" ]; then
+            [ "${FILE:0:1}" != "/" ] && FILE=$PWD/$FILE
+            echo $FILE >> $VTMP/.vim_list
+            vim $FILE ${LINE:+$LINE}
+            echo "vim_clean" | at now >/dev/null 2>&1
+        fi
     fi
     # printf "\e[?2004l"
 }
@@ -103,6 +108,11 @@ function find1(){
     fi
 }
 
+function vim_clean(){
+    cat $VTMP/.vim_list | sort | uniq > /tmp/vim_clean
+    mv /tmp/vim_clean $VTMP/.vim_list
+}
+
 function quickcd_clean(){
     cd_list="$VTMP/.cd_list"
     cd_quicklist="$VTMP/.cd_quicklist"
@@ -118,11 +128,11 @@ function quickcd_clean(){
     > $cd_quicklist
     > $tmp
     while read line; do
-	lin="${line%%]*}"
-	lin="${lin##*[}"
-	grep -oP "^\|\[$lin" $tmp > /dev/null 2>&1
-	[ $? -eq 0 ] && continue
-	echo "$line" >> $tmp
+        lin="${line%%]*}"
+        lin="${lin##*[}"
+        grep -oP "^\|\[$lin" $tmp > /dev/null 2>&1
+        [ $? -eq 0 ] && continue
+        echo "$line" >> $tmp
     done < $new_quicklist
     tac $tmp > $cd_quicklist
 
@@ -130,17 +140,17 @@ function quickcd_clean(){
     > $cd_quicklist
     > $tmp
     while read line; do
-	lin="${line:6}"
-	grep -m 1 -oP "$lin$" $tmp > /dev/null 2>&1
-	[ $? -eq 0 ] && continue
-	echo "$line" >> $tmp
+        lin="${line:6}"
+        grep -m 1 -oP "$lin$" $tmp > /dev/null 2>&1
+        [ $? -eq 0 ] && continue
+        echo "$line" >> $tmp
     done < $new_quicklist
     tac $tmp > $cd_quicklist
 
     # clean failure directory
     > $tmp
     while read line; do
-	[ -d "${line:7}" ] && echo "$line" >> $tmp
+        [ -d "${line:7}" ] && echo "$line" >> $tmp
     done < $cd_cache
     cat $tmp > $cd_cache
 
@@ -149,9 +159,9 @@ function quickcd_clean(){
     cat $cd_cache > $new_quicklist
 
     tac $cd_cache | head -n 10 | while read line; do
-	for i in {1..5}; do
-	    echo "$line" >> $new_quicklist
-	done
+    for i in {1..5}; do
+        echo "$line" >> $new_quicklist
+    done
     done
 
     cat $new_quicklist | sort | uniq -c |sort -rnb | awk -F'|' '{$1=null;print}' > $cd_list

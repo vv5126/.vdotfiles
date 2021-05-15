@@ -108,6 +108,11 @@ function clean_last_symbol() {
         echo "$1"; return 0;
 }
 
+function skip {
+        local n=$(($1 + 1))
+            cut -d' ' -f$n-
+}
+
 function log() {
     for i in $@; do
         eval echo "$i = \$$i"

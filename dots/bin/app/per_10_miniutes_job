@@ -11,47 +11,55 @@ function del_vim_month_ago() {
 }
 
 function history_clean() {
-    sed '/^  rm /d;' -i $1
-    sed '/^  mr /d;' -i $1
-    sed '/^  git rm /d;' -i $1
-    sed '/^  ag /d;' -i $1
-    sed '/^  mv /d;' -i $1
-    sed '/^  du /d;' -i $1
-    sed '/^  fd /d;' -i $1
-    sed '/^  cd /d;' -i $1
-    sed '/^  ls/d;' -i $1
-    sed '/^  git /d;' -i $1
-    sed '/^  ga /d;' -i $1
-    sed '/^  gd /d;' -i $1
-    sed '/^  gs /d;' -i $1
-    sed '/^  man /d;' -i $1
-    sed '/^  md /d;' -i $1
-    sed '/^  mkdir /d;' -i $1
-    sed '/^  iv /d;' -i $1
-    sed '/^  which /d;' -i $1
-    sed '/^  echo /d;' -i $1
-    sed '/^  cp /d;' -i $1
-    sed '/^  df /d;' -i $1
-    sed '/^  meld /d;' -i $1
-    sed '/^  builtin /d;' -i $1
-    sed '/^  tree /d;' -i $1
-    sed '/^  cat /d;' -i $1
-    sed '/^  baidu /d;' -i $1
-    sed '/^  file /d;' -i $1
-    sed '/^  sh /d;' -i $1
-    sed '/^  bash /d;' -i $1
-    sed '/^  tree /d;' -i $1
-    sed '/^  gitk/d;' -i $1
-    sed '/^  vjson /d;' -i $1
-    sed '/^  gcc /d;' -i $1
-    sed '/^  g++ /d;' -i $1
-    sed '/^  change_toolchain /d;' -i $1
-    sed '/^  title /d;' -i $1
-    sed '/^  vsync /d;' -i $1
-    # sed '/^  \.\/ /d;' -i $1
-    # sed -rn '/^.{0,7}$/!p' -i $1
-    sed '/^  star /d;' -i $1
-    sed '/^  tar /d;' -i $1
+    sed '
+    /^  rm /d;
+    /^  mr /d;
+    /^  git rm /d;
+    /^  ag /d;
+    /^  mv /d;
+    /^  du /d;
+    /^  fd /d;
+    /^  cd /d;
+    /^  ls/d;
+    /^  git /d;
+    /^  ga /d;
+    /^  gd /d;
+    /^  gs /d;
+    /^  man /d;
+    /^  md /d;
+    /^  mkdir /d;
+    /^  iv /d;
+    /^  which /d;
+    /^  echo /d;
+    /^  cp /d;
+    /^  df /d;
+    /^  meld /d;
+    /^  builtin /d;
+    /^  tree /d;
+    /^  cat /d;
+    /^  baidu /d;
+    /^  file /d;
+    /^  sh /d;
+    /^  bash /d;
+    /^  tree /d;
+    /^  gitk/d;
+    /^  vjson /d;
+    /^  gcc /d;
+    /^  g++ /d;
+    /^  change_toolchain /d;
+    /^  title /d;
+    /^  vsync /d;
+    /^  \.\/ /d;
+    /^  star /d;
+    /^  tar /d;
+    /^  kill /d;
+    /^  killall /d;
+    /^  ln /d;
+    /^  top /d;
+    /^  ps /d;
+    ' -i $1
+
+    sed -rn '/^.{0,7}$/!p' -i $1
 
     > newtmp
     local out
@@ -86,7 +94,8 @@ function history_deal() {
         if [ $? -ne 0 ]; then
             # sed -n '/^#[0-9]\+/!p;' $i | awk '$0=NR" "$0' | sort --field-separator=" " --key=2 | uniq -f 1 | sort --human-numeric-sort - | sed -n 's/^[0-9]\+ /  /p;' >> $history_data
             # sed -n '/^#[0-9]\+/!p;' $i | sort | uniq | awk '$0="  "$0'  >> $history_data
-            sed -n '/^#[0-9]\+/!p;' $i | sort | uniq > xxxtmp
+            sed -n '/^#[0-9]\+\|^vi\|^vim/!p;' $i | sort | uniq > xxxtmp
+            sed -n '/^vi\|^vim/p;' $i | awk '$0="" $0' >> $VTMP/.vim_list
             history_clean xxxtmp newtmp
             cat newtmp | awk '$0="  "$0'  >> $history_data
             echo "#$(date +%m)" >> $history_data

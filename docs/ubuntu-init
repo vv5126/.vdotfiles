@@ -9,6 +9,11 @@
 # /home 剩下的       ext4 逻辑分区
 #-------------------------------------------------#
 
+# manual wlan
+
+# manual shell-extensions store
+# tar -cf  extensions.tar.gz -C ~/.local/share/gnome-shell
+
 # change sources.list
 # mv -i /etc/apt/sources.list /etc/apt/sources.list.bak
 
@@ -25,6 +30,12 @@
 # deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
 # " > /etc/apt/sources.list
 
+# apt update
+# apt upgrade
+
+# apt install aptitude
+# end
+
 ## manual
 ## bug
 ## set ip
@@ -36,19 +47,13 @@
 # echo set dns to 192.168.1.2
 # ifconfig eth0 up
 
-# manual wlan
 # setting manual
-
-# sudo apt update
-# sudo apt upgrade
-
-# sudo apt install aptitude
 
 function ins() {
     pro=$1
     # dpkg -l $pro > /dev/null
     # [ $? -eq 0 ] && return
-    sudo aptitude install $pro
+    aptitude install $pro
 }
 
 # 必装
@@ -69,9 +74,7 @@ function ins() {
 # ins sshfs
 # ins xclip
 # ins silversearcher-ag
-
-# manual shell-extensions store
-# tar -cf  extensions.tar.gz -C ~/.local/share/gnome-shell
+# ins aria2
 
 # manual 输入法 
 # manual mail
@@ -83,10 +86,10 @@ function ins() {
 # ins libpython3.8-dev
 #-------------------------------------------------#
 # You need to install a terminal library:
-sudo apt-get install libncurses5-dev
+apt-get install libncurses5-dev
 # ins libncurses5-dev # for vim
 # Python.h: No such file or directory:
-sudo apt-get install python2.7-dev
+apt-get install python2.7-dev
 #-------------------------------------------------#
 cd /tmp/mnt/3.3/.local/tools/vim && ./a.sh
 # ins gawk
@@ -95,17 +98,17 @@ cd /tmp/mnt/3.3/.local/tools/vim && ./a.sh
 # ins nodejs
 
 # typora:
-# wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
-# sudo add-apt-repository 'deb https://typora.io/linux ./'
-# sudo apt-get update
-# sudo aptitude install typora
+# wget -qO - https://typora.io/linux/public-key.asc | apt-key add -
+# add-apt-repository 'deb https://typora.io/linux ./'
+# apt-get update
+# aptitude install typora
 
 # ins thunderbird
 # add sshkey
 # ssh-keygen -t rsa
 # cp vdot
 
-# $sudo apt-get install build-essential
+# $apt-get install build-essential
 
 exit
 # nautilus-image-converter
@@ -130,7 +133,7 @@ exit
 # libwebkit-1.0-2
 
 # numlockx
-# sudo vi /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
+# vi /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf
 # add "greeter-setup-script=/usr/bin/numlockx on"
 
 # /* win */
@@ -146,7 +149,7 @@ exit
 # iptux
 
 # 添加32位体系结构支持：
-# sudo dpkg --add-architecture i386
+# dpkg --add-architecture i386
 
 
 # 有待添加
@@ -167,15 +170,15 @@ exit
 md /home/user/.local/tmp/rm /home/user/.local/tmp/vp
 
 python先不要安装新版了，只要2 3都有就行，主要是扩展包。
-sudo apt-get install autoconf
-sudo apt-get install automake
-sudo apt-get install pkg-config
-sudo apt-get install libgtk-3-dev
+apt-get install autoconf
+apt-get install automake
+apt-get install pkg-config
+apt-get install libgtk-3-dev
 
 系统精简：
-卸载libreOffice，选择用WPS来替代： sudo apt-get remove libreoffice-common
+卸载libreOffice，选择用WPS来替代： apt-get remove libreoffice-common
 
-sudo apt-get remove thunderbird totem rhythmbox empathy brasero simple-scan gnome-mahjongg aisleriot gnome-mines cheese transmission-common gnome-orca webbrowser-app gnome-sudoku landscape-client-ui-install onboard deja-dup 
+apt-get remove thunderbird totem rhythmbox empathy brasero simple-scan gnome-mahjongg aisleriot gnome-mines cheese transmission-common gnome-orca webbrowser-app gnome-sudoku landscape-client-ui-install onboard deja-dup 
 #-------------------------------------------------#
 apt-get install安装目录是包的维护者确定的，不是用户
 
