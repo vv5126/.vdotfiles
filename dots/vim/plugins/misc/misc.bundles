@@ -2,8 +2,8 @@
 " Plug 'mattn/gist-vim'
 " -------------------------------------------------
 " markdown
-Plug 'kannokanno/previm'
-Plug 'plasticboy/vim-markdown' ", {'for': 'markdown'}
+" Plug 'kannokanno/previm'
+" Plug 'plasticboy/vim-markdown' ", {'for': 'markdown'}
 " Plug 'tpope/vim-markdown'
 "让Vim变成所见即所得的MarkDown文件编辑器，可以在编辑时预览最终效果。
 " If you don't have nodejs and yarn
@@ -16,11 +16,11 @@ Plug 'plasticboy/vim-markdown' ", {'for': 'markdown'}
 "     Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 " endif
 " -------------------------------------------------
-Plug 'ap/vim-css-color'
-Plug 'skammer/vim-css-color'
+" Plug 'ap/vim-css-color'
+" Plug 'skammer/vim-css-color'
 " -------------------------------------------------
 " vim-leader-guide is a vim keymap-display loosely inspired by emacs's guide-key.
-Plug 'hecal3/vim-leader-guide', {'do' : ':call DeleteLinesInFile(EverVimBundleDir(\"vim-leader-guide/autoload/leaderGuide.vim\"), \"statusline=\")'}
+" Plug 'hecal3/vim-leader-guide', {'do' : ':call DeleteLinesInFile(EverVimBundleDir(\"vim-leader-guide/autoload/leaderGuide.vim\"), \"statusline=\")'}
 
 " Swap windows without ruining your layout!
 " Plug 'wesQ3/vim-windowswap'
@@ -28,7 +28,7 @@ Plug 'hecal3/vim-leader-guide', {'do' : ':call DeleteLinesInFile(EverVimBundleDi
 " Plug 'itchyny/calendar.vim'
 " Plug 'chrisbra/csv.vim'
 if NVIM()
-    Plug 'equalsraf/neovim-gui-shim'
+    " Plug 'equalsraf/neovim-gui-shim'
 endif
 " Plug 'jistr/vim-nerdtree-tabs', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
 " Plug 'tpope/vim-surround'
@@ -36,8 +36,8 @@ endif
 " Plug 'Konfekt/FastFold'
 " Plug 'romainl/vim-qf'
 if !NVIM() && !WINDOWS()
-    Plug 'Shougo/vimproc.vim', {'do' : 'make'} " 异步执行库
-    Plug 'Shougo/vimshell.vim'
+    " Plug 'Shougo/vimproc.vim', {'do' : 'make'} " 异步执行库
+    " Plug 'Shougo/vimshell.vim'
 endif
 " Plug 'kassio/neoterm'
 " Plug 'wincent/terminus'
@@ -49,14 +49,39 @@ endif
 " 文本同级文字选取，和文本处理 推荐：****
 Plug 'kana/vim-textobj-user'
 Plug 'kana/vim-textobj-indent'
+Plug 'kana/vim-textobj-syntax'
+Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java']  }
+Plug 'sgur/vim-textobj-parameter'
+Plug 'reedes/vim-textobj-sentence'
+Plug 'reedes/vim-textobj-quote'
+" Plug 'reedes/vim-wordy'
+" TextObj Sentence {
+    " augroup textobj_sentence
+    "     autocmd!
+    "     autocmd FileType markdown call textobj#sentence#init()
+    "     autocmd FileType textile call textobj#sentence#init()
+    "     autocmd FileType text call textobj#sentence#init()
+    " augroup END
+" }
+
+" TextObj Quote {
+    " augroup textobj_quote
+    "     autocmd!
+    "     autocmd FileType markdown call textobj#quote#init()
+    "     autocmd FileType textile call textobj#quote#init()
+    "     autocmd FileType text call textobj#quote#init({'educate': 0})
+    " augroup END
+" }
+
+Plug 'gcmt/wildfire.vim'
 
 " Plug 'bling/vim-bufferline'
 " Plug 'mhinz/vim-startify'
 
 if !exists('g:evervim_use_neoformat')
-    Plug 'Chiel92/vim-autoformat'
+    " Plug 'Chiel92/vim-autoformat'
 else
-    Plug 'sbdchd/neoformat'
+    " Plug 'sbdchd/neoformat'
 end
 " Plug 'MarcWeber/vim-addon-mw-utils'
 " -------------------------------------------------
@@ -81,11 +106,11 @@ elseif executable('ack')
     " vmap <C-E>a <Plug>CtrlSFVwordPath
     let g:ctrlsf_default_root = 'project'
 endif
-Plug 'mileszs/ack.vim'
+" Plug 'mileszs/ack.vim'
 " -------------------------------------------------
 " Plug 'metakirby5/codi.vim'
 " -------------------------------------------------
-Plug 'vimwiki/vimwiki', {'branch': 'dev'}
+" Plug 'vimwiki/vimwiki', {'branch': 'dev'}
 " -------------------------------------------------
 " -------------------------------------------------
 " use <tab> for trigger completion and navigate to the next complete item
@@ -103,7 +128,7 @@ Plug 'vimwiki/vimwiki', {'branch': 'dev'}
 " 异步Fuzzy Finder：
 " Plug 'Shougo/denite.nvim'
 " Plug 'junegunn/fzf.vim'
-Plug 'Yggdroot/LeaderF', { 'do': './install.sh'  }
+" Plug 'Yggdroot/LeaderF', { 'do': './install.sh'  }
 
 " Plug 'tenfyzhong/CompleteParameter.vim'
 " -------------------------------------------------
@@ -119,9 +144,6 @@ Plug 'Yggdroot/LeaderF', { 'do': './install.sh'  }
 " -------------------------------------------------
 " View man pages in vim. Grep for the man pages.
 " Plug 'vim-utils/vim-man'
-" -------------------------------------------------
-" 为小括号加如彩虹效果，但对c貌似没啥意义...
-" Plug 'kien/rainbow_parentheses.vim'
 " -------------------------------------------------
 " 可以在vim和tmux的任何组合间无缝切换
 " Plug 'christoomey/vim-tmux-navigator'
@@ -152,23 +174,24 @@ Plug 'Yggdroot/LeaderF', { 'do': './install.sh'  }
 " -------------------------------------------------
 " 由注释生成文档，并且能够快速生成函数标准注释
 " Plug 'vim-scripts/DoxygenToolkit.vim'
+" Plug 'doxygen/doxygen'
 " -------------------------------------------------
 "Plug 'cctree'             " 可以查看function的call tree
 " -------------------------------------------------
 " Unite可以在一个项目中快速浏览文件。但是它不仅限于文件，其他任何可以列出的东西都可以很好的被显示和搜索。
-Plug 'Shougo/unite-help'
-Plug 'Shougo/unite-outline'
-Plug 'Shougo/unite.vim'
+" Plug 'Shougo/unite-help'
+" Plug 'Shougo/unite-outline'
+" Plug 'Shougo/unite.vim'
 " Plug 'osyo-manga/unite-quickfix'
 " Plug 'tsukkee/unite-tag'
 " -------------------------------------------------
 " 折叠
-Plug 'lambdalisue/vim-foldround'
-nmap <Leader>xf <Plug>(foldround-forward)
-nmap <Leader>fb <Plug>(foldround-backward)
+" Plug 'lambdalisue/vim-foldround'
+" nmap <Leader>xf <Plug>(foldround-forward)
+" nmap <Leader>fb <Plug>(foldround-backward)
 
-Plug 'tmhedberg/SimpylFold'
-Plug 'tweekmonster/braceless.vim'
+" Plug 'tmhedberg/SimpylFold'
+" Plug 'tweekmonster/braceless.vim'
 
 setlocal foldlevel=1               " 设置折叠层数为
 set nofoldenable                   " 启动 vim 时关闭折叠代码
@@ -222,9 +245,9 @@ Plug 'jasoncodes/ctrlp-modified.vim'
 "-----------------------------------------
 " Plug 'vim-scripts/restore_view.vim'
 
-Plug 'mattn/webapi-vim' " An Interface to WEB APIs.
+" Plug 'mattn/webapi-vim' " An Interface to WEB APIs.
 
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 if exists('g:evervim_use_lightline')
     Plug 'itchyny/lightline.vim'
@@ -238,3 +261,14 @@ endif
 " Plug 'jamessan/vim-gnupg'
 " Plug 'cohama/agit.vim'
 " -------------------------------------------------
+" Plug 'skywind3000/vim-terminal-help'
+
+" Plug 'Rykka/riv.vim', {'for': 'rst'}
+" Plug 'jceb/vim-orgmode'
+
+Plug 'honza/vim-snippets'
+" Source support_function.vim to support vim-snippets.
+if filereadable(expand($evervim_root . "/bundle/vim-snippets/snippets/support_functions.vim"))
+    source $evervim_root/bundle/vim-snippets/snippets/support_functions.vim
+endif
+

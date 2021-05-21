@@ -53,7 +53,7 @@ Plug 'reedes/vim-wheel'
 if isdirectory(expand(EverVimBundleDir("vim-polyglot")))
     let g:polyglot_disabled = ['markdown', 'go', 'c/c++', 'css', 'html5', 'md', 'html', 'javascript', 'rust', 'toml']
 endif
-Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot' " disabled by default, conflicts with many plugins
 " -------------------------------------------------
 " 登陆到你选择的窗口，比如tmux的“显示面板”
 Plug 't9md/vim-choosewin'
@@ -85,6 +85,11 @@ Plug 'rakr/vim-one'
 "  多行编辑
 Plug 'mg979/vim-visual-multi'
 " -------------------------------------------------
+Plug 'ZSaberLv0/ZFVimIM'
+Plug 'ZSaberLv0/ZFVimJob'
+Plug 'ZSaberLv0/ZFVimGitUtil'
+Plug 'ZSaberLv0/ZFVimIM_openapi'
+" Plug 'https://gitee.com/vv5126/vim-im_pinyin_base'
 " -------------------------------------------------
 " -------------------------------------------------
 " Fuzzy finder choice

@@ -1,31 +1,22 @@
-" Pick ALE by default, and fall back to syntastic
-if !exists('g:evervim_use_syntastic')
-    Plug 'w0rp/ale'
-else
-    " Plug 'vim-syntastic/syntastic'
-endif
+" Language Server by vim.
+" Plug 'bash-lsp/bash-language-server'
 
 " Language Server Client
-" Plug 'prabirshrestha/vim-lsp'
 
 
 
-" Pick one of the checksyntax, jslint, or syntastic
+
+
 " Plug 'scrooloose/syntastic'
 
-" Plug 'sheerun/vim-polyglot' " disabled by default, conflicts with many plugins
-
 " Plug 'cespare/vim-toml'
+
 " Plug 'ekalinin/Dockerfile.vim'
+
 " Plug 'peterhoeg/vim-qml'
 
-
-
-
-
-
 " BASH
-Plug 'WolfgangMehner/bash-support'
+" Plug 'WolfgangMehner/bash-support'
 
 " CPP
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -49,7 +40,16 @@ endif
 
 " Go
 "Plug 'Blackrush/vim-gocode'
-" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go-tutorial'
 if count(g:evervim_bundle_groups, 'deoplete')
     Plug 'zchee/deoplete-go'
 endif
+
+" Pick ALE by default, and fall back to syntastic
+if !exists('g:evervim_use_syntastic')
+    Plug 'w0rp/ale'
+else
+    " Plug 'vim-syntastic/syntastic'
+endif
+

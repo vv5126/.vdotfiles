@@ -175,8 +175,10 @@ function findobj() {
     local TARGET
     TARGET=$(getdir .repo)
     if [ -n "$TARGET" ]; then
-        if [ x"$(find $TARGET/out/product -maxdepth 2 -name obj -type d | wc -l)" == 'x1' ]; then
-            echo $(find $TARGET/out/product -maxdepth 2 -name obj -type d)
+        if [ -d "$TARGET/out/product" ]; then
+            if [ x"$(find $TARGET/out/product -maxdepth 2 -name obj -type d | wc -l)" == 'x1' ]; then
+                echo $(find $TARGET/out/product -maxdepth 2 -name obj -type d)
+            fi
         fi
     fi
 }

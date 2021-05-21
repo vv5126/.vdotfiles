@@ -1,8 +1,13 @@
 " 一款用于快速高效注释代码的插件
-" Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-commentary'
 
 Plug 'jiangmiao/auto-pairs'
+
+" 为小括号加如彩虹效果
+" Plug 'kien/rainbow_parentheses.vim'
+Plug 'luochen1990/rainbow'
+" -------------------------------------------------
+
 if executable('ctags')
     Plug 'majutsushi/tagbar'
 endif
@@ -13,6 +18,3 @@ else
     Plug 'nathanaelkane/vim-indent-guides'
 endif
 
-Plug 'gcmt/wildfire.vim'
-
-Plug 'luochen1990/rainbow'

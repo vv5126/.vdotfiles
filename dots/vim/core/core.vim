@@ -16,4 +16,6 @@ source $evervim_root/core/type-probe.vim
 
 source $evervim_root/core/functions.vim
 
+source $evervim_root/core/keybind.vim
+
 source $evervim_root/core/misc.vim

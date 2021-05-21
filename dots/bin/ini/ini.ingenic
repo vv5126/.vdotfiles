@@ -3,7 +3,7 @@ SUPPORT_ANDROID=0
 
 add_server WORK1 "lqchen-0B" "wgao" "192.168.4.15" "/data1/home/wgao"
 add_server WORK2 "ubuntu3"   "wgao" "192.168.3.3"  "/backup/home/wgao"
-add_server WORK3 "ingenic"   "user" "192.168.3.89" "/home/user"
+add_server WORK3 "ingenic"   "user" "192.168.3.96" "/home/user"
 
 export VMAINID="$WORK2_ID"
 export WORK_SERVER_SSH="$WORK2_SSH"

@@ -54,6 +54,3 @@ function! Burn_off() "{{{
     unlet g:blank
     set statusline=%7*\ %3*%{HasPaste()}%*[file:\ %2*%t%r%h%w%*]%3*%m%*[dir:\ %<%2*%{CurDir()}%*]%=\ \ \ \ \ \ \ \ \ \ %4*[%{&ff}][%{&encoding}]%6*%y%*[Line:%2*%l%*/%2*%L%*,Column:%2*%c%*][%2*%p%%%*]
 endfunction "}}}
-
-nmap  <F2> :call Burn_on()<cr>
-nmap  <F3> :call Burn_off()<cr>

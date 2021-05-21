@@ -1,0 +1,8 @@
+fa 1
+a 1
+d 1
+ni 2
+ohayou 2
+ha 1
+hao 2
+tang 3

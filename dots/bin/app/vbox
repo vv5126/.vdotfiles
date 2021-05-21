@@ -24,6 +24,10 @@ function svi(){
         LINE=${STR#*:}
         LINE=${LINE%%:*}
 
+        if [ x"$STR" == "x." ]; then
+            FILE="$(cat $VTMP/.vim_list | fzy)"
+        fi
+
         expr $LINE + 0 &>/dev/null
         [ $? -eq 0 ] && LINE="+$LINE" || LINE=''
 
