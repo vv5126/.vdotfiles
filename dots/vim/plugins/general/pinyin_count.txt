@@ -1,8 +1,25 @@
 fa 1
+fen 1
+feng 1
+xing 1
 a 1
 d 1
+da 1
+dao 1
+dian 1
+cha 1 1
+chajian 2
+jian 1 1
 ni 2
 ohayou 2
 ha 1
 hao 2
+hou 1
+zhi 1
+zhong 1
+zu 2
+zui 1
+yong 1
+you 1
+suo 1
 tang 3

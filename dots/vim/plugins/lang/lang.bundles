@@ -1,22 +1,27 @@
 " Language Server by vim.
 " Plug 'bash-lsp/bash-language-server'
+" ------------------------------------------------
 
 " Language Server Client
+" ------------------------------------------------
 
-
-
-
-
-" Plug 'scrooloose/syntastic'
-
+" toml
 " Plug 'cespare/vim-toml'
+" ------------------------------------------------
 
+" docker
 " Plug 'ekalinin/Dockerfile.vim'
+" ------------------------------------------------
 
+" QML
 " Plug 'peterhoeg/vim-qml'
+" ------------------------------------------------
 
 " BASH
 " Plug 'WolfgangMehner/bash-support'
+" 使用菜单和热键来编写和执行BASH脚本
+" Plug 'bash-support.vim'
+" ------------------------------------------------
 
 " CPP
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -24,6 +29,9 @@ Plug 'vim-scripts/c.vim'
 " if count(g:evervim_bundle_groups, 'deoplete')
 "     Plug 'tweekmonster/deoplete-clang2'
 " endif
+" Plug 'stl.vim' "stl语法高亮+
+" Plug 'stlrefvim' "stl帮助 +
+" ------------------------------------------------
 
 " PYTHON
 " Pick either python-mode or pyflakes & pydoc
@@ -37,6 +45,7 @@ if count(g:evervim_bundle_groups, 'deoplete')
 endif
 " Pick either python-mode or pyflakes & pydoc
 " Plug 'klen/python-mode'
+" ------------------------------------------------
 
 " Go
 "Plug 'Blackrush/vim-gocode'
@@ -45,11 +54,9 @@ Plug 'fatih/vim-go-tutorial'
 if count(g:evervim_bundle_groups, 'deoplete')
     Plug 'zchee/deoplete-go'
 endif
-
-" Pick ALE by default, and fall back to syntastic
-if !exists('g:evervim_use_syntastic')
-    Plug 'w0rp/ale'
-else
-    " Plug 'vim-syntastic/syntastic'
-endif
+" ------------------------------------------------
+Plug 'kevinoid/vim-jsonc'
+" ------------------------------------------------
+" ------------------------------------------------
+" ------------------------------------------------
 

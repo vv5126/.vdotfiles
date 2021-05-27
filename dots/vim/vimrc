@@ -8,10 +8,6 @@
     let g:evervim_bundle_groups=['general', 'appearance', 'writing', 'programming', 'lang', 'misc']
     let g:evervim_bundle_groups += ['code_completion/coc']
     " let g:evervim_bundle_groups += ['code_completion/lsp']
-    " let g:evervim_bundle_groups += ['code_completion/deoplete']
-    " let g:evervim_bundle_groups += ['code_completion/youcompleteme']
-    " let g:evervim_bundle_groups += ['code_completion/neocomplete']
-    " let g:evervim_bundle_groups += ['code_completion/snipmate']
 
     " Color Theme
     " Use :Colors for a list of available colorschemes
@@ -70,18 +66,10 @@
     " Syntastic by uncommenting the following line
     let g:evervim_use_syntastic = 1
 
-    " Fuzzy Finder
-    " By default, CtrlP is used on Windows and FZF.vim on Unix
-    " Fall back to CtrlP by uncommenting the following line (Unix only)
-    let g:evervim_use_ctrlp = 1
-
     " Enable smooth scrolling
     " Use physics-based smooth scrolling for half-page/full-page scrolling
     " Friction and air-drag can be override here
     " let g:evervim_smooth_scrolling = 1
-
-    " Enable transparent background on terminal vim/nvim
-    " let g:evervim_transparent_bg = 1
 
     " Disable easier moving in tabs and windows
     " only if you need <C-J> for jumping or other conflicting plugin
@@ -123,10 +111,7 @@
     " Don't turn conceallevel or concealcursor
     " let g:evervim_no_conceal = 1
 
-    " Disable  omni complete
-    " let g:evervim_no_omni_complete = 1
-
-    " Prefer indentguides
+    " 缩进级别显示风格
     " let g:evervim_use_indentguides = 1
 
     " Prefer Neoformat over vim-autoformat
