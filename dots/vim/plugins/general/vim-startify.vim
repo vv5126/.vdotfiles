@@ -101,13 +101,6 @@ if isdirectory(expand(EverVimBundleDir("vim-startify")))
     "highlight StartifyHeader ctermfg=120 guifg=#87ff87
     hi link StartifyHeader Function
     let g:startify_custom_header = [
-                \' _______   ___      ___ _______   ________  ___      ___ ___  _____ ______      ',
-                \'|\  ___ \ |\  \    /  /|\  ___ \ |\   __  \|\  \    /  /|\  \|\   _ \  _   \    ',
-                \'\ \   __/|\ \  \  /  / | \   __/|\ \  \|\  \ \  \  /  / | \  \ \  \\\__\ \  \   ',
-                \' \ \  \_|/_\ \  \/  / / \ \  \_|/_\ \   _  _\ \  \/  / / \ \  \ \  \\|__| \  \  ',
-                \'  \ \  \_|\ \ \    / /   \ \  \_|\ \ \  \\  \\ \    / /   \ \  \ \  \    \ \  \ ',
-                \'   \ \_______\ \__/ /     \ \_______\ \__\\ _\\ \__/ /     \ \__\ \__\    \ \__\',
-                \'    \|_______|\|__|/       \|_______|\|__|\|__|\|__|/       \|__|\|__|     \|__|',
                 \'     ||=======================================================================||',
                 \'     ' . s:boxed_header(startify_icon_vulkan . ' Welcome to EverVim. The Ultimate Vim Distribution for everyone.'),
                 \'     ' . s:boxed_header(startify_icon_love . ' Made with <3 by LER0ever | ' . startify_icon_link . ' Freenode IRC: #EverVim'),

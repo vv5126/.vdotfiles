@@ -92,12 +92,24 @@ Plug 'ZSaberLv0/ZFVimGitUtil'
 Plug 'ZSaberLv0/ZFVimIM_openapi'
 " Plug 'https://gitee.com/vv5126/vim-im_pinyin_base'
 " -------------------------------------------------
-" -------------------------------------------------
-" Fuzzy finder choice
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
 " Plug 'Shougo/denite.nvim'
 " Plug 'Yggdroot/LeaderF', { 'do': './install.sh'  }
+" -------------------------------------------------
+Plug 'drewtempelmeyer/palenight.vim'
+" -------------------------------------------------
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" -------------------------------------------------
+Plug 'mhinz/vim-startify'
+" -------------------------------------------------
+if exists('g:evervim_use_lightline')
+    Plug 'itchyny/lightline.vim'
+    Plug 'taohexxx/lightline-buffer'
+else
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+endif
 " -------------------------------------------------
 " Vim8 异步运行shell
 Plug 'skywind3000/asyncrun.vim'

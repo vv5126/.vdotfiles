@@ -1,40 +1,34 @@
-" fzf drop down
-let g:fzf_layout = { 'down': '~40%' }
+" let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 
-" fzf mappings
-nnoremap <Leader>.f :Files<CR>
-nnoremap <Leader>.l :Lines<CR>
-nnoremap <Leader>.t :Tags<CR>
-nnoremap <Leader>.b :Buffers<CR>
-nnoremap <Leader>.c :Commands<CR>
-nnoremap <Leader>.w :Windows<CR>
-nnoremap <Leader>.a :Ag<CR>
-nnoremap <Leader>.g :GitFiles<CR>
-nnoremap <Leader>.o :Locate<Space>
-nnoremap <Leader>.m :Maps<CR>
-nnoremap <Leader>.h :History<CR>
-nnoremap <Leader>.s :Snippets<CR>
-nnoremap <Leader>.i :Commits<CR>
-nnoremap <Leader>.r :Colors<CR>
-nnoremap <Leader>.e :Helptags<CR>
+nnoremap <C-P> :History<CR>
+
+nnoremap <Leader>lf :Files<CR>
+nnoremap <Leader>ll :Lines<CR>
+nnoremap <Leader>lt :Tags<CR>
+nnoremap <Leader>lb :Buffers<CR>
+nnoremap <Leader>lc :Commands<CR>
+nnoremap <Leader>lw :Windows<CR>
+nnoremap <Leader>la :Ag<CR>
+nnoremap <Leader>lg :GitFiles<CR>
+nnoremap <Leader>lo :Locate<Space>
+nnoremap <Leader>lm :Maps<CR>
+nnoremap <Leader>lh :History<CR>
+nnoremap <Leader>ls :Snippets<CR>
+nnoremap <Leader>li :Commits<CR>
+nnoremap <Leader>lr :Colors<CR>
+nnoremap <Leader>le :Helptags<CR>
 nnoremap <Leader>..c :BCommits<CR>
 nnoremap <Leader>..t :BTags<CR>
 nnoremap <Leader>..l :BLines<CR>
-
-nnoremap <C-P> :History<CR>
-" let g:fzf_history_dir = '~/.local/share/fzf-history'
-
-nmap <Leader>z <Leader>.
 
 if isdirectory(expand(EverVimBundleDir('lightline.vim')))
     autocmd! User FzfStatusLine call lightline#update_once()
 endif
 
-" Command override (with preview)
-command! -bang -nargs=? -complete=dir Files
-            \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-command! -bang -nargs=* Ag
-            \ call fzf#vim#ag(<q-args>,
-            \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-            \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-            \                 <bang>0)
+" Enable per-command history
+" - History files will be stored in the specified directory
+" - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
+"   'previous-history' instead of 'down' and 'up'.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+

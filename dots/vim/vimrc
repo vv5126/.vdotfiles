@@ -12,7 +12,7 @@
     " Color Theme
     " Use :Colors for a list of available colorschemes
     let g:evervim_color_theme="Dark"
-    let g:evervim_airline_theme="dark" " 'dark' 'dracula' 'molokai' 'solarized'
+    let g:evervim_airline_theme="palenight" " 'dark' 'dracula' 'molokai' 'solarized' 'palenight'
     let g:evervim_light_background = 1
 
     " Customize Patched Font
@@ -144,4 +144,3 @@
 " }
 
 " based on d44ea81fd8ebb83de3483350624697f7a714fffa
-

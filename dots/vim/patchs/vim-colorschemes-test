@@ -1,0 +1,12 @@
+diff --git a/colors/getfresh.vim b/colors/getfresh.vim
+index df9ef27..9bd7c2d 100644
+--- a/colors/getfresh.vim
++++ b/colors/getfresh.vim
+@@ -140,6 +140,6 @@ function! InsertStatuslineColor(mode)
+ endfunction
+ 
+ " Call function
+-exe 'au InsertEnter * call InsertStatuslineColor(v:insertmode)'
++" exe 'au InsertEnter * call InsertStatuslineColor(v:insertmode)'
+ exe 'au InsertLeave * hi statusline guifg='.NormalFG.' guibg='.StatusBG
+ exe 'au InsertLeave * hi User4      guifg='.DarkGray.' guibg='.DarkMagenta

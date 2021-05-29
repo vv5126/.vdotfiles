@@ -1,5 +1,31 @@
 " You have to install coc extension or configure language servers for LSP support.
-" Use :CocInstall coc-json coc-tsserver
+let g:coc_global_extensions=[
+            \'coc-omnisharp',
+            \'coc-html',
+            \'coc-eslint',
+            \'coc-tsserver',
+            \'coc-snippets',
+            \'coc-emmet',
+            \'coc-clangd',
+            \'coc-java',
+            \'coc-pairs',
+            \'coc-json',
+            \'coc-vimtex',
+            \'coc-texlab',
+            \'coc-lists',
+            \'coc-highlight',
+            \'coc-css',
+            \'coc-git',
+            \'coc-phpls',
+            \'coc-prettier',
+            \'coc-wxml',
+            \'coc-vetur',
+            \'coc-stylelint',
+            \'coc-word',
+            \'coc-python',
+            \'coc-tabnine',
+            \'coc-emoji'
+            \]
 "
 " -------------------------------------------------
 " Use :CocInstall coc-snippets

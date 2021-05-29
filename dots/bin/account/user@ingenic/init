@@ -25,4 +25,26 @@ else
     alias ch='(cd $VDOT; git checkout dots/bin/account/user@ingenic/data/chrome3;); nohup /opt/Citrix/ICAClient/wfica -icaroot /opt/Citrix/ICAClient $VUSER/data/chrome3 > /dev/null &'
     # alias ch1='(cd $VDOT; git checkout dots/bin/account/user@ingenic/data/chrome1;); nohup /opt/Citrix/ICAClient/wfica -browserLock /tmp/npicaizxw3m -file $VUSER/data/chrome1 > /dev/null &'
     add_path $VTOOLS/mips-gcc720-glibc226/bin
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+    CONDA_DIR="$VTOOLS/anaconda3"
+    __conda_setup="$($CONDA_DIR'/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
+    else
+        if [ -f "$CONDA_DIR/etc/profile.d/conda.sh" ]; then
+            . "$CONDA_DIR/etc/profile.d/conda.sh"
+        else
+            export PATH="$CONDA_DIR/bin:$PATH"
+        fi
+    fi
+    unset __conda_setup
+    unset CONDA_DIR
+    # conda config --set auto_activate_base false
+
+    # alias con='conda_cmd'
+
+# <<< conda initialize <<<
+
 fi

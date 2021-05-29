@@ -19,7 +19,10 @@ zhi 1
 zhong 1
 zu 2
 zui 1
+yang 1
+yangshi 1
 yong 1
 you 1
+shi 1 1
 suo 1
 tang 3

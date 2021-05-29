@@ -1,0 +1,13 @@
+diff --git a/plugin/gitgutter.vim b/plugin/gitgutter.vim
+index eeaffb1..32688b9 100644
+--- a/plugin/gitgutter.vim
++++ b/plugin/gitgutter.vim
+@@ -28,7 +28,7 @@ function! s:set(var, default) abort
+ endfunction
+ 
+ call s:set('g:gitgutter_enabled',                     1)
+-call s:set('g:gitgutter_max_signs',                 500)
++call s:set('g:gitgutter_max_signs',               10000)
+ call s:set('g:gitgutter_signs',                       1)
+ call s:set('g:gitgutter_highlight_lines',             0)
+ call s:set('g:gitgutter_sign_column_always',          0)

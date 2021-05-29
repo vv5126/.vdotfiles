@@ -1,0 +1,17 @@
+diff --git a/ftplugin/c.vim b/ftplugin/c.vim
+index 16344da..e2db76e 100644
+--- a/ftplugin/c.vim
++++ b/ftplugin/c.vim
+@@ -480,8 +480,8 @@ inoremap  <buffer>  {<CR>    {<CR>}<Esc>O
+ vnoremap  <buffer>  {<CR>   S{<CR>}<Esc>Pk=iB
+ "
+ "
+-if !exists("g:C_Ctrl_j") || ( exists("g:C_Ctrl_j") && g:C_Ctrl_j != 'off' )
+-  nmap    <buffer>  <silent>  <C-j>   i<C-R>=C_JumpCtrlJ()<CR>
+-  imap    <buffer>  <silent>  <C-j>    <C-R>=C_JumpCtrlJ()<CR>
+-endif
++" if !exists("g:C_Ctrl_j") || ( exists("g:C_Ctrl_j") && g:C_Ctrl_j != 'off' )
++"   nmap    <buffer>  <silent>  <C-j>   i<C-R>=C_JumpCtrlJ()<CR>
++"   imap    <buffer>  <silent>  <C-j>    <C-R>=C_JumpCtrlJ()<CR>
++" endif
+ "

@@ -1,0 +1,13 @@
+diff --git a/plugin/mark.vim b/plugin/mark.vim
+index e51c373..58e4153 100644
+--- a/plugin/mark.vim
++++ b/plugin/mark.vim
+@@ -234,7 +234,7 @@ if !hasmapto('<Plug>MarkSearchCurrentPrev', 'n')
+ 	nmap <unique> <silent> <Leader># <Plug>MarkSearchCurrentPrev
+ endif
+ if !hasmapto('<Plug>MarkSearchAnyNext', 'n')
+-	nmap <unique> <silent> <Leader>/ <Plug>MarkSearchAnyNext
++	" nmap <unique> <silent> <Leader>/ <Plug>MarkSearchAnyNext
+ endif
+ if !hasmapto('<Plug>MarkSearchAnyPrev', 'n')
+ 	nmap <unique> <silent> <Leader>? <Plug>MarkSearchAnyPrev

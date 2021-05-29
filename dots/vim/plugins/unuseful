@@ -234,3 +234,19 @@ let g:DirDiffExcludes = "CVS,*.class,*.exe,.*.swp, .*.cmd, *.o, .git"
 
 Plug 'sotte/presenting.vim'
 Plug 'reedes/vim-litecorrect'
+Plug 'Quramy/vim-dtsm'
+Plug 'mhartington/vim-typings'
+Plug 'leafgarland/typescript-vim'
+Plug 'dNitro/vim-pug-complete'
+Plug 'chemzqm/wxapp.vim', {'for':['wxml','wxss','js']}
+Plug 'beanworks/vim-phpfmt'
+"Plug 'OrangeT/vim-csharp', {'for':'cs'}
+Plug 'OmniSharp/omnisharp-vim', {'for':'cs'}
+"Plug 'AutoComplPop'
+Plug 'Quramy/tsuquyomi'
+"Plug 'OmniCppComplete'
+Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'jacoborus/tender.vim'
+Plug 'godlygeek/tabular'
