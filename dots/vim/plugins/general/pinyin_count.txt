@@ -15,6 +15,7 @@ ohayou 2
 ha 1
 hao 2
 hou 1
+qian 1
 zhi 1
 zhong 1
 zu 2

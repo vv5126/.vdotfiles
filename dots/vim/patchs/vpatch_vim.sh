@@ -1,7 +1,7 @@
 #!/bin/bash -
 
 bundle=/backup/home/wgao/.local/vdot/dots/vim/bundle
-bakDir="~/.vim/patchs"
+bakDir="$HOME/.vim/patchs"
 
 function bak() {
     cd $bundle
@@ -19,20 +19,29 @@ eval mv "$bundle/*-test" $bakDir
 }
 
 function store() {
-    cd $bakDir
+    # cd $bakDir
 
-    list="$(ls)"
-    for i in ${list[@]}; do
-        repo=${i%-*}
-        [ -d "$bundle/$repo" ] && (
-            cd $bundle/$repo
-            patch -p1 < $bakDir/$i
-        )
-    done
+    # list="$(ls)"
+    # for i in ${list[@]}; do
+    #     repo=${i%-*}
+    #     [ -d "$bundle/$repo" ] && (
+    #         echo cd $bundle/$repo
+    #         cd $bundle/$repo
+    #         echo patch -p1 < $bakDir/$i
+    #         patch -p1 < $bakDir/$i
+    #         # git apply $bakDir/$i
+    #     )
+    # done
 
-    patchs="$(ls $patch_dir)"
+    patchs="$(ls $bakDir)"
 
-    for (( i = 0; i < ${#patchs[@]}; i++ )); do
-        $(cd ${i%-*}; patch -p1 < $patch_dir/$i)
+    cd $bundle
+    for i in ${patchs[@]}; do
+        echo cd ${i%-*}
+        echo "patch -p1 < $bakDir/$i"
+        (cd ${i%-*}; patch -p1 < $bakDir/$i)
     done
 }
+
+bak
+# store

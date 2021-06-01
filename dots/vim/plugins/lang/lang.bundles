@@ -46,15 +46,6 @@ endif
 " Pick either python-mode or pyflakes & pydoc
 " Plug 'klen/python-mode'
 " ------------------------------------------------
-
-" Go
-"Plug 'Blackrush/vim-gocode'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'fatih/vim-go-tutorial'
-if count(g:evervim_bundle_groups, 'deoplete')
-    Plug 'zchee/deoplete-go'
-endif
-" ------------------------------------------------
 Plug 'kevinoid/vim-jsonc'
 " ------------------------------------------------
 " ------------------------------------------------

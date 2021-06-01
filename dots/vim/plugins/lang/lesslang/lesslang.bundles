@@ -6,10 +6,6 @@ Plug 'rodjek/vim-puppet'
 
 " julia
 Plug 'JuliaEditorSupport/julia-vim'
-if count(g:evervim_bundle_groups, 'deoplete')
-    Plug 'JuliaEditorSupport/deoplete-julia'
-endif
-
 " Haskell
 Plug 'travitch/hasksyn'
 Plug 'dag/vim2hs'
@@ -76,11 +72,4 @@ endif
 if executable('flow')
     let g:javascript_plugin_flow = 1
 endif
-
-if count(g:evervim_bundle_groups, 'deoplete')
-    Plug 'carlitux/deoplete-ternjs'
-endif
-
-" java
-Plug 'artur-shaik/vim-javacomplete2'
 

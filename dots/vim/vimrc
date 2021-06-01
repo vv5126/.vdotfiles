@@ -5,9 +5,10 @@
 
     " EverVim Bundle Groups
     " Bundle Group name is just folders under ~/.vim/plugins
-    let g:evervim_bundle_groups=['general', 'appearance', 'writing', 'programming', 'lang', 'misc']
-    let g:evervim_bundle_groups += ['code_completion/coc']
-    " let g:evervim_bundle_groups += ['code_completion/lsp']
+    let g:evervim_bundle_groups=['general', 'programming', 'lang', 'misc']
+    let g:evervim_bundle_groups += ['coc']
+    let g:evervim_bundle_groups += ['java']
+    " let g:evervim_bundle_groups += ['go']
 
     " Color Theme
     " Use :Colors for a list of available colorschemes

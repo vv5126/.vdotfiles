@@ -13,12 +13,16 @@ command! -nargs=1 -bar UnPlug call s:evervim_disable_plugin(<args>)
 
 call plug#begin("$evervim_root/bundle")
 
-for $bundle_group in g:evervim_bundle_groups
-    let $f = expand($evervim_root . "/plugins/" . $bundle_group . "/" . substitute($bundle_group, '.*/', '', '') . ".bundles")
-    if filereadable($f)
-        source $f
-    endif
-endfor
+let $save_dir = chdir($evervim_root. "/plugins")
+if $save_dir != ""
+    for $bundle_group in g:evervim_bundle_groups
+        let $f = findfile($bundle_group . ".bundles", "**")
+        if $f != ""
+            source $f
+        endif
+    endfor
+    call chdir($save_dir)
+endif
 
 " Make sure we run devicons after the above
 if !TERMUX() && !exists('g:evervim_no_patched_fonts')

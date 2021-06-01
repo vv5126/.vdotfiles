@@ -15,7 +15,6 @@ let g:coc_global_extensions=[
             \'coc-lists',
             \'coc-highlight',
             \'coc-css',
-            \'coc-git',
             \'coc-phpls',
             \'coc-prettier',
             \'coc-wxml',
@@ -26,6 +25,7 @@ let g:coc_global_extensions=[
             \'coc-tabnine',
             \'coc-emoji'
             \]
+            " \'coc-git', // aginst with vim-gitgutter
 "
 " -------------------------------------------------
 " Use :CocInstall coc-snippets

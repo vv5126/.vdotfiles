@@ -88,7 +88,7 @@ set foldcolumn=0                   " 设置折叠区域的宽度
 set viminfo+='1000,n$VTMP/.viminfo
 
 " set noexpandtab           " 不要用空格代替制表符
-set expandtab
+set expandtab " 使用空格代替制表符
 " autocmd FileType sh setlocal shiftwidth=4
 
 set bufhidden=hide

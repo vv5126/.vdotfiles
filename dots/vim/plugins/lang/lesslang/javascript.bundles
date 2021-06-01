@@ -1,0 +1,20 @@
+" Plug 'millermedeiros/vim-esformatter'
+" Plug 'ruanyl/vim-fixmyjs'
+" Plug 'maksimr/vim-jsbeautify'
+" Plug 'Quramy/vim-js-pretty-template'
+" Plug 'jason0x43/vim-js-indent'
+" Plug 'myhere/vim-nodejs-complete'
+" Plug 'pangloss/vim-javascript'
+" Plug 'maxmellon/vim-jsx-pretty', {'for':['typescriptreact','javascript','typescript','javascriptreact']}
+" Plug 'yuezk/vim-js', {'for':['vue','html','php','typescriptreact','typescript.tsx','javascript.jsx']}
+" Plug 'mxw/vim-jsx', {'for':'jsx'}
+" Plug 'mxw/vim-jsx' "plugin for jsx, but recommend use js instead of jsx file
+" Plug 'leshill/vim-json', {'for':'json'}
+" Plug 'othree/jspc.vim'
+" Plug 'itspriddle/vim-jquery'
+" Plug 'prettier/vim-prettier', {'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'jsx', 'yaml'] }
+" Plug '1995eaton/vim-better-javascript-completion'
+
+" Plug 'hail2u/vim-css3-syntax',{'for':['html','vue','php']}
+" Plug 'isRuslan/vim-es6', {'for':['html','php','vue','typescriptreact','javascript','typescript','typescript.tsx','javascript.jsx']}
+
