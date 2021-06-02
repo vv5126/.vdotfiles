@@ -22,8 +22,8 @@ else
     ### JDK
     # JAVA_1="jdk1.6.0_45"
     # JAVA_1="java-1.7.0-openjdk-amd64"
-    # JAVA_1="java-1.8.0-openjdk-amd64"
-    JAVA_1="jdk-16.0.1"
+    JAVA_1="java-1.8.0-openjdk-amd64"
+    # JAVA_1="jdk-16.0.1"
     # JAVA_1="java-6-sun"
     # JAVA_1="java-7-openjdk-amd64"
 

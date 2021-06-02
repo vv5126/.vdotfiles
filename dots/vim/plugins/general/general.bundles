@@ -68,6 +68,8 @@ Plug 'zhaocai/GoldenView.Vim'
 " 一个用于vim的树资源管理器插件
 Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
 " -------------------------------------------------
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight', { 'on': 'NERDTreeToggle' }
+" -------------------------------------------------
 if exists('g:evervim_smooth_scrolling')
     " 为Vim世界带来基于物理的平滑滚动!
     Plug 'yuttie/comfortable-motion.vim'
@@ -98,8 +100,6 @@ Plug 'junegunn/fzf.vim'
 " Plug 'Yggdroot/LeaderF', { 'do': './install.sh'  }
 " -------------------------------------------------
 Plug 'drewtempelmeyer/palenight.vim'
-" -------------------------------------------------
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 " -------------------------------------------------
 Plug 'mhinz/vim-startify'
 " -------------------------------------------------

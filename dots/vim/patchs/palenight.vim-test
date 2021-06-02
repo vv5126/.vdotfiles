@@ -1,0 +1,13 @@
+diff --git a/colors/palenight.vim b/colors/palenight.vim
+index b5b4a0f..9487ee7 100755
+--- a/colors/palenight.vim
++++ b/colors/palenight.vim
+@@ -151,7 +151,7 @@ call s:h("DiffChange", { "bg": s:yellow, "fg": s:black }) " diff mode: Changed l
+ call s:h("DiffDelete", { "bg": s:red, "fg": s:black }) " diff mode: Deleted line
+ call s:h("DiffText", { "bg": s:black, "fg": s:yellow }) " diff mode: Changed text within a changed line
+ call s:h("ErrorMsg", { "fg": s:red }) " error messages on the command line
+-call s:h("VertSplit", { "fg": s:vertsplit }) " the column separating vertically split windows
++call s:h("VertSplit", { "bg": s:blue_purple, "fg": s:vertsplit }) " the column separating vertically split windows
+ call s:h("Folded", { "bg": s:cursor_grey, "fg": s:comment_grey }) " line used for closed folds
+ call s:h("FoldColumn", {}) " 'foldcolumn'
+ call s:h("SignColumn", {}) " column where signs are displayed

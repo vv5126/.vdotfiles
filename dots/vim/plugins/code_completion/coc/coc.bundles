@@ -1,8 +1,8 @@
 " Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
+" Plug 'prabirshrestha/vim-lsp'
+" Plug 'mattn/vim-lsp-settings'
 
 " Or build from source code by using yarn: https://yarnpkg.com
 " Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}"

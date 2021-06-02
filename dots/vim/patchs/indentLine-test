@@ -1,5 +1,5 @@
 diff --git a/after/plugin/indentLine.vim b/after/plugin/indentLine.vim
-index 3b919e7..6e11e0d 100644
+index 27e336c..442a86f 100644
 --- a/after/plugin/indentLine.vim
 +++ b/after/plugin/indentLine.vim
 @@ -170,6 +170,7 @@ function! s:IndentLinesEnable()

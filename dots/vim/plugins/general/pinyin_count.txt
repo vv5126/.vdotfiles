@@ -1,29 +1,36 @@
 fa 1
+fan 2
 fen 1
 feng 1
+fou 1
 xing 1
 a 1
 d 1
-da 1
+da 2
 dao 1
 dian 1
 cha 1 1
 chajian 2
+bei 1
+beijing 1
 jian 1 1
+jing 1
 ni 2
 ohayou 2
 ha 1
 hao 2
 hou 1
-qian 1
-zhi 1
+qian 2
+zhi 2
 zhong 1
+zhuan 2
 zu 2
-zui 1
+zui 2
 yang 1
 yangshi 1
 yong 1
 you 1
-shi 1 1
+se 1
+shi 1 1 1
 suo 1
 tang 3

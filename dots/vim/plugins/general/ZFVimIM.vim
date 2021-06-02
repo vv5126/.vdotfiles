@@ -92,7 +92,7 @@ endif
 " NOTE:
 " this require you have git push --force permission, if not, please disable this feature, otherwise your commits may lost occasionally (each time when commits exceeds g:ZFVimIM_cloudAsync_autoCleanup)
 
-" let g:ZFVimIM_cloudAsync_autoInit=1
+let g:ZFVimIM_cloudAsync_autoInit=0
 " for async cloud input only, when on, we would load db when VimEnter, to reduce the time you first ZFVimIME_start()
 
 " ;; 开启或关闭输入法, ;: 切换词库

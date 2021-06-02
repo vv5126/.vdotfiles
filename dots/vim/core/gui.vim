@@ -2,8 +2,14 @@
 
     " GVIM (here instead of .gvimrc)
     if has('gui_running')
-        set guioptions-=T           " Remove the toolbar
+        set guioptions-=m " 隐藏菜单栏
+        set guioptions-=T " 隐藏工具栏
+        set guioptions-=L " 隐藏左侧滚动条
+        set guioptions-=r " 隐藏右侧滚动条
+        set guioptions-=b " 隐藏底部滚动条
         set lines=40                " 40 lines of text instead of 24
+        "set showtabline=0 " 隐藏Tab栏
+        au GUIEnter * simalt ~x " 窗口启动时自动最大化
         if !exists("g:evervim_no_big_font")
             if LINUX() && has("gui_running")
                 execute 'set guifont=' . fnameescape(g:evervim_font . ' ') . g:evervim_font_size . ',Noto\ Mono\ Regular\ 12,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14'
@@ -27,6 +33,10 @@
         else
             execute 'Guifont! ' . g:evervim_font . ':h' . g:evervim_font_size
         endif
+    endif
+
+    if (has("termguicolors"))
+        set termguicolors
     endif
 
     if REMOTE()

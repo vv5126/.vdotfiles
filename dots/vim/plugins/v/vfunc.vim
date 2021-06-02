@@ -6,24 +6,24 @@ function! SuperPrint(Num)
     let l:pre = ''
     let l:priv = ''
     if a:Num == 1
-	let l:pre = l:tmp . ' = %d'
-	let l:priv = ', (' . l:tmp . ')'
+        let l:pre = l:tmp . ' = %d'
+        let l:priv = ', (' . l:tmp . ')'
     else
-	let l:tmp = substitute(l:tmp, ';\|+\|=\|\*\|/\|,\|&\|!', ' ', 'g')
-	let l:list = split(l:tmp)
-	for l:i in l:list
-	    if ('.-' =~ l:i) && (strlen(l:i) == 1)
-		continue
-	    else
-		let l:pre = l:pre . ' ' . l:i . ' = %d |'
-		let l:priv = l:priv . ', ' . l:i
-	    endif
-	endfor
+        let l:tmp = substitute(l:tmp, ';\|+\|=\|\*\|/\|,\|&\|!', ' ', 'g')
+        let l:list = split(l:tmp)
+        for l:i in l:list
+            if ('.-' =~ l:i) && (strlen(l:i) == 1)
+                continue
+            else
+                let l:pre = l:pre . ' ' . l:i . ' = %d |'
+                let l:priv = l:priv . ', ' . l:i
+            endif
+        endfor
     endif
     if g:code_project == 'kernel'
-	call append(line('.'), 'printk("\033[33m' . l:pre . '\033[0m\n"' . l:priv . ');')
+        call append(line('.'), 'printk("\033[33m' . l:pre . '\033[0m\n"' . l:priv . ');')
     else
-	call append(line('.'), 'printf("\033[33m' . l:pre . '\033[0m\n"' . l:priv . ');')
+        call append(line('.'), 'printf("\033[33m' . l:pre . '\033[0m\n"' . l:priv . ');')
     endif
 endfunction
 " }}} -------------------------------------------------

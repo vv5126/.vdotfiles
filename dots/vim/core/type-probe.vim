@@ -109,7 +109,7 @@
 " 以后全更新到探测中
 
 set nowrap                      " Do not wrap long lines
-set autoindent                  " Indent at the same level of the previous line
+set autoindent                  " Indent at the same level of the previous line 自动缩进
 set shiftwidth=4                " Use indents of 4 spaces
 set expandtab                   " 用空格代替制表符
 set tabstop=4                   " 设置编辑时制表符占用空格数

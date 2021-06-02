@@ -33,7 +33,7 @@ endif
 set tabpagemax=15                                      " Only show 15 tabs
 set showmode                                           " Display the current mode
 
-set cursorline                                         " Highlight current line
+set cursorline                                         " Highlight current line 高亮光标所在行
 " set cursorcolumn                                      " Highlight current column
 
 highlight clear SignColumn                             " SignColumn should match background
@@ -41,20 +41,37 @@ highlight clear LineNr                                 " Current line number row
 " highlight clear CursorLineNr                          " Remove highlight color from current line number
 
 if has('cmdline_info')
-    set ruler                                          " Show the ruler
+    set ruler                                          " Show the ruler 显示标尺
     set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " A ruler on steroids
-    set showcmd                                        " Show partial commands in status line and Selected characters/lines in visual mode
+    set showcmd                                        " Show partial commands in status line and Selected characters/lines in visual mode 输入的命令显示出来，看的清楚些
 endif
 
 if has('statusline')
-    set laststatus=2
+    set laststatus=2   " 启动显示状态行(1),总是显示状态行(2)
 
     " Broken down into easily includeable segments
-    set statusline=%<%f\                         " Filename
-    set statusline+=%w%h%m%r                     " Options
-    set statusline+=\ [%{&ff}/%Y]                " Filetype
-    set statusline+=\ [%{getcwd()}]              " Current dir
-    set statusline+=%=%-14.(%l,%c%V%)\ %p%%      " Right aligned file nav info
+    set statusline=%t%m%r                         " Filename
+    " set statusline+=%w%h%m%r                     " Options
+    " set statusline+=\ [%{&ff}/%Y]                " Filetype
+    " set statusline+=\ [%{getcwd()}]              " Current dir
+    " set statusline+=%=%-14.(%l,%c%V%)\ %p%%      " Right aligned file nav info
+
+    " statusline {{{
+    " highlight StatusLine cterm=bold ctermfg=gray ctermbg=black
+    " highlight LineNr ctermfg=gray ctermbg=black                       " 侧边颜色
+    " highlight User1 ctermfg=gray
+    " highlight User2 ctermfg=green
+    " highlight User3 ctermfg=red
+    " highlight User4 ctermfg=yellow
+    " highlight User5 ctermfg=black
+    " highlight User6 ctermfg=blue
+    " highlight User7 ctermbg=black
+    " set statusline=%7*\ %3*%{HasPaste()}%*[file:\ %2*%t%r%h%w%*]%3*%m%*[dir:\ %<%2*%{CurDir()}%*]%=\ \ \ \ \ \ \ \ \ \ %4*[%{&ff}][%{&encoding}]%6*%y%*[Line:%2*%l%*/%2*%L%*,Column:%2*%c%*][%2*%p%%%*]
+
+    " au InsertEnter * call InsertStatuslineColor('i')
+    " au InsertLeave * call InsertStatuslineColor('')
+    " statusline end }}}
+
 endif
 
 set backspace=indent,eol,start            " Backspace for dummies
@@ -65,9 +82,9 @@ else
     set relativenumber
     set number
 endif
-set showmatch                   " Show matching brackets/parenthesis
+set showmatch                   " Show matching brackets/parenthesis 高亮显示匹配的括号
 set incsearch                   " Find as you type search
-set hlsearch                    " Highlight search terms
+set hlsearch                    " Highlight search terms 搜索逐字符高亮
 set winminheight=0              " Windows can be 0 line high
 set ignorecase                  " Case insensitive search
 set smartcase                   " Case sensitive when uc present

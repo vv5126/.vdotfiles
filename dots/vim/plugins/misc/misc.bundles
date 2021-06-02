@@ -45,7 +45,7 @@ endif
 " -------------------------------------------------
 " Pick ALE by default, and fall back to syntastic
 if !exists('g:evervim_use_syntastic')
-    Plug 'w0rp/ale'
+    Plug 'w0rp/ale', {'for':'cs'}
 else
     " Plug 'vim-syntastic/syntastic'
 endif
@@ -198,3 +198,4 @@ endif
 " au Syntax * RainbowParenthesesLoadSquare
 " au Syntax * RainbowParenthesesLoadBraces
 " au Syntax * RainbowParenthesesLoadChevrons
+Plug 'alvan/vim-closetag', {'for':['html','xml','vue','php','typescriptreact','javascriptreact']}
