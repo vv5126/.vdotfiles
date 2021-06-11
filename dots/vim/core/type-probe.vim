@@ -60,10 +60,10 @@
         nmap <Leader>dp :g/printf(\"\\033\[*/d<cr>
         " nmap  <F1> :copen<cr>:AsyncRun mk ycm_conf<cr>
         nmap  <F1> :let g:asyncrun_exit = 'call Mktagexit()'<cr>:AsyncRun mk -t<cr>:echo 'uptag ...'<cr>
-        nmap  <F2> :call Burn_on()<cr>
-        nmap  <F3> :call Burn_off()<cr>
-        nmap  <F4> :call Run_mk()<cr>
-        nmap  <F5> :cclose<cr>
+        " nmap  <F2> :call Burn_on()<cr>
+        " nmap  <F3> :call Burn_off()<cr>
+        " nmap  <F4> :call Run_mk()<cr>
+        " nmap  <F5> :cclose<cr>
         " -------------------------------------------------
         if g:code_project == 'kernel'
             set noexpandtab           " 不要用空格代替制表符

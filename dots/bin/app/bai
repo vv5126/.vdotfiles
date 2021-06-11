@@ -2,10 +2,8 @@
 
 include base work misc
 
-debug=0
+debug=1
 
-is_push=1
-is_local=0
 dst_dir=''
 ret1=0
 
@@ -139,7 +137,26 @@ case $cmd in
         baidu $cmd ${param[@]}
         ;;
     'cp')
-        echo baidu ${param[@]}
+        last=${param[$((${#param[*]}-1))]}
+        # debug echo last = $last
+        if [ -d $last ]; then
+            num=$((${#param[@]}-1))
+            echo num = $num
+            j=0
+            # for i in ${param[$((${#param[*]}-1))]}; do
+            # baidu config set -savedir $last
+            mkdir -p $last
+
+            for i in ${param[@]}; do
+                if [ $(($num - $j)) -gt 0 ]; then
+                    baidu download $i
+                fi
+                ((j++))
+            done
+            # && echo is_local $last
+            # echo baidu download ${param[@]}
+        fi
+
         ;;
     'mv')
         ;;

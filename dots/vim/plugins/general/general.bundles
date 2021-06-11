@@ -9,13 +9,13 @@ Plug 'yianwillis/vimcdoc'
 " VIM的撤销历史可视化工具
 Plug 'mbbill/undotree'
 " -------------------------------------------------
+"  多行编辑
+Plug 'mg979/vim-visual-multi'
+" -------------------------------------------------
 if !exists('g:evervim_no_restore_cursor')
     " 重新打开文件在您的最后编辑位置
     Plug 'farmergreg/vim-lastplace'
 endif
-" -------------------------------------------------
-" show color, like red yellow #066
-" Plug 'gko/vim-coloresque'
 " -------------------------------------------------
 " 同时高亮多个单词 usage
 Plug 'vim-scripts/Mark--Karkat'
@@ -27,27 +27,46 @@ Plug 'troydm/zoomwintab.vim'
 " 另一种对齐方式
 Plug 'junegunn/vim-easy-align'
 " -------------------------------------------------
-" 排版
-Plug 'rhysd/vim-clang-format'
-" -------------------------------------------------
-" end 自动补全
-Plug 'tpope/vim-endwise'
-" -------------------------------------------------
-" gitk
-Plug 'gregsexton/gitv'
-" -------------------------------------------------
 " 让书签可视化的插件
 Plug 'kshenoy/vim-signature'
 " -------------------------------------------------
-" 自动调整窗口大小
-" Plug 'justincampbell/vim-eighties'
-" -------------------------------------------------
-" 查看和自动识别文件的编码格式
-Plug 'mbbill/fencview'
-" Plug 's3rvac/AutoFenc'
-" -------------------------------------------------
 " Screen-anchored cursor movement for Vim.
 Plug 'reedes/vim-wheel'
+" -------------------------------------------------
+" 一个用于vim的树资源管理器插件
+Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
+" -------------------------------------------------
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight', { 'on': 'NERDTreeToggle' }
+" -------------------------------------------------
+" vim配色大全
+Plug 'flazz/vim-colorschemes'
+" color theme浏览插件,列出所有的vim color theme到一个列表中,选中后按回车即可应用
+Plug 'sjas/csExplorer'
+" 未集成的vim配色方案
+Plug 'rakr/vim-one'
+Plug 'drewtempelmeyer/palenight.vim'
+" -------------------------------------------------
+Plug 'ZSaberLv0/ZFVimIM'
+Plug 'ZSaberLv0/ZFVimJob'
+Plug 'ZSaberLv0/ZFVimGitUtil'
+Plug 'ZSaberLv0/ZFVimIM_openapi'
+" Plug 'https://gitee.com/vv5126/vim-im_pinyin_base'
+" -------------------------------------------------
+Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
+Plug 'junegunn/fzf.vim'
+" Plug 'Shougo/denite.nvim'
+" Plug 'Yggdroot/LeaderF', { 'do': './install.sh'  }
+" -------------------------------------------------
+Plug 'mhinz/vim-startify'
+" -------------------------------------------------
+if exists('g:evervim_use_lightline')
+    Plug 'itchyny/lightline.vim'
+    Plug 'taohexxx/lightline-buffer'
+else
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+endif
+" -------------------------------------------------
 " -------------------------------------------------
 " A collection of language packs for Vim.
 " g:polyglot_disabled should be defined before loading
@@ -65,11 +84,6 @@ Plug 'simeji/winresizer'
 " 总是为vim分割窗口有一个好的视图
 Plug 'zhaocai/GoldenView.Vim'
 " -------------------------------------------------
-" 一个用于vim的树资源管理器插件
-Plug 'scrooloose/nerdtree', { 'on':  ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
-" -------------------------------------------------
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight', { 'on': 'NERDTreeToggle' }
-" -------------------------------------------------
 if exists('g:evervim_smooth_scrolling')
     " 为Vim世界带来基于物理的平滑滚动!
     Plug 'yuttie/comfortable-motion.vim'
@@ -78,41 +92,27 @@ endif
 " 非常棒的Git包装器
 Plug 'tpope/vim-fugitive'
 " -------------------------------------------------
-" vim配色大全
-Plug 'flazz/vim-colorschemes'
-" color theme浏览插件,列出所有的vim color theme到一个列表中,选中后按回车即可应用
-Plug 'sjas/csExplorer'
-" 未集成的vim配色方案
-Plug 'rakr/vim-one'
-" -------------------------------------------------
-"  多行编辑
-Plug 'mg979/vim-visual-multi'
-" -------------------------------------------------
-Plug 'ZSaberLv0/ZFVimIM'
-Plug 'ZSaberLv0/ZFVimJob'
-Plug 'ZSaberLv0/ZFVimGitUtil'
-Plug 'ZSaberLv0/ZFVimIM_openapi'
-" Plug 'https://gitee.com/vv5126/vim-im_pinyin_base'
-" -------------------------------------------------
-Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
-Plug 'junegunn/fzf.vim'
-" Plug 'Shougo/denite.nvim'
-" Plug 'Yggdroot/LeaderF', { 'do': './install.sh'  }
-" -------------------------------------------------
-Plug 'drewtempelmeyer/palenight.vim'
-" -------------------------------------------------
-Plug 'mhinz/vim-startify'
-" -------------------------------------------------
-if exists('g:evervim_use_lightline')
-    Plug 'itchyny/lightline.vim'
-    Plug 'taohexxx/lightline-buffer'
-else
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
-endif
-" -------------------------------------------------
 " Vim8 异步运行shell
 Plug 'skywind3000/asyncrun.vim'
+" -------------------------------------------------
+" show color, like red yellow #066
+" Plug 'gko/vim-coloresque'
+" -------------------------------------------------
+" 排版
+Plug 'rhysd/vim-clang-format'
+" -------------------------------------------------
+" 查看和自动识别文件的编码格式
+" Plug 'mbbill/fencview'
+" Plug 's3rvac/AutoFenc'
+" -------------------------------------------------
+" 自动调整窗口大小
+" Plug 'justincampbell/vim-eighties'
+" -------------------------------------------------
+" end 自动补全
+" Plug 'tpope/vim-endwise'
+" -------------------------------------------------
+" gitk
+Plug 'gregsexton/gitv'
 " -------------------------------------------------
 " -------------------------------------------------
 " -------------------------------------------------

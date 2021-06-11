@@ -370,3 +370,6 @@ conda create -name envname python=2.7
 # 磁盘读写检测
 apt install sysstat
 iostat -d -k 1 10
+
+# 安装 nodejs，执行命令
+curl -sL install-node.now.sh/lts | bash

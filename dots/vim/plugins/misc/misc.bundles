@@ -9,8 +9,7 @@
 " Plug 'doxygen/doxygen'
 " -------------------------------------------------
 " Plug 'skywind3000/vim-terminal-help'
-" Plug 'kassio/neoterm'
-" Plug 'wincent/terminus'
+" Plug 'voldikss/vim-floaterm' "use in nvim
 " -------------------------------------------------
 " Swap windows without ruining your layout!
 Plug 'wesQ3/vim-windowswap'
@@ -186,8 +185,6 @@ endif
 
 
 
-
-" Plug 'voldikss/vim-floaterm'
 
 " Plug 'ervandew/supertab'
 

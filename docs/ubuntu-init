@@ -71,10 +71,22 @@ function ins() {
 # ins gnome-shell-extensions
 # ins solaar
 # ins git
+# ins fzf
 # ins sshfs
 # ins xclip
 # ins silversearcher-ag
 # ins aria2
+# ins ccls
+# ins npm
+# sudo npm install yarn -g
+# npm config set registry https://registry.npm.taobao.org/
+# yarn config set registry https://registry.npm.taobao.org/
+# ins python3-pip
+pip config set global.index-url 'https://pypi.tuna.tsinghua.edu.cn/simple'
+pip config set install.trusted-host 'mirrors.aliyun.com'
+
+# sudo pip3 install neovim
+# ins ninja-build
 
 # manual 输入法 
 # manual mail
@@ -96,6 +108,8 @@ cd /tmp/mnt/3.3/.local/tools/vim && ./a.sh
 
 # 7yuv
 # ins nodejs
+# sudo npm install -g n # 安装用于安装nodejs的模块n
+# sudo n stable # 通过n模块安装指定的nodejs
 
 # typora:
 # wget -qO - https://typora.io/linux/public-key.asc | apt-key add -
@@ -120,6 +134,7 @@ exit
 # ins meld
 # ins make
 # ins cmake
+# ins libtool-bin
 # ins autoconf
 # ins rdfind
 
@@ -189,3 +204,5 @@ visudo -c#检查语法是否正确，一定要执行，否则出现问题很麻�
 
 ### backup
 # bak cp -r ~/.local/share/gnome-shell/extensions/
+
+[ -d "$HOME/.config" -a ! -d "$HOME/.local/config" ] && { mv "$HOME/.config" "$HOME/.local"; ln -sfr "$HOME/.local/config" "$HOME/.config"; }

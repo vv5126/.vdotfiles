@@ -6,6 +6,7 @@ Plug 'rodjek/vim-puppet'
 
 " julia
 Plug 'JuliaEditorSupport/julia-vim'
+
 " Haskell
 Plug 'travitch/hasksyn'
 Plug 'dag/vim2hs'
@@ -40,19 +41,24 @@ Plug 'dart-lang/dart-vim-plugin'
 " Javascript
 " Javascript and React syntax/indentation
 Plug 'neoclide/vim-jsx-improve'
+
 " ES Next syntax
 Plug 'othree/es.next.syntax.vim'
 Plug 'othree/javascript-libraries-syntax.vim'
+
 " CoffeeScript
 Plug 'kchmck/vim-coffee-script'
+
 " Vue.js
 Plug 'posva/vim-vue'
+
 " Elm syntax
 Plug 'ElmCast/elm-vim'
 Plug 'othree/yajs.vim'
 Plug 'moll/vim-node'
 Plug 'elzr/vim-json'
 Plug 'heavenshell/vim-jsdoc'
+
 if executable('flow')
     Plug 'flowtype/vim-flow'
 endif

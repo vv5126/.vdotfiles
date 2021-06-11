@@ -12,56 +12,56 @@ function del_vim_month_ago() {
 
 function history_clean() {
     sed '
-    /^  rm /d;
-    /^  mr /d;
-    /^  git rm /d;
-    /^  ag /d;
-    /^  mv /d;
-    /^  du /d;
-    /^  fd /d;
-    /^  cd /d;
-    /^  ls/d;
-    /^  git /d;
-    /^  ga /d;
-    /^  gd /d;
-    /^  gs /d;
-    /^  man /d;
-    /^  md /d;
-    /^  mkdir /d;
-    /^  iv /d;
-    /^  which /d;
-    /^  echo /d;
-    /^  cp /d;
-    /^  df /d;
-    /^  meld /d;
-    /^  builtin /d;
-    /^  tree /d;
-    /^  cat /d;
-    /^  baidu /d;
-    /^  file /d;
-    /^  sh /d;
-    /^  bash /d;
-    /^  tree /d;
-    /^  gitk/d;
-    /^  vjson /d;
-    /^  gcc /d;
-    /^  g++ /d;
-    /^  change_toolchain /d;
-    /^  title /d;
-    /^  vsync /d;
-    /^  \.\/ /d;
-    /^  star /d;
-    /^  tar /d;
-    /^  kill /d;
-    /^  killall /d;
-    /^  ln /d;
-    /^  top /d;
-    /^  ps /d;
+    /^ *rm /d;
+    /^ *mr /d;
+    /^ *git rm /d;
+    /^ *ag /d;
+    /^ *mv /d;
+    /^ *du /d;
+    /^ *fd /d;
+    /^ *cd /d;
+    /^ *ls/d;
+    /^ *git /d;
+    /^ *ga /d;
+    /^ *gd /d;
+    /^ *gs /d;
+    /^ *man /d;
+    /^ *md /d;
+    /^ *mkdir /d;
+    /^ *iv /d;
+    /^ *which /d;
+    /^ *echo /d;
+    /^ *cp /d;
+    /^ *df /d;
+    /^ *meld /d;
+    /^ *builtin /d;
+    /^ *tree /d;
+    /^ *cat /d;
+    /^ *baidu /d;
+    /^ *file /d;
+    /^ *sh /d;
+    /^ *bash /d;
+    /^ *tree /d;
+    /^ *gitk/d;
+    /^ *vjson /d;
+    /^ *gcc /d;
+    /^ *g++ /d;
+    /^ *change_toolchain /d;
+    /^ *title /d;
+    /^ *vsync /d;
+    /^ *\.\/ /d;
+    /^ *star /d;
+    /^ *tar /d;
+    /^ *kill /d;
+    /^ *killall /d;
+    /^ *ln /d;
+    /^ *top /d;
+    /^ *ps /d;
     ' -i $1
 
     sed -rn '/^.{0,7}$/!p' -i $1
 
-    > newtmp
+    > $2
     local out
     while read line; do
         out=1
@@ -76,7 +76,7 @@ function history_clean() {
             # [ $? -ne 0 ] && out=0
         fi
 
-        [ "${line:0:1}" == "#" ] && { echo "$line" >> newtmp; out=0; }
+        [ "${line:0:1}" == "#" ] && { echo "$line" >> $2; out=0; }
 
         [ $out == 1 ] && echo "  $line" >> $2
     done < $1
@@ -97,7 +97,8 @@ function history_deal() {
             sed -n '/^#[0-9]\+\|^vi\|^vim/!p;' $i | sort | uniq > xxxtmp
             sed -n '/^vi\|^vim/p;' $i | awk '$0="" $0' >> $VTMP/.vim_list
             history_clean xxxtmp newtmp
-            cat newtmp | awk '$0="  "$0'  >> $history_data
+            # cat newtmp | awk '$0="  "$0'  >> $history_data
+            cat newtmp >> $history_data
             echo "#$(date +%m)" >> $history_data
 
             echo rm $i >&2

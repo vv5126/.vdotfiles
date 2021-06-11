@@ -88,5 +88,7 @@
     "java.errors.incompleteClasspath.severity": "ignore",
 
     //tsserver
-    "tsserver.enableJavascript": false
+    "tsserver.enableJavascript": false,
+
+    "python.linting.enabled": false
 }

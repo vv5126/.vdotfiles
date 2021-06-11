@@ -8,7 +8,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'luochen1990/rainbow'
 " -------------------------------------------------
 
-if executable('ctags')
+if executable('ctags') " 大文件保存卡顿!!!
     Plug 'majutsushi/tagbar'
 endif
 

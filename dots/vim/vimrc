@@ -143,5 +143,3 @@
     let $evervim_root = $HOME. "/.vim"
     source $evervim_root/core/core.vim
 " }
-
-" based on d44ea81fd8ebb83de3483350624697f7a714fffa

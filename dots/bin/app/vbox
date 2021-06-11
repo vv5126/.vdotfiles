@@ -285,11 +285,51 @@ function pw {
     dst="$2"
 
     list=($(ag "$src" -l))
+    # echo src = \"$src\"
+    # echo dst = \"$dst\"
+    # echo list = $list
 
     for i in ${list[@]}; do
-        echo sed "s/$src/$dst/g" -i $i
-        sed "s/$src/$dst/g" -i $i
+        echo sed "s#$src#$dst#g" -i $i
+        sed 's#'"$src"'#'"$dst"'#g' -i $i
     done
 }
 
-eval $(basename $0) '$@'
+function md5_watch () {
+
+    local backup list i m md5 target
+
+    list=$@
+    backup=.md5_watch.o
+    [ "$1" == "list" ] && list=$(cat $2)
+
+    if [ -f $backup ]; then
+
+        [ -n "$list" ] && list=$(cat $backup | awk '{print $2}')
+
+        for i in ${list[@]}; do
+
+            if [ -f "$i" ]; then
+                m=$(md5sum $i)
+                md5=${m%% *}
+                target=$(sed -n "s/\ $(string_escape_prevention  './' \ $i)//p;" $backup)
+                # echo target \"$target\"
+                # echo md5 \"$md5\"
+                if [ "$target" != "$md5" ]; then
+                    echo -n "$i "
+                    # vp $i /usr/lib
+                fi
+            # else
+            #     echo rm $i
+            fi
+        done
+        echo ""
+    else
+        [ -n "$list" ] && return
+    fi
+
+    md5sum $list >> $backup
+    cat $backup | sort | uniq > $backup
+}
+
+eval $(basename $0) '"$@"'

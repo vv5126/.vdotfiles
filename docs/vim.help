@@ -151,3 +151,8 @@ register其实就是一块内存，用来存放各种临时性的东西，比如
 （9）上次查找模式register, ”/
 
 这些register中，有一些是vim自身使用的，有些则是共用户使用的。
+
+查看字符编码
+:ascii
+查看可用的二合字母列表
+:h digraph-table
