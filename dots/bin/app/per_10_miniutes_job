@@ -2,11 +2,12 @@
 
 source /backup/home/wgao/.profile
 
-history_data=$VTMP/.bash_history
-history_data_bak=$VTMP/.bash_history_bak
+history_dir=$XDG_CACHE_HOME/historys
+history_data=$XDG_CACHE_HOME/historys/bash_history
+# history_data_bak=$XDG_CACHE_HOME/historys/bash_history_bak
 
 function del_vim_month_ago() {
-    awk '$0=NR" "$0' .bash_history | sed -n '/^[0-9].* #[0-9].*$/p;' > z
+    awk '$0=NR" "$0' bash_history | sed -n '/^[0-9].* #[0-9].*$/p;' > z
     rm z;
 }
 
@@ -84,7 +85,7 @@ function history_clean() {
 
 function history_deal() {
     local tty
-    local files="$(ls $VTMP/.bash_history_*)"
+    local files="$(ls $history_dir/bash_history_*)"
 
     for i in $files; do
 
@@ -92,14 +93,14 @@ function history_deal() {
 
         w | ag wgao | ag pts/$tty > /dev/null
         if [ $? -ne 0 ]; then
-            # sed -n '/^#[0-9]\+/!p;' $i | awk '$0=NR" "$0' | sort --field-separator=" " --key=2 | uniq -f 1 | sort --human-numeric-sort - | sed -n 's/^[0-9]\+ /  /p;' >> $history_data
-            # sed -n '/^#[0-9]\+/!p;' $i | sort | uniq | awk '$0="  "$0'  >> $history_data
+            # sed -n '/^#[0-9]\+/!p;' $i | awk '$0=NR" "$0' | sort --field-separator=" " --key=2 | uniq -f 1 | sort --human-numeric-sort - | sed -n 's/^[0-9]\+ /  /p;' >> $history_dir/bash_history
+            # sed -n '/^#[0-9]\+/!p;' $i | sort | uniq | awk '$0="  "$0'  >> $history_dir/bash_history
             sed -n '/^#[0-9]\+\|^vi\|^vim/!p;' $i | sort | uniq > xxxtmp
-            sed -n '/^vi\|^vim/p;' $i | awk '$0="" $0' >> $VTMP/.vim_list
+            sed -n '/^vi\|^vim/p;' $i | awk '$0="" $0' >> $XDG_CACHE_HOME/vim/vim_list
             history_clean xxxtmp newtmp
-            # cat newtmp | awk '$0="  "$0'  >> $history_data
-            cat newtmp >> $history_data
-            echo "#$(date +%m)" >> $history_data
+            # cat newtmp | awk '$0="  "$0'  >> $history_dir/bash_history
+            cat newtmp >> $history_dir/bash_history
+            echo "#$(date +%m)" >> $history_dir/bash_history
 
             echo rm $i >&2
             vrm xxxtmp newtmp $i
@@ -108,9 +109,9 @@ function history_deal() {
 
     # mv all times to new.
 
-    awk '$0=NR" "$0' $history_data | sed -n '/^[0-9].* #[0-9].*$/p;' > z
-    awk '$0=NR" "$0' $history_data | sed -n '/^[0-9].* #[0-9].*$/!p;' | sort --field-separator=" " --key=2 | uniq -f 1 -u >> z
-    awk '$0=NR" "$0' $history_data | sed -n '/^[0-9].* #[0-9].*$/!p;' | sort --field-separator=" " --key=2 | uniq -f 1 -D > y
+    awk '$0=NR" "$0' $history_dir/bash_history | sed -n '/^[0-9].* #[0-9].*$/p;' > z
+    awk '$0=NR" "$0' $history_dir/bash_history | sed -n '/^[0-9].* #[0-9].*$/!p;' | sort --field-separator=" " --key=2 | uniq -f 1 -u >> z
+    awk '$0=NR" "$0' $history_dir/bash_history | sed -n '/^[0-9].* #[0-9].*$/!p;' | sort --field-separator=" " --key=2 | uniq -f 1 -D > y
     match=""
     l=""
     while read line; do
@@ -131,7 +132,7 @@ function history_deal() {
         fi
     done < y
     echo "$l   $match" >> z
-    cat z | sort --human-numeric-sort - | sed -n 's/^[0-9]\+ //p;' > $history_data
+    cat z | sort --human-numeric-sort - | sed -n 's/^[0-9]\+ //p;' > $history_dir/bash_history
     rm y z
 }
 
@@ -141,8 +142,8 @@ function history_deal() {
 # }
 
 # function history_bak() {
-#     cat $history_data $history_data_bak | sort -u > /tmp/.bash_history_bak
-#     mv .bash_history_bak $history_data_bak
+#     cat $history_data $history_data_bak | sort -u > /tmp/bash_history_bak
+#     mv bash_history_bak $history_data_bak
 # }
 
 history_deal

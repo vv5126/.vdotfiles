@@ -25,7 +25,7 @@ function svi(){
         LINE=${LINE%%:*}
 
         if [ x"$STR" == "x." ]; then
-            FILE="$(cat $VTMP/.vim_list | fzy)"
+            FILE="$(cat $XDG_CACHE_HOME/vim/vim_list | fzy)"
         fi
 
         expr $LINE + 0 &>/dev/null
@@ -37,7 +37,7 @@ function svi(){
 
         if [ -f "$FILE" ]; then
             [ "${FILE:0:1}" != "/" ] && FILE=$PWD/$FILE
-            echo $FILE >> $VTMP/.vim_list
+            echo $FILE >> $XDG_CACHE_HOME/vim/vim_list
             vim $FILE ${LINE:+$LINE}
             echo "vim_clean" | at now >/dev/null 2>&1
         fi
@@ -113,18 +113,18 @@ function find1(){
 }
 
 function vim_clean(){
-    cat $VTMP/.vim_list | sort | uniq > /tmp/vim_clean
-    mv /tmp/vim_clean $VTMP/.vim_list
+    cat $XDG_CACHE_HOME/vim/vim_list | sort | uniq > /tmp/vim_clean
+    mv /tmp/vim_clean $XDG_CACHE_HOME/vim/vim_list
 }
 
 function quickcd_clean(){
-    cd_list="$VTMP/.cd_list"
-    cd_quicklist="$VTMP/.cd_quicklist"
-    cd_cache="$VTMP/.cd_cache"
-    new_quicklist=$VTMP/fff
-    tmp=$VTMP/fff1
-    # last_100="$VTMP/.cd_last_100"
-    # cd_noexist="$VTMP/.cd_noexist"
+    cd_list="$XDG_CACHE_HOME/cd/cd_list"
+    cd_quicklist="$XDG_CACHE_HOME/cd/cd_quicklist"
+    cd_cache="$XDG_CACHE_HOME/cd/cd_cache"
+    new_quicklist=$XDG_CACHE_HOME/cd/fff
+    tmp=$XDG_CACHE_HOME/cd/fff1
+    # last_100="$XDG_CACHE_HOME/cd/cd_last_100"
+    # cd_noexist="$XDG_CACHE_HOME/cd/cd_noexist"
     # local tmp dir=''
 
     # reset quicklist
@@ -173,8 +173,8 @@ function quickcd_clean(){
 }
 
 function clh() {
-    tmp="$VTMP/asd"
-    new="$VTMP/new_history"
+    tmp="$XDG_CACHE_HOME/historys/asd"
+    new="$XDG_CACHE_HOME/historys/new_history"
 
     sed -n '/^\#[0-9]\{10\}$/!p;' $HISTFILE | sort | uniq > $tmp
 
@@ -199,7 +199,7 @@ function turnoff_screen() {
 }
 
 function vrm() {
-    local rm_mv="$VTMP/rm/$(date +%Y%m%d_%H%M%S)"
+    local rm_mv="$XDG_CACHE_HOME/rm/$(date +%Y%m%d_%H%M%S)"
     local i
 
     mkdir -p $rm_mv
@@ -217,8 +217,8 @@ function vrm() {
     done
 
     if [ -f "$rm_mv/rm_info" ]; then
-        [ -e "$VTMP/rm/last" ] && mv "$VTMP/rm/last" "$rm_mv"
-        ln -sfr $rm_mv "$VTMP/rm/last"
+        [ -e "$XDG_CACHE_HOME/rm/last" ] && mv "$XDG_CACHE_HOME/rm/last" "$rm_mv"
+        ln -sfr $rm_mv "$XDG_CACHE_HOME/rm/last"
     fi
 
     [ "$(ls -A $rm_mv | wc | awk '{print $1}')" == 0 ] && rm -rf $rm_mv
@@ -229,7 +229,7 @@ function urm() {
 
     if [ $# -ne 0 ]; then
         target="$PWD/$1"
-        list=($(find $VTMP/rm -name rm_info))
+        list=($(find $XDG_CACHE_HOME/rm -name rm_info))
         for i in ${list[@]}; do
             while read line; do
                 detect_target="${line##* }"
@@ -242,17 +242,17 @@ function urm() {
         return
     fi
 
-    [ ! -e "$VTMP/rm/last" ] && return
+    [ ! -e "$XDG_CACHE_HOME/rm/last" ] && return
 
-    if [ -f "$VTMP/rm/last/rm_info" ]; then
-        cat "$VTMP/rm/last/rm_info" | while read line; do
+    if [ -f "$XDG_CACHE_HOME/rm/last/rm_info" ]; then
+        cat "$XDG_CACHE_HOME/rm/last/rm_info" | while read line; do
             mv $line
         done
-        real_dir="$(readlink $VTMP/rm/last)"
-        rm "$VTMP/rm/last"
-        [ -L "$VTMP/rm/$real_dir/last" ] && mv "$VTMP/rm/$real_dir/last" "$VTMP/rm"
+        real_dir="$(readlink $XDG_CACHE_HOME/rm/last)"
+        rm "$XDG_CACHE_HOME/rm/last"
+        [ -L "$XDG_CACHE_HOME/rm/$real_dir/last" ] && mv "$XDG_CACHE_HOME/rm/$real_dir/last" "$XDG_CACHE_HOME/rm"
 
-        [ "$(ls -A "$VTMP/rm/$real_dir" | wc | awk '{print $1}')" == 1 ] && rm -rf "$VTMP/rm/$real_dir"
+        [ "$(ls -A "$XDG_CACHE_HOME/rm/$real_dir" | wc | awk '{print $1}')" == 1 ] && rm -rf "$XDG_CACHE_HOME/rm/$real_dir"
     fi
 }
 
@@ -325,11 +325,13 @@ function md5_watch () {
         done
         echo ""
     else
-        [ -n "$list" ] && return
+        [ -z "$list" ] && return
     fi
 
     md5sum $list >> $backup
-    cat $backup | sort | uniq > $backup
+    cat $backup | sort | uniq > .tmp
+    cat .tmp > $backup
+    rm .tmp
 }
 
 eval $(basename $0) '"$@"'

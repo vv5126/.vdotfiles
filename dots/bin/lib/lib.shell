@@ -9,8 +9,8 @@ function change_toolchain(){
 
 # cd的增强版
 function quickcd() {
-    local cd_state='' cd_cache="$VTMP/.cd_cache" cd_list="$VTMP/.cd_list"
-    local cd_quicklist="$VTMP/.cd_quicklist"
+    local cd_state='' cd_cache="$XDG_CACHE_HOME/cd/cd_cache" cd_list="$XDG_CACHE_HOME/cd/cd_list"
+    local cd_quicklist="$XDG_CACHE_HOME/cd/cd_quicklist"
     local tmp dir='' cache=''
 
     for i in 1; do
@@ -120,8 +120,8 @@ function add_server() { # NAME HOST ID IP HOME
 }
 
 function genCRlist() {
-    cat $VTMP/.bash_history
-    cat $VTMP/.vim_list | awk '$0="vi "$0'
-    cat $VTMP/.cd_list | sed -n 's/^ \{6\}/ /p;' | awk '$0="cd"$0'
+    cat $XDG_CACHE_HOME/historys/bash_history
+    cat $XDG_CACHE_HOME/vim/vim_list | awk '$0="vi "$0'
+    cat $XDG_CACHE_HOME/cd/cd_list | sed -n 's/^ \{6\}/ /p;' | awk '$0="cd"$0'
     cat $HISTFILE
 }

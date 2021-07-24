@@ -21,6 +21,7 @@ generate_link() {
 VDOT="$PWD/dots"
 source "$VDOT/bashrc"
 
+lib.base smkdir "$HOME/.cache/historys"
 lib.base smkdir "$HOME/.local/tmp"
 lib.base smkdir "$XDG_DATA_HOME"
 lib.base smkdir "$XDG_CONFIG_HOME"

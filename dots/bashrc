@@ -38,7 +38,7 @@ if [ "$EXP" -eq 1 ]; then
 
     [ -z "$VDOT" ] && export VDOT="$HOME/.local/vdot/dots"
     # [ -z "$VDOT" ] && export VDOT="$(readlink -f $0)"
-    [ -z "$VTMP" ] && export VTMP="$HOME/.local/tmp"
+    # [ -z "$VTMP" ] && export VTMP="$HOME/.local/tmp"
     [ -z "$VTOOLS" ] && export VTOOLS="$HOME/.local/tools"
 
     export VBIN="$VDOT/bin"
@@ -56,11 +56,23 @@ fi
 if [ "$EXP" -eq 1 ]; then
 # export EDITOR="$(which vim)"
 
+# Where user-specific configurations should be written (analogous to /etc).
+# Should default to $HOME/.config.
+export XDG_CONFIG_HOME=$HOME/.local/config
+
+# Where user-specific non-essential (cached) data should be written (analogous to /var/cache).
+# Should default to $HOME/.cache.
+export XDG_CACHE_HOME=$HOME/.cache
+
+# Where user-specific data files should be written (analogous to /usr/share).
+# Should default to $HOME/.local/share.
+export XDG_DATA_HOME=$HOME/.local/share
+
 # history #
 export HISTTIMEFORMAT="%m-%d %H:%M "
 export PROMPT_COMMAND="history -a" # 实时追加history，不必等用户退出才将内存中的history记录到文件
 VTTY="$(tty)"
-export HISTFILE=$VTMP/.bash_history_"${VTTY##*/}"
+export HISTFILE=$XDG_CACHE_HOME/historys/bash_history_"${VTTY##*/}"
 unset VTTY
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -73,19 +85,7 @@ export HISTSIZE=1000      # 定义了 history 命令输出的记录数.
 export HISTFILESIZE=10000 # 定义了在 .bash_history 中保存命令的记录总数.
 
 # export HISTFILE=/data1/home/wgao/.local/history/$(date +%m%d).log
-export LESSHISTFILE=$VTMP/.lesshst
-
-# Where user-specific configurations should be written (analogous to /etc).
-# Should default to $HOME/.config.
-# export XDG_CONFIG_HOME=$HOME/.local/config
-
-# Where user-specific non-essential (cached) data should be written (analogous to /var/cache).
-# Should default to $HOME/.cache.
-# export XDG_CACHE_HOME=$VTMP/.cache
-
-# Where user-specific data files should be written (analogous to /usr/share).
-# Should default to $HOME/.local/share.
-export XDG_DATA_HOME=$HOME/.local/share
+export LESSHISTFILE=$XDG_CACHE_HOME/historys/.lesshst
 
 # export FONTCONFIG_FILE="$XDG_CONFIG_HOME/fontconfig/fonts.conf"
 

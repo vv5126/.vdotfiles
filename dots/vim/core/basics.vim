@@ -13,7 +13,7 @@ if &term[:4] == "xterm" || &term[:5] == 'screen' || &term[:3] == 'rxvt'
 endif
 
 function! InitializeDirectories()
-    let parent = $HOME . '/.local/tmp'
+    let parent = $XDG_CACHE_HOME . '/vim'
     let prefix = 'vim'
     let dir_list = {
                 \ 'backup': 'backupdir',

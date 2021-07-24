@@ -202,6 +202,7 @@ add vsudoer to /etc/sudoers use sudo visudo
 sed -i '/%sudo/c %sudo  ALL=(ALL:ALL)  NOPASSWD:ALL' /etc/sudoers
 visudo -c#检查语法是否正确，一定要执行，否则出现问题很麻烦
 
+# smartmontools nvme test
 ### backup
 # bak cp -r ~/.local/share/gnome-shell/extensions/
 

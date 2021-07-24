@@ -77,7 +77,7 @@ set noswapfile                     " 关闭交换文件
 
 filetype off                       " 关闭文件类型侦测
 
-let g:netrw_home = $VTMP
+let g:netrw_home = $XDG_CACHE_HOME/vim
 
 " tab的设定
 set smarttab                       " 在行和段开始处使用制表符
@@ -85,7 +85,7 @@ set smarttab                       " 在行和段开始处使用制表符
 " 支持代码折叠
 set foldlevel=1               " 设置折叠层数为
 set foldcolumn=0                   " 设置折叠区域的宽度
-set viminfo+='1000,n$VTMP/.viminfo
+set viminfo+='1000,n$XDG_CACHE_HOME/vim/.viminfo
 
 " set noexpandtab           " 不要用空格代替制表符
 set expandtab " 使用空格代替制表符
