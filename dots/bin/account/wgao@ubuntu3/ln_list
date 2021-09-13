@@ -3,6 +3,7 @@ gawk-x64  gawk
 fzy-x64   fzy
 vjson-x64   vjson
 repo
+repo-pretreatment
 ins
 ack
 vgitdiff

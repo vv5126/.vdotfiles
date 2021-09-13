@@ -1,6 +1,6 @@
 ka 1
-ke 1
-kong 1
+ke 2
+kong 2 1
 kou 2
 ku 1
 kuai 1
@@ -8,57 +8,64 @@ er 1
 fa 1
 fan 4
 fang 1
-fei 1
+fei 2 1
 fen 1
 feng 1
 fou 1
 fu 1
 fudian 1
 xiang 3 1
-xiao 1
-xing 1
+xiao 2 2 1 1
+xiaofei 1 1
+xing 2
 xu 1
 a 1
-d 32
-da 2
+d 35
+da 3
 dai 2
 dan 2 2
+dang 1
 dao 6 1
 daochu 1
 deng 1
 di 2 1
 dian 3
 dianji 1
+ding 1
 diwei 1
-dui 2
+dou 1
+dui 3
 dun 1
-duo 4
-cao 3
+duo 5
+cai 1
+cao 4
 caokong 1
 ceng 1
 cha 1 1
 chajian 2
+chan 1
 chao 1
 chaoshi 1
 cheng 1
 chong 1
 chou 2
 chu 3
+ci 2
 cong 4
 cun 1
-l 1
-lei 2
+l 3
+lei 3
 liang 2
 mei 2
 ba 1
-ban 1
-bei 2 1
+ban 2
+bei 2 2 1
 beijing 1
-ben 1
+ben 2
 bin 1
 bu 2
 buhuo 1
-ji 2 1 1 1 1
+ji 2 1 1 1 1 1
 jia 1
 jian 2 1 1 1
 jiang 3
@@ -66,7 +73,7 @@ jianyi 1 1
 jie 3 1
 jiekou 1
 jijie 1
-jin 1
+jin 1 1
 jincheng 1
 jing 2
 jishu 1
@@ -76,13 +83,13 @@ nei 1
 ni 2
 ohayou 2
 ha 1
-hao 2
-hou 2
+hao 2 2
+hou 3
 hua 1
 huakukuai 1
-hui 1
+hui 2 1
 huizhi 1
-huo 4 2
+huo 6 2
 qi 1
 qian 3
 qishiwei 1
@@ -90,33 +97,38 @@ qu 7
 zai 1
 ze 1
 zhi 6 1
-zhong 3
+zhong 4
+zhu 1
 zhuan 3
 zhuang 1
 zong 1
 zu 8
-zui 2
-zuo 3 1
+zui 3
+zuo 4 2
 zuoyi 1
 ga 1
 gao 1
+ge 1 1
+gege 1
 gei 2
 gong 1
 yang 1
 yangshi 1
-yi 3 2 2 1 1 1 1 1
+yi 3 3 2 1 1 1 1 1
 yichu 1
 yihuo 2
 yin 1
 yong 2
-you 2 1 1
+you 3 2 1
 yu 4 3
 yuan 1
 yun 1
 yunsuan 2
 san 1
 se 3
-shi 2 1 1 1 1 1
+shang 1
+sheng 1
+shi 3 3 1 1 1 1
 shiliang 1
 shu 5
 shuang 1
@@ -125,6 +137,8 @@ suo 2 1
 suoyin 1
 wei 8 1
 tang 3
+te 1
 tian 2
 tianchong 1
 tiao 1
+tu 1

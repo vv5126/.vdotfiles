@@ -28,7 +28,6 @@ lib.base smkdir "$XDG_CONFIG_HOME"
 lib.base smkdir "$XDG_CACHE_HOME"
 
 # generate_link "$VDOT/bin/data/fonts.conf" "$XDG_CONFIG_HOME/fontconfig/fonts.conf"
-# generate_link "$VDOT/bin/data/gitconfig"  "$XDG_CONFIG_HOME/git/config"
 # ln -sf ../../vdot/dots/bin/data/config/gitconfig config
 # ln -sfr ~/.vim/plugins/v/UltiSnips ~/.local/config/coc/ultisnips
 

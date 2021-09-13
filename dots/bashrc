@@ -165,5 +165,11 @@ done
 stty -ixon
 
 unset EXP
+[ ! -d "$XDG_CACHE_HOME/historys" ] && mkdir -p $XDG_CACHE_HOME/historys
+[ ! -d "$XDG_CACHE_HOME/cd" ] && mkdir -p $XDG_CACHE_HOME/cd
+[ ! -d "$XDG_CACHE_HOME/vim" ] && mkdir -p $XDG_CACHE_HOME/vim
+
+export npm_config_userconfig=$HOME/.config
+export npm_config_registry=https://registry.npm.taobao.org/
 
 echo init done

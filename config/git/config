@@ -1,0 +1,69 @@
+[user]
+	email = wei.gao@ingenic.com
+	name = Gao Wei
+
+[branch]
+	autosetuprebase = always
+
+[push]
+	default = tracking
+[pull]
+  default = tracking
+
+[core]
+	    editor = vim
+
+[color]
+	status = auto
+	branch = auto
+	diff = auto
+	ui = true
+	pager = true
+
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+	remote = green
+
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+        context = 240
+        commit = 246 024
+        whitespace = red reverse
+
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+[diff]
+	tool = bcompare_git
+
+[difftool]
+	prompt = false
+
+[difftool "bcompare_git"]
+	cmd = /usr/bin/bcompare \"$LOCAL\" \"$REMOTE\"
+
+[pager]
+    log  = diff-so-fancy | less -RX
+    show = diff-so-fancy | less -RX
+    diff = diff-so-fancy | less -RX
+
+[alias]
+	br = branch
+	co = checkout
+	ci = commit
+        l = log
+	last = log -1
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	lg1 = log --pretty=oneline --abbrev-commit
+	s = status
+        st = status
+	unstage = reset HEAD
+        d = diff
+        dd = diff --cache
+[http]
+	sslVerify = false

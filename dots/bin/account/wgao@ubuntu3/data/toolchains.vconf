@@ -5,4 +5,5 @@ mips64el-gcc520      $VTOOLS/toolchain/mips-gcc520-glibc222/bin
 mips64el-gcc472      $VTOOLS/toolchain/mipsel-gcc472-glibc216-mips32/bin
 mips64el-gcc540      $VTOOLS/toolchain/mips-gcc540-glibc222-64bit-r3.3.0/bin
 mips64el-gcc720      $VTOOLS/toolchain/mips-gcc720-glibc226/bin
+mips64el-gcc720-x1600 $VTOOLS/toolchain/mips-gcc720-glibc226-x1600/bin
 mips64el-gcc720-fix  $VTOOLS/toolchain/mips-gcc720-glibc226-fix-noexecstack-r-mips-got16/bin

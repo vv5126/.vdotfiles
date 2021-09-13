@@ -191,7 +191,7 @@ function push_image() {
     files="$@"
 
     dst_dir=$(cd_repo; echo "$PWD" | sed 's/'"$(string_escape $HOME/)"'//')
-    [ $dst_dir == "$HOME" ] && len=${#HOME}; dst_dir=${PWD:$len+1}
+    [ $dst_dir == "$HOME" ] && { len=${#HOME}; dst_dir=${PWD:$len+1}; }
     dst_dir=$VGL_BOARDS/${dst_dir//\//\_}
 
     echo dst_dir $dst_dir

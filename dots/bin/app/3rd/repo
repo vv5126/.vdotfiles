@@ -669,6 +669,9 @@ def main(orig_args):
         os.rmdir(repodir)
         sys.exit(1)
       main, dir = _FindRepo()
+      os.system("echo \ \ \ \ os.system\(\\\"cd .repo/manifests\; sed \\\'/prebuilts\\\\/burnertools\/d\;\\\' \-i \`ag \'prebuilts/burnertools\' -l\`\\\"\) >> .repo/repo/subcmds/init.py")
+      os.system("sed '/if current_branch_only:/i\    current_branch_only = True' -i .repo/repo/project.py")
+      # os.system("sed '/ok = False/i\    cmd.append\(\"--depth=1\"\)' -i .repo/repo/project.py")
     else:
       _NoCommands(cmd)
 
