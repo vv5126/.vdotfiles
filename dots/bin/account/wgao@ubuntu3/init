@@ -36,6 +36,7 @@ else
         unset JAVA_1
     fi
 
+    add_path "/backup/home/wgao/.local/tools/clang+llvm-10.0.0-x86_64-linux-gnu-ubuntu-18.04/bin"
     ### MISC
     # alias py='$HOME/project/tools/pycharm-4.5.4/bin/pycharm.sh &'
     # alias wiz='nohup $VTOOLS/wiz > /dev/null &'

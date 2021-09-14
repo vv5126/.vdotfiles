@@ -46,7 +46,7 @@ function svi(){
 }
 
 function ci() {
-	include list
+    include list
 
     if [ "$#" -eq 2 ]; then
         if [ "$(is_num $1)" == 1 ]; then
@@ -72,21 +72,30 @@ function asd() {
 }
 
 function g() {
-    include list
+    include list vconf
+
+    if [ ! -f "$VGL_DATA/go.vconf" ]; then
+        > "$VGL_DATA/go.vconf"
+        echo "# dest" >> "$VGL_DATA/go.vconf"
+        shini -f $VGL_DATA/vinfo -q '$.ingenic.people..[account,ip]' | awk '{ if(NR%2==0) printf $0 "\n"; else if(NR%2==1) printf "%s@",$0;  }' >> "$VGL_DATA/go.vconf"
+        shini -f $VGL_DATA/vinfo -q '$.ingenic.server[0:][account,ip]' | awk '{ if(NR%2==0) printf $0 "\n"; else if(NR%2==1) printf "%s@",$0;  }' >> "$VGL_DATA/go.vconf"
+        shini -f $VGL_DATA/vinfo -q '$.go[0:][name]' >> "$VGL_DATA/go.vconf"
+    fi
 
     if [[ $# -eq 1 && "$1" =~ "@" ]]; then
-	DEST="$1"
-	echo "$DEST" >> $VGL_DATA/go.vconf
+        DEST="$1"
+        echo "$DEST" >> $VGL_DATA/go.vconf
+        echo -e "\n[[go]]\nname = \"$DEST\"" >> $VGL_DATA/vinfo
     else
-	showlist_with_input $VGL_DATA/go.vconf "dest" "go where ??" $@
-	DEST="$dest"
+        showlist_with_input $VGL_DATA/go.vconf "dest" "go where ??" $@
+        DEST="$dest"
     fi
 
     if [ -n "$DEST" ]; then
-	ssh -X $DEST
+        ssh -X $DEST
     else
-	echo "wrong number"
-	echo 
+        echo "wrong number"
+        echo 
     fi
 }
 
@@ -98,7 +107,7 @@ function ccd(){
                 local para2=$(echo $try_old_dir | awk '{print $3}')
                 local para3=$(echo $try_old_dir | awk '{print $4}')
                 [ -n "$para2" -a -n "$para3" ] && { $para1 $para3 $para2; return; }
-		# only mv ??
+                # only mv ??
         done
 }
 
@@ -178,10 +187,10 @@ function clh() {
 
     sed -n '/^\#[0-9]\{10\}$/!p;' $HISTFILE | sort | uniq > $tmp
 
-	> $new
+        > $new
     while read line; do
-	echo '#1561791599' >> $new
-	echo $line >> $new
+        echo '#1561791599' >> $new
+        echo $line >> $new
     done < $tmp
 
     tail -n 50 $HISTFILE >> $new

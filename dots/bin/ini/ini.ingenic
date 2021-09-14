@@ -27,6 +27,9 @@ export CLONER_DIR="$VLOCALHOME/.cloner"
 # mk #
 export VGLD_MKDATA=$VGL_DATA/mk
 
+# vinfo #
+export VGLD_VINFO=$VGL_DATA/vinfo
+
 # build android image #
 [ "x$SUPPORT_ANDROID" != "x" ] && {
     export VGL_BUILD_BOOTIMAGE="$WORK_SERVER_SSH":$HOME/work/tool/build_bootimage.tar.gz

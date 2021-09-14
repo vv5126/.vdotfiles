@@ -2,6 +2,18 @@
 
 include misc list vconf
 
+function list_reset() {
+        > "$VGL_DATA/vcp.vconf"
+        echo "# name                 dest" >> "$VGL_DATA/vcp.vconf"
+        shini -f $VGL_DATA/vinfo -q '$.ingenic.people..[vcpname,account,ip,home]' | awk '{ if(NR%4==0) printf $0 "\n"; else if(NR%4==1) printf "%s ",$0; else if (NR%4==2) printf "%s@",$0; else if (NR%4==3) printf "%s:",$0;  }' >> "$VGL_DATA/vcp.vconf"
+        shini -f $VGL_DATA/vinfo -q '$.vcp[0:][name,target]' | awk '{ if(NR%2==0) printf $0 "\n"; else printf "%s ",$0;  }' >> "$VGL_DATA/vcp.vconf"
+        vconf -m "format" "$VGL_DATA/vcp.vconf"
+}
+
+if [ ! -f "$VGL_DATA/vcp.vconf" ]; then
+    list_reset
+fi
+
 if [ $# -eq 0 ]; then
 	vconf -m "show-column" -c "name" "$VGL_DATA/vcp.vconf" | sed -n '/^xxx$/!p;' | showlist
 	exit
@@ -13,6 +25,7 @@ if [[ "$LAST" =~ "@" ]]; then # target
 	DEST="$LAST"
 	SKIP=1
 	echo "$DEST $DEST" >> $VGL_DATA/vcp.vconf
+	echo -e "\n[[vcp]]\nname = \"$DEST\"\ntarget = \"$DEST\"" >> $VGL_DATA/vinfo
 else # normal file
 	showlist_with_input $VGL_DATA/vcp.vconf "name" "cp to" $@
 	DEST="$dest"

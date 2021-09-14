@@ -150,15 +150,15 @@ fi
 include $VINIS/ini.shell
 
 if [ -n "$(which dircolors)" ]; then
-	eval $(dircolors -b "$VGL_DATA"/dir_colors)
+	eval $(dircolors -b "$HOME/.local/vdot/config"/dir_colors)
 fi
 
 if shopt -q progcomp && [ -r /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
 fi
 
-for i in $(LC_ALL=C command ls "$HOME/.bin/data/completions"); do
-    i=$HOME/.bin/data/completions/$i
+for i in $(LC_ALL=C command ls "$HOME/.local/vdot/completions"); do
+    i=$HOME/.local/vdot/completions/$i
     [[ -f $i && -r $i ]] && . "$i"
 done
 

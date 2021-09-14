@@ -1,0 +1,154 @@
+company = "ingenic"
+
+ingenic.soc = [
+    "m200",
+    "x1000",
+    "x2000_v12",
+    "x1600",
+    "t40",
+    "m300",
+    "x1830",
+    "x2000",
+    "m150",
+    "jz4775"
+]
+
+ingenic.board = [
+    "halley2",
+    "halley2_plus",
+    "halley2_pro",
+    "halley5",
+    "halley6",
+]
+
+ingenic.people.name = [
+    "GaoWei",
+    "JiangCongLong",
+    "XuYiYuan",
+    "YuanXiangRen",
+]
+
+[ingenic.people.GaoWei]
+mail = "wei.gao@ingenic.com"
+
+host.account = "user"
+host.home = "/home/user"
+host.ip = "192.168.3.96"
+host.hostname = "ingenic"
+host.vcpname = "我的本地"
+
+server."3.3".account = "wgao"
+server."3.3".home = "/backup/home/wgao"
+server."3.3".ip = "192.168.3.3"
+server."3.3".hostname = "ubuntu3"
+server."3.3".vcpname = "我的3.3"
+
+server."3.4".account = "wgao"
+server."3.4".home = "/backup/home/wgao"
+server."3.4".ip = "192.168.3.4"
+server."3.4".hostname = "user-PowerEdge-R410"
+server."3.4".vcpname = "我的3.4"
+
+server."3.5".account = "wgao"
+server."3.5".home = "/home1/wgao"
+server."3.5".ip = "192.168.3.5"
+server."3.5".hostname = "ubuntu35"
+server."3.5".vcpname = "我的3.5"
+
+server."4.15".account = "wgao"
+server."4.15".home = "/data1/home/wgao"
+server."4.15".ip = "192.168.4.15"
+server."4.15".hostname = "lqchen-0B"
+server."4.15".vcpname = "我的4.15"
+
+[ingenic.people.JiangCongLong]
+mail = "conglong.jiang@ingenic.com"
+
+server."3.3".account = "cljiang"
+server."3.3".home = "~"
+server."3.3".ip = "192.168.3.3"
+server."3.3".hostname = "ubuntu3"
+server."3.3".vcpname = "大龙的3.3"
+
+server."3.5".account = "cljiang"
+server."3.5".home = "~"
+server."3.5".ip = "192.168.3.5"
+server."3.5".hostname = "ubuntu35"
+server."3.5".vcpname = "大龙的3.5"
+
+[ingenic.people.XuYiYuan]
+mail = "yiyuan.xu@ingenic.com"
+
+server."3.5".account = "yyxu"
+server."3.5".home = "~"
+server."3.5".ip = "192.168.3.5"
+server."3.5".hostname = "ubuntu35"
+server."3.5".vcpname = "义远的3.5"
+
+[ingenic.people.YuanXiangRen]
+mail = "xiangren.yuan@ingenic.com"
+
+host.account = "user"
+host.home = "/home/user"
+host.ip = "192.168.3.84"
+host.vcpname = "袁祥仁本地"
+
+server."3.3".account = "xryuan"
+server."3.3".home = "~"
+server."3.3".ip = "192.168.3.3"
+server."3.3".hostname = "ubuntu3"
+server."3.3".vcpname = "袁祥仁3.3"
+
+server."3.5".account = "xryuan"
+server."3.5".home = "~"
+server."3.5".ip = "192.168.3.5"
+server."3.5".hostname = "ubuntu35"
+server."3.5".vcpname = "袁祥仁3.5"
+
+
+[mk]
+kernel = "k.sh"
+uboot = "u.sh"
+manhattan = "mht.sh"
+
+[[ingenic.server]]
+account = "fpga"
+home = "~"
+ip = "192.168.4.13"
+vcpname = "fpga"
+
+[[ingenic.server]]
+account = "pyzhang_bj"
+home = "~"
+ip = "192.168.4.2"
+vcpname = "pyzhang"
+
+[[ingenic.server]]
+account = "wicom"
+home = "~"
+ip = "192.168.3.3"
+vcpname = "wicom"
+
+[[vcp]]
+name = "win57"
+target = "user@192.168.3.88:~/mnt/57"
+
+[[vcp]]
+name = "fpga"
+target = "fpga@192.168.4.13:~/user/wgao"
+
+[[vcp]]
+name = "wicom"
+target = "wicom@192.168.3.3:/backup/home/wicom/work/tmp"
+
+[[vcp]]
+name = "julyedu"
+target = "julyedu_554839@139.196.78.189:~"
+
+[[vcp]]
+name = "pyzhang_bj"
+target = "pyzhang_bj@192.168.4.2:~"
+
+[[vcp]]
+name = "wicom_document"
+target = "wicom@192.168.3.3:/home/wicom/work/document"

@@ -55,6 +55,7 @@ cong 4
 cun 1
 l 3
 lei 3
+li 1
 liang 2
 mei 2
 ba 1
@@ -93,7 +94,7 @@ huo 6 2
 qi 1
 qian 3
 qishiwei 1
-qu 7
+qu 7 1
 zai 1
 ze 1
 zhi 6 1
@@ -112,6 +113,8 @@ ge 1 1
 gege 1
 gei 2
 gong 1
+guan 1
+guanli 1
 yang 1
 yangshi 1
 yi 3 3 2 1 1 1 1 1

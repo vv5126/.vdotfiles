@@ -1,5 +1,6 @@
 Host 192.168.1.26
 	KexAlgorithms +diffie-hellman-group1-sha1
+	Ciphers aes128-cbc,aes256-ctr
 	StrictHostKeyChecking no
 	UserKnownHostsFile /dev/null
 	User wgao_bj
