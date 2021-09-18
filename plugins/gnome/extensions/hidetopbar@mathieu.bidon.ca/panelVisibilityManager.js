@@ -33,6 +33,7 @@ const DEBUG = Convenience.DEBUG;
 const MessageTray = Main.messageTray;
 const PanelBox = Main.layoutManager.panelBox;
 const ShellActionMode = (Shell.ActionMode)?Shell.ActionMode:Shell.KeyBindingMode;
+const _searchEntryBin = Main.overview._overview._controls._searchEntryBin;
 
 var PanelVisibilityManager = class HideTopBar_PanelVisibilityManager {
 
@@ -236,7 +237,8 @@ var PanelVisibilityManager = class HideTopBar_PanelVisibilityManager {
         this._panelPressure.connect(
             'trigger',
             (barrier) => {
-                if ( (Main.layoutManager.primaryMonitor.inFullscreen) && (!this._settings.get_boolean('mouse-sensitive-fullscreen-window')) ) {
+                if (Main.layoutManager.primaryMonitor.inFullscreen
+                    && (!this._settings.get_boolean('mouse-sensitive-fullscreen-window')) ) {
                     return;
                 }
                 this.show(
@@ -304,6 +306,14 @@ var PanelVisibilityManager = class HideTopBar_PanelVisibilityManager {
     
     _updateSettingsShowInOverview() {
         this._showInOverview = this._settings.get_boolean('show-in-overview');
+        this._updateSearchEntryMargin();
+    }
+
+    _updateSearchEntryMargin() {
+        if (!_searchEntryBin) return;
+        const scale = Main.layoutManager.primaryMonitor.geometry_scale;
+        const margin = PanelBox.height / scale;
+        _searchEntryBin.set_style(this._showInOverview ? `margin-top: ${margin}px;` : null);
     }
 
     _updateIntellihideStatus() {
@@ -324,19 +334,14 @@ var PanelVisibilityManager = class HideTopBar_PanelVisibilityManager {
 
         this._preventHide = !this._intellihide.getOverlapStatus();
         let animTime = this._settings.get_double('animation-time-autohide');
-        if(this._preventHide)
-            this.show(animTime, "intellihide");
-        else if(!Main.overview.visible)
+        if(this._preventHide) {
+            if (this._showInOverview || !Main.overview.visible)
+                this.show(animTime, "intellihide");
+        } else if(!Main.overview.visible)
             this.hide(animTime, "intellihide");
     }
 
     _bindUIChanges() {
-        let monitorManager;
-        if (global.screen)
-            monitorManager = global.screen;         // mutter < 3.29
-        else
-            monitorManager = Main.layoutManager;    // mutter >= 3.29
-
         this._signalsHandler = new Convenience.GlobalSignalsHandler();
         this._signalsHandler.add(
             [
@@ -375,7 +380,14 @@ var PanelVisibilityManager = class HideTopBar_PanelVisibilityManager {
                 }
             ],
             [
-                monitorManager,
+                PanelBox,
+                'notify::height',
+                () => {
+                    this._updateSearchEntryMargin();
+                }
+            ],
+            [
+                Main.layoutManager,
                 'monitors-changed',
                 () => {
                     this._base_y = PanelBox.y;
@@ -446,6 +458,9 @@ var PanelVisibilityManager = class HideTopBar_PanelVisibilityManager {
         this._signalsHandler.destroy();
         Main.wm.removeKeybinding("shortcut-keybind");
         this._disablePressureBarrier();
+        if (_searchEntryBin) {
+          _searchEntryBin.style = null;
+        }
 
         MessageTray._tween = this._oldTween;
         this.show(0, "destroy");

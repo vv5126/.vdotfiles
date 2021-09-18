@@ -152,3 +152,7 @@ target = "pyzhang_bj@192.168.4.2:~"
 [[vcp]]
 name = "wicom_document"
 target = "wicom@192.168.3.3:/home/wicom/work/document"
+
+[[vcp]]
+name = "鹿老师的本地"
+target = "user@192.168.3.92:~"

@@ -39,6 +39,7 @@ function try_get() {
     [ "${file:0:4}" == '/mnt' ] && return 1
     [ "${file:0:4}" == '/usr' ] && return 1
     [ "${file:0:4}" == '/etc' ] && return 1
+    [ "${file:0:4}" == '/lib' ] && return 1
     [ "$file" == '/' ] && return 1
 
     if [ "${file:0:1}" == '/' ]; then #absolute

@@ -33,6 +33,7 @@ alias vvsync="rsync -url 'wgao@192.168.3.3:\$VDOT' $HOME"
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 complete -d mr
+complete -d star
 
 if [ -n "$(type ag)" ]; then
     alias ag='ag --hidden --ignore tags -p $HOME/.v/.agignore --noheading --smart-case -t'
