@@ -1,5 +1,11 @@
 #!/bin/bash
 
+os="ubuntu"
+# host="local"
+host="server"
+# sudo="y"
+
+
 # ubuntu初安装
 
 # 分区方法：
@@ -9,32 +15,41 @@
 # /home 剩下的       ext4 逻辑分区
 #-------------------------------------------------#
 
-# manual wlan
+if [ $host == "local" ]; then
+    # manual wlan
+    # manual shell-extensions store
+    tar -cf  extensions.tar.gz -C ~/.local/share/gnome-shell
+fi
 
-# manual shell-extensions store
-# tar -cf  extensions.tar.gz -C ~/.local/share/gnome-shell
+if [ $sudo == "y" ]; then
+    # change sources.list
+    sudo mv -i /etc/apt/sources.list /etc/apt/sources.list.bak
 
-# change sources.list
-# mv -i /etc/apt/sources.list /etc/apt/sources.list.bak
+    sudo echo "
+    deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+    deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+    deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+    deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+    deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+    " > /etc/apt/sources.list
 
-# echo "
-# deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
-# deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
-# deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
-# deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
-# deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
-# deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
-# deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
-# deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
-# deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
-# deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
-# " > /etc/apt/sources.list
+    sudo apt update
+    # apt upgrade
+    sudo apt install aptitude
 
-# apt update
-# apt upgrade
+    function ins() {
+        pro=$1
+        # dpkg -l $pro > /dev/null
+        # [ $? -eq 0 ] && return
+        aptitude install $pro
+    }
 
-# apt install aptitude
-# end
+fi
 
 ## manual
 ## bug
@@ -49,47 +64,44 @@
 
 # setting manual
 
-function ins() {
-    pro=$1
-    # dpkg -l $pro > /dev/null
-    # [ $? -eq 0 ] && return
-    aptitude install $pro
-}
-
 # 必装
+if [ $sudo == "y" ]; then
 
-# ins gdebi-core
-# ins timeshift
-# ins openssh-server
-# ins net-tools
-# ins cifs-utils # for mount win dir!!!
-# ins sshfs
-# ins minicom
-# ins adb
-# ins icaclient
-# ins gnome-tweaks
-# ins gnome-shell-extensions
-# ins solaar
-# ins git
-# ins fzf
-# ins sshfs
-# ins xclip
-# ins silversearcher-ag
-# ins aria2
-# ins ccls
-# ins npm
-# sudo npm install yarn -g
-# npm config set registry https://registry.npm.taobao.org/
-# yarn config set registry https://registry.npm.taobao.org/
-# ins python3-pip
-pip config set global.index-url 'https://pypi.tuna.tsinghua.edu.cn/simple'
-pip config set install.trusted-host 'mirrors.aliyun.com'
+    if [ $host == "local" ]; then
+        ins timeshift
+        ins adb
+        ins minicom
+        # ins icaclient
+        ins cifs-utils # for mount win dir!!!
+    # ins gnome-tweaks
+    # ins gnome-shell-extensions
+    fi
+    # ins gdebi-core
+    # ins openssh-server
+    # ins net-tools
+    # ins sshfs
+    # ins solaar
+    # ins git
+    # ins fzf
+    # ins xclip
+    # ins silversearcher-ag
+    # ins aria2
+    # ins ccls
+    # ins npm
+    # sudo npm install yarn -g
+    # npm config set registry https://registry.npm.taobao.org/
+    # yarn config set registry https://registry.npm.taobao.org/
+    # ins python3-pip
+    pip config set global.index-url 'https://pypi.tuna.tsinghua.edu.cn/simple'
+    pip config set install.trusted-host 'mirrors.aliyun.com'
 
 # sudo pip3 install neovim
 # ins ninja-build
+fi
 
 # manual 输入法 
 # manual mail
+# ins thunderbird
 # gdebi wps-office_11.1.0.9126_amd64.deb
 
 ## vim
@@ -103,7 +115,7 @@ apt-get install libncurses5-dev
 # Python.h: No such file or directory:
 apt-get install python2.7-dev
 #-------------------------------------------------#
-cd /tmp/mnt/3.3/.local/tools/vim && ./a.sh
+# cd /tmp/mnt/3.3/.local/tools/vim && ./a.sh
 # ins gawk
 
 # 7yuv
@@ -115,16 +127,10 @@ cd /tmp/mnt/3.3/.local/tools/vim && ./a.sh
 # wget -qO - https://typora.io/linux/public-key.asc | apt-key add -
 # add-apt-repository 'deb https://typora.io/linux ./'
 # apt-get update
-# aptitude install typora
+# ins typora
 
-# ins thunderbird
-# add sshkey
-# ssh-keygen -t rsa
-# cp vdot
+# ins build-essential
 
-# $apt-get install build-essential
-
-exit
 # nautilus-image-converter
 
 # ins python3.8
@@ -137,8 +143,6 @@ exit
 # ins libtool-bin
 # ins autoconf
 # ins rdfind
-
-
 # ins go
 
 # go切换proxy中国代理
@@ -171,9 +175,10 @@ exit
 # add "greeter-setup-script=/usr/bin/numlockx on"
 
 # /* win */
-# cifs-utils
 # font
 # ssh-keygen
+# add sshkey
+# ssh-keygen -t rsa
 
 # tar cvpzf 4.152-bak.tgz --exclude=/tmp --exclude=/proc --exclude=/lost+found/ --exclude=/sys --exclude=/mnt --exclude=/media --exclude=/dev --exclude=/var /
 # mkdir -p tmp proc lost+found sys mnt media dev var
@@ -201,7 +206,6 @@ exit
 
 # ln -sf /tmp/mnt/3.3/work/local_debug
 # ln -sf /tmp/mnt
-md /home/user/.local/tmp/rm /home/user/.local/tmp/vp
 
 python先不要安装新版了，只要2 3都有就行，主要是扩展包。
 apt-get install autoconf
@@ -209,8 +213,9 @@ apt-get install automake
 apt-get install pkg-config
 apt-get install libgtk-3-dev
 
-系统精简：
-卸载libreOffice，选择用WPS来替代： apt-get remove libreoffice-common
+# 系统精简：
+# 卸载libreOffice，选择用WPS来替代：
+# apt-get remove libreoffice-common
 
 apt-get remove thunderbird totem rhythmbox empathy brasero simple-scan gnome-mahjongg aisleriot gnome-mines cheese transmission-common gnome-orca webbrowser-app gnome-sudoku landscape-client-ui-install onboard deja-dup 
 #-------------------------------------------------#
@@ -225,4 +230,3 @@ visudo -c#检查语法是否正确，一定要执行，否则出现问题很麻�
 ### backup
 # bak cp -r ~/.local/share/gnome-shell/extensions/
 
-[ -d "$HOME/.config" -a ! -d "$HOME/.local/config" ] && { mv "$HOME/.config" "$HOME/.local"; ln -sfr "$HOME/.local/config" "$HOME/.config"; }
